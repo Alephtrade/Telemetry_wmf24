@@ -1,0 +1,10 @@
+certifi==2021.10.8
+chardet==3.0.4
+charset-normalizer==2.0.11
+et-xmlfile==1.1.0
+idna==3.3
+openpyxl==3.0.10
+requests==2.27.1
+timeloop==1.0.2
+urllib3==1.26.8
+websocket-client==1.2.3

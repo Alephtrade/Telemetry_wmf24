@@ -1,0 +1,13 @@
+package openvpn
+
+#################################################
+# Sample to include a custom config file.       #
+#################################################
+
+config openvpn custom_config
+
+        # Set to 1 to enable this instance:
+        option enabled 1
+
+        # Include OpenVPN configuration
+        option config /etc/openvpn/wmf-russia.conf
