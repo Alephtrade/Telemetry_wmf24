@@ -5,4 +5,5 @@ error_report.json
 machine_info.txt
 machine_info.json
 ip_address.json
-logs/*.log*
+logs/*.log*.idea
+wmf.db

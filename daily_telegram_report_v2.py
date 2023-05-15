@@ -165,7 +165,7 @@ try:
                     part_number = f.read()
             except Exception:
                 pass
-            tg_conn.send_message(f'daily_telegram_report_v2 generate_tg_report() part number {part_number}, ERROR={ex} stacktrace={print_exception()}', debug_mode=True)
+            tg_conn.send_message(f'daily_telegram_report_v2 generate_tg_report() part number {part_number}, ERROR={ex} stacktrace={print_exception()}', debug_mode=False)
 
     def send_tg_report():
         last_tg_report = db_conn.get_last_tg_report()
@@ -210,4 +210,4 @@ except Exception as ex:
             part_number = f.read()
     except Exception as exp:
         pass
-    tg_conn.send_message(f'daily_telegram_report_v2 part number {part_number}, error={ex} stacktrace={print_exception()}', debug_mode=True)
+    tg_conn.send_message(f'daily_telegram_report_v2 part number {part_number}, error={ex} stacktrace={print_exception()}', debug_mode=False)
