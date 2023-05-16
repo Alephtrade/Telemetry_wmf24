@@ -46,12 +46,5 @@ if not does_object_exist('table', 'tg_reports'):
     cur.execute(stmt)
     conn.commit()
 
-cur.execute('''
-    INSERT OR IGNORE INTO last_record 
-    (id, record_time, previous_errors, current_errors, beverages_count) 
-    VALUES (1, null, '[]', '[]', 0)
-    ''')
-conn.commit()
-
 cur.close()
 conn.close()

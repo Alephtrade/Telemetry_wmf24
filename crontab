@@ -1,14 +1,5 @@
-* * * * * sh /root/wmf_1100_1500_5000_router_ru/add_cron_jobs.sh
-* * * * * sh /root/wmf_1100_1500_5000_router_ru/start_error_collector.sh
-0 * * * * sh /root/wmf_1100_1500_5000_router_ru/git_pull_autorestart.sh
-# 0 16 * * * sh /root/wmf_1100_1500_5000_router_ru/run_daily_telegram_report.sh
-*/5 * * * * sh /root/wmf_1100_1500_5000_router_ru/run_daily_telegram_report_v2.sh
-*/5 * * * * sh /root/wmf_1100_1500_5000_router_ru/check_internet.sh
-* * * * * sh /root/wmf_1100_1500_5000_router_ru/run_check_machine_status.sh
-* * * * * sh /root/wmf_1100_1500_5000_router_ru/run_check_cleaning_state.sh
-3 22 * * * sh /root/wmf_1100_1500_5000_router_ru/run_clean_db.sh
-# 3 2 * * * sh /root/wmf_1100_1500_5000_router_ru/run_send_debug_files.sh
-# */10 * * * * sh /root/wmf_1100_1500_5000_router_ru/run_pip_install.sh
-0 * * * * sh /root/wmf_1100_1500_5000_router_ru/run_send_ip_address.sh
-# 5 * * * * sh /root/wmf_1100_1500_5000_router_ru/setup_openvpn.sh
-* * * 1 * sh /root/wmf_1100_1500_5000_router_ru/ovpn_enable.sh
+* * * * * sh /root/wmf_1100_1500_5000_router/start_error_collector.sh
+0 * * * * sh /root/wmf_1100_1500_5000_router/git_pull_autorestart.sh
+0 16 * * * sh /root/wmf_1100_1500_5000_router/run_daily_telegram_report.sh
+* * * * * sh /root/wmf_1100_1500_5000_router/add_cron_jobs.sh
+*/5 * * * * sh /root/wmf_1100_1500_5000_router/check_internet.sh

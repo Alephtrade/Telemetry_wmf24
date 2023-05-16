@@ -1,7 +1,4 @@
 import atexit
-import random
-import time
-
 import requests
 import logging
 from threading import Thread
@@ -29,7 +26,8 @@ def on_exit():
         wmf_conn.close()
         tl.stop()
     except Exception as ex:
-        logging.error(f'error_collector on_exit: ERROR={ex}, stacktrace={print_exception()}')
+        logging.error(f'error_collector on_exit: ERROR={ex}')
+        logging.error(print_exception())
 
 
 @tl.job(interval=timedelta(seconds=settings.ERROR_COLLECTOR_INTERVAL_SECONDS))

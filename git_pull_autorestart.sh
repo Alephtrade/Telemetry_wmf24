@@ -8,6 +8,7 @@ if [ "$l" = "Already up to date." ]; then
 else
     echo "restart needed"
     kill -9 $(pgrep -f "python3 error_collector.py")
+    kill -9 $(pgrep -f "python3 daily_telegram_report.py")
     pip3 install -r requirements.txt
     python3 apply_migration.py
     sh /root/wmf_1100_1500_5000_router/start_error_collector.sh

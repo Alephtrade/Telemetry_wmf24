@@ -216,8 +216,6 @@ class WMFMachineErrorConnector:
         'F89':	'Ошибка по току'
     }
 
-    IGNORE_CODES = (739, 747, 748, 752, 733)
-
     def get_part_number(self):
         try:
             ws = websocket.create_connection(self.WS_URL)
@@ -248,16 +246,15 @@ class WMFMachineErrorConnector:
             if data.get("function") == 'startPushErrors':
                 info = data.get("Info")
                 error_code = data.get("ErrorCode")
-                if error_code not in self.IGNORE_CODES:
-                    error_text = self.ERROR_DESCRIPTION_DICT.get(error_code) or data.get("Error Text")
-                    if info == "new Error":
-                        self.current_errors.add(data.get("ErrorCode"))
-                        self.db_driver.create_error_record(error_code, error_text)
-                    elif info == "gone Error":
-                        self.db_driver.close_error_code(error_code)
-                        if error_code in self.current_errors:
-                            self.current_errors.remove(error_code)
-                # self.db_driver.save_last_record('current_errors', json.dumps(list(self.current_errors)))
+                error_text = self.ERROR_DESCRIPTION_DICT.get(error_code) or data.get("Error Text")
+                if info == "new Error":
+                    self.current_errors.add(data.get("ErrorCode"))
+                    self.db_driver.create_error_record(error_code, error_text)
+                elif info == "gone Error":
+                    self.db_driver.close_error_code(error_code)
+                    if error_code in self.current_errors:
+                        self.current_errors.remove(error_code)
+            # self.db_driver.save_last_record('current_errors', json.dumps(list(self.current_errors)))
         except Exception as ex:
             logging.error(f"WMFMachineConnector handle_error: error={ex}, stacktrace: {print_exception()}")
 
@@ -314,27 +311,13 @@ class WMFMachineStatConnector:
                 return f.read()
 
     def get_wmf_machine_info(self):
-        try:
-            with open('machine_info.json') as f:
-                return json.load(f)
-        except Exception:
-            pass
-
         url = f'{self.WMF_BASE_URL}/api/get-coffee-machine-info/{self.part_number}'
         logging.info(f"WMFMachineStatConnector: GET {url}")
         r = requests.get(url)
         logging.info(f"WMFMachineStatConnector: GET response: {r.content.decode('utf-8')}")
         data = r.json()
-        with open('machine_info.json', 'w') as f:
-            json.dump(data, f)
         with open('machine_info.txt', 'w') as f:
-            try:
-                f.write('Компания {company}, Филиал {filial}'.format(**data))
-            except Exception as ex:
-                pass
-                # self.tg_conn.send_message('get_wmf_machine_info error, part number %s, data: %s' % (self.part_number, r.content.decode('utf-8')), debug_mode=True)
-                # self.tg_conn.send_message('%s, %s' % ('getMachineInfo data: ', json.dumps(self.send_wmf_request('getMachineInfo'))), debug_mode=True)
-
+            f.write('Компания {company}, Филиал {filial}'.format(**data))
         return data
 
     def get_beverages_count(self):
@@ -374,7 +357,6 @@ class WMFMachineStatConnector:
             self.ws = None
         self.part_number = self.get_part_number()
         self.beverage_stats_raw = None
-        self.tg_conn = WMFTelegramBot()
 
     def close(self):
         if self.ws:

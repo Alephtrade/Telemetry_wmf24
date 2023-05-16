@@ -13,7 +13,7 @@
 Note: **git_pull_autorestart.sh** script automatically does that
 
 # How to enable test mode
-Create a config.env file in wmf_1100_1500_5000_router folder with this content:
+Create config.env file in wmf_1100_1500_5000_router folder with this content:
 
 ```{"ENV_MODE": "test"}```
 
@@ -21,6 +21,3 @@ Create a config.env file in wmf_1100_1500_5000_router folder with this content:
 
 # Warning
 ❗️❗️❗️**Do not update** wmf.db file in the repository❗️❗️❗️ **wmf_backup.db** is there just in case to restore the original file
-
-# To fix Error loading shared library libmbedcrypto.so.3
-opkg install mbedtls-util

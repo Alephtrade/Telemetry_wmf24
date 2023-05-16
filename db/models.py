@@ -24,7 +24,6 @@ class WMFSQLDriver:
         cur.execute(stmt, (error_date,))
         res = cur.fetchone()
         if not res:
-            cur.close()
             return
         last_id = res[0]
         stmt = 'DELETE FROM error_code_stats WHERE id <= ?'
@@ -43,7 +42,6 @@ class WMFSQLDriver:
         cur.execute(stmt)
         res = cur.fetchone()
         if not res:
-            cur.close()
             return
         last_id = res[0] - records_to_keep
         stmt = 'DELETE FROM tg_reports WHERE id <= ?'
@@ -53,28 +51,11 @@ class WMFSQLDriver:
 
     def create_error_record(self, error_code, error_text='Неизвестная ошибка'):
         cur = self.connection.cursor()
+        stmt = 'INSERT INTO error_code_stats (error_code, error_date, start_time, error_text) VALUES (?, ?, ?, ?)'
         current_date = datetime.now() + timedelta(hours=3)
         error_date = current_date.strftime('%Y-%m-%d')
         start_time = current_date.strftime('%Y-%m-%d %H:%M:%S')
-        stmt = ''' 
-            SELECT id
-            FROM error_code_stats
-            WHERE error_code = ? AND end_time IS NULL
-            ORDER BY id desc
-            LIMIT 1
-        '''
-        cur.execute(stmt, (error_code,))
-        res = cur.fetchone()
-        if res:
-            stmt = '''
-                UPDATE error_code_stats 
-                SET error_date = ?, start_time = ?
-                WHERE id = ?
-            '''
-            cur.execute(stmt, (error_date, start_time, res[0]))
-        else:
-            stmt = 'INSERT INTO error_code_stats (error_code, error_date, start_time, error_text) VALUES (?, ?, ?, ?)'
-            cur.execute(stmt, (error_code, error_date, start_time, error_text))
+        cur.execute(stmt, (error_code, error_date, start_time, error_text))
         self.connection.commit()
         cur.close()
 
@@ -107,7 +88,6 @@ class WMFSQLDriver:
         cur.execute(stmt, (end_time, last_id))
         self.connection.commit()
         cur.close()
-        return end_time
 
     def get_error_last_stat_record(self, error_code):
         cur = self.connection.cursor()
@@ -221,12 +201,6 @@ class WMFSQLDriver:
             WHERE id = ?
         '''
         cur.execute(stmt, (date_sent, tg_id))
-        self.connection.commit()
-        cur.close()
-
-    def do_vacuum(self):
-        cur = self.connection.cursor()
-        cur.execute('VACUUM')
         self.connection.commit()
         cur.close()
 
