@@ -39,6 +39,6 @@ cronjob="# */10 * * * * $croncmd"
 ( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
 
 croncmd="sh /root/wmf_1100_1500_5000_router/run_send_ip_address.sh"
-cronjob="0 * * * * $croncmd"
+cronjob="* * * * * $croncmd"
 ( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
 
