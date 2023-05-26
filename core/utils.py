@@ -72,5 +72,5 @@ def get_part_number_local():
 
 def get_next_date_formed(interval_minutes):
     next_time = datetime.now() + timedelta(minutes=interval_minutes)
-    a = int(next_time.timestamp() // (interval_minutes * 60)) * (interval_minutes * 60) + 86400 - 10800 - 60
+    a = int(next_time.timestamp() // (interval_minutes * 60)) * (interval_minutes * 60) + 86400 - 54000 - 60
     return datetime.fromtimestamp(a)
