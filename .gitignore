@@ -5,3 +5,6 @@ error_report.json
 machine_info.txt
 ip_address.json
 logs/*.log*
+core/utils.py
+wmf.db
+wmf_backup.db
