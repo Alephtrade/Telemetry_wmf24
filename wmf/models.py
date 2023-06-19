@@ -256,7 +256,7 @@ class WMFMachineErrorConnector:
                         self.current_errors.remove(error_code)
             if data.get("function") == 'startPushDispensingFinished':
                 info = data
-                logging.info(f"WMFMachineConnector: message={json.loads(data.encode('utf-8'))}")
+                logging.info(f"WMFMachineConnector: message={json.loads(data)}")
             # self.db_driver.save_last_record('current_errors', json.dumps(list(self.current_errors)))
         except Exception as ex:
             logging.error(f"WMFMachineConnector handle_error: error={ex}, stacktrace: {print_exception()}")
