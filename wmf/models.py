@@ -254,6 +254,9 @@ class WMFMachineErrorConnector:
                     self.db_driver.close_error_code(error_code)
                     if error_code in self.current_errors:
                         self.current_errors.remove(error_code)
+            if data.get("function") == 'startPushDispensingFinished':
+                info = data
+                logging.info(f"WMFMachineConnector: message={json.loads(data.encode('utf-8'))}")
             # self.db_driver.save_last_record('current_errors', json.dumps(list(self.current_errors)))
         except Exception as ex:
             logging.error(f"WMFMachineConnector handle_error: error={ex}, stacktrace: {print_exception()}")
@@ -268,6 +271,7 @@ class WMFMachineErrorConnector:
 
     def on_open(self, ws):
         ws.send(json.dumps({"function": "startPushErrors"}))
+        ws.send(json.dumps({"function": "startPushDispensingFinished"}))
 
     def on_exit(self, ws):
         ws.close()
