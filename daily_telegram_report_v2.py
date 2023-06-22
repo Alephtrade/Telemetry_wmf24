@@ -70,7 +70,7 @@ try:
             if get_curr_time() < last_date_formed or not tg_last_report[2]:
                 return False
 
-        next_date_formed = get_next_date_formed_v2(settings.TELEGRAM_REPORT_INTERVAL_MINUTES)
+        next_date_formed = get_next_date_formed(settings.TELEGRAM_REPORT_INTERVAL_MINUTES)
         next_date_formed_str = next_date_formed.strftime('%Y-%m-%d %H:%M:%S')
         logging.info(f'Creating bolvanka in tg_reports with date_formed: {next_date_formed_str}')
         db_conn.create_tg_report(date_formed=next_date_formed_str, body='')
