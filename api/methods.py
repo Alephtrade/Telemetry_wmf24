@@ -20,7 +20,12 @@ def getServiceStatistics():
     logging.info(f"COFFEE_MACHINE: Received {received_data}")
     text_file = open("response.txt", "a")
     text_file.write(received_data)
-    requests.post('https://wmf24.ru/api/address', json=received_data)
+    data = {};
+    for val in received_data:
+        print(val)
+        for key, q in val.items():
+            data[key] = q
+    requests.post('https://wmf24.ru/api/servicestatistics', json=data)
     ws.close()
     return True
 
