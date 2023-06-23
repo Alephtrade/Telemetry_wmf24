@@ -1,6 +1,7 @@
 import json
 import logging
 import websocket
+import requests
 from core.utils import initialize_logger
 from settings import prod as settings
 
@@ -19,6 +20,7 @@ def getServiceStatistics():
     logging.info(f"COFFEE_MACHINE: Received {received_data}")
     text_file = open("response.txt", "a")
     text_file.write(received_data)
+    requests.post('https://wmf24.ru/api/address', json=received_data)
     ws.close()
     return True
 
