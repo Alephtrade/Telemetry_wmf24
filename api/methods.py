@@ -22,7 +22,116 @@ def getServiceStatistics():
     text_file.write(received_data)
     #r = requests.post('https://wmf24.ru/api/servicestatistics', json=received_data)
     url = "https://wmf24.ru/api/servicestatistics"
-    payload = json.dumps([received_data[0]])
+    payload = json.dumps([
+        {
+            "function": "getServiceStatistics"
+        },
+        {
+            "device_id": 111
+        },
+        {
+            "returnvalue": 0
+        },
+        {
+            "TotalCyclesBrewer1": 225367
+        },
+        {
+            "ExchangeBrewer1": 0
+        },
+        {
+            "TotalCyclesBrewer2": -1
+        },
+        {
+            "ExchangeBrewer2": 0
+        },
+        {
+            "TotalCyclesMixer1": -1
+        },
+        {
+            "TotalCyclesMixer2": -1
+        },
+        {
+            "BrewingsSinceCustomerMaintainance": 11667
+        },
+        {
+            "BrewingsSinceMaintainance1": 40127
+        },
+        {
+            "BrewingsSinceMaintainance2": 59079
+        },
+        {
+            "BrewingsSinceDriveExchange": 225367
+        },
+        {
+            "BrewingsSinceRevision": -1
+        },
+        {
+            "TotalOfHotWaterDosages": 77004
+        },
+        {
+            "TotalSteamDosages": 506334
+        },
+        {
+            "TotalChocDosages": -1
+        },
+        {
+            "TotalWaterBoilerSupply": 18867
+        },
+        {
+            "TotalSteamBoilerSupply": 0
+        },
+        {
+            "TotalWaterBoilerSupplySinceDescaling": -1
+        },
+        {
+            "TotalFlowTypeHeaterSupplySinceDescaling": -1
+        },
+        {
+            "NumberOfCleanings": 4
+        },
+        {
+            "NumberOfCleaningsToDo": 5
+        },
+        {
+            "NumberOfMixerCleanings": 0
+        },
+        {
+            "NumberOfMilkCleanings": 4
+        },
+        {
+            "NumberOfDescalings": 0
+        },
+        {
+            "ScoopGrindingDisc1": 230927
+        },
+        {
+            "ScoopGrinder1": 230927
+        },
+        {
+            "ScoopGrindingDisc2": -1
+        },
+        {
+            "ScoopGrinder2": -1
+        },
+        {
+            "ScoopGrindingDisc3": -1
+        },
+        {
+            "ScoopGrinder3": -1
+        },
+        {
+            "ScoopGrindingDisc4": -1
+        },
+        {
+            "ScoopGrinder4": -1
+        },
+        {
+            "ScoopPowder1": -1
+        },
+        {
+            "ScoopPowder2": -1
+        }
+    ])
     headers = {
         'Content-Type': 'application/json'
     }
