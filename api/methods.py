@@ -2,7 +2,7 @@ import requests
 import json
 import logging
 import websocket
-from core.utils import initialize_logger
+from core.utils import initialize_logger, get_part_number_local
 from settings import prod as settings
 
 def getServiceStatistics():
@@ -18,6 +18,8 @@ def getServiceStatistics():
     ws.send(request)
     received_data = ws.recv()
     logging.info(f"COFFEE_MACHINE: Received {received_data}")
+    part_number = get_part_number_local()
+    logging.info(f"COFFEE_MACHINE: Received {part_number}")
     text_file = open("response.txt", "a")
     text_file.write(received_data)
     #r = requests.post('https://wmf24.ru/api/servicestatistics', json=received_data)
