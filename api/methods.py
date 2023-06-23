@@ -20,8 +20,14 @@ def getServiceStatistics():
     logging.info(f"COFFEE_MACHINE: Received {received_data}")
     text_file = open("response.txt", "a")
     text_file.write(received_data)
-    r = requests.post('https://wmf24.ru/api/servicestatistics', json=received_data)
-    logging.info(f"WMFMachineStatConnector: GET response: {r.content.decode('utf-8')}")
+    #r = requests.post('https://wmf24.ru/api/servicestatistics', json=received_data)
+    url = "https://wmf24.ru/api/servicestatistics"
+    payload = json.dumps([received_data[0]])
+    headers = {
+        'Content-Type': 'application/json'
+    }
+    response = requests.request("POST", url, headers=headers, data=payload)
+    logging.info(f"WMFMachineStatConnector: GET response: {response.text}")
     ws.close()
     return True
 
