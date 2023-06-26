@@ -58,6 +58,8 @@ def report_v2():
     data['last_cleaning_datetime'] = last_cleaning_datetime
 
     tg_report_body = tg_strings.DAILY_REPORT.format(**data)
+    return tg_report_body
+
     data['code'] = wm_conn.part_number
     with open('error_report.json', 'w') as f:
         json.dump(data, f)
@@ -69,7 +71,7 @@ def report_v2():
     }
     response = requests.request("POST", url, headers=headers, data=data)
     logging.info(f"WMFMachineStatConnector: GET response: {response.text}")
-    return True
+    return data
 
 print(report_v2())
 
