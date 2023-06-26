@@ -229,7 +229,7 @@ class WMFSQLDriver:
         cur = self.connection.cursor()
         stmt = ''' 
             UPDATE machine_activity 
-            SET date_sent = ?
+            SET date_end = ?
             WHERE id = ?
         '''
         cur.execute(stmt, (date_end, id))
