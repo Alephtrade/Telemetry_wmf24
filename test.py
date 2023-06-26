@@ -57,14 +57,10 @@ def report_v2():
         data['beverages_count'] = tg_strings.NO_MACHINE_CONNECTION
     data['last_cleaning_datetime'] = last_cleaning_datetime
 
-    tg_report_body = tg_strings.DAILY_REPORT.format(**data)
-    return tg_report_body
+    return data
 
     data['code'] = wm_conn.part_number
-    with open('error_report.json', 'w') as f:
-        json.dump(data, f)
-    # received_data.append({"device_id": part_number})
-    # r = requests.post('https://wmf24.ru/api/servicestatistics', json=received_data)
+
     url = "https://wmf24.ru/api/beveragestatistics"
     headers = {
         'Content-Type': 'application/json'

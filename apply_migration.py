@@ -46,5 +46,18 @@ if not does_object_exist('table', 'tg_reports'):
     cur.execute(stmt)
     conn.commit()
 
+if not does_object_exist('table', 'tg_reports'):
+    stmt = '''
+        create table machine_activity
+        (
+            id          integer
+            date_start text,
+            date_end   text,
+            status        text
+        )
+    '''
+    cur.execute(stmt)
+    conn.commit()
+
 cur.close()
 conn.close()
