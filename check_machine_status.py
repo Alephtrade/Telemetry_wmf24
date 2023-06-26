@@ -29,6 +29,7 @@ if d:
     d_id, d_date_start, d_date_end, d_status = d
     if status == 1:
         logging.info(f'status == 1')
+        logging.info(f'd_date_end: {d}')
         logging.info(f'd_date_end: {d_date_end}')
         if d and d_date_end == 0:
             logging.info(f'update')
