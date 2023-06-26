@@ -16,7 +16,7 @@ try:
         status = 1
 except Exception:
     status = 0
-
+status = 0;
 logging.info(f'status is: {status}')
 last_id, end_time = None, None
 r = db_driver.get_error_last_stat_record('-1')
@@ -25,7 +25,7 @@ d = db_driver.get_last_downtime()
 d_id = None
 d_date_start = None
 d_date_end = None
-d_status = status
+d_status = None
 if d:
     d_id, d_date_start, d_date_end, d_status = d
     if status == 1:
