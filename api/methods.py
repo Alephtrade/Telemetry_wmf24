@@ -47,6 +47,8 @@ def getBeverageStatistics():
     text_file.write(received_data)
     received_data = received_data.replace(']', '', 1)
     received_data = received_data + ', {"device_code" : ' + str(part_number) + '}]'
+    logging.info(f"COFFEE_MACHINE: Received {received_data}")
+
     # received_data.append({"device_id": part_number})
     # r = requests.post('https://wmf24.ru/api/servicestatistics', json=received_data)
     url = "https://wmf24.ru/api/beveragestatistics"
