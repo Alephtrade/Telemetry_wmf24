@@ -27,7 +27,7 @@ class WMFSQLDriver:
             return
         last_id = res[0]
         stmt = 'DELETE FROM error_code_stats WHERE id <= ?'
-        cur.execute(stmt, (last_id, ))
+        cur.execute(stmt, (last_id,))
         self.connection.commit()
         cur.close()
 
@@ -45,7 +45,7 @@ class WMFSQLDriver:
             return
         last_id = res[0] - records_to_keep
         stmt = 'DELETE FROM tg_reports WHERE id <= ?'
-        cur.execute(stmt, (last_id, ))
+        cur.execute(stmt, (last_id,))
         self.connection.commit()
         cur.close()
 
@@ -97,7 +97,7 @@ class WMFSQLDriver:
             ORDER BY id DESC 
             LIMIT 1
         '''
-        cur.execute(stmt, (error_code, ))
+        cur.execute(stmt, (error_code,))
         res = cur.fetchone()
         cur.close()
         return res
@@ -143,7 +143,7 @@ class WMFSQLDriver:
             SET report_sent = 1
             WHERE id = ?
         '''
-        cur.execute(stmt, (rec_id, ))
+        cur.execute(stmt, (rec_id,))
         self.connection.commit()
         cur.close()
 
@@ -203,6 +203,7 @@ class WMFSQLDriver:
         cur.execute(stmt, (date_sent, tg_id))
         self.connection.commit()
         cur.close()
+
     def create_downtime(self, date_start, status):
         cur = self.connection.cursor()
         stmt = 'INSERT INTO machine_activity (date_start, status) VALUES (?, ?)'
@@ -220,8 +221,10 @@ class WMFSQLDriver:
         '''
         cur.execute(stmt)
         res = cur.fetchone()
+        logging.info(f'WMFSQLDriver get_last_downtime: {res}')
         cur.close()
         return res
+
     def update_downtime(self, id, date_end):
         cur = self.connection.cursor()
         stmt = ''' 
@@ -232,6 +235,7 @@ class WMFSQLDriver:
         cur.execute(stmt, (date_end, id))
         self.connection.commit()
         cur.close()
+
 
 if __name__ == '__main__':
     db_conn = WMFSQLDriver(db_path='../wmf.db')
