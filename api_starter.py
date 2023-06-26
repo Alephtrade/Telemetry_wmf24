@@ -1,5 +1,5 @@
-from api.methods import getServiceStatistics
+from api.methods import getServiceStatistics, getBeverageStatistics
 
 q = getServiceStatistics()
-#w = recipes()
+w = getBeverageStatistics()
 #e = startpushdispensingfinished()

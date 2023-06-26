@@ -5,13 +5,10 @@ import websocket
 from core.utils import initialize_logger, get_part_number_local
 from settings import prod as settings
 
-
+WMF_URL = settings.WMF_DATA_URL
+WS_URL = settings.WS_URL
+DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
 def getServiceStatistics():
-    WMF_URL = settings.WMF_DATA_URL
-    WS_URL = settings.WS_URL
-    DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
-    WMF_URL = settings.WMF_DATA_URL
-    DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
     initialize_logger('response.txt')
     ws = websocket.create_connection(WS_URL)
     request = json.dumps({'function': 'getServiceStatistics'})
@@ -36,59 +33,16 @@ def getServiceStatistics():
     ws.close()
     return True
 
-# def recipes():
-#    WMF_URL = settings.WMF_DATA_URL
-#    WS_URL = settings.WS_URL
-#    DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
-#    WMF_URL = settings.WMF_DATA_URL
-#    DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
-#    initialize_logger('response.txt')
-#    ws = websocket.create_connection(WS_URL)
-#    request = json.dumps({'function': 'getDrinkList'})
-#    logging.info(f"COFFEE_MACHINE: Sending {request}")
-#    ws.send(request)
-#    received_data = ws.recv()
-#    logging.info(f"COFFEE_MACHINE: Received {received_data}")
-#    text_file = open("response.txt", "a")
-#    text_file.write(received_data)
-#    request = json.dumps({'function': 'getRecipeComposition'})
-#    logging.info(f"COFFEE_MACHINE: Sending {request}")
-#    ws.send(request)
-#    received_data = ws.recv()
-#    logging.info(f"COFFEE_MACHINE: Received {received_data}")
-#    text_file = open("response.txt", "a")
-#    text_file.write(received_data)
-#    request = json.dumps({'function': 'RecipeNumber'})
-#    logging.info(f"COFFEE_MACHINE: Sending {request}")
-#    ws.send(request)
-#    received_data = ws.recv()
-#    logging.info(f"COFFEE_MACHINE: Received {received_data}")
-#    text_file = open("response.txt", "a")
-#    text_file.write(received_data)
-#    request = json.dumps({'function': 'RecipeBaseNumber'})
-#    logging.info(f"COFFEE_MACHINE: Sending {request}")
-#    ws.send(request)
-#    received_data = ws.recv()
-#    logging.info(f"COFFEE_MACHINE: Received {received_data}")
-#    text_file = open("response.txt", "a")
-#    text_file.write(received_data)
-#    ws.close()
-#    return True
+def getBeverageStatistics():
+    initialize_logger('response.txt')
+    ws = websocket.create_connection(WS_URL)
+    request = json.dumps({'function': 'getBeverageStatistics'})
+    logging.info(f"COFFEE_MACHINE: Sending {request}")
+    ws.send(request)
+    received_data = ws.recv()
+    logging.info(f"COFFEE_MACHINE: Received {received_data}")
+    text_file = open("response.txt", "a")
+    text_file.write(received_data)
+    ws.close()
+    return True
 
-# def getbeveragestatistics():
-#    WMF_URL = settings.WMF_DATA_URL
-#    WS_URL = settings.WS_URL
-#    DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
-#    WMF_URL = settings.WMF_DATA_URL
-#    DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
-#    initialize_logger('response.txt')
-#    ws = websocket.create_connection(WS_URL)
-#    request = json.dumps({'function': 'getBeverageStatistics'})
-#    logging.info(f"COFFEE_MACHINE: Sending {request}")
-#    ws.send(request)
-#    received_data = ws.recv()
-#    logging.info(f"COFFEE_MACHINE: Received {received_data}")
-#    text_file = open("response.txt", "a")
-#    text_file.write(received_data)
-#    ws.close()
-#    return True
