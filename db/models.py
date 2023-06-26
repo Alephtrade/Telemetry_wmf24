@@ -203,7 +203,35 @@ class WMFSQLDriver:
         cur.execute(stmt, (date_sent, tg_id))
         self.connection.commit()
         cur.close()
+    def create_downtime(self, date_start, status):
+        cur = self.connection.cursor()
+        stmt = 'INSERT INTO machine_activity (date_start, status) VALUES (?, ?)'
+        cur.execute(stmt, (date_start, status))
+        self.connection.commit()
+        cur.close()
 
+    def get_last_downtime(self):
+        cur = self.connection.cursor()
+        stmt = ''' 
+            SELECT id, date_start, date_end, status 
+            FROM machine_activity
+            ORDER BY id DESC 
+            LIMIT 1
+        '''
+        cur.execute(stmt)
+        res = cur.fetchone()
+        cur.close()
+        return res
+    def update_downtime(self, id, date_end):
+        cur = self.connection.cursor()
+        stmt = ''' 
+            UPDATE machine_activity 
+            SET date_sent = ?
+            WHERE id = ?
+        '''
+        cur.execute(stmt, (date_end, id))
+        self.connection.commit()
+        cur.close()
 
 if __name__ == '__main__':
     db_conn = WMFSQLDriver(db_path='../wmf.db')
