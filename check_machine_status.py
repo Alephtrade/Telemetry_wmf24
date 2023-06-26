@@ -21,7 +21,7 @@ logging.info(f'status is: {status}')
 last_id, end_time = None, None
 r = db_driver.get_error_last_stat_record('-1')
 d = db_driver.get_last_downtime()
-d_id, d_date_start, d_date_end, d_status = r
+d_id, d_date_start, d_date_end, d_status = d
 logging.info(f'last_stat_record: {r}')
 logging.info(f'downtime_last_record: {d}')
 
