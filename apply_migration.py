@@ -46,7 +46,7 @@ if not does_object_exist('table', 'tg_reports'):
     cur.execute(stmt)
     conn.commit()
 
-if not does_object_exist('table', 'tg_reports'):
+if not does_object_exist('table', 'machine_activity'):
     stmt = '''
         create table machine_activity
         (
