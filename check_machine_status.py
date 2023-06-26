@@ -23,12 +23,12 @@ r = db_driver.get_error_last_stat_record('-1')
 d = db_driver.get_last_downtime()
 d_id, d_date_start, d_date_end, d_status = r
 logging.info(f'last_stat_record: {r}')
+logging.info(f'downtime_last_record: {d}')
 
 if status == 1:
     if d and d_date_end is None:
         db_driver.update_downtime(d_id, datetime.datetime.now())
 elif status == 0:
-    if d and d_date_end is None:
         db_driver.create_downtime(datetime.datetime.now(), 0)
 if r:
     last_id, end_time = r
