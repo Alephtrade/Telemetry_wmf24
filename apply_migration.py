@@ -55,6 +55,8 @@ if not does_object_exist('table', 'machine_activity'):
         create table machine_activity
         (
             id          integer
+                constraint machine_activity_pk
+                    primary key,
             date_start text,
             date_end   text,
             status        text
