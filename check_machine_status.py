@@ -30,7 +30,7 @@ if d:
     if status == 1:
         logging.info(f'status == 1')
         logging.info(f'd_date_end: {d_date_end}')
-        if d and d_date_end is None:
+        if d and (d_date_end is None or d_date_end == 0):
             logging.info(f'update')
             db_driver.update_downtime(d_id, datetime.datetime.now())
     elif status == 0:
