@@ -60,3 +60,6 @@ def getBeverageStatistics():
     ws.close()
     return True
 
+def send_report_info():
+    return True
+
