@@ -31,6 +31,10 @@ add_table_column(table_name='last_record', column_name='cleaning_duration', colu
 add_table_column(table_name='last_record', column_name='cleaning_datetime', column_type='text')
 add_table_column(table_name='error_code_stats', column_name='error_text', column_type='text')
 
+add_table_column(table_name='machine_activity', column_name='date_start', column_type='text')
+add_table_column(table_name='machine_activity', column_name='date_end', column_type='text')
+add_table_column(table_name='machine_activity', column_name='status', column_type='text')
+
 if not does_object_exist('table', 'tg_reports'):
     stmt = '''
         create table tg_reports
