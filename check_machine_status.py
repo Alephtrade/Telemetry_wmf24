@@ -40,7 +40,7 @@ if d:
         logging.info(f'status == 0')
         logging.info(f'd_date_end: {d_status}')
         logging.info(f'd_date_end: {d_date_end}')
-        if d_status != 0:
+        if d_status != "0":
             db_driver.create_downtime(datetime.datetime.now(), 0)
 logging.info(f'last_stat_record: {r}')
 logging.info(f'downtime_last_record: {d}')
