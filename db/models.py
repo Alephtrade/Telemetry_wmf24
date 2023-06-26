@@ -225,14 +225,14 @@ class WMFSQLDriver:
         cur.close()
         return res
 
-    def update_downtime(self, id, date_end):
+    def update_downtime(self, id, date_end, status):
         cur = self.connection.cursor()
         stmt = ''' 
             UPDATE machine_activity 
-            SET date_end = ?
+            SET date_end = ?, status = ?
             WHERE id = ?
         '''
-        cur.execute(stmt, (date_end, id))
+        cur.execute(stmt, (date_end, status, id))
         self.connection.commit()
         cur.close()
 
