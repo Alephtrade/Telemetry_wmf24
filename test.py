@@ -67,7 +67,7 @@ def report_v2():
     headers = {
         'Content-Type': 'application/json'
     }
-    response = requests.request("POST", url, headers=headers, data=[data])
+    response = requests.request("POST", url, headers=headers, data=json.dumps(data))
     logging.info(f"WMFMachineStatConnector: GET response: {response.text}")
     return data
 
