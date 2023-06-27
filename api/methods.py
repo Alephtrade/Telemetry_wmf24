@@ -15,7 +15,7 @@ def getServiceStatistics():
     logging.info(f"COFFEE_MACHINE: Sending {request}")
     ws.send(request)
     received_data = ws.recv()
-    logging.info(f"COFFEE_MACHINE: Received {received_data}")
+    logging.info(f"servicestatistics: Received {received_data}")
     part_number = get_part_number_local()
     logging.info(f"COFFEE_MACHINE: Received {part_number}")
     text_file = open("response.txt", "a")
@@ -29,7 +29,7 @@ def getServiceStatistics():
         'Content-Type': 'application/json'
     }
     response = requests.request("POST", url, headers=headers, data=received_data)
-    logging.info(f"WMFMachineStatConnector: GET response: {response.text}")
+    logging.info(f"servicestatistics: GET response: {response.text}")
     ws.close()
     return True
 
@@ -47,7 +47,7 @@ def getBeverageStatistics():
     text_file.write(received_data)
     received_data = received_data.replace(']', '', 1)
     received_data = received_data + ', {"device_code" : ' + str(part_number) + '}]'
-    logging.info(f"COFFEE_MACHINE: Received {received_data}")
+    logging.info(f"beveragestatistics: Received {received_data}")
 
     # received_data.append({"device_id": part_number})
     # r = requests.post('https://wmf24.ru/api/servicestatistics', json=received_data)
@@ -56,7 +56,7 @@ def getBeverageStatistics():
         'Content-Type': 'application/json'
     }
     response = requests.request("POST", url, headers=headers, data=received_data)
-    logging.info(f"WMFMachineStatConnector: GET response: {response.text}")
+    logging.info(f"beveragestatistics: GET response: {response.text}")
     ws.close()
     return True
 
