@@ -4,7 +4,7 @@ import logging
 import telegram.strings as tg_strings
 from datetime import timedelta, datetime
 from db.models import WMFSQLDriver
-from core.utils import timedelta_str, get_curr_time
+from core.utils import timedelta_str, get_curr_time, initialize_logger
 from wmf.models import WMFMachineStatConnector
 from settings import prod as settings
 
