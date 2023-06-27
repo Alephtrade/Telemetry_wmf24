@@ -17,6 +17,7 @@ def getServiceStatistics():
     received_data = ws.recv()
     logging.info(f"servicestatistics: Received {received_data}")
     part_number = get_part_number_local()
+    return part_number
     logging.info(f"COFFEE_MACHINE: Received {part_number}")
     text_file = open("response.txt", "a")
     text_file.write(received_data)
