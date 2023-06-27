@@ -63,7 +63,7 @@ def report_v2():
 
     data['code'] = wm_conn.part_number
 
-    url = "https://wmf24.ru/api/report"
+    url = "https://wmf24.ru/api/reportv2"
     headers = {
         'Content-Type': 'application/json'
     }
