@@ -16,8 +16,11 @@ def getServiceStatistics():
     ws.send(request)
     received_data = ws.recv()
     logging.info(f"servicestatistics: Received {received_data}")
-    part_number = get_part_number_local()
-    return part_number
+    try:
+        with open('part_number.txt') as f:
+            part_number = f.read()
+    except Exception:
+        return ''
     logging.info(f"COFFEE_MACHINE: Received {part_number}")
     text_file = open("response.txt", "a")
     text_file.write(received_data)
@@ -42,7 +45,11 @@ def getBeverageStatistics():
     ws.send(request)
     received_data = ws.recv()
     logging.info(f"COFFEE_MACHINE: Received {received_data}")
-    part_number = get_part_number_local()
+    try:
+        with open('part_number.txt') as f:
+            part_number = f.read()
+    except Exception:
+        return ''
     logging.info(f"COFFEE_MACHINE: Received {part_number}")
     text_file = open("response.txt", "a")
     text_file.write(received_data)
