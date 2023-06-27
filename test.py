@@ -12,6 +12,7 @@ WMF_URL = settings.WMF_DATA_URL
 WS_URL = settings.WS_URL
 DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
 db_conn = WMFSQLDriver()
+initialize_logger('test.log')
 
 def report_v2():
     global error_text_max_len
