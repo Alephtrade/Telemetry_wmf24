@@ -69,7 +69,7 @@ def report_v2():
     }
     response = requests.request("POST", url, headers=headers, data=json.dumps(data))
     logging.info(f"WMFMachineStatConnector: GET response: {response.text}")
-    return data
+    return response.text
 
 print(report_v2())
 
