@@ -42,9 +42,12 @@ def report_v2():
                 wmf_error_time += duration_time
 
     data['date_formed'] = date_formed_str
-    data['time_worked'] = time_worked.total_seconds()
+    data['worked_seconds'] = time_worked.total_seconds()
+    data['time_worked'] = timedelta_str(time_worked)
+    data['wmf_error_seconds'] = wmf_error_time.total_seconds()
     data['wmf_error_time'] = timedelta_str(wmf_error_time)
     data['wmf_error_count'] = wmf_error_count
+    data['stoppage_seconds'] = stoppage_time.total_seconds()
     data['stoppage_time'] = timedelta_str(stoppage_time)
     data['stoppage_count'] = stoppage_count
 
