@@ -60,11 +60,9 @@ def report_v2():
         data['beverages_count'] = tg_strings.NO_MACHINE_CONNECTION
     data['last_cleaning_datetime'] = last_cleaning_datetime
 
-    return data
-
     data['code'] = wm_conn.part_number
 
-    url = "https://wmf24.ru/api/beveragestatistics"
+    url = "https://wmf24.ru/api/report"
     headers = {
         'Content-Type': 'application/json'
     }
