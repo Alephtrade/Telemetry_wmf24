@@ -5,7 +5,7 @@ import websocket
 from datetime import timedelta, datetime
 from db.models import WMFSQLDriver
 import telegram.strings as tg_strings
-from core.utils import timedelta_str, get_curr_time, initialize_logger, get_part_number_local
+from core.utils import timedelta_str, get_curr_time, initialize_logger, get_part_number_local, get_next_date_formed_v2
 from wmf.models import WMFMachineStatConnector
 from settings import prod as settings
 
@@ -62,15 +62,26 @@ def getBeverageStatistics():
     received_data = received_data.replace(']', '', 1)
     received_data = received_data + ', {"device_code" : ' + str(part_number) + '}]'
     logging.info(f"beveragestatistics: Received {received_data}")
+    summ = 0
+    device_code = ""
+    recipes = []
+    date_to_send = get_next_date_formed_v2()
+    date_formed = datetime.now() + timedelta(hours=3)
+    for item in received_data:
+        for k, item2 in item.items():
+            if (k.startswith("device_code")):
+                device_code = item2
+            if (k.startswith("TotalCountRcp")):
+                summ += item2
+                recipes.append(item)
 
-    # received_data.append({"device_id": part_number})
-    # r = requests.post('https://wmf24.ru/api/servicestatistics', json=received_data)
-    url = "https://wmf24.ru/api/beveragestatistics"
-    headers = {
-        'Content-Type': 'application/json'
-    }
-    response = requests.request("POST", url, headers=headers, data=received_data)
-    logging.info(f"beveragestatistics: GET response: {response.text}")
+
+    #url = "https://wmf24.ru/api/beveragestatistics"
+    #headers = {
+    #    'Content-Type': 'application/json'
+    #}
+    #response = requests.request("POST", url, headers=headers, data=received_data)
+    #logging.info(f"beveragestatistics: GET response: {response.text}")
     ws.close()
     return True
 

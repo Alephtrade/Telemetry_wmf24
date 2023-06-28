@@ -76,7 +76,7 @@ def get_next_date_formed(interval_minutes):
     a = int(next_time.timestamp() // (interval_minutes * 60)) * (interval_minutes * 60) + 86400 - 54000 - 60
     return datetime.fromtimestamp(a)
 
-def get_next_date_formed_v2(interval_minutes):
+def get_next_date_formed_v2():
     code = get_part_number_local()
     url = f'https://wmf24.ru/api/get-coffee-machine-info/{code}'
     payload = {}
@@ -86,5 +86,7 @@ def get_next_date_formed_v2(interval_minutes):
     response = requests.request("GET", url, headers=headers, data=payload)
     body_response = json.loads(response.text)
     next_time = datetime.now() + timedelta(hours=3)
+    if(body_response['interval_hour'] < 1):
+        body_response['interval_hour'] = 1
     a = int(next_time.timestamp() // (60 * 60)) * (60 * 60) + body_response['interval_hour'] * 60 * 60 + body_response['shedule_minutes'] * 60
     return datetime.fromtimestamp(a)

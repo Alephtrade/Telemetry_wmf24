@@ -60,8 +60,33 @@ if not does_object_exist('table', 'machine_activity'):
     '''
     cur.execute(stmt)
     conn.commit()
+
 add_table_column(table_name='machine_activity', column_name='date_start', column_type='text')
 add_table_column(table_name='machine_activity', column_name='date_end', column_type='text')
 add_table_column(table_name='machine_activity', column_name='status', column_type='text')
+
+if not does_object_exist('table', 'beverages_log'):
+    stmt = '''
+        create table beverages_log
+        (
+            id          integer
+                constraint beverages_log_pk
+                    primary key,
+            device_code text,
+            summ   text,
+            time_to_send        text
+            is_send     text
+            date_formed     text
+        )
+    '''
+    cur.execute(stmt)
+    conn.commit()
+
+add_table_column(table_name='beverages_log', column_name='device_code', column_type='text')
+add_table_column(table_name='beverages_log', column_name='summ', column_type='text')
+add_table_column(table_name='beverages_log', column_name='time_to_send', column_type='text')
+add_table_column(table_name='beverages_log', column_name='is_send', column_type='text')
+add_table_column(table_name='beverages_log', column_name='date_formed', column_type='text')
+
 cur.close()
 conn.close()
