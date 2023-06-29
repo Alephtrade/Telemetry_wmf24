@@ -8,5 +8,5 @@ prev_time_formed = datetime.strptime(last_send[4], "%Y-%m-%d %H:%M:%S")
 if datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp())) > prev_time_formed:
     get = Take_Create_Beverage_Statistics()
 
-
-send = Send_Statistics()
+print(WMFSQLDriver.get_not_sended_beverages_log())
+#send = Send_Statistics()
