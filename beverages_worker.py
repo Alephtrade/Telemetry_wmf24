@@ -6,8 +6,9 @@ from datetime import datetime, timedelta
 
 db_driver = WMFSQLDriver()
 last_send = db_driver.get_last_beverages_log()
-if last_send[4] is not None:
-    prev_time_formed = datetime.strptime(last_send, "%Y-%m-%d %H:%M:%S")
+date_formed = last_send[4]
+if date_formed is not None:
+    prev_time_formed = datetime.strptime(date_formed, "%Y-%m-%d %H:%M:%S")
     if datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp())) <= prev_time_formed:
         get = creator.Take_Create_Beverage_Statistics()
 else:
