@@ -238,7 +238,11 @@ class WMFSQLDriver:
 
     def create_beverages_log(self, device_code, summ, time_to_send, is_send, date_formed, recipes):
         cur = self.connection.cursor()
-        stmt = 'INSERT INTO beverages_log (device_code, summ, time_to_send, is_send, date_formed, recipes) VALUES (?, ?, ?, ?, ?, ?)'
+        stmt = '''
+        INSERT INTO beverages_log 
+        (device_code, summ, time_to_send, is_send, date_formed, recipes) 
+        VALUES (?, ?, ?, ?, ?, ?)
+        '''
         cur.execute(stmt, (device_code, summ, time_to_send, is_send, date_formed, recipes))
         self.connection.commit()
         cur.close()
