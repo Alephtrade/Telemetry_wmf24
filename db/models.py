@@ -245,24 +245,36 @@ class WMFSQLDriver:
     def get_last_beverages_log(self):
         cur = self.connection.cursor()
         stmt = ''' 
-            SELECT id, date_start, date_end, status 
-            FROM machine_activity
+            SELECT device_code, summ, time_to_send, is_send, date_formed, recipes
+            FROM beverages_log
             ORDER BY id DESC 
             LIMIT 1
         '''
         cur.execute(stmt)
         res = cur.fetchone()
-        logging.info(f'WMFSQLDriver get_last_downtime: {res}')
+        logging.info(f'WMFSQLDriver get_last_beverages_log: {res}')
         cur.close()
         return res
-    def update_beverages_log(self, id, date_end, status):
+    def get_not_sended_beverages_log(self):
         cur = self.connection.cursor()
         stmt = ''' 
-            UPDATE machine_activity 
-            SET date_end = ?, status = ?
+            SELECT device_code, summ, time_to_send, is_send, date_formed, recipes
+            FROM beverages_log
+            WHERE is_send = 0
+        '''
+        cur.execute(stmt)
+        res = cur.fetchall()
+        logging.info(f'WMFSQLDriver get_last_beverages_log: {res}')
+        cur.close()
+        return res
+    def update_beverages_log(self, id, time_to_send, is_send):
+        cur = self.connection.cursor()
+        stmt = ''' 
+            UPDATE beverages_log 
+            SET time_to_send = ?, is_send = ?
             WHERE id = ?
         '''
-        cur.execute(stmt, (date_end, status, id))
+        cur.execute(stmt, (id, time_to_send, is_send))
         self.connection.commit()
         cur.close()
 

@@ -1,0 +1,12 @@
+from api.beverages.creator import Take_Create_Beverage_Statistics
+from api.beverages.sender import Send_Statistics
+from db.models import WMFSQLDriver
+from datetime import datetime, timedelta
+
+last_send = WMFSQLDriver.get_last_beverages_log()
+prev_time_formed = datetime.strptime(last_send[4], "%Y-%m-%d %H:%M:%S")
+if datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp())) > prev_time_formed:
+    get = Take_Create_Beverage_Statistics()
+
+
+send = Send_Statistics()

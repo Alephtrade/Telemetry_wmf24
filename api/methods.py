@@ -6,7 +6,7 @@ import ast
 from datetime import timedelta, datetime
 from db.models import WMFSQLDriver
 import telegram.strings as tg_strings
-from core.utils import timedelta_str, get_curr_time, initialize_logger, get_part_number_local, get_next_date_formed_v2
+from core.utils import timedelta_str, get_curr_time, initialize_logger, get_part_number_local, get_beverages_send_time
 from wmf.models import WMFMachineStatConnector
 from settings import prod as settings
 
@@ -67,7 +67,7 @@ def getBeverageStatistics():
     summ = 0
     device_code = ""
     recipes = []
-    date_to_send = get_next_date_formed_v2()
+    date_to_send = get_beverages_send_time()
     print(date_to_send)
     date_formed = datetime.now() + timedelta(hours=3)
     for item in received:
