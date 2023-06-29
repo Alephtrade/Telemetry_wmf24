@@ -68,7 +68,9 @@ def getBeverageStatistics():
     date_to_send = get_next_date_formed_v2()
     date_formed = datetime.now() + timedelta(hours=3)
     for item in received_data:
+        print(item)
         for k, item2 in item.items():
+            print(item2)
             if (k.startswith("device_code")):
                 device_code = item2
             if (k.startswith("TotalCountRcp")):
