@@ -1,5 +1,5 @@
-from api.beverages.creator import Take_Create_Beverage_Statistics
-from api.beverages.sender import Send_Statistics
+from creator import Take_Create_Beverage_Statistics
+from sender import Send_Statistics
 from db.models import WMFSQLDriver
 from datetime import datetime, timedelta
 
