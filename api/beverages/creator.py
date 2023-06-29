@@ -2,7 +2,7 @@ import json
 import logging
 import websocket
 import ast
-from datetime import datetime
+from datetime import datetime, timedelta
 import sys
 sys.path.append("../../")
 from db.models import WMFSQLDriver
@@ -39,7 +39,7 @@ def Take_Create_Beverage_Statistics():
     recipes = []
     date_to_send = get_beverages_send_time()
     print(date_to_send)
-    date_formed = datetime.fromtimestamp(int(datetime.now().timestamp()))
+    date_formed = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp()))
     for item in received:
         print(item)
         for k, item2 in item.items():
