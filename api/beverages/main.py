@@ -1,6 +1,8 @@
 from creator import Take_Create_Beverage_Statistics
 from sender import Send_Statistics
-from ..db.models import WMFSQLDriver
+import sys
+sys.path.append("../../")
+from db.models import WMFSQLDriver
 from datetime import datetime, timedelta
 
 last_send = WMFSQLDriver.get_last_beverages_log()
