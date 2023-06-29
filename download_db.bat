@@ -1,1 +1,0 @@
-C:\Program Files\PuTTY\pscp.exe root@192.168.8.100:/root/wmf_1100_1500_router/wmf.db C:\Users\ITNote\Desktop
