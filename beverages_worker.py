@@ -14,5 +14,5 @@ if last_send is not None:
 else:
     get = creator.Take_Create_Beverage_Statistics()
 
-print(WMFSQLDriver.get_not_sended_beverages_log())
+print(db_driver.get_not_sended_beverages_log())
 #send = Send_Statistics()
