@@ -66,7 +66,7 @@ def getBeverageStatistics():
     device_code = ""
     recipes = []
     date_to_send = get_next_date_formed_v2()
-    return date_to_send
+    print(date_to_send)
     date_formed = datetime.now() + timedelta(hours=3)
     for item in received_data:
         print(item)
