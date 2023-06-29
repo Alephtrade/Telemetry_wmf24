@@ -75,7 +75,7 @@ def getBeverageStatistics():
                 summ += item2
                 recipes.append(item)
 
-
+    create_record = create_beverages_log(device_code, summ, datetime.now(), 0, date_formed, recipes)
     #url = "https://wmf24.ru/api/beveragestatistics"
     #headers = {
     #    'Content-Type': 'application/json'

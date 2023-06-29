@@ -236,6 +236,36 @@ class WMFSQLDriver:
         self.connection.commit()
         cur.close()
 
+    def create_beverages_log(self, device_code, summ, time_to_send, is_send, date_formed, recipes):
+        cur = self.connection.cursor()
+        stmt = 'INSERT INTO beverages_log (device_code, summ, time_to_send, is_send, date_formed, recipes) VALUES (?, ?, ?, ?, ?, ?)'
+        cur.execute(stmt, (device_code, summ, time_to_send, is_send, date_formed, recipes))
+        self.connection.commit()
+        cur.close()
+    def get_last_beverages_log(self):
+        cur = self.connection.cursor()
+        stmt = ''' 
+            SELECT id, date_start, date_end, status 
+            FROM machine_activity
+            ORDER BY id DESC 
+            LIMIT 1
+        '''
+        cur.execute(stmt)
+        res = cur.fetchone()
+        logging.info(f'WMFSQLDriver get_last_downtime: {res}')
+        cur.close()
+        return res
+    def update_beverages_log(self, id, date_end, status):
+        cur = self.connection.cursor()
+        stmt = ''' 
+            UPDATE machine_activity 
+            SET date_end = ?, status = ?
+            WHERE id = ?
+        '''
+        cur.execute(stmt, (date_end, status, id))
+        self.connection.commit()
+        cur.close()
+
 
 if __name__ == '__main__':
     db_conn = WMFSQLDriver(db_path='../wmf.db')

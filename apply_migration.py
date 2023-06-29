@@ -77,6 +77,7 @@ if not does_object_exist('table', 'beverages_log'):
             time_to_send        text
             is_send     text
             date_formed     text
+            recipes text
         )
     '''
     cur.execute(stmt)
@@ -87,6 +88,7 @@ add_table_column(table_name='beverages_log', column_name='summ', column_type='te
 add_table_column(table_name='beverages_log', column_name='time_to_send', column_type='text')
 add_table_column(table_name='beverages_log', column_name='is_send', column_type='text')
 add_table_column(table_name='beverages_log', column_name='date_formed', column_type='text')
+add_table_column(table_name='beverages_log', column_name='recipes', column_type='text')
 
 cur.close()
 conn.close()
