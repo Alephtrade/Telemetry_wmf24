@@ -1,7 +1,6 @@
-import creator
-#import sender
+from api.beverages import creator
+#from api.beverages import sender
 import sys
-sys.path.append("../../")
 from db.models import WMFSQLDriver
 from datetime import datetime, timedelta
 
