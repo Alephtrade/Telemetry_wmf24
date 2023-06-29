@@ -86,7 +86,7 @@ def get_next_date_formed_v2():
     response = requests.request("GET", url, headers=headers, data=payload)
     body_response = json.loads(response.text)
     next_time = datetime.now() + timedelta(hours=3)
-    if(body_response['interval_hour'] < 1):
+    if body_response['interval_hour'] < 1:
         body_response['interval_hour'] = 1
     a = int(next_time.timestamp() // (60 * 60)) * (60 * 60) + body_response['interval_hour'] * 60 * 60 + body_response['shedule_minutes'] * 60
     return datetime.fromtimestamp(a)
