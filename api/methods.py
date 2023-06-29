@@ -2,6 +2,7 @@ import requests
 import json
 import logging
 import websocket
+import ast
 from datetime import timedelta, datetime
 from db.models import WMFSQLDriver
 import telegram.strings as tg_strings
@@ -62,13 +63,14 @@ def getBeverageStatistics():
     received_data = received_data.replace(']', '', 1)
     received_data = received_data + ', {"device_code" : ' + str(part_number) + '}]'
     logging.info(f"beveragestatistics: Received {received_data}")
+    received = ast.literal_eval(received_data)
     summ = 0
     device_code = ""
     recipes = []
     date_to_send = get_next_date_formed_v2()
     print(date_to_send)
     date_formed = datetime.now() + timedelta(hours=3)
-    for item in received_data:
+    for item in received:
         print(item)
         for k, item2 in item.items():
             print(item2)
