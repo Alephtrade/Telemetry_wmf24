@@ -6,7 +6,7 @@ from core.utils import get_curr_time_str
 
 
 class WMFSQLDriver:
-    def __init__(self, db_path=settings.DB_PATH):
+    def __init__(self, db_path="~/wmf_1100_1500_5000_router" + settings.DB_PATH):
         self.connection = sqlite3.connect(db_path, check_same_thread=False)
 
     def close(self):
