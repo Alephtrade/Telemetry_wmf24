@@ -18,9 +18,11 @@ def are_need_to_create():
         get = creator.Take_Create_Beverage_Statistics()
         print(get)
 
-def get_reports_and_send_or_nothing():
-    return db_driver.get_not_sended_beverages_log()
+#def get_reports_and_send_or_nothing():
+receive_data = db_driver.get_not_sended_beverages_log()
+for item in receive_data:
+    print(item)
 
 #are_need_to_create()
-print(get_reports_and_send_or_nothing())
+#print(get_reports_and_send_or_nothing())
 #send = Send_Statistics()
