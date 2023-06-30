@@ -58,4 +58,4 @@ def Take_Create_Beverage_Statistics():
     #response = requests.request("POST", url, headers=headers, data=received_data)
     #logging.info(f"beveragestatistics: GET response: {response.text}")
     ws.close()
-    return True
+    return create_record
