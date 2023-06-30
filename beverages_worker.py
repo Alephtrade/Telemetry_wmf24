@@ -35,5 +35,5 @@ def get_reports_and_send_or_nothing():
             logging.info(f"beveragestatistics: GET request: {send}")
 
 #are_need_to_create()
-#print(get_reports_and_send_or_nothing())
+print(get_reports_and_send_or_nothing())
 #
