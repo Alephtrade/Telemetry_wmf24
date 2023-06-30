@@ -1,6 +1,5 @@
 from api.beverages import creator
 from api.beverages import sender
-import sys
 from db.models import WMFSQLDriver
 from datetime import datetime, timedelta
 from core.utils import initialize_logger
@@ -35,5 +34,5 @@ def get_reports_and_send_or_nothing():
             logging.info(f"beveragestatistics: GET request: {send}")
 
 #are_need_to_create()
-print(get_reports_and_send_or_nothing())
+get_reports_and_send_or_nothing()
 #
