@@ -1,5 +1,5 @@
 from api.beverages import creator
-#from api.beverages import sender
+from api.beverages import sender
 import sys
 from db.models import WMFSQLDriver
 from datetime import datetime, timedelta
@@ -18,15 +18,17 @@ def are_need_to_create():
         get = creator.Take_Create_Beverage_Statistics()
         print(get)
 
-#def get_reports_and_send_or_nothing():
-dict = []
-receive_data = db_driver.get_not_sended_beverages_log()
-if(receive_data is None):
-    print(receive_data)
-for item in receive_data:
-    dict.append(item)
-    print(item)
+def get_reports_and_send_or_nothing():
+    dict = []
+    receive_data = db_driver.get_not_sended_beverages_log()
+    if(receive_data == []):
+        return False
+    else:
+        for item in receive_data:
+            dict.append(item)
+            print(item)
+            send = sender.Send_Statistics(item)
 
 #are_need_to_create()
 #print(get_reports_and_send_or_nothing())
-#send = Send_Statistics()
+#

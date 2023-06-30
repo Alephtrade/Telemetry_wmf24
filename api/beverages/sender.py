@@ -1,10 +1,6 @@
-import json
 import logging
-import websocket
-import ast
-from datetime import datetime
+import requests
 from db.models import WMFSQLDriver
-from core.utils import initialize_logger, get_beverages_send_time
 from settings import prod as settings
 
 WMF_URL = settings.WMF_DATA_URL
@@ -12,5 +8,11 @@ WS_URL = settings.WS_URL
 DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
 db_conn = WMFSQLDriver()
 
-def Send_Statistics():
+def Send_Statistics(data):
+    url = "https://wmf24.ru/api/beveragestatistics"
+    headers = {
+        'Content-Type': 'application/json'
+    }
+    response = requests.request("POST", url, headers=headers, data=data)
+    logging.info(f"beveragestatistics: GET response: {response.text}")
     return True
