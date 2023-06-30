@@ -21,7 +21,8 @@ def are_need_to_create():
 #def get_reports_and_send_or_nothing():
 dict = []
 receive_data = db_driver.get_not_sended_beverages_log()
-print(receive_data)
+if(receive_data is None):
+    print(receive_data)
 for item in receive_data:
     dict.append(item)
     print(item)
