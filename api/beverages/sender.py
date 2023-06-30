@@ -1,5 +1,6 @@
 import logging
 import requests
+import json
 from db.models import WMFSQLDriver
 from settings import prod as settings
 from core.utils import initialize_logger
