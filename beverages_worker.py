@@ -3,6 +3,9 @@ from api.beverages import sender
 import sys
 from db.models import WMFSQLDriver
 from datetime import datetime, timedelta
+from core.utils import initialize_logger
+import logging
+
 
 db_driver = WMFSQLDriver()
 
@@ -28,6 +31,8 @@ def get_reports_and_send_or_nothing():
             dict.append(item)
             print(item)
             send = sender.Send_Statistics(item)
+            initialize_logger('Send_Statistics.txt')
+            logging.info(f"beveragestatistics: GET request: {send}")
 
 #are_need_to_create()
 #print(get_reports_and_send_or_nothing())
