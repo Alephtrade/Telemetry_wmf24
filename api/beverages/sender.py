@@ -16,6 +16,6 @@ def Send_Statistics(data):
     headers = {
         'Content-Type': 'application/json'
     }
-    response = requests.request("POST", url, headers=headers, data=data)
+    response = requests.request("POST", url, headers=headers, data=json.dumps(data))
     logging.info(f"beveragestatistics: GET response: {response.text}")
     return True
