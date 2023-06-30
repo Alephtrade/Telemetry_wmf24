@@ -27,9 +27,14 @@ def get_reports_and_send_or_nothing():
         return False
     else:
         for item in receive_data:
-            dict.append(item)
-            print(item)
-            print(sender.Send_Statistics(item))
+            dict.append(item[0])
+            dict.append(item[1])
+            dict.append(item[2])
+            dict.append(item[3])
+            dict.append(item[4])
+            dict.append(item[5])
+            print(dict)
+            print(sender.Send_Statistics(dict))
 
 #are_need_to_create()
 get_reports_and_send_or_nothing()
