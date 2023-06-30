@@ -17,6 +17,6 @@ def Send_Statistics(data):
     headers = {
         'Content-Type': 'application/json'
     }
-    response = requests.request("POST", url, headers=headers, data=json.dumps(data))
+    response = requests.request("POST", url, headers=headers, data=data)
     return response.text
     return True
