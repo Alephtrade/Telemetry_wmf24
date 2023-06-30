@@ -21,18 +21,19 @@ def are_need_to_create():
         print(get)
 
 def get_reports_and_send_or_nothing():
-    k = {}
+    k = []
     receive_data = db_driver.get_not_sended_beverages_log()
     if(receive_data == []):
         return False
     else:
         for item in receive_data:
-            k["device_code"] = item[0]
-            k["summ"] = item[1]
-            k["time_to_send"] = item[2]
-            k["is_send"] = item[3]
-            k["date_formed"] = item[4]
-            k["recipes"] = item[5]
+            k.append({"device_code": item[0]})
+            k.append({"summ": item[1]})
+            k.append({"time_to_send": item[2]})
+            k.append({"is_send": item[3]})
+            k.append({"date_formed": item[4]})
+            k.append({"recipes": item[5]})
+
             print(k)
             print(sender.Send_Statistics(k))
 
