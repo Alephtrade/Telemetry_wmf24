@@ -2,6 +2,7 @@ import logging
 import requests
 from db.models import WMFSQLDriver
 from settings import prod as settings
+from core.utils import initialize_logger,
 
 WMF_URL = settings.WMF_DATA_URL
 WS_URL = settings.WS_URL
