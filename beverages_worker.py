@@ -29,9 +29,7 @@ def get_reports_and_send_or_nothing():
         for item in receive_data:
             dict.append(item)
             print(item)
-            send = sender.Send_Statistics(item)
-            initialize_logger('Send_Statistics.txt')
-            logging.info(f"beveragestatistics: GET request: {send}")
+            print(sender.Send_Statistics(item))
 
 #are_need_to_create()
 get_reports_and_send_or_nothing()
