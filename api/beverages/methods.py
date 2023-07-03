@@ -5,9 +5,9 @@ import ast
 from datetime import datetime, timedelta
 import sys
 sys.path.append("../../")
-from db.models import WMFSQLDriver
-from core.utils import initialize_logger, get_beverages_send_time
-from settings import prod as settings
+from ... db.models import WMFSQLDriver
+from ... core.utils import initialize_logger, get_beverages_send_time
+from ... settings import prod as settings
 
 WMF_URL = settings.WMF_DATA_URL
 WS_URL = settings.WS_URL
@@ -47,3 +47,14 @@ def Take_Create_Beverage_Statistics():
     create_record = db_conn.create_beverages_log(device_code, summ, date_to_send, 0, date_formed, json.dumps(recipes))
     ws.close()
     return create_record
+
+def Send_Statistics(data):
+    initialize_logger('Send_Statistics.txt')
+    logging.info(f"beveragestatistics: GET request: {data}")
+    url = "https://wmf24.ru/api/beveragestatistics"
+    headers = {
+        'Content-Type': 'application/json'
+    }
+    response = requests.request("POST", url, headers=headers, data=data)
+    return response.text
+    return True

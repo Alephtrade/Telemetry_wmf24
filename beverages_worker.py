@@ -1,5 +1,4 @@
-from api.beverages import creator
-from api.beverages import sender
+from api.beverages import methods
 from db.models import WMFSQLDriver
 from datetime import datetime, timedelta
 from core.utils import initialize_logger
@@ -14,10 +13,10 @@ def are_need_to_create():
         date_formed = last_send[4]
         prev_time_formed = datetime.strptime(date_formed, "%Y-%m-%d %H:%M:%S")
         if datetime.fromtimestamp(int((datetime.now() + timedelta(hours=1)).timestamp())) >= prev_time_formed:
-            get = creator.Take_Create_Beverage_Statistics()
+            get = methods.Take_Create_Beverage_Statistics()
             print(get)
     else:
-        get = creator.Take_Create_Beverage_Statistics()
+        get = methods.Take_Create_Beverage_Statistics()
         print(get)
 
 def get_reports_and_send_or_nothing():
@@ -35,7 +34,7 @@ def get_reports_and_send_or_nothing():
             k.append({"recipes": item[5]})
 
             print(k)
-            print(sender.Send_Statistics(k))
+            print(methods.Send_Statistics(k))
 
 #are_need_to_create()
 get_reports_and_send_or_nothing()
