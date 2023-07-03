@@ -1,5 +1,6 @@
 import json
 import logging
+import requests
 import websocket
 import ast
 from datetime import datetime, timedelta
