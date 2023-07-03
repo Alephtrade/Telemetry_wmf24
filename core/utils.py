@@ -88,5 +88,7 @@ def get_beverages_send_time():
     next_time = datetime.now() + timedelta(hours=3)
     if body_response['interval_beverages'] < 1:
         body_response['interval_beverages'] = 1
-    a = int(next_time.timestamp()) + body_response['interval_beverages'] * 60 * 60
+    if body_response['interval_beverages_min'] is None:
+        body_response['interval_beverages_min'] = 0
+    a = int(next_time.timestamp() // (60 * 60) * 60 * 60) + body_response['interval_beverages'] * 60 * 60 + body_response['interval_beverages_min'] * 60
     return datetime.fromtimestamp(a)
