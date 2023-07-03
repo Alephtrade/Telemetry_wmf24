@@ -8,7 +8,7 @@ def are_need_to_create():
     last_send = db_driver.get_last_beverages_log()
     if last_send is not None:
         print(last_send)
-        date_formed = last_send[4]
+        date_formed = last_send[2]
         prev_time_formed = datetime.strptime(date_formed, "%Y-%m-%d %H:%M:%S")
         print(datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp())))
         print(prev_time_formed)
