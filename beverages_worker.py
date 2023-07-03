@@ -11,10 +11,10 @@ def are_need_to_create():
         prev_time_formed = datetime.strptime(date_formed, "%Y-%m-%d %H:%M:%S")
         if datetime.fromtimestamp(int((datetime.now() + timedelta(hours=1)).timestamp())) >= prev_time_formed:
             #get = methods.Take_Create_Beverage_Statistics()
-            #print(get)
+            print(1)
     else:
         #get = methods.Take_Create_Beverage_Statistics()
-        #print(get)
+        print(2)
 
 def get_reports_and_send_or_nothing():
     k = []
