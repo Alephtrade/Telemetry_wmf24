@@ -2,7 +2,6 @@ from api.beverages import methods
 from db.models import WMFSQLDriver
 from datetime import datetime, timedelta
 
-
 db_driver = WMFSQLDriver()
 
 def are_need_to_create():
@@ -34,5 +33,5 @@ def get_reports_and_send_or_nothing():
             print(k)
             print(methods.Send_Statistics(k))
 
-are_need_to_create()
-#get_reports_and_send_or_nothing()
+print(are_need_to_create())
+print(get_reports_and_send_or_nothing())
