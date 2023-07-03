@@ -9,9 +9,9 @@ def are_need_to_create():
     if last_send is not None:
         date_formed = last_send[4]
         prev_time_formed = datetime.strptime(date_formed, "%Y-%m-%d %H:%M:%S")
-        print(datetime.fromtimestamp(int((datetime.now() + timedelta(hours=1)).timestamp())))
+        print(datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp())))
         print(prev_time_formed)
-        if datetime.fromtimestamp(int((datetime.now() + timedelta(hours=1)).timestamp())) >= prev_time_formed:
+        if datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp())) >= prev_time_formed:
             get = methods.Take_Create_Beverage_Statistics()
             print(get)
     else:
