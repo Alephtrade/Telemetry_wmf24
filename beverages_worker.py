@@ -1,8 +1,6 @@
 from api.beverages import methods
 from db.models import WMFSQLDriver
 from datetime import datetime, timedelta
-from core.utils import initialize_logger
-import logging
 
 
 db_driver = WMFSQLDriver()
