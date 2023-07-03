@@ -34,6 +34,5 @@ def get_reports_and_send_or_nothing():
             print(k)
             print(methods.Send_Statistics(k))
 
-#are_need_to_create()
-get_reports_and_send_or_nothing()
-#
+are_need_to_create()
+#get_reports_and_send_or_nothing()
