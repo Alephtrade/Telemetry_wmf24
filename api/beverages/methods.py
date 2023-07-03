@@ -48,7 +48,6 @@ def Take_Create_Beverage_Statistics():
     ws.close()
     return create_record
 
-Take_Create_Beverage_Statistics()
 def Send_Statistics(data):
     initialize_logger('Send_Statistics.txt')
     logging.info(f"beveragestatistics: GET request: {data}")

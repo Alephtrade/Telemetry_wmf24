@@ -11,7 +11,7 @@ def are_need_to_create():
         print("LAST SEND IS NONE")
     else:
         print("LAST SEND")
-        print(last_send)
+        print(last_send[2])
         date_formed = last_send[2]
         prev_time_formed = datetime.strptime(date_formed, "%Y-%m-%d %H:%M:%S")
         print("Текущее время")
