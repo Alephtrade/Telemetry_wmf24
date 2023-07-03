@@ -49,13 +49,13 @@ def Take_Create_Beverage_Statistics():
     ws.close()
     return create_record
 
-def Send_Statistics(data):
+def Send_Statistics(data_info):
     initialize_logger('Send_Statistics.txt')
-    logging.info(f"beveragestatistics: GET request: {data}")
+    logging.info(f"beveragestatistics: GET request: {data_info}")
     url = "https://wmf24.ru/api/beveragestatistics"
     headers = {
         'Content-Type': 'application/json'
     }
-    response = requests.request("POST", url, headers=headers, data=data)
+    response = requests.request("POST", url, headers=headers, data=data_info)
     return response.text
     return True
