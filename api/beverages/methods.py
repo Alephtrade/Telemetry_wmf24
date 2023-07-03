@@ -5,6 +5,7 @@ import ast
 from datetime import datetime, timedelta
 import sys
 import requests
+
 sys.path.append("../../")
 from db.models import WMFSQLDriver
 from core.utils import initialize_logger, get_beverages_send_time
@@ -14,6 +15,7 @@ WMF_URL = settings.WMF_DATA_URL
 WS_URL = settings.WS_URL
 DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
 db_conn = WMFSQLDriver()
+
 
 def Take_Create_Beverage_Statistics():
     ws = websocket.create_connection(WS_URL)
@@ -36,9 +38,9 @@ def Take_Create_Beverage_Statistics():
     print(date_to_send)
     date_formed = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp()))
     for item in received:
-        #print(item)
+        # print(item)
         for k, item2 in item.items():
-            #print(item2)
+            # print(item2)
             if (k.startswith("device_code")):
                 device_code = item2
             if (k.startswith("TotalCountRcp")):
@@ -48,6 +50,7 @@ def Take_Create_Beverage_Statistics():
     create_record = db_conn.create_beverages_log(device_code, summ, date_to_send, 0, date_formed, json.dumps(recipes))
     ws.close()
     return create_record
+
 
 def Send_Statistics(data_info):
     initialize_logger('Send_Statistics.txt')
