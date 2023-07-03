@@ -32,12 +32,12 @@ def Take_Create_Beverage_Statistics():
     device_code = ""
     recipes = []
     date_to_send = get_beverages_send_time()
-    print(date_to_send)
+    #print(date_to_send)
     date_formed = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp()))
     for item in received:
-        print(item)
+        #print(item)
         for k, item2 in item.items():
-            print(item2)
+            #print(item2)
             if (k.startswith("device_code")):
                 device_code = item2
             if (k.startswith("TotalCountRcp")):
@@ -47,6 +47,7 @@ def Take_Create_Beverage_Statistics():
     create_record = db_conn.create_beverages_log(device_code, summ, date_to_send, 0, date_formed, json.dumps(recipes))
     ws.close()
     return create_record
+
 Take_Create_Beverage_Statistics()
 def Send_Statistics(data):
     initialize_logger('Send_Statistics.txt')
