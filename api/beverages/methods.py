@@ -5,9 +5,9 @@ import ast
 from datetime import datetime, timedelta
 import sys
 sys.path.append("../../")
-from ... db.models import WMFSQLDriver
-from ... core.utils import initialize_logger, get_beverages_send_time
-from ... settings import prod as settings
+from db.models import WMFSQLDriver
+from core.utils import initialize_logger, get_beverages_send_time
+from settings import prod as settings
 
 WMF_URL = settings.WMF_DATA_URL
 WS_URL = settings.WS_URL
