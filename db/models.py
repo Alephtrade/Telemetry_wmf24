@@ -267,7 +267,7 @@ class WMFSQLDriver:
         stmt = ''' 
             SELECT device_code, summ, time_to_send, time_fact_send, date_formed, recipes, id
             FROM beverages_log
-            WHERE time_fact_send = NULL
+            WHERE time_fact_send is NULL
         '''
         cur.execute(stmt)
         res = cur.fetchall()
