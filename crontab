@@ -8,6 +8,8 @@
 * * * * * sh /root/wmf_1100_1500_5000_router/run_send_ip_address.sh
 * * * * * sh /root/wmf_1100_1500_5000_router/run_api_test.sh
 * * * * * sh /root/wmf_1100_1500_5000_router/run_api_data_statistics.sh
-* * * * * sh /root/wmf_1100_1500_5000_router/run_beverage_worker.sh
+0 0 * * * * sh /root/wmf_1100_1500_5000_router/run_beverage_create_worker.sh
+* * * * * sh /root/wmf_1100_1500_5000_router/run_beverage_send_worker.sh
+
 
 

@@ -47,6 +47,4 @@ def get_reports_and_send_or_nothing():
             print(json.dumps(k))
             print(methods.Send_Statistics(json.dumps(k)))
 
-
-print(are_need_to_create())
 print(get_reports_and_send_or_nothing())
