@@ -21,7 +21,7 @@ def get_reports_and_send_or_nothing():
             record_id = item[6]
             for item_info in data_info:
                 k.append(item_info)
-            print(json.dumps(k))
+            print(record_id)
             print(methods.Send_Statistics(json.dumps(k), record_id))
 
 print(get_reports_and_send_or_nothing())
