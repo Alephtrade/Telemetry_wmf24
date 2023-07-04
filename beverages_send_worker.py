@@ -18,9 +18,10 @@ def get_reports_and_send_or_nothing():
             k.append({"is_send": item[3]})
             k.append({"date_formed": item[4]})
             data_info = ast.literal_eval((item[5]))
+            record_id = item[6]
             for item_info in data_info:
                 k.append(item_info)
             print(json.dumps(k))
-            print(methods.Send_Statistics(json.dumps(k), item[6]))
+            print(methods.Send_Statistics(json.dumps(k), record_id))
 
 print(get_reports_and_send_or_nothing())
