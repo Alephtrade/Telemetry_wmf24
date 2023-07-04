@@ -241,7 +241,7 @@ class WMFSQLDriver:
         stmt = '''
         INSERT INTO beverages_log 
         (device_code, summ, time_to_send, date_formed, recipes) 
-        VALUES (?, ?, ?, ?, ?, ?)
+        VALUES (?, ?, ?, ?, ?)
         '''
         cur.execute(stmt, (device_code, summ, time_to_send, date_formed, recipes))
         self.connection.commit()
