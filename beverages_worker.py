@@ -31,12 +31,12 @@ def get_reports_and_send_or_nothing():
         return False
     else:
         for item in receive_data:
-            k.append({"device_code": item[0]})
+            k.append({"\"device_code\"": item[0]})
             k.append({"summ": item[1]})
             k.append({"time_to_send": item[2]})
             k.append({"is_send": item[3]})
             k.append({"date_formed": item[4]})
-            k.append({"recipes": item[5]})
+            k.append(item[5])
 
             print(k)
             print(methods.Send_Statistics(k))
