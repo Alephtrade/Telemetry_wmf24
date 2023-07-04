@@ -4,7 +4,6 @@ from datetime import datetime, timedelta
 
 db_driver = WMFSQLDriver()
 
-
 def are_need_to_create():
     last_send = db_driver.get_last_beverages_log()
     if last_send is None:
