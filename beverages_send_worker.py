@@ -9,7 +9,7 @@ def get_reports_and_send_or_nothing():
     k = []
     receive_data = db_driver.get_not_sended_beverages_log()
     if(receive_data == []):
-        return False
+        return print("NO DATA")
     else:
         for item in receive_data:
             k.append({"device_code": item[0]})
