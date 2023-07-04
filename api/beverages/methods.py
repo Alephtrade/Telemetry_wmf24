@@ -60,6 +60,7 @@ def Send_Statistics(data_info):
         'Content-Type': 'application/json'
     }
     response = requests.request("POST", url, headers=headers, data=data_info)
-    if(response.text):
-        print("Установлено")
+    json_res = response.json()
+    if(json_res["id"]):
+        return print("Установлено")
     return response.json()
