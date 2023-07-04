@@ -1,6 +1,8 @@
 from api.beverages import methods
 from db.models import WMFSQLDriver
 from datetime import datetime, timedelta
+import json
+
 
 db_driver = WMFSQLDriver()
 
@@ -42,9 +44,8 @@ def get_reports_and_send_or_nothing():
             k.append({is_send: item[3]})
             k.append({date_formed: item[4]})
             k.append(item[5])
-
-            print(k)
-            print(methods.Send_Statistics(k))
+            print(json.dumps(k))
+            print(methods.Send_Statistics(json.dumps(k)))
 
 
 print(are_need_to_create())
