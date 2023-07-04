@@ -262,7 +262,7 @@ class WMFSQLDriver:
     def get_not_sended_beverages_log(self):
         cur = self.connection.cursor()
         stmt = ''' 
-            SELECT device_code, summ, time_to_send, is_send, date_formed, recipes
+            SELECT device_code, summ, time_to_send, is_send, date_formed, recipes, id
             FROM beverages_log
             WHERE is_send = 0
         '''
@@ -271,14 +271,14 @@ class WMFSQLDriver:
         logging.info(f'WMFSQLDriver get_last_beverages_log: {res}')
         cur.close()
         return res
-    def update_beverages_log(self, id, time_to_send, is_send):
+    def update_beverages_log(self, id, is_send):
         cur = self.connection.cursor()
         stmt = ''' 
             UPDATE beverages_log 
-            SET time_to_send = ?, is_send = ?
+            SET is_send = ?
             WHERE id = ?
         '''
-        cur.execute(stmt, (id, time_to_send, is_send))
+        cur.execute(stmt, (id, is_send))
         self.connection.commit()
         cur.close()
 

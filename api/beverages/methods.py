@@ -52,8 +52,8 @@ def Take_Create_Beverage_Statistics():
     return create_record
 
 
-def Send_Statistics(data_info):
-    initialize_logger('Send_Statistics.txt')
+def Send_Statistics(data_info, id_record):
+    initialize_logger('send_statistics.txt')
     logging.info(f"beveragestatistics: GET request: {data_info}")
     url = "https://wmf24.ru/api/beveragestatistics"
     headers = {
@@ -62,5 +62,6 @@ def Send_Statistics(data_info):
     response = requests.request("POST", url, headers=headers, data=data_info)
     json_res = response.json()
     if(json_res["id"]):
+        update_record = db_conn.update_beverages_log(id_record, 1)
         return print("Установлено")
     return response.json()
