@@ -39,6 +39,7 @@ def get_reports_and_send_or_nothing():
             k.append({"is_send": item[3]})
             k.append({"date_formed": item[4]})
             k.append(item[5])
+            print(json.dumps(item[5]))
             print(json.dumps(k))
             print(methods.Send_Statistics(json.dumps(k)))
 
