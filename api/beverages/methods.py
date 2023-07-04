@@ -63,5 +63,5 @@ def Send_Statistics(data_info, id_record):
     json_res = response.json()
     if(json_res["id"]):
         update_record = db_conn.update_beverages_log(id_record, 1)
-        return print("Установлено")
+        return print(update_record)
     return response.json()
