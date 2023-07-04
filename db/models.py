@@ -236,22 +236,23 @@ class WMFSQLDriver:
         self.connection.commit()
         cur.close()
 
-    def create_beverages_log(self, device_code, summ, time_to_send, is_send, date_formed, recipes):
+    def create_beverages_log(self, device_code, summ, time_to_send, date_formed, recipes):
         cur = self.connection.cursor()
         stmt = '''
         INSERT INTO beverages_log 
-        (device_code, summ, time_to_send, is_send, date_formed, recipes) 
+        (device_code, summ, time_to_send, date_formed, recipes) 
         VALUES (?, ?, ?, ?, ?, ?)
         '''
-        cur.execute(stmt, (device_code, summ, time_to_send, is_send, date_formed, recipes))
+        cur.execute(stmt, (device_code, summ, time_to_send, date_formed, recipes))
         self.connection.commit()
         cur.close()
 
     def get_last_beverages_log(self):
         cur = self.connection.cursor()
         stmt = ''' 
-            SELECT device_code, summ, time_to_send, is_send, date_formed, recipes
+            SELECT device_code, summ, time_to_send, time_fact_send, date_formed, recipes
             FROM beverages_log
+            WHERE time_fact_send NOT NULL
             ORDER BY id DESC 
             LIMIT 1
         '''
@@ -264,9 +265,9 @@ class WMFSQLDriver:
     def get_not_sended_beverages_log(self):
         cur = self.connection.cursor()
         stmt = ''' 
-            SELECT device_code, summ, time_to_send, is_send, date_formed, recipes, id
+            SELECT device_code, summ, time_to_send, time_fact_send, date_formed, recipes, id
             FROM beverages_log
-            WHERE is_send = 0
+            WHERE time_fact_send = NULL
         '''
         cur.execute(stmt)
         res = cur.fetchall()
@@ -274,14 +275,14 @@ class WMFSQLDriver:
         cur.close()
         return res
 
-    def update_beverages_log(self, rec_id):
+    def update_beverages_log(self, rec_id, time_fact_send):
         cur = self.connection.cursor()
         stmt = ''' 
             UPDATE beverages_log 
-            SET is_send = 1
+            SET time_fact_send = ?
             WHERE id = ?
         '''
-        cur.execute(stmt, (rec_id,))
+        cur.execute(stmt, (time_fact_send, rec_id))
         self.connection.commit()
         cur.close()
 

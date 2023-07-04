@@ -75,7 +75,7 @@ if not does_object_exist('table', 'beverages_log'):
             device_code text,
             summ   text,
             time_to_send        text
-            is_send     text
+            time_fact_send     text
             date_formed     text
             recipes text
         )
@@ -86,7 +86,7 @@ if not does_object_exist('table', 'beverages_log'):
 add_table_column(table_name='beverages_log', column_name='device_code', column_type='text')
 add_table_column(table_name='beverages_log', column_name='summ', column_type='text')
 add_table_column(table_name='beverages_log', column_name='time_to_send', column_type='text')
-add_table_column(table_name='beverages_log', column_name='is_send', column_type='text')
+add_table_column(table_name='beverages_log', column_name='time_fact_send', column_type='text')
 add_table_column(table_name='beverages_log', column_name='date_formed', column_type='text')
 add_table_column(table_name='beverages_log', column_name='recipes', column_type='text')
 

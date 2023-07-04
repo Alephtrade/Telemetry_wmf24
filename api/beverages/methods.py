@@ -17,7 +17,7 @@ DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
 db_conn = WMFSQLDriver()
 
 
-def Take_Create_Beverage_Statistics():
+def Take_Create_Beverage_Statistics(last_send):
     ws = websocket.create_connection(WS_URL)
     request = json.dumps({'function': 'getBeverageStatistics'})
     ws.send(request)
@@ -34,7 +34,7 @@ def Take_Create_Beverage_Statistics():
     summ = 0
     device_code = ""
     recipes = []
-    date_to_send = get_beverages_send_time()
+    date_to_send = get_beverages_send_time(last_send)
     print(date_to_send)
     date_formed = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp()))
     for item in received:
@@ -47,7 +47,7 @@ def Take_Create_Beverage_Statistics():
                 summ += item2
                 recipes.append(item)
 
-    create_record = db_conn.create_beverages_log(device_code, summ, date_to_send, 0, date_formed, json.dumps(recipes))
+    create_record = db_conn.create_beverages_log(device_code, summ, date_to_send, date_formed, json.dumps(recipes))
     ws.close()
     return create_record
 
@@ -61,8 +61,8 @@ def Send_Statistics(data_info, id_record):
     }
     response = requests.request("POST", url, headers=headers, data=data_info)
     json_res = response.json()
+    now = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp()))
     if(json_res["id"]):
-        update_record = db_conn.update_beverages_log(id_record)
+        update_record = db_conn.update_beverages_log(id_record, now)
         return print("Обновление")
-        return print(update_record)
     return response.json()

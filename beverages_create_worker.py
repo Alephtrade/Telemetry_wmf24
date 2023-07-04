@@ -7,13 +7,11 @@ db_driver = WMFSQLDriver()
 def are_need_to_create():
     last_send = db_driver.get_last_beverages_log()
     if last_send is None:
-        get = methods.Take_Create_Beverage_Statistics()
+        now = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp()))
+        get = methods.Take_Create_Beverage_Statistics(now)
     else:
-        date_formed = last_send[2]
-        prev_time_formed = datetime.strptime(date_formed, "%Y-%m-%d %H:%M:%S")
-        if datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp())) >= prev_time_formed:
-            get = methods.Take_Create_Beverage_Statistics()
-            print(get)
+        get = methods.Take_Create_Beverage_Statistics(last_send[3])
+        print(get)
 
 
 print(are_need_to_create())

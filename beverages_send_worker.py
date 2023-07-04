@@ -15,7 +15,7 @@ def get_reports_and_send_or_nothing():
             k.append({"device_code": item[0]})
             k.append({"summ": item[1]})
             k.append({"time_to_send": item[2]})
-            k.append({"is_send": item[3]})
+            k.append({"time_fact_send": item[3]})
             k.append({"date_formed": item[4]})
             data_info = ast.literal_eval((item[5]))
             record_id = item[6]
