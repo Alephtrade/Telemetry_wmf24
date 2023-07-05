@@ -161,8 +161,9 @@ class WMFSQLDriver:
             WHERE date_formed = ?
         '''
         cur.execute(stmt, (time_delta,))
-        self.connection.commit()
+        res = cur.fetchall()
         cur.close()
+        return res
 
     def create_clean_or_rins(self, date_formed):
         cur = self.connection.cursor()
