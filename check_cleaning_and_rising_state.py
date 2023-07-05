@@ -13,7 +13,6 @@ def controller_manager(operator, last_column, duration_column, next_column):
     record = db_conn.is_record_clean_or_rins(now_of_hour)
     if record is None:
         db_conn.create_clean_or_rins(now_of_hour)
-    return record
     logging.info(f'PartNumber: {wm_conn.part_number}, curr_cleaning_duration: {operator}')
     if operator['durationInSeconds'] is not None and int(operator['durationInSeconds']) != -1:
         prev_cleaning_duration = db_conn.get_last_clean_or_rins(duration_column)[0]
