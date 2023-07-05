@@ -161,7 +161,7 @@ class WMFSQLDriver:
             WHERE date_formed = ?
         '''
         cur.execute(stmt, (time_delta,))
-        res = cur.fetchall()
+        res = cur.fetchone()
         cur.close()
         return res
 
