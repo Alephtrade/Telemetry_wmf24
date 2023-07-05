@@ -345,42 +345,42 @@ class WMFMachineStatConnector:
 
     def get_milk_cleaning_state(self):
         if self.ws:
-            data = self.send_wmf_request('getMilkCleaningState')['durationInSeconds']
+            data = self.send_wmf_request('getMilkCleaningState')
             return data
         else:
             return None
 
     def get_foamer_rinsing_state(self):
         if self.ws:
-            data = self.send_wmf_request('getFoamerRinsingState')['durationInSeconds']
+            data = self.send_wmf_request('getFoamerRinsingState')
             return data
         else:
             return None
 
     def get_milk_replacement_state(self):
         if self.ws:
-            data = self.send_wmf_request('getMilkReplacementState')['durationInSeconds']
+            data = self.send_wmf_request('getMilkReplacementState')
             return data
         else:
             return None
 
     def get_mixer_rinsing_state(self):
         if self.ws:
-            data = self.send_wmf_request('getMixerRinsingState')['durationInSeconds']
+            data = self.send_wmf_request('getMixerRinsingState')
             return data
         else:
             return None
 
     def get_milk_mixer_warm_rinsing_state(self):
         if self.ws:
-            data = self.send_wmf_request('getMilkMixerWarmRinsingState')['durationInSeconds']
+            data = self.send_wmf_request('getMilkMixerWarmRinsingState')
             return data
         else:
             return None
 
     def get_ffc_filter_replacement_state(self):
         if self.ws:
-            data = self.send_wmf_request('getFfcFilterReplacementState')['durationInSeconds']
+            data = self.send_wmf_request('getFfcFilterReplacementState')
             return data
         else:
             return None
