@@ -338,7 +338,7 @@ class WMFMachineStatConnector:
 
     def get_system_cleaning_state(self):
         if self.ws:
-            data = self.send_wmf_request('getSystemCleaningState')['durationInSeconds']
+            data = self.send_wmf_request('getSystemCleaningState')
             return data
         else:
             return None
