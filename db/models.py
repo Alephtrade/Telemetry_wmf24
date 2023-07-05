@@ -146,10 +146,10 @@ class WMFSQLDriver:
         stmt = f''' 
             UPDATE data_statistics 
             SET {operator} = ?
-            WHERE date_formed = {time_now}
+            WHERE date_formed = ?
         '''
         logging.info(f'WMFSQLDriver save_last_record: key = {operator}, value = {value}')
-        cur.execute(stmt, (operator,))
+        cur.execute(stmt, (operator, time_now))
         self.connection.commit()
         cur.close()
 
