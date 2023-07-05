@@ -15,6 +15,8 @@ db_conn = WMFSQLDriver()
 initialize_logger('test.log')
 
 def report_v2():
+    data = WMFMachineStatConnector.send_wmf_request('getBeverageStatistics')
+    return data
     global error_text_max_len
     time_worked = timedelta(minutes=settings.TELEGRAM_REPORT_INTERVAL_MINUTES)
     date_formed = get_curr_time()

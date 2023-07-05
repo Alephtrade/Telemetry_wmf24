@@ -46,24 +46,26 @@ if not does_object_exist('table', 'tg_reports'):
     cur.execute(stmt)
     conn.commit()
 
-if not does_object_exist('table', 'machine_activity'):
+if not does_object_exist('table', 'data_statistics'):
     stmt = '''
-        create table machine_activity
+        create table data_statistics
         (
             id          integer
-                constraint machine_activity_pk
+                constraint data_statistics_pk
                     primary key,
-            date_start text,
-            date_end   text,
-            status        text
+            time_worked text,
+            error_count text,
+            error_time text,
+            date_formed text
         )
     '''
     cur.execute(stmt)
     conn.commit()
 
-add_table_column(table_name='machine_activity', column_name='date_start', column_type='text')
-add_table_column(table_name='machine_activity', column_name='date_end', column_type='text')
-add_table_column(table_name='machine_activity', column_name='status', column_type='text')
+add_table_column(table_name='data_statistics', column_name='time_worked', column_type='text')
+add_table_column(table_name='data_statistics', column_name='error_count', column_type='text')
+add_table_column(table_name='data_statistics', column_name='error_time', column_type='text')
+add_table_column(table_name='data_statistics', column_name='date_formed', column_type='text')
 
 if not does_object_exist('table', 'beverages_log'):
     stmt = '''
