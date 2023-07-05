@@ -152,6 +152,8 @@ class WMFSQLDriver:
         cur.execute(stmt, (operator, time_now))
         self.connection.commit()
         cur.close()
+        return cur.execute(stmt, (operator, time_now))
+
 
     def is_record_clean_or_rins(self, time_delta):
         cur = self.connection.cursor()
