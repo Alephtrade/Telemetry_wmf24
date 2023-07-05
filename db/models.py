@@ -155,7 +155,7 @@ class WMFSQLDriver:
 
     def is_record_clean_or_rins(self, time_delta):
         cur = self.connection.cursor()
-        stmt = ''' 
+        stmt = f''' 
             SELECT id
             FROM data_statistics
             WHERE date_formed = {time_delta}
