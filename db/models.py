@@ -153,14 +153,14 @@ class WMFSQLDriver:
         self.connection.commit()
         cur.close()
 
-    def is_record_clean_or_rins(self, time):
+    def is_record_clean_or_rins(self, time_delta):
         cur = self.connection.cursor()
         stmt = ''' 
             SELECT id
             FROM data_statistics
-            WHERE date_formed = {time}
+            WHERE date_formed = {time_delta}
         '''
-        cur.execute(stmt, (time,))
+        cur.execute(stmt, (time_delta,))
         self.connection.commit()
         cur.close()
 
