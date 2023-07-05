@@ -158,7 +158,7 @@ class WMFSQLDriver:
         stmt = f''' 
             SELECT id
             FROM data_statistics
-            WHERE date_formed = {time_delta}
+            WHERE date_formed = ?
         '''
         cur.execute(stmt, (time_delta,))
         self.connection.commit()
