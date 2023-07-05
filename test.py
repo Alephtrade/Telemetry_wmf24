@@ -26,7 +26,15 @@ def report_v2():
         return False
     logging.info(f'Successfully connected to machine, part number is {wm_conn.part_number}')
     data = wm_conn.get_system_cleaning_state()
-    return data
+    data2 = wm_conn.get_milk_cleaning_state()
+    data3 = wm_conn.get_foamer_rinsing_state()
+    data4 = wm_conn.get_milk_replacement_state()
+    data5 = wm_conn.get_mixer_rinsing_state()
+    data6 = wm_conn.get_milk_mixer_warm_rinsing_state()
+    data7 = wm_conn.get_ffc_filter_replacement_state()
+
+
+    return {data, data2, data3, data4, data5, data6, data7}
     data = wm_conn.get_wmf_machine_info()
     stoppage_time, wmf_error_time = timedelta(), timedelta()
     stoppage_count, wmf_error_count = 0, 0
