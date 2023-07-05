@@ -25,7 +25,7 @@ def report_v2():
     if not wm_conn.ws:
         return False
     logging.info(f'Successfully connected to machine, part number is {wm_conn.part_number}')
-    data = wm_conn.get_cleaning_state()
+    data = wm_conn.get_system_cleaning_state()
     return data
     data = wm_conn.get_wmf_machine_info()
     stoppage_time, wmf_error_time = timedelta(), timedelta()
