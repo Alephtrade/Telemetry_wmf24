@@ -129,11 +129,11 @@ class WMFSQLDriver:
     def get_last_clean_or_rins(self, column_namee):
         cur = self.connection.cursor()
         stmt = f''' 
-            SELECT ?
+            SELECT {column_namee}
             FROM data_statistics 
-            WHERE ? NOT NULL
+            WHERE {column_namee} NOT NULL
         '''
-        cur.execute(stmt, column_namee, column_namee)
+        cur.execute(stmt)
         res = cur.fetchone()
         cur.close()
         logging.info(f'WMFSQLDriver get_last_record: {res}')
