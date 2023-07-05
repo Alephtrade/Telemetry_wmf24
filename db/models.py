@@ -151,8 +151,8 @@ class WMFSQLDriver:
         logging.info(f'WMFSQLDriver save_last_record: key = {operator}, value = {value}')
         cur.execute(stmt, (operator, time_now))
         self.connection.commit()
-        cur.close()
         return cur.execute(stmt, (operator, time_now))
+        cur.close()
 
 
     def is_record_clean_or_rins(self, time_delta):
