@@ -15,8 +15,7 @@ db_conn = WMFSQLDriver()
 initialize_logger('test.log')
 
 def report_v2():
-    data = WMFMachineStatConnector.get_cleaning_state()
-    return data
+
     global error_text_max_len
     time_worked = timedelta(minutes=settings.TELEGRAM_REPORT_INTERVAL_MINUTES)
     date_formed = get_curr_time()
@@ -26,6 +25,8 @@ def report_v2():
     if not wm_conn.ws:
         return False
     logging.info(f'Successfully connected to machine, part number is {wm_conn.part_number}')
+    data = wm_conn.get_cleaning_state()
+    return data
     data = wm_conn.get_wmf_machine_info()
     stoppage_time, wmf_error_time = timedelta(), timedelta()
     stoppage_count, wmf_error_count = 0, 0
