@@ -30,8 +30,8 @@ def controller_manager(operator, last_column, duration_column, next_column):
             db_conn.save_clean_or_rins(next_column, next_datetime)
 
 
-controller_manager(wm_conn.get_system_cleaning_state(), "last_general_cleaning_datetime", "general_cleaning_duration", "next_general_cleaning_datetime")
-controller_manager(wm_conn.get_milk_cleaning_state(), "last_milk_cleaning_datetime", "general_milk_cleaning_duration", "next_milk_cleaning_datetime")
+print(controller_manager(wm_conn.get_system_cleaning_state(), "last_general_cleaning_datetime", "general_cleaning_duration", "next_general_cleaning_datetime"))
+print(controller_manager(wm_conn.get_milk_cleaning_state(), "last_milk_cleaning_datetime", "general_milk_cleaning_duration", "next_milk_cleaning_datetime"))
 controller_manager(wm_conn.get_foamer_rinsing_state(), "last_foamer_rising_datetime", "general_foamer_rising_duration", "next_foamer_rising_datetime")
 controller_manager(wm_conn.get_milk_replacement_state(), "last_milk_replacement_datetime", "general_milk_replacement_duration", "next_milk_replacement_datetime")
 controller_manager(wm_conn.get_mixer_rinsing_state(), "last_mixer_rinsing_datetime", "general_mixer_rinsing_duration", "next_mixer_rinsing_datetime")
