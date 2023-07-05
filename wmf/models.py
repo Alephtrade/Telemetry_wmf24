@@ -343,6 +343,13 @@ class WMFMachineStatConnector:
         else:
             return None
 
+    def get_foamer_rinsing_state(self):
+        if self.ws:
+            data = self.send_wmf_request('getFoamerRinsingState')
+            return data
+        else:
+            return None
+
     def get_cleaning_state(self):
         if self.ws:
             data = self.send_wmf_request('getSystemCleaningState')

@@ -56,6 +56,10 @@ if not does_object_exist('table', 'data_statistics'):
             time_worked text,
             error_count text,
             error_time text,
+            last_cleaning_datetime text,
+            cleaning_duration text, 
+            next_cleaning_datetime text,
+            beverages_count text,
             date_formed text
         )
     '''
@@ -65,6 +69,11 @@ if not does_object_exist('table', 'data_statistics'):
 add_table_column(table_name='data_statistics', column_name='time_worked', column_type='text')
 add_table_column(table_name='data_statistics', column_name='error_count', column_type='text')
 add_table_column(table_name='data_statistics', column_name='error_time', column_type='text')
+add_table_column(table_name='data_statistics', column_name='error_time', column_type='text')
+add_table_column(table_name='data_statistics', column_name='last_cleaning_datetime', column_type='text')
+add_table_column(table_name='data_statistics', column_name='cleaning_duration', column_type='text')
+add_table_column(table_name='data_statistics', column_name='next_cleaning_datetime', column_type='text')
+add_table_column(table_name='data_statistics', column_name='beverages_count', column_type='text')
 add_table_column(table_name='data_statistics', column_name='date_formed', column_type='text')
 
 if not does_object_exist('table', 'beverages_log'):
