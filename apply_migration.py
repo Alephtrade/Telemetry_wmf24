@@ -26,6 +26,22 @@ def add_table_column(table_name, column_name, column_type):
 conn = sqlite3.connect(settings.DB_PATH, check_same_thread=False)
 cur = conn.cursor()
 
+if not does_object_exist('table', 'last_record'):
+    stmt = '''
+        create table last_record
+        (
+            id          integer
+                constraint last_record_pk
+                    primary key,
+            cleaning_type text,
+            beverages_count integer default 0,
+            cleaning_duration real default 0,
+            cleaning_datetime text
+        )
+    '''
+    cur.execute(stmt)
+    conn.commit()
+
 add_table_column(table_name='last_record', column_name='beverages_count', column_type='integer default 0')
 add_table_column(table_name='last_record', column_name='cleaning_duration', column_type='real default 0')
 add_table_column(table_name='last_record', column_name='cleaning_datetime', column_type='text')
@@ -56,10 +72,28 @@ if not does_object_exist('table', 'data_statistics'):
             time_worked text,
             error_count text,
             error_time text,
-            last_cleaning_datetime text,
-            cleaning_duration text, 
-            next_cleaning_datetime text,
             beverages_count text,
+            last_general_cleaning_datetime text,
+            general_cleaning_duration  text,
+            next_general_cleaning_datetime
+            last_milk_cleaning_datetime  text,
+            general_milk_cleaning_duration  text,
+            next_milk_cleaning_datetime  text,
+            last_foamer_rising_datetime  text,
+            general_foamer_rising_duration  text,
+            next_foamer_rising_datetime  text,
+            last_milk_replacement_datetime  text,
+            general_milk_replacement_duration  text,
+            next_milk_replacement_datetime  text,
+            last_mixer_rinsing_datetime  text,
+            general_mixer_rinsing_duration  text,
+            next_mixer_rinsing_datetime  text,
+            last_milk_mixer_warm_rinsing_datetime  text,
+            general_milk_mixer_warm_rinsing_duration  text,
+            next_milk_mixer_warm_rinsing_datetime  text,
+            last_ffc_filter_replacement_datetime  text,
+            general_ffc_filter_replacement_duration  text,
+            next_ffc_filter_replacement_datetime  text,
             date_formed text
         )
     '''
@@ -69,11 +103,28 @@ if not does_object_exist('table', 'data_statistics'):
 add_table_column(table_name='data_statistics', column_name='time_worked', column_type='text')
 add_table_column(table_name='data_statistics', column_name='error_count', column_type='text')
 add_table_column(table_name='data_statistics', column_name='error_time', column_type='text')
-add_table_column(table_name='data_statistics', column_name='error_time', column_type='text')
-add_table_column(table_name='data_statistics', column_name='last_cleaning_datetime', column_type='text')
-add_table_column(table_name='data_statistics', column_name='cleaning_duration', column_type='text')
-add_table_column(table_name='data_statistics', column_name='next_cleaning_datetime', column_type='text')
 add_table_column(table_name='data_statistics', column_name='beverages_count', column_type='text')
+add_table_column(table_name='data_statistics', column_name='last_general_cleaning_datetime', column_type='text')
+add_table_column(table_name='data_statistics', column_name='general_cleaning_duration', column_type='text')
+add_table_column(table_name='data_statistics', column_name='next_general_cleaning_datetime', column_type='text')
+add_table_column(table_name='data_statistics', column_name='last_milk_cleaning_datetime', column_type='text')
+add_table_column(table_name='data_statistics', column_name='general_milk_cleaning_duration', column_type='text')
+add_table_column(table_name='data_statistics', column_name='next_milk_cleaning_datetime', column_type='text')
+add_table_column(table_name='data_statistics', column_name='last_foamer_rising_datetime', column_type='text')
+add_table_column(table_name='data_statistics', column_name='general_foamer_rising_duration', column_type='text')
+add_table_column(table_name='data_statistics', column_name='next_foamer_rising_datetime', column_type='text')
+add_table_column(table_name='data_statistics', column_name='last_milk_replacement_datetime', column_type='text')
+add_table_column(table_name='data_statistics', column_name='general_milk_replacement_duration', column_type='text')
+add_table_column(table_name='data_statistics', column_name='next_milk_replacement_datetime', column_type='text')
+add_table_column(table_name='data_statistics', column_name='last_mixer_rinsing_datetime', column_type='text')
+add_table_column(table_name='data_statistics', column_name='general_mixer_rinsing_duration', column_type='text')
+add_table_column(table_name='data_statistics', column_name='next_mixer_rinsing_datetime', column_type='text')
+add_table_column(table_name='data_statistics', column_name='last_milk_mixer_warm_rinsing_datetime', column_type='text')
+add_table_column(table_name='data_statistics', column_name='general_milk_mixer_warm_rinsing_duration', column_type='text')
+add_table_column(table_name='data_statistics', column_name='next_milk_mixer_warm_rinsing_datetime', column_type='text')
+add_table_column(table_name='data_statistics', column_name='last_ffc_filter_replacement_datetime', column_type='text')
+add_table_column(table_name='data_statistics', column_name='general_ffc_filter_replacement_duration', column_type='text')
+add_table_column(table_name='data_statistics', column_name='next_ffc_filter_replacement_datetime', column_type='text')
 add_table_column(table_name='data_statistics', column_name='date_formed', column_type='text')
 
 if not does_object_exist('table', 'beverages_log'):

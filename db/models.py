@@ -105,7 +105,7 @@ class WMFSQLDriver:
     def get_last_record(self):
         cur = self.connection.cursor()
         stmt = ''' 
-            SELECT beverages_count, cleaning_duration, cleaning_datetime FROM last_record WHERE id = 1
+            SELECT beverages_count, cleaning_duration, cleaning_datetime, cleaning_type FROM last_record WHERE id = 1
         '''
         cur.execute(stmt)
         res = cur.fetchone()
@@ -125,6 +125,52 @@ class WMFSQLDriver:
         cur.execute(stmt, (value, record_time))
         self.connection.commit()
         cur.close()
+
+    def get_last_clean_or_rins(self, column_namee):
+        cur = self.connection.cursor()
+        stmt = ''' 
+            SELECT {column_namee}
+            FROM data_statistics 
+            WHERE column_name NOT NULL
+        '''
+        cur.execute(stmt, column_namee)
+        res = cur.fetchone()
+        cur.close()
+        logging.info(f'WMFSQLDriver get_last_record: {res}')
+        return res
+
+    def save_clean_or_rins(self, operator, value):
+        time_now = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp()))
+        cur = self.connection.cursor()
+        record_time = get_curr_time_str()
+        stmt = f''' 
+            UPDATE data_statistics 
+            SET {operator} = ?
+            WHERE date_formed = {time_now}
+        '''
+        logging.info(f'WMFSQLDriver save_last_record: key = {operator}, value = {value}')
+        cur.execute(stmt, (value, record_time))
+        self.connection.commit()
+        cur.close()
+
+    def is_record_clean_or_rins(self, time):
+        cur = self.connection.cursor()
+        stmt = f''' 
+            SELECT id
+            FROM data_statistics
+            WHERE date_formed = {time}
+        '''
+        cur.execute(stmt, (time,))
+        self.connection.commit()
+        cur.close()
+
+    def create_clean_or_rins(self, date_formed):
+        cur = self.connection.cursor()
+        stmt = 'INSERT INTO data_statistics (date_formed) VALUES (?)'
+        cur.execute(stmt, (date_formed,))
+        self.connection.commit()
+        cur.close()
+
 
     def get_unsent_records(self):
         cur = self.connection.cursor()

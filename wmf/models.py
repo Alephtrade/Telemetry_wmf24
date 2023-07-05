@@ -338,52 +338,57 @@ class WMFMachineStatConnector:
 
     def get_system_cleaning_state(self):
         if self.ws:
-            data = self.send_wmf_request('getSystemCleaningState')
+            data = self.send_wmf_request('getSystemCleaningState')['durationInSeconds']
             return data
         else:
             return None
 
     def get_milk_cleaning_state(self):
         if self.ws:
-            data = self.send_wmf_request('getMilkCleaningState')
+            data = self.send_wmf_request('getMilkCleaningState')['durationInSeconds']
             return data
         else:
             return None
 
     def get_foamer_rinsing_state(self):
         if self.ws:
-            data = self.send_wmf_request('getFoamerRinsingState')
+            data = self.send_wmf_request('getFoamerRinsingState')['durationInSeconds']
             return data
         else:
             return None
 
     def get_milk_replacement_state(self):
         if self.ws:
-            data = self.send_wmf_request('getMilkReplacementState')
+            data = self.send_wmf_request('getMilkReplacementState')['durationInSeconds']
             return data
         else:
             return None
 
     def get_mixer_rinsing_state(self):
         if self.ws:
-            data = self.send_wmf_request('getMixerRinsingState')
+            data = self.send_wmf_request('getMixerRinsingState')['durationInSeconds']
             return data
         else:
             return None
 
     def get_milk_mixer_warm_rinsing_state(self):
         if self.ws:
-            data = self.send_wmf_request('getMilkMixerWarmRinsingState')
+            data = self.send_wmf_request('getMilkMixerWarmRinsingState')['durationInSeconds']
             return data
         else:
             return None
 
     def get_ffc_filter_replacement_state(self):
         if self.ws:
-            data = self.send_wmf_request('getFfcFilterReplacementState')
+            data = self.send_wmf_request('getFfcFilterReplacementState')['durationInSeconds']
             return data
         else:
             return None
+
+    def get_cleaning_duration(self):
+        if self.ws:
+            return self.send_wmf_request('getSystemCleaningState')['durationInSeconds']
+        return None
 
     def get_cleaning_state(self):
         if self.ws:
@@ -397,11 +402,6 @@ class WMFMachineStatConnector:
                 return 'информацию не удалось получить❗'
         else:
             return None
-
-    def get_cleaning_duration(self):
-        if self.ws:
-            return self.send_wmf_request('getSystemCleaningState')['durationInSeconds']
-        return None
 
     def __init__(self):
         try:

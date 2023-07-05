@@ -4,7 +4,6 @@ from db.models import WMFSQLDriver
 from wmf.models import WMFMachineStatConnector
 from core.utils import initialize_logger
 
-
 initialize_logger('check_cleaning_state.log')
 db_conn = WMFSQLDriver()
 wm_conn = WMFMachineStatConnector()
