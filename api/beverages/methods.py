@@ -53,7 +53,6 @@ def Take_Create_Beverage_Statistics(last_send):
 
 
 def Send_Statistics(data_info, id_record):
-    initialize_logger('send_statistics.txt')
     logging.info(f"beveragestatistics: GET request: {data_info}")
     url = "https://wmf24.ru/api/beveragestatistics"
     headers = {
