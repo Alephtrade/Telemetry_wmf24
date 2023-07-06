@@ -1,7 +1,7 @@
-from datetime import timedelta, datetime
+import sys
+
+sys.path.append("../../")
 from db.models import WMFSQLDriver
-from core.utils import timedelta_str, get_curr_time, initialize_logger
-from wmf.models import WMFMachineStatConnector
 from settings import prod as settings
 
 WMF_URL = settings.WMF_DATA_URL
