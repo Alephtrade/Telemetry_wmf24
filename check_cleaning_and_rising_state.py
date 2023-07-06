@@ -24,13 +24,15 @@ def controller_manager(operator, last_column, duration_column, next_column):
                 print(db_conn.save_clean_or_rins(last_column, (datetime.now() + timedelta(hours=3)).strftime('%Y-%m-%d %H:%M:%S')))
         if int(operator["dueInSeconds"]) is not None and int(operator["dueInSeconds"]) != -1:
             next_datetime = db_conn.get_last_clean_or_rins(next_column)[0]
+            print(operator["dueInSeconds"])
             if(next_datetime is None):
+                print(next_datetime)
                 next_datetime = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp() + int(operator["dueInSeconds"])))
                 print(db_conn.save_clean_or_rins(next_column, next_datetime))
 
 
 print(wm_conn.get_system_cleaning_state(), wm_conn.get_milk_cleaning_state(), wm_conn.get_foamer_rinsing_state(), wm_conn.get_milk_replacement_state(), wm_conn.get_mixer_rinsing_state(), wm_conn.get_milk_mixer_warm_rinsing_state(), wm_conn.get_ffc_filter_replacement_state())
-controller_manager(wm_conn.get_system_cleaning_state(), "last_general_cleaning_datetime", "general_cleaning_duration", "next_general_cleaning_datetime")
+print(controller_manager(wm_conn.get_system_cleaning_state(), "last_general_cleaning_datetime", "general_cleaning_duration", "next_general_cleaning_datetime"))
 controller_manager(wm_conn.get_milk_cleaning_state(), "last_milk_cleaning_datetime", "general_milk_cleaning_duration", "next_milk_cleaning_datetime")
 controller_manager(wm_conn.get_foamer_rinsing_state(), "last_foamer_rising_datetime", "general_foamer_rising_duration", "next_foamer_rising_datetime")
 controller_manager(wm_conn.get_milk_replacement_state(), "last_milk_replacement_datetime", "general_milk_replacement_duration", "next_milk_replacement_datetime")
