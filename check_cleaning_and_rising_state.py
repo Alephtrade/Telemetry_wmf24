@@ -26,11 +26,8 @@ def controller_manager(operator, last_column, duration_column, next_column):
             next_datetime = db_conn.get_last_clean_or_rins(next_column)[0]
             print(operator["dueInSeconds"])
             print(next_datetime)
-            if next_datetime is None:
-                print(next_datetime)
-                print("ALLO")
-                next_datetime = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp() + int(operator["dueInSeconds"])))
-                print(db_conn.save_clean_or_rins(next_column, next_datetime))
+            next_datetime = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp() + int(operator["dueInSeconds"])))
+            print(db_conn.save_clean_or_rins(next_column, next_datetime))
 
 
 print(wm_conn.get_system_cleaning_state(), wm_conn.get_milk_cleaning_state(), wm_conn.get_foamer_rinsing_state(), wm_conn.get_milk_replacement_state(), wm_conn.get_mixer_rinsing_state(), wm_conn.get_milk_mixer_warm_rinsing_state(), wm_conn.get_ffc_filter_replacement_state())
