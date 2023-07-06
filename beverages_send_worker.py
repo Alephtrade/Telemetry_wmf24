@@ -14,7 +14,7 @@ def get_reports_and_send_or_nothing():
         return print("NO DATA")
     else:
         for item in receive_data:
-            time_to_send = item[3]
+            time_to_send = item[2]
             k.append({"device_code": item[0]})
             k.append({"summ": item[1]})
             k.append({"time_to_send": item[2]})
