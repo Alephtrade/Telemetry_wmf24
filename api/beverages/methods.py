@@ -35,7 +35,6 @@ def Take_Create_Beverage_Statistics(last_send):
     device_code = ""
     recipes = []
     date_to_send = get_beverages_send_time(last_send)
-    return date_to_send
     date_formed = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp()))
     for item in received:
         # print(item)
