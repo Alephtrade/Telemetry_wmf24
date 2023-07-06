@@ -87,7 +87,7 @@ def get_beverages_send_time(last_send_time):
     response = requests.request("GET", url, headers=headers, data=payload)
     body_response = json.loads(response.text)
     next_time = datetime.strptime(last_send_time, '%Y-%m-%d %H:%M:%S')
-    if body_response['interval_beverages'] < 1:
+    if body_response['interval_beverages'] is None:
         body_response['interval_beverages'] = 1
     if body_response['interval_beverages_min'] is None:
         body_response['interval_beverages_min'] = 0
