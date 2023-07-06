@@ -145,8 +145,8 @@ class WMFSQLDriver:
         record_time = get_curr_time_str()
         stmt = f''' 
             UPDATE data_statistics 
-            SET {operator} = {value_column}
-            WHERE date_formed = {time_now}
+            SET {operator} = "{value_column}"
+            WHERE date_formed = "{time_now}"
         '''
         return stmt
         logging.info(f'WMFSQLDriver save_last_record: key = {operator}, value = {value}')
