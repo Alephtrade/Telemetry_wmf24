@@ -173,6 +173,39 @@ class WMFSQLDriver:
         self.connection.commit()
         cur.close()
 
+    def get_last_cleaning_info(self):
+        time_now = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp() // (60 * 60) * 60 * 60))
+        cur = self.connection.cursor()
+        stmt = ''' 
+            SELECT last_general_cleaning_datetime, 
+            general_cleaning_duration, 
+            next_general_cleaning_datetime, 
+            last_milk_cleaning_datetime, 
+            general_milk_cleaning_duration, 
+            next_milk_cleaning_datetime, 
+            last_foamer_rising_datetime, 
+            general_foamer_rising_duration, 
+            next_foamer_rising_datetime, 
+            last_milk_replacement_datetime, 
+            general_milk_replacement_duration, 
+            next_milk_replacement_datetime, 
+            last_mixer_rinsing_datetime, 
+            general_mixer_rinsing_duration, 
+            next_mixer_rinsing_datetime, 
+            last_milk_mixer_warm_rinsing_datetime, 
+            general_milk_mixer_warm_rinsing_duration, 
+            next_milk_mixer_warm_rinsing_datetime, 
+            last_ffc_filter_replacement_datetime, 
+            general_ffc_filter_replacement_duration, 
+            next_ffc_filter_replacement_datetime 
+            FROM data_statistics 
+            WHERE date_fromed = ?
+        '''
+        cur.execute(stmt, (time_now,))
+        res = cur.fetchone()
+        cur.close()
+        logging.info(f'WMFSQLDriver get_last_record: {res}')
+        return res
 
     def get_unsent_records(self):
         cur = self.connection.cursor()
