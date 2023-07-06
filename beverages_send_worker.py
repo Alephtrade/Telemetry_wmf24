@@ -23,7 +23,7 @@ def get_reports_and_send_or_nothing():
             for item_info in data_info:
                 k.append(item_info)
             print(record_id)
-            next_time = datetime.strptime(item[3], '%Y-%m-%d %H:%M:%S')
+            next_time = datetime.strptime(k["time_to_send"], '%Y-%m-%d %H:%M:%S')
             if datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp())) > next_time:
                 print(methods.Send_Statistics(json.dumps(k), record_id))
 
