@@ -10,6 +10,7 @@ sys.path.append("../../")
 from db.models import WMFSQLDriver
 from core.utils import initialize_logger, get_beverages_send_time
 from settings import prod as settings
+from wmf.models import WMFMachineStatConnector
 
 WMF_URL = settings.WMF_DATA_URL
 WS_URL = settings.WS_URL
@@ -18,6 +19,7 @@ db_conn = WMFSQLDriver()
 
 
 def Take_Create_Beverage_Statistics(last_send):
+    wm_conn = WMFMachineStatConnector()
     ws = websocket.create_connection(WS_URL)
     request = json.dumps({'function': 'getBeverageStatistics'})
     ws.send(request)
@@ -43,9 +45,9 @@ def Take_Create_Beverage_Statistics(last_send):
             if (k.startswith("device_code")):
                 device_code = item2
             if (k.startswith("TotalCountRcp")):
-                summ += item2
+                #summ += item2
                 recipes.append(item)
-
+    summ = wm_conn.get_beverages_count()
     create_record = db_conn.create_beverages_log(device_code, summ, date_to_send, date_formed, json.dumps(recipes))
     ws.close()
     return create_record
