@@ -148,7 +148,7 @@ class WMFSQLDriver:
             SET {operator} = "{value_column}"
             WHERE date_formed = "{time_now}"
         '''
-        logging.info(f'WMFSQLDriver save_last_record: key = {operator}, value = {value}')
+        logging.info(f'WMFSQLDriver save_last_record: key = {operator}, value = {value_column}')
         cur.execute(stmt)
         self.connection.commit()
         cur.close()
