@@ -139,18 +139,18 @@ class WMFSQLDriver:
         logging.info(f'WMFSQLDriver get_last_record: {res}')
         return res
 
-    def save_clean_or_rins(self, operator, value):
+    def save_clean_or_rins(self, operator, value_column):
         time_now = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp()))
         cur = self.connection.cursor()
         record_time = get_curr_time_str()
         stmt = f''' 
             UPDATE data_statistics 
-            SET {operator} = ?
+            SET {operator} = {value_column}
             WHERE date_formed = ?
         '''
         return stmt
         logging.info(f'WMFSQLDriver save_last_record: key = {operator}, value = {value}')
-        cur.execute(stmt, (value, time_now))
+        cur.execute(stmt, (time_now,))
         self.connection.commit()
         cur.close()
 
