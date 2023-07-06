@@ -140,7 +140,7 @@ class WMFSQLDriver:
         return res
 
     def save_clean_or_rins(self, operator, value_column):
-        time_now = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp()))
+        time_now = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp() // (60 * 60) * 60 * 60))
         cur = self.connection.cursor()
         record_time = get_curr_time_str()
         stmt = f''' 
