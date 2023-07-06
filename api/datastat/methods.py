@@ -12,7 +12,6 @@ db_conn = WMFSQLDriver()
 
 def get_clean_info():
     data = db_conn.get_last_cleaning_info()
-    return data
     data_d = [
         {"last_general_cleaning_datetime": data[0]},
         {"general_cleaning_duration": data[1]},
