@@ -25,6 +25,7 @@ def controller_manager(operator, last_column, duration_column, next_column):
         if int(operator["dueInSeconds"]) is not None and int(operator["dueInSeconds"]) != -1:
             next_datetime = db_conn.get_last_clean_or_rins(next_column)[0]
             print(operator["dueInSeconds"])
+            print(next_datetime)
             if next_datetime is None:
                 print(next_datetime)
                 print("ALLO")
