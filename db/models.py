@@ -199,7 +199,7 @@ class WMFSQLDriver:
             general_ffc_filter_replacement_duration, 
             next_ffc_filter_replacement_datetime 
             FROM data_statistics 
-            WHERE date_fromed = ?
+            WHERE date_formed = ?
         '''
         cur.execute(stmt, (time_now,))
         res = cur.fetchone()
