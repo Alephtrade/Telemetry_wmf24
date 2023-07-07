@@ -47,6 +47,7 @@ def Take_Create_Beverage_Statistics(last_send):
             if (k.startswith("TotalCountRcp")):
                 #summ += item2
                 recipes.append(item)
+
     summ = wm_conn.get_beverages_count()
     create_record = db_conn.create_beverages_log(device_code, summ, date_to_send, date_formed, json.dumps(recipes))
     ws.close()
