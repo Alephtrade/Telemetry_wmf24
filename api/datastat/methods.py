@@ -42,5 +42,8 @@ def get_clean_info():
 
 
 def get_main_data_stat():
+    if not wm_conn.ws:
+        return False
+    data = wm_conn.get_wmf_machine_info()
     summ = wm_conn.get_beverages_count()
     return summ
