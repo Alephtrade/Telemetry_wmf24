@@ -58,8 +58,8 @@ def update_activity_info():
     for rec_id, error_code, start_time, end_time, error_text in unsent_records:
         if end_time:
             error_text = error_text if error_text else ''
-            duration_time = datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S') - datetime.strptime(start_time,
-            return duration_time                                                                                     '%Y-%m-%d %H:%M:%S')
+            duration_time = datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S') - datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
+            return duration_time
             time_count_default -= int(duration_time)
             if error_code == -1:
                 stoppage_count += 1
