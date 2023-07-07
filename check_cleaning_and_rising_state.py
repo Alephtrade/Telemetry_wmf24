@@ -77,5 +77,3 @@ def update_activity_info():
         "stoppage_time": stoppage_time
     }
 
-db_conn.close()
-wm_conn.close()
