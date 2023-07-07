@@ -3,11 +3,14 @@ import sys
 sys.path.append("../../")
 from db.models import WMFSQLDriver
 from settings import prod as settings
+from wmf.models import WMFMachineStatConnector
+
 
 WMF_URL = settings.WMF_DATA_URL
 WS_URL = settings.WS_URL
 DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
 db_conn = WMFSQLDriver()
+wm_conn = WMFMachineStatConnector()
 
 
 def get_clean_info():
@@ -36,3 +39,11 @@ def get_clean_info():
         {"next_ffc_filter_replacement_date": data[20]}
     ]
     return data_d
+
+
+def get_main_data_stat():
+    summ = wm_conn.get_beverages_count()  # кол-во напитков
+    # время работы
+    # количество ошибок
+    # общее время простоя
+    return summ
