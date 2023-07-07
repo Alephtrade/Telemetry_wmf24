@@ -42,8 +42,5 @@ def get_clean_info():
 
 
 def get_main_data_stat():
-    summ = wm_conn.get_beverages_count()  # кол-во напитков
-    # время работы
-    # количество ошибок
-    # общее время простоя
+    summ = wm_conn.get_beverages_count()
     return summ
