@@ -21,9 +21,11 @@ def worker():
         return False
 
     data_cleaning = methods.get_clean_info()
+    for item in data_cleaning:
+        result.append(item)
     data_main_stat = methods.get_main_data_stat()
-    result.append(data_cleaning)
-    result.append(data_main_stat)
+    for item in data_main_stat:
+        result.append(item)
     result.append({"code": wm_conn.part_number})
     return result
 
