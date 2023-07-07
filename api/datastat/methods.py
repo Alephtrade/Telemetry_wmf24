@@ -54,7 +54,7 @@ def get_main_data_stat():
     summ = wm_conn.get_beverages_count()
     stoppage_time, wmf_error_time = timedelta(), timedelta()
     stoppage_count, wmf_error_count = 0, 0
-    unsent_records = db_conn.get_error_records()
+    unsent_records = db_conn.get_error_records(time_now)
     return unsent_records
     for rec_id, error_code, start_time, end_time, error_text in unsent_records:
         if end_time:
