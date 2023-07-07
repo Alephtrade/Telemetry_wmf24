@@ -63,10 +63,10 @@ def update_activity_info():
             time_count_default -= duration_time_int
             if error_code == -1:
                 stoppage_count += 1
-                stoppage_time += duration_time_int
+                stoppage_time += duration_time
             else:
                 wmf_error_count += 1
-                wmf_error_time += duration_time_int
+                wmf_error_time += duration_time
     return {
         "unsent_records": unsent_records,
         "summ": summ,
