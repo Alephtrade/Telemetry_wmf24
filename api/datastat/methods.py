@@ -54,8 +54,8 @@ def get_main_data_stat():
     summ = wm_conn.get_beverages_count()
     stoppage_time, wmf_error_time = timedelta(), timedelta()
     stoppage_count, wmf_error_count = 0, 0
-    row_counter = 2
-    unsent_records = db_conn.get_unsent_records()
+    unsent_records = db_conn.get_error_records()
+    return unsent_records
     for rec_id, error_code, start_time, end_time, error_text in unsent_records:
         if end_time:
             error_text = error_text if error_text else ''
@@ -72,7 +72,7 @@ def get_main_data_stat():
         "summ": summ,
         "wmf_error_count": wmf_error_count,
         "wmf_error_time": wmf_error_time,
-        "time_count_default": time_count_default,
+        "time_worked": time_count_default,
         "stoppage_count": stoppage_count,
         "stoppage_time": stoppage_time
     }
