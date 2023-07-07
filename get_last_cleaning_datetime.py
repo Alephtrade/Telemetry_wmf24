@@ -7,6 +7,7 @@ from db.models import WMFSQLDriver
 from core.utils import timedelta_str, get_curr_time, initialize_logger
 from wmf.models import WMFMachineStatConnector
 from settings import prod as settings
+from check_cleaning_and_rising_state import update_activity_info
 
 WMF_URL = settings.WMF_DATA_URL
 WS_URL = settings.WS_URL
@@ -19,7 +20,7 @@ def worker():
     wm_conn = WMFMachineStatConnector()
     if not wm_conn.ws:
         return False
-
+    return update_activity_info()
     data_cleaning = methods.get_clean_info()
     for item in data_cleaning:
         result.append(item)

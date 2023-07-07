@@ -1,10 +1,15 @@
 import logging
+import websocket
 from datetime import datetime, timedelta
 from db.models import WMFSQLDriver
 from wmf.models import WMFMachineStatConnector
+from settings import prod as settings
 from core.utils import initialize_logger
 
-initialize_logger('check_cleaning_state.log')
+initialize_logger('check_cleaning_and_rising_state.log')
+WMF_URL = settings.WMF_DATA_URL
+WS_URL = settings.WS_URL
+DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
 db_conn = WMFSQLDriver()
 wm_conn = WMFMachineStatConnector()
 
@@ -37,6 +42,40 @@ controller_manager(wm_conn.get_milk_replacement_state(), "last_milk_replacement_
 controller_manager(wm_conn.get_mixer_rinsing_state(), "last_mixer_rinsing_datetime", "general_mixer_rinsing_duration", "next_mixer_rinsing_datetime")
 controller_manager(wm_conn.get_milk_mixer_warm_rinsing_state(), "last_milk_mixer_warm_rinsing_datetime", "general_milk_mixer_warm_rinsing_duration", "next_milk_mixer_warm_rinsing_datetime")
 controller_manager(wm_conn.get_ffc_filter_replacement_state(), "last_ffc_filter_replacement_datetime", "general_ffc_filter_replacement_duration", "next_ffc_filter_replacement_datetime")
+
+def update_activity_info():
+    time_now = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp() // (60 * 60) * 60 * 60))
+    time_count_default = 3600
+    wm_conn = WMFMachineStatConnector()
+    ws = websocket.create_connection(WS_URL)
+    if not wm_conn.ws:
+        return False
+    data = wm_conn.get_wmf_machine_info()
+    summ = wm_conn.get_beverages_count()
+    stoppage_time, wmf_error_time = timedelta(), timedelta()
+    stoppage_count, wmf_error_count = 0, 0
+    unsent_records = db_conn.get_error_records(time_now, time_now + timedelta(hours=1))
+    for rec_id, error_code, start_time, end_time, error_text in unsent_records:
+        if end_time:
+            error_text = error_text if error_text else ''
+            duration_time = datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S') - datetime.strptime(start_time,
+                                                                                                 '%Y-%m-%d %H:%M:%S')
+            time_count_default -= duration_time
+            if error_code == -1:
+                stoppage_count += 1
+                stoppage_time += duration_time
+            else:
+                wmf_error_count += 1
+                wmf_error_time += duration_time
+    return {
+        "unsent_records": unsent_records,
+        "summ": summ,
+        "wmf_error_count": wmf_error_count,
+        "wmf_error_time": wmf_error_time,
+        "time_worked": time_count_default,
+        "stoppage_count": stoppage_count,
+        "stoppage_time": stoppage_time
+    }
 
 db_conn.close()
 wm_conn.close()
