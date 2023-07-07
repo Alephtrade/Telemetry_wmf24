@@ -24,6 +24,7 @@ def worker():
 
     return {data_cleaning}
 
+
     data['code'] = wm_conn.part_number
 
     url = "https://wmf24.ru/api/reportdata"
