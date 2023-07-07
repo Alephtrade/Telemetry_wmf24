@@ -20,10 +20,9 @@ def worker():
     if not wm_conn.ws:
         return False
 
-    data_cleaning = methods.get_clean_info
+    data_cleaning = methods.get_clean_info()
 
-    return {data_cleaning}
-
+    return data_cleaning
 
     data['code'] = wm_conn.part_number
 
