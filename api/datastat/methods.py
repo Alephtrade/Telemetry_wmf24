@@ -1,4 +1,5 @@
 import sys
+import websocket
 
 sys.path.append("../../")
 from db.models import WMFSQLDriver
@@ -10,8 +11,6 @@ WMF_URL = settings.WMF_DATA_URL
 WS_URL = settings.WS_URL
 DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
 db_conn = WMFSQLDriver()
-wm_conn = WMFMachineStatConnector()
-
 
 def get_clean_info():
     data = db_conn.get_last_cleaning_info()
@@ -42,6 +41,9 @@ def get_clean_info():
 
 
 def get_main_data_stat():
+    wm_conn = WMFMachineStatConnector()
+    ws = websocket.create_connection(WS_URL)
+
     if not wm_conn.ws:
         return False
     data = wm_conn.get_wmf_machine_info()
