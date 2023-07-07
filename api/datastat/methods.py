@@ -68,4 +68,11 @@ def get_main_data_stat():
             else:
                 wmf_error_count += 1
                 wmf_error_time += duration_time
-    return {summ, wmf_error_count, wmf_error_time, time_count_default, stoppage_count, stoppage_time}
+    return {
+        "summ": summ,
+        "wmf_error_count": wmf_error_count,
+        "wmf_error_time": wmf_error_time,
+        "time_count_default": time_count_default,
+        "stoppage_count": stoppage_count,
+        "stoppage_time": stoppage_time
+    }
