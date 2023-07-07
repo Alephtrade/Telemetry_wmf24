@@ -328,6 +328,7 @@ class WMFMachineStatConnector:
         if self.ws:
             data = self.send_wmf_request('getBeverageStatistics')
             self.beverage_stats_raw = data
+            return data
             result = 0
             for k, v in data.items():
                 if k not in ('function', 'returnvalue'):
