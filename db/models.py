@@ -220,7 +220,7 @@ class WMFSQLDriver:
 
     def get_error_records(self, date_and_time_start, date_and_time_end):
         cur = self.connection.cursor()
-        stmt = ''' 
+        stmt = f''' 
             SELECT id, error_code, start_time, end_time, error_text 
             FROM error_code_stats WHERE start_time > ? AND end_time < ?
         '''
