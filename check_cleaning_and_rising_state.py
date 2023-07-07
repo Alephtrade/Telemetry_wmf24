@@ -59,14 +59,14 @@ def update_activity_info():
         if end_time:
             error_text = error_text if error_text else ''
             duration_time = datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S') - datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
-            return duration_time
-            time_count_default -= int(duration_time)
+            duration_time_int = int(duration_time.total_seconds())
+            time_count_default -= duration_time_int
             if error_code == -1:
                 stoppage_count += 1
-                stoppage_time += int(duration_time)
+                stoppage_time += duration_time_int
             else:
                 wmf_error_count += 1
-                wmf_error_time += int(duration_time)
+                wmf_error_time += duration_time_int
     return {
         "unsent_records": unsent_records,
         "summ": summ,
