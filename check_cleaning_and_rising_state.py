@@ -37,5 +37,6 @@ controller_manager(wm_conn.get_milk_replacement_state(), "last_milk_replacement_
 controller_manager(wm_conn.get_mixer_rinsing_state(), "last_mixer_rinsing_datetime", "general_mixer_rinsing_duration", "next_mixer_rinsing_datetime")
 controller_manager(wm_conn.get_milk_mixer_warm_rinsing_state(), "last_milk_mixer_warm_rinsing_datetime", "general_milk_mixer_warm_rinsing_duration", "next_milk_mixer_warm_rinsing_datetime")
 controller_manager(wm_conn.get_ffc_filter_replacement_state(), "last_ffc_filter_replacement_datetime", "general_ffc_filter_replacement_duration", "next_ffc_filter_replacement_datetime")
+
 db_conn.close()
 wm_conn.close()

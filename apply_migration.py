@@ -75,7 +75,7 @@ if not does_object_exist('table', 'data_statistics'):
             beverages_count text,
             last_general_cleaning_datetime text,
             general_cleaning_duration  text,
-            next_general_cleaning_datetime
+            next_general_cleaning_datetime text,
             last_milk_cleaning_datetime  text,
             general_milk_cleaning_duration  text,
             next_milk_cleaning_datetime  text,

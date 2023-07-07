@@ -1,5 +1,6 @@
 import sys
 import websocket
+from datetime import timedelta, datetime
 
 sys.path.append("../../")
 from db.models import WMFSQLDriver
@@ -39,13 +40,29 @@ def get_clean_info():
     ]
     return data_d
 
-
 def get_main_data_stat():
+    time_now = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp() // (60 * 60) * 60 * 60))
+    time_count_default = 3600
     wm_conn = WMFMachineStatConnector()
     ws = websocket.create_connection(WS_URL)
-
     if not wm_conn.ws:
         return False
     data = wm_conn.get_wmf_machine_info()
     summ = wm_conn.get_beverages_count()
-    return summ
+    stoppage_time, wmf_error_time = timedelta(), timedelta()
+    stoppage_count, wmf_error_count = 0, 0
+    row_counter = 2
+    unsent_records = db_conn.get_unsent_records()
+    for rec_id, error_code, start_time, end_time, error_text in unsent_records:
+        if end_time:
+            error_text = error_text if error_text else ''
+            duration_time = datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S') - datetime.strptime(start_time,
+                                                                                                 '%Y-%m-%d %H:%M:%S')
+            time_count_default -= duration_time
+            if error_code == -1:
+                stoppage_count += 1
+                stoppage_time += duration_time
+            else:
+                wmf_error_count += 1
+                wmf_error_time += duration_time
+    return {summ, wmf_error_count, wmf_error_time, time_count_default, stoppage_count, stoppage_time}
