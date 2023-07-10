@@ -15,6 +15,7 @@ db_conn = WMFSQLDriver()
 initialize_logger('test.log')
 
 def worker():
+    now_of_hour = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp() // (60 * 60) * 60 * 60))
     data_for_request = []
     wm_conn = WMFMachineStatConnector()
     try:
@@ -30,6 +31,7 @@ def worker():
     for key, item in data_main_stat.items():
         data_for_request.append({key: item})
     data_for_request.append({"code": part_number})
+    data_for_request.append({"date_created": now_of_hour})
     return json.dumps(data_for_request)
 
     url = "https://wmf24.ru/api/reportdata"
