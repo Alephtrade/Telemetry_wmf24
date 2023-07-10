@@ -55,19 +55,37 @@ def get_main_data_stat():
     unsent_records = db_conn.get_error_records(time_now - timedelta(hours=1), time_now)
     for rec_id, error_code, start_time, end_time, error_text in unsent_records:
         date_error_start = datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
-        if date_error_start >= (time_now - timedelta(hours=1)) and end_time is not None:
+        if date_error_start < (time_now - timedelta(hours=1)) and end_time is None:
+            time_count_default = 0
+            stoppage_count = 0
+            wmf_error_count = 0
+            if error_code == -1:
+                stoppage_time = timedelta(seconds=3600)
+                wmf_error_time = timedelta()
+            else:
+                stoppage_time = timedelta()
+                wmf_error_time = timedelta(seconds=3600)
+            break
+        elif date_error_start >= (time_now - timedelta(hours=1)) and end_time is not None:
             duration_time = datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S') - datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
+            if error_code == -1:
+                stoppage_count += 1
+            else:
+                wmf_error_count += 1
         elif end_time is not None:
             duration_time = datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S') - (time_now - timedelta(hours=1))
+            if error_code == -1:
+                stoppage_count += 1
+            else:
+                wmf_error_count += 1
         else:
             duration_time = time_now - datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
         time_count_default -= duration_time
         if error_code == -1:
-            stoppage_count += 1
             stoppage_time += duration_time
         else:
-            wmf_error_count += 1
             wmf_error_time += duration_time
+
 
     wmf_error_time = timedelta_int(wmf_error_time)
     time_count_default = timedelta_int(time_count_default)

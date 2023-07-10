@@ -225,6 +225,7 @@ class WMFSQLDriver:
             FROM error_code_stats 
             WHERE end_time >= "{prev_hour}" AND end_time < "{now_hour}" 
             OR start_time >= "{prev_hour}" AND start_time < "{now_hour}"
+            OR start_time < "{prev_hour}" AND end_time is NULL AND error_code != 62
         '''
         cur.execute(stmt)
         res = cur.fetchall()
