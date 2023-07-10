@@ -36,6 +36,10 @@ def timedelta_str(delta):
     else:
         return '{h} часов {m} минут {s} секунд'.format(**d)
 
+def timedelta_int(delta):
+    result = delta.days * 86400 + delta.seconds
+    return result
+
 
 def print_exception():
     exc_type, exc_obj, tb = sys.exc_info()
