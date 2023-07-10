@@ -17,15 +17,17 @@ initialize_logger('test.log')
 def worker():
 
     wm_conn = WMFMachineStatConnector()
-    if not wm_conn.ws:
-        return False
-
+    try:
+        with open('part_number.txt') as f:
+            part_number = f.read()
+    except Exception:
+        return ''
     data_cleaning = methods.get_clean_info()
     data_main_stat = methods.get_main_data_stat()
 
     return data_main_stat
 
-    data['code'] = wm_conn.part_number
+    data['code'] = part_number
 
     url = "https://wmf24.ru/api/reportdata"
     headers = {
