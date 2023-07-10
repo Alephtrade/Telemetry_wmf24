@@ -24,7 +24,7 @@ def controller_manager(operator, last_column, duration_column, next_column):
         if operator['durationInSeconds'] is not None and int(operator['durationInSeconds']) != -1:
             prev_cleaning_duration = db_conn.get_last_clean_or_rins(duration_column)[1]
             logging.info(f'PartNumber: {wm_conn.part_number}, prev_cleaning_duration: {prev_cleaning_duration}')
-            return prev_cleaning_duration
+            print(prev_cleaning_duration)
             if prev_cleaning_duration != operator['durationInSeconds']:
                     db_conn.save_clean_or_rins(duration_column, operator['durationInSeconds'])
                     if prev_cleaning_duration != 0:
