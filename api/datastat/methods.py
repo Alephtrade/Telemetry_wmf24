@@ -66,6 +66,14 @@ def get_main_data_stat():
             else:
                 wmf_error_count += 1
                 wmf_error_time += duration_time
+
+    db_conn.save_clean_or_rins("summ", summ)
+    db_conn.save_clean_or_rins("wmf_error_count", wmf_error_count)
+    db_conn.save_clean_or_rins("wmf_error_time", timedelta_str(wmf_error_time))
+    db_conn.save_clean_or_rins("time_worked", timedelta_str(time_count_default))
+    db_conn.save_clean_or_rins("stoppage_count", stoppage_count)
+    db_conn.save_clean_or_rins("stoppage_time", timedelta_str(stoppage_time))
+
     return {
         "summ": summ,
         "wmf_error_count": wmf_error_count,
