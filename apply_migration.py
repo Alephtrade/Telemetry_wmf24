@@ -101,8 +101,10 @@ if not does_object_exist('table', 'data_statistics'):
     conn.commit()
 
 add_table_column(table_name='data_statistics', column_name='time_worked', column_type='text')
-add_table_column(table_name='data_statistics', column_name='error_count', column_type='text')
-add_table_column(table_name='data_statistics', column_name='error_time', column_type='text')
+add_table_column(table_name='data_statistics', column_name='wmf_error_count', column_type='text')
+add_table_column(table_name='data_statistics', column_name='wmf_error_time', column_type='text')
+add_table_column(table_name='data_statistics', column_name='stoppage_count', column_type='text')
+add_table_column(table_name='data_statistics', column_name='stoppage_time', column_type='text')
 add_table_column(table_name='data_statistics', column_name='beverages_count', column_type='text')
 add_table_column(table_name='data_statistics', column_name='last_general_cleaning_datetime', column_type='text')
 add_table_column(table_name='data_statistics', column_name='general_cleaning_duration', column_type='text')
