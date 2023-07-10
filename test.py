@@ -29,10 +29,8 @@ def worker():
         data_for_request.append(item)
     for key, item in data_main_stat.items():
         data_for_request.append({key: item})
-
+    data_for_request.append({"code": part_number})
     return json.dumps(data_for_request)
-
-    data['code'] = part_number
 
     url = "https://wmf24.ru/api/reportdata"
     headers = {
