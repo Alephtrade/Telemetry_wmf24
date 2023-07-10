@@ -15,7 +15,7 @@ db_conn = WMFSQLDriver()
 initialize_logger('test.log')
 
 def worker():
-
+    data_for_request = []
     wm_conn = WMFMachineStatConnector()
     try:
         with open('part_number.txt') as f:
@@ -25,7 +25,10 @@ def worker():
     data_cleaning = methods.get_clean_info()
     data_main_stat = methods.get_main_data_stat()
 
-    return [data_cleaning, data_main_stat]
+    for item in data_cleaning:
+        data_for_request.append(item)
+
+    return data_for_request
 
     data['code'] = part_number
 
