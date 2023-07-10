@@ -105,7 +105,6 @@ add_table_column(table_name='data_statistics', column_name='wmf_error_count', co
 add_table_column(table_name='data_statistics', column_name='wmf_error_time', column_type='text')
 add_table_column(table_name='data_statistics', column_name='stoppage_count', column_type='text')
 add_table_column(table_name='data_statistics', column_name='stoppage_time', column_type='text')
-add_table_column(table_name='data_statistics', column_name='beverages_count', column_type='text')
 add_table_column(table_name='data_statistics', column_name='last_general_cleaning_datetime', column_type='text')
 add_table_column(table_name='data_statistics', column_name='general_cleaning_duration', column_type='text')
 add_table_column(table_name='data_statistics', column_name='next_general_cleaning_datetime', column_type='text')

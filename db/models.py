@@ -218,11 +218,13 @@ class WMFSQLDriver:
         cur.close()
         return res
 
-    def get_error_records(self, date_and_time_start, date_and_time_end):
+    def get_error_records(self, prev_hour, now_hour):
         cur = self.connection.cursor()
         stmt = f''' 
             SELECT id, error_code, start_time, end_time, error_text 
-            FROM error_code_stats WHERE start_time > "{date_and_time_start}" AND end_time < "{date_and_time_end}" OR end_time < "{date_and_time_end}"
+            FROM error_code_stats 
+            WHERE end_time >= "{prev_hour}" AND end_time < "{now_hour}" 
+            OR start_time >= "{prev_hour}" AND start_time < "{now_hour}"
         '''
         cur.execute(stmt)
         res = cur.fetchall()

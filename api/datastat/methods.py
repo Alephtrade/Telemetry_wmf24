@@ -50,35 +50,45 @@ def get_main_data_stat():
     if not wm_conn.ws:
         return False
     data = wm_conn.get_wmf_machine_info()
-    summ = wm_conn.get_beverages_count()
     stoppage_time, wmf_error_time, time_count_default = timedelta(), timedelta(), timedelta(seconds=3600)
     stoppage_count, wmf_error_count = 0, 0
-    unsent_records = db_conn.get_error_records(time_now, time_now + timedelta(hours=1))
-    #return unsent_records
+    unsent_records = db_conn.get_error_records(time_now - timedelta(hours=1), time_now)
     for rec_id, error_code, start_time, end_time, error_text in unsent_records:
-        if end_time:
-            error_text = error_text if error_text else ''
+        date_error_start = datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
+        if date_error_start >= (time_now - timedelta(hours=1)) and end_time is not None:
             duration_time = datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S') - datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
-            time_count_default -= duration_time
-            if error_code == -1:
-                stoppage_count += 1
-                stoppage_time += duration_time
-            else:
-                wmf_error_count += 1
-                wmf_error_time += duration_time
+        elif end_time is not None:
+            duration_time = datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S') - (time_now - timedelta(hours=1))
+        else:
+            duration_time = time_now - datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
+        time_count_default -= duration_time
+        if error_code == -1:
+            stoppage_count += 1
+            stoppage_time += duration_time
+        else:
+            wmf_error_count += 1
+            wmf_error_time += duration_time
 
-    db_conn.save_clean_or_rins("beverages_count", summ)
-    db_conn.save_clean_or_rins("wmf_error_count", wmf_error_count)
-    db_conn.save_clean_or_rins("wmf_error_time", timedelta_int(wmf_error_time))
-    db_conn.save_clean_or_rins("time_worked", timedelta_int(time_count_default))
+    wmf_error_time = timedelta_int(wmf_error_time)
+    time_count_default = timedelta_int(time_count_default)
+    stoppage_time = timedelta_int(stoppage_time)
+    if(wmf_error_time > 3600):
+        wmf_error_time = 3600
+    if(time_count_default < 0):
+        time_count_default = 0
+    if(stoppage_time > 3600):
+        stoppage_time = 3600
+
+    db_conn.save_clean_or_rins("wmf_error_time", wmf_error_time)
     db_conn.save_clean_or_rins("stoppage_count", stoppage_count)
-    db_conn.save_clean_or_rins("stoppage_time", timedelta_int(stoppage_time))
+    db_conn.save_clean_or_rins("stoppage_time", stoppage_time)
+    db_conn.save_clean_or_rins("time_worked", time_count_default)
+    db_conn.save_clean_or_rins("wmf_error_count", wmf_error_count)
 
     return {
-        "summ": summ,
         "wmf_error_count": wmf_error_count,
-        "wmf_error_time": timedelta_int(wmf_error_time),
-        "time_worked": timedelta_int(time_count_default),
+        "wmf_error_time": wmf_error_time,
+        "time_worked": time_count_default,
         "stoppage_count": stoppage_count,
-        "stoppage_time": timedelta_int(stoppage_time)
+        "stoppage_time": stoppage_time
     }
