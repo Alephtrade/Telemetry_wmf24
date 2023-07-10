@@ -25,7 +25,7 @@ def worker():
     data_cleaning = methods.get_clean_info()
     data_main_stat = methods.get_main_data_stat()
 
-    return {data_cleaning, data_main_stat}
+    return [data_cleaning, data_main_stat]
 
     data['code'] = part_number
 
