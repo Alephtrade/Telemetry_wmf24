@@ -45,22 +45,20 @@ def get_clean_info():
 
 def get_main_data_stat():
     time_now = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp() // (60 * 60) * 60 * 60))
-    time_count_default = 3600
     wm_conn = WMFMachineStatConnector()
     ws = websocket.create_connection(WS_URL)
     if not wm_conn.ws:
         return False
     data = wm_conn.get_wmf_machine_info()
     summ = wm_conn.get_beverages_count()
-    stoppage_time, wmf_error_time, time_count_default = timedelta(), timedelta(), timedelta()
+    stoppage_time, wmf_error_time, time_count_default = timedelta(), timedelta(), timedelta(seconds=3600)
     stoppage_count, wmf_error_count = 0, 0
     unsent_records = db_conn.get_error_records(time_now, time_now + timedelta(hours=1))
     #return unsent_records
     for rec_id, error_code, start_time, end_time, error_text in unsent_records:
         if end_time:
             error_text = error_text if error_text else ''
-            duration_time = datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S') - datetime.strptime(start_time,
-                                                                                                 '%Y-%m-%d %H:%M:%S')
+            duration_time = datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S') - datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
             time_count_default -= duration_time
             if error_code == -1:
                 stoppage_count += 1
