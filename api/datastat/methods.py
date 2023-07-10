@@ -77,8 +77,8 @@ def get_main_data_stat():
     return {
         "summ": summ,
         "wmf_error_count": wmf_error_count,
-        "wmf_error_time": timedelta_str(wmf_error_time),
-        "time_worked": timedelta_str(time_count_default),
+        "wmf_error_time": int(timedelta_str(wmf_error_time)),
+        "time_worked": int(timedelta_str(time_count_default)),
         "stoppage_count": stoppage_count,
-        "stoppage_time": timedelta_str(stoppage_time)
+        "stoppage_time": int(timedelta_str(stoppage_time))
     }
