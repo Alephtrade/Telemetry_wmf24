@@ -41,7 +41,7 @@ def get_clean_info():
         ]
         return data_d
     else:
-        return False
+        return []
 
 def get_main_data_stat():
     time_now = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp() // (60 * 60) * 60 * 60))
