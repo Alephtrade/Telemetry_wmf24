@@ -52,10 +52,10 @@ def get_main_data_stat():
         return False
     data = wm_conn.get_wmf_machine_info()
     summ = wm_conn.get_beverages_count()
-    stoppage_time, wmf_error_time = timedelta(), timedelta()
+    stoppage_time, wmf_error_time, time_count_default = timedelta(), timedelta(), timedelta()
     stoppage_count, wmf_error_count = 0, 0
     unsent_records = db_conn.get_error_records(time_now - timedelta(days=3), time_now + timedelta(days=3))
-    return unsent_records
+    #return unsent_records
     for rec_id, error_code, start_time, end_time, error_text in unsent_records:
         if end_time:
             error_text = error_text if error_text else ''
