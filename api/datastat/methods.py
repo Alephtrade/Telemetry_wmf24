@@ -37,7 +37,7 @@ def get_clean_info():
             {"next_milk_mixer_warm_rinsing_datetime": data[17]},
             {"last_ffc_filter_replacement_datetime": data[18]},
             {"general_ffc_filter_replacement_duration": data[19]},
-            {"next_ffc_filter_replacement_date": data[20]}
+            {"next_ffc_filter_replacement_datetime": data[20]}
         ]
         return data_d
     else:
