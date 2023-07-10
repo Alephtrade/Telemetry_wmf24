@@ -27,6 +27,8 @@ def worker():
 
     for item in data_cleaning:
         data_for_request.append(item)
+    for key, item in data_main_stat.items():
+        data_for_request.append({key: item})
 
     return data_for_request
 
