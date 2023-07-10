@@ -32,13 +32,12 @@ def worker():
         data_for_request.append({key: item})
     data_for_request.append({"code": part_number})
     data_for_request.append({"time_created": now_of_hour})
-    return json.dumps(data_for_request)
 
     url = "https://wmf24.ru/api/reportdata"
     headers = {
         'Content-Type': 'application/json'
     }
-    response = requests.request("POST", url, headers=headers, data=json.dumps(data))
+    response = requests.request("POST", url, headers=headers, data=json.dumps(data_for_request))
     logging.info(f"WMFMachineStatConnector: GET response: {response.text}")
     return response.text
 
