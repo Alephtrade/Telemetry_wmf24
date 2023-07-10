@@ -32,7 +32,7 @@ def worker():
         data_for_request.append({key: item})
     data_for_request.append({"code": part_number})
     data_for_request.append({"time_created": now_of_hour})
-    return data_for_request
+    return json.dumps(data_for_request)
 
     url = "https://wmf24.ru/api/reportdata"
     headers = {
