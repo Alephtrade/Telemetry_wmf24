@@ -6,7 +6,7 @@ sys.path.append("../../")
 from db.models import WMFSQLDriver
 from settings import prod as settings
 from wmf.models import WMFMachineStatConnector
-
+from core.utils import timedelta_str
 
 WMF_URL = settings.WMF_DATA_URL
 WS_URL = settings.WS_URL
@@ -71,8 +71,8 @@ def get_main_data_stat():
     return {
         "summ": summ,
         "wmf_error_count": wmf_error_count,
-        "wmf_error_time": wmf_error_time,
-        "time_worked": time_count_default,
+        "wmf_error_time": timedelta_str(wmf_error_time),
+        "time_worked": timedelta_str(time_count_default),
         "stoppage_count": stoppage_count,
-        "stoppage_time": stoppage_time
+        "stoppage_time": timedelta_str(stoppage_time)
     }
