@@ -222,7 +222,7 @@ class WMFSQLDriver:
         cur = self.connection.cursor()
         stmt = f''' 
             SELECT id, error_code, start_time, end_time, error_text 
-            FROM error_code_stats WHERE start_time > "{date_and_time_start}" AND end_time < "{date_and_time_end}"
+            FROM error_code_stats WHERE start_time > "{date_and_time_start}" AND end_time < "{date_and_time_end}" OR end_time < "{date_and_time_end}"
         '''
         cur.execute(stmt)
         res = cur.fetchall()
