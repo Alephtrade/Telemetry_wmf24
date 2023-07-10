@@ -49,7 +49,6 @@ def Take_Create_Beverage_Statistics(last_send):
                 recipes.append(item)
 
     summ = wm_conn.get_beverages_count()
-    return summ
     create_record = db_conn.create_beverages_log(device_code, summ, date_to_send, date_formed, json.dumps(recipes))
     ws.close()
     return create_record
