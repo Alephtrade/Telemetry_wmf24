@@ -30,7 +30,7 @@ def worker():
     for key, item in data_main_stat.items():
         data_for_request.append({key: item})
 
-    return data_for_request
+    return json.dumps(data_for_request)
 
     data['code'] = part_number
 
