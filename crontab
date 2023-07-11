@@ -6,7 +6,8 @@
 * * * * * sh /root/wmf_1100_1500_5000_router/run_check_machine_status.sh
 * * * * * sh /root/wmf_1100_1500_5000_router/run_check_cleaning_state.sh
 */5 * * * * sh /root/wmf_1100_1500_5000_router/run_check_cleaning_and_rising.sh
-* * * * * sh /root/wmf_1100_1500_5000_router/run_api_data_statistics.sh
+0 * * * * sh /root/wmf_1100_1500_5000_router/run_controller_machine_activity_creator.sh
+* * * * * sh /root/wmf_1100_1500_5000_router/run_controller_machine_activity_sender.sh
 * * * * * sh /root/wmf_1100_1500_5000_router/run_send_ip_address.sh
 0 * * * * sh /root/wmf_1100_1500_5000_router/run_beverage_create_worker.sh
 * * * * * sh /root/wmf_1100_1500_5000_router/run_beverage_send_worker.sh

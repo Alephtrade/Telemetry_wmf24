@@ -25,10 +25,10 @@ def controller_manager(operator, alias):
             print(f'prev {prev_cleaning_duration}')
             print(f'durationInSeconds {operator["durationInSeconds"]}')
             if prev_cleaning_duration != operator['durationInSeconds']:
-                    db_conn.save_clean_or_rins("type_cleaning_duration", operator['durationInSeconds'])
+                    db_conn.save_clean_or_rins(alias, "type_cleaning_duration", operator['durationInSeconds'])
                     if prev_cleaning_duration == 0:
                         print(f'new time {datetime.now()}')
-                        print(db_conn.save_clean_or_rins("type_last_cleaning_datetime", (datetime.now() + timedelta(hours=3)).strftime('%Y-%m-%d %H:%M:%S')))
+                        print(db_conn.save_clean_or_rins(alias, "type_last_cleaning_datetime", (datetime.now() + timedelta(hours=3)).strftime('%Y-%m-%d %H:%M:%S')))
     else:
         return "machine is off"
 
