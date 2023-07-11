@@ -153,6 +153,24 @@ class WMFSQLDriver:
         self.connection.commit()
         cur.close()
 
+    def get_clean_or_rins_to_send(self):
+        cur = self.connection.cursor()
+        stmt = ''' 
+            SELECT cleaning_alias, 
+            type_last_cleaning_datetime, 
+            type_cleaning_duration, 
+            date_formed
+            FROM machine_activity
+            WHERE is_sent == 1
+            ORDER BY date_formed DESC 
+        '''
+        cur.execute(stmt)
+        res = cur.fetchall()
+        logging.info(f'WMFSQLDriver get_machine_activity_to_send: {res}')
+        cur.close()
+        return res
+
+
     def is_record_machine_activity(self, time_delta):
         cur = self.connection.cursor()
         stmt = f''' 

@@ -1,3 +1,4 @@
+import json
 import logging
 from datetime import datetime, timedelta
 from db.models import WMFSQLDriver
@@ -28,15 +29,32 @@ def controller_manager(operator, alias):
             if prev_cleaning_duration != operator['durationInSeconds']:
                     db_conn.save_clean_or_rins(alias, "type_cleaning_duration", operator['durationInSeconds'])
                     print(f'save new durataion {alias}')
-                    if prev_cleaning_duration == 0:
-                        print(f'new time {datetime.now()}')
-                        print(db_conn.save_clean_or_rins(alias, "type_last_cleaning_datetime", (datetime.now() + timedelta(hours=3)).strftime('%Y-%m-%d %H:%M:%S')))
+                    print(f'new time {datetime.now()}')
+                    db_conn.save_clean_or_rins(alias, "type_last_cleaning_datetime", (datetime.now() + timedelta(hours=3)).strftime('%Y-%m-%d %H:%M:%S'))
+                    db_conn.save_clean_or_rins(alias, "is_sent", "1") #статус очереди на отправку 2 - отправлено, 1 - в очереди
     else:
         return "machine is off"
 
+def sender_report():
+    data = db_conn.get_clean_or_rins_to_send()
+    try:
+        with open('part_number.txt') as f:
+            part_number = f.read()
+    except Exception:
+        return ''
+    date_formated = []
+    for item in data:
+        date_formated.append({"cleaning_alias": item[0]})
+        date_formated.append({"type_last_cleaning_datetime": item[1]})
+        date_formated.append({"type_cleaning_duration": item[2]})
+        date_formated.append({"date_formed": item[3]})
+        date_formated.append({"code": part_number})
 
-print(wm_conn.get_system_cleaning_state(), wm_conn.get_milk_cleaning_state(), wm_conn.get_foamer_rinsing_state(), wm_conn.get_milk_replacement_state(), wm_conn.get_mixer_rinsing_state(), wm_conn.get_milk_mixer_warm_rinsing_state(), wm_conn.get_ffc_filter_replacement_state())
-print(controller_manager(wm_conn.get_system_cleaning_state(), "general"))
+    return json.dumps(date_formated)
+
+
+#print(wm_conn.get_system_cleaning_state(), wm_conn.get_milk_cleaning_state(), wm_conn.get_foamer_rinsing_state(), wm_conn.get_milk_replacement_state(), wm_conn.get_mixer_rinsing_state(), wm_conn.get_milk_mixer_warm_rinsing_state(), wm_conn.get_ffc_filter_replacement_state())
+controller_manager(wm_conn.get_system_cleaning_state(), "general")
 controller_manager(wm_conn.get_milk_cleaning_state(), "general_milk")
 controller_manager(wm_conn.get_foamer_rinsing_state(), "foamer")
 controller_manager(wm_conn.get_milk_replacement_state(), "milk_replacement")
@@ -44,3 +62,4 @@ controller_manager(wm_conn.get_mixer_rinsing_state(), "general_mixer")
 controller_manager(wm_conn.get_milk_mixer_warm_rinsing_state(), "milk_mixer_warm")
 controller_manager(wm_conn.get_ffc_filter_replacement_state(), "ffc_filter")
 
+print(sender_report())
