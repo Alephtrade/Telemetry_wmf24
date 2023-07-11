@@ -161,7 +161,7 @@ class WMFSQLDriver:
             type_cleaning_duration, 
             date_formed
             FROM machine_activity
-            WHERE is_sent == 1
+            WHERE is_sent = 1
             ORDER BY date_formed DESC 
         '''
         cur.execute(stmt)
