@@ -212,7 +212,8 @@ class WMFSQLDriver:
             stoppage_time, 
             date_formed, 
             time_to_send, 
-            time_fact_send
+            time_fact_send,
+            is_sent
             FROM machine_activity
             WHERE time_fact_send is NULL AND is_sent == 0
             ORDER BY id DESC 

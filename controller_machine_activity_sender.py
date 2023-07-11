@@ -24,11 +24,19 @@ def worker():
         return ''
     data_main_stat = db_conn.get_machine_activity_to_send()
 
-    return data_main_stat
-    for key, item in data_main_stat.items():
-        data_for_request.append({key: item})
-    data_for_request.append({"code": part_number})
-    data_for_request.append({"time_created": now_of_hour})
+    for item in data_main_stat:
+        data_for_request.append({"time_worked": item[0]})
+        data_for_request.append({"beverages_count": item[1]})
+        data_for_request.append({"wmf_error_count": item[2]})
+        data_for_request.append({"wmf_error_time": item[3]})
+        data_for_request.append({"stoppage_count": item[4]})
+        data_for_request.append({"stoppage_time": item[5]})
+        data_for_request.append({"date_formed": item[6]})
+        data_for_request.append({"time_to_send": item[7]})
+        data_for_request.append({"time_fact_send": item[8]})
+        data_for_request.append({"is_sent": item[9]})
+        data_for_request.append({"code": part_number})
+
     return json.dumps(data_for_request)
 
     url = "https://wmf24.ru/api/reportdata"
