@@ -168,7 +168,7 @@ class WMFSQLDriver:
     def get_clean_or_rins_to_send(self):
         cur = self.connection.cursor()
         stmt = ''' 
-            SELECT id
+            SELECT id,
             cleaning_alias, 
             type_last_cleaning_datetime, 
             type_cleaning_duration, 
