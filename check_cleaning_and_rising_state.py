@@ -53,13 +53,13 @@ def sender_report():
     return json.dumps(date_formated)
 
 
-#print(wm_conn.get_system_cleaning_state(), wm_conn.get_milk_cleaning_state(), wm_conn.get_foamer_rinsing_state(), wm_conn.get_milk_replacement_state(), wm_conn.get_mixer_rinsing_state(), wm_conn.get_milk_mixer_warm_rinsing_state(), wm_conn.get_ffc_filter_replacement_state())
-controller_manager(wm_conn.get_system_cleaning_state(), "general")
-controller_manager(wm_conn.get_milk_cleaning_state(), "general_milk")
-controller_manager(wm_conn.get_foamer_rinsing_state(), "foamer")
-controller_manager(wm_conn.get_milk_replacement_state(), "milk_replacement")
-controller_manager(wm_conn.get_mixer_rinsing_state(), "general_mixer")
-controller_manager(wm_conn.get_milk_mixer_warm_rinsing_state(), "milk_mixer_warm")
-controller_manager(wm_conn.get_ffc_filter_replacement_state(), "ffc_filter")
+print(wm_conn.get_system_cleaning_state(), wm_conn.get_milk_cleaning_state(), wm_conn.get_foamer_rinsing_state(), wm_conn.get_milk_replacement_state(), wm_conn.get_mixer_rinsing_state(), wm_conn.get_milk_mixer_warm_rinsing_state(), wm_conn.get_ffc_filter_replacement_state())
+print(controller_manager(wm_conn.get_system_cleaning_state(), "general"))
+print(controller_manager(wm_conn.get_milk_cleaning_state(), "general_milk"))
+print(controller_manager(wm_conn.get_foamer_rinsing_state(), "foamer"))
+print(controller_manager(wm_conn.get_milk_replacement_state(), "milk_replacement"))
+print(controller_manager(wm_conn.get_mixer_rinsing_state(), "general_mixer"))
+print(controller_manager(wm_conn.get_milk_mixer_warm_rinsing_state(), "milk_mixer_warm"))
+print(controller_manager(wm_conn.get_ffc_filter_replacement_state(), "ffc_filter"))
 
 print(sender_report())
