@@ -11,6 +11,7 @@
 * * * * * sh /root/wmf_1100_1500_5000_router/run_send_ip_address.sh
 0 * * * * sh /root/wmf_1100_1500_5000_router/run_beverage_create_worker.sh
 * * * * * sh /root/wmf_1100_1500_5000_router/run_beverage_send_worker.sh
+0 * * * * sh /root/wmf_1100_1500_5000_router/run_service_statistics_worker.sh
 
 
 
