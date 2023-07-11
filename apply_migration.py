@@ -69,7 +69,7 @@ if not does_object_exist('table', 'data_statistics'):
             id          integer
                 constraint data_statistics_pk
                     primary key,
-
+            cleaning_alias text,
             type_last_cleaning_datetime text,
             type_cleaning_duration  text,
             date_formed text,
