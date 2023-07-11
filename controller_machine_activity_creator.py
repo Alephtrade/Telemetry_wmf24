@@ -25,6 +25,7 @@ def get_main_data_stat():
     stoppage_time, wmf_error_time, time_count_default = timedelta(), timedelta(), timedelta(seconds=3600)
     stoppage_count, wmf_error_count = 0, 0
     unsent_records = db_conn.get_error_records(time_now - timedelta(hours=1), time_now)
+    print("check")
     for rec_id, error_code, start_time, end_time, error_text in unsent_records:
         date_error_start = datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
         if date_error_start < (time_now - timedelta(hours=1)) and end_time is None:
