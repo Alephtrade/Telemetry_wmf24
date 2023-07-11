@@ -59,7 +59,7 @@ def sender_report():
         response = requests.request("POST", url, headers=headers, data=json.dumps(date_formated))
         logging.info(f"WMFMachineStatConnector: GET response: {response.text}")
         db_conn.save_status_clean_or_rins(item[0], "is_sent", "2")
-        return response.text
+
     return "DONE"
 
 print(wm_conn.get_system_cleaning_state(), wm_conn.get_milk_cleaning_state(), wm_conn.get_foamer_rinsing_state(), wm_conn.get_milk_replacement_state(), wm_conn.get_mixer_rinsing_state(), wm_conn.get_milk_mixer_warm_rinsing_state(), wm_conn.get_ffc_filter_replacement_state())
