@@ -16,7 +16,6 @@ def get_main_data_stat():
     ws = websocket.create_connection(WS_URL)
     if not wm_conn.ws:
         return False
-    data = wm_conn.get_wmf_machine_info()
     last_send = db_conn.get_last_machine_activity()
     if last_send is None:
         now = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp()))
