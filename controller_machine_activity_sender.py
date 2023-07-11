@@ -42,7 +42,7 @@ def worker():
         response = requests.request("POST", url, headers=headers, data=json.dumps(data_for_request))
         logging.info(f"WMFMachineStatConnector: GET response: {response.text}")
         print(item[9])
-        db_conn.save_status_machine_activity(item[9], "id", "1")
+        db_conn.save_status_machine_activity(item[9], "is_sent", "1")
         db_conn.save_status_machine_activity(item[9], "time_fact_send", now_of_hour)
         return response.text
     return "DONE"
