@@ -160,7 +160,7 @@ class WMFSQLDriver:
             type_last_cleaning_datetime, 
             type_cleaning_duration, 
             date_formed
-            FROM machine_activity
+            FROM data_statistics
             WHERE is_sent = 1
             ORDER BY date_formed DESC 
         '''
