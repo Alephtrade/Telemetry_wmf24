@@ -20,7 +20,7 @@ def controller_manager(operator, alias):
     logging.info(f'PartNumber: {wm_conn.part_number}, curr_cleaning_duration: {operator}')
     if operator is not None:
         if operator['durationInSeconds'] is not None and int(operator['durationInSeconds']) != -1:
-            prev_cleaning_duration = db_conn.get_last_clean_or_rins("type_cleaning_duration")[1]
+            prev_cleaning_duration = db_conn.get_last_clean_or_rins("type_cleaning_duration", alias)[1]
             logging.info(f'PartNumber: {wm_conn.part_number}, prev_cleaning_duration: {prev_cleaning_duration}')
             print(f'prev {prev_cleaning_duration}')
             print(f'durationInSeconds {operator["durationInSeconds"]}')

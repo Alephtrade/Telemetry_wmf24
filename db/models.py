@@ -126,14 +126,14 @@ class WMFSQLDriver:
         self.connection.commit()
         cur.close()
 
-    def get_last_clean_or_rins(self, column_namee):
+    def get_last_clean_or_rins(self, column_namee, alias):
         cur = self.connection.cursor()
         stmt = f''' 
             SELECT id, {column_namee}
             FROM data_statistics 
-            WHERE ? NOT NULL
+            WHERE ? NOT NULL AND cleaning_alias = ?
         '''
-        cur.execute(stmt, (column_namee,))
+        cur.execute(stmt, (column_namee, alias,))
         res = cur.fetchone()
         cur.close()
         logging.info(f'WMFSQLDriver get_last_record: {res}')
