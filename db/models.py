@@ -225,11 +225,11 @@ class WMFSQLDriver:
         self.connection.commit()
         cur.close()
 
-    def save_status_machine_activity(self, id_record, operator, value_status):
+    def save_status_machine_activity(self, operator, value_status, id_record):
         cur = self.connection.cursor()
         stmt = f''' 
             UPDATE data_statistics 
-            SET {operator} = "{value_status}"
+            SET "{operator}" = "{value_status}"
             WHERE id = "{id_record}"
         '''
         logging.info(f'WMFSQLDriver save_last_record: key = {operator}, value = {value_status}')
