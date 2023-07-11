@@ -14,7 +14,7 @@ wm_conn = WMFMachineStatConnector()
 
 def controller_manager(operator, alias):
     now_of_hour = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp() // (60 * 60) * 60 * 60))
-    record = db_conn.is_record_clean_or_rins(now_of_hour)
+    record = db_conn.is_record_clean_or_rins(now_of_hour, alias)
     if record is None:
         db_conn.create_clean_or_rins(now_of_hour, alias)
     logging.info(f'PartNumber: {wm_conn.part_number}, curr_cleaning_duration: {operator}')

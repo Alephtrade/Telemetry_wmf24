@@ -224,14 +224,14 @@ class WMFSQLDriver:
         return res
 
 
-    def is_record_clean_or_rins(self, time_delta):
+    def is_record_clean_or_rins(self, time_delta, alias):
         cur = self.connection.cursor()
         stmt = f''' 
             SELECT id, date_formed
             FROM data_statistics
-            WHERE date_formed = ?
+            WHERE date_formed = ? AND cleaning_alias = ?
         '''
-        cur.execute(stmt, (time_delta,))
+        cur.execute(stmt, (time_delta, alias,))
         res = cur.fetchone()
         cur.close()
         return res
