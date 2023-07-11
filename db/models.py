@@ -228,7 +228,7 @@ class WMFSQLDriver:
     def save_status_machine_activity(self, id_record, operator, value_status):
         cur = self.connection.cursor()
         stmt = f''' 
-            UPDATE data_statistics 
+            UPDATE machine_activity 
             SET "{operator}" = "{value_status}"
             WHERE id = "{id_record}"
         '''
