@@ -104,6 +104,8 @@ if not does_object_exist('table', 'machine_activity'):
         is_sent text
         )
     '''
+    cur.execute(stmt)
+    conn.commit()
 
 add_table_column(table_name='machine_activity', column_name='time_worked', column_type='text')
 add_table_column(table_name='machine_activity', column_name='beverages_count', column_type='text')
