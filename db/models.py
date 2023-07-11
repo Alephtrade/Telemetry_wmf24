@@ -146,7 +146,7 @@ class WMFSQLDriver:
         stmt = f''' 
             UPDATE data_statistics 
             SET {operator} = "{value_column}"
-            WHERE date_formed = "{time_now}" AND cleaning_alias == "{alias}"
+            WHERE date_formed = "{time_now}" AND cleaning_alias = "{alias}"
         '''
         logging.info(f'WMFSQLDriver save_last_record: key = {operator}, value = {value_column}')
         cur.execute(stmt)
