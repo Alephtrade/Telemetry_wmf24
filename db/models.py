@@ -153,6 +153,76 @@ class WMFSQLDriver:
         self.connection.commit()
         cur.close()
 
+    def is_record_machine_activity(self, time_delta):
+        cur = self.connection.cursor()
+        stmt = f''' 
+            SELECT id, date_formed
+            FROM machine_activity
+            WHERE date_formed = ?
+        '''
+        cur.execute(stmt, (time_delta,))
+        res = cur.fetchone()
+        cur.close()
+        return res
+
+    def save_machine_activity(self, operator, value_column):
+        time_now = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp() // (60 * 60) * 60 * 60))
+        cur = self.connection.cursor()
+        record_time = get_curr_time_str()
+        stmt = f''' 
+            UPDATE machine_activity 
+            SET {operator} = "{value_column}"
+            WHERE date_formed = "{time_now}"
+        '''
+        logging.info(f'WMFSQLDriver save_last_record: key = {operator}, value = {value_column}')
+        cur.execute(stmt)
+        self.connection.commit()
+        cur.close()
+
+    def create_machine_activity(self, date_formed, time_to_sent):
+        cur = self.connection.cursor()
+        stmt = 'INSERT INTO machine_activity (date_formed, is_sent, time_to_send) VALUES (?, 0, ?)'
+        cur.execute(stmt, (date_formed, time_to_sent,))
+        self.connection.commit()
+        cur.close()
+
+    def get_last_machine_activity(self):
+        cur = self.connection.cursor()
+        stmt = ''' 
+            SELECT time_fact_send
+            FROM machine_activity
+            WHERE time_fact_send NOT NULL AND is_sent != 0
+            ORDER BY id DESC 
+            LIMIT 1
+        '''
+        cur.execute(stmt)
+        res = cur.fetchone()
+        logging.info(f'WMFSQLDriver get_last_machine_activity: {res}')
+        cur.close()
+        return res
+
+    def get_machine_activity_to_send(self):
+        cur = self.connection.cursor()
+        stmt = ''' 
+            SELECT time_worked, 
+            beverages_count, 
+            wmf_error_count, 
+            wmf_error_time, 
+            stoppage_count, 
+            stoppage_time, 
+            date_formed, 
+            time_to_send, 
+            time_fact_send
+            FROM machine_activity
+            WHERE time_fact_send is NULL AND is_sent == 0
+            ORDER BY id DESC 
+        '''
+        cur.execute(stmt)
+        res = cur.fetchall()
+        logging.info(f'WMFSQLDriver get_machine_activity_to_send: {res}')
+        cur.close()
+        return res
+
 
     def is_record_clean_or_rins(self, time_delta):
         cur = self.connection.cursor()
@@ -166,46 +236,13 @@ class WMFSQLDriver:
         cur.close()
         return res
 
-    def create_clean_or_rins(self, date_formed):
+    def create_clean_or_rins(self, date_formed, alias):
         cur = self.connection.cursor()
-        stmt = 'INSERT INTO data_statistics (date_formed) VALUES (?)'
-        cur.execute(stmt, (date_formed,))
+        stmt = 'INSERT INTO data_statistics (cleaning_alias, date_formed, is_sent) VALUES (?, ?, 0)'
+        cur.execute(stmt, (alias, date_formed,))
         self.connection.commit()
         cur.close()
 
-    def get_last_cleaning_info(self):
-        time_now = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp() // (60 * 60) * 60 * 60))
-        cur = self.connection.cursor()
-        stmt = ''' 
-            SELECT last_general_cleaning_datetime, 
-            general_cleaning_duration, 
-            next_general_cleaning_datetime, 
-            last_milk_cleaning_datetime, 
-            general_milk_cleaning_duration, 
-            next_milk_cleaning_datetime, 
-            last_foamer_rising_datetime, 
-            general_foamer_rising_duration, 
-            next_foamer_rising_datetime, 
-            last_milk_replacement_datetime, 
-            general_milk_replacement_duration, 
-            next_milk_replacement_datetime, 
-            last_mixer_rinsing_datetime, 
-            general_mixer_rinsing_duration, 
-            next_mixer_rinsing_datetime, 
-            last_milk_mixer_warm_rinsing_datetime, 
-            general_milk_mixer_warm_rinsing_duration, 
-            next_milk_mixer_warm_rinsing_datetime, 
-            last_ffc_filter_replacement_datetime, 
-            general_ffc_filter_replacement_duration, 
-            next_ffc_filter_replacement_datetime 
-            FROM data_statistics 
-            WHERE date_formed = ?
-        '''
-        cur.execute(stmt, (time_now,))
-        res = cur.fetchone()
-        cur.close()
-        logging.info(f'WMFSQLDriver get_last_record: {res}')
-        return res
 
     def get_unsent_records(self):
         cur = self.connection.cursor()

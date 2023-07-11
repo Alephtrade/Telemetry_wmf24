@@ -69,64 +69,53 @@ if not does_object_exist('table', 'data_statistics'):
             id          integer
                 constraint data_statistics_pk
                     primary key,
-            time_worked text,
-            error_count text,
-            error_time text,
-            beverages_count text,
-            last_general_cleaning_datetime text,
-            general_cleaning_duration  text,
-            next_general_cleaning_datetime text,
-            last_milk_cleaning_datetime  text,
-            general_milk_cleaning_duration  text,
-            next_milk_cleaning_datetime  text,
-            last_foamer_rising_datetime  text,
-            general_foamer_rising_duration  text,
-            next_foamer_rising_datetime  text,
-            last_milk_replacement_datetime  text,
-            general_milk_replacement_duration  text,
-            next_milk_replacement_datetime  text,
-            last_mixer_rinsing_datetime  text,
-            general_mixer_rinsing_duration  text,
-            next_mixer_rinsing_datetime  text,
-            last_milk_mixer_warm_rinsing_datetime  text,
-            general_milk_mixer_warm_rinsing_duration  text,
-            next_milk_mixer_warm_rinsing_datetime  text,
-            last_ffc_filter_replacement_datetime  text,
-            general_ffc_filter_replacement_duration  text,
-            next_ffc_filter_replacement_datetime  text,
-            date_formed text
+
+            type_last_cleaning_datetime text,
+            type_cleaning_duration  text,
+            date_formed text,
+            is_sent text
         )
     '''
     cur.execute(stmt)
     conn.commit()
 
-add_table_column(table_name='data_statistics', column_name='time_worked', column_type='text')
-add_table_column(table_name='data_statistics', column_name='wmf_error_count', column_type='text')
-add_table_column(table_name='data_statistics', column_name='wmf_error_time', column_type='text')
-add_table_column(table_name='data_statistics', column_name='stoppage_count', column_type='text')
-add_table_column(table_name='data_statistics', column_name='stoppage_time', column_type='text')
-add_table_column(table_name='data_statistics', column_name='last_general_cleaning_datetime', column_type='text')
-add_table_column(table_name='data_statistics', column_name='general_cleaning_duration', column_type='text')
-add_table_column(table_name='data_statistics', column_name='next_general_cleaning_datetime', column_type='text')
-add_table_column(table_name='data_statistics', column_name='last_milk_cleaning_datetime', column_type='text')
-add_table_column(table_name='data_statistics', column_name='general_milk_cleaning_duration', column_type='text')
-add_table_column(table_name='data_statistics', column_name='next_milk_cleaning_datetime', column_type='text')
-add_table_column(table_name='data_statistics', column_name='last_foamer_rising_datetime', column_type='text')
-add_table_column(table_name='data_statistics', column_name='general_foamer_rising_duration', column_type='text')
-add_table_column(table_name='data_statistics', column_name='next_foamer_rising_datetime', column_type='text')
-add_table_column(table_name='data_statistics', column_name='last_milk_replacement_datetime', column_type='text')
-add_table_column(table_name='data_statistics', column_name='general_milk_replacement_duration', column_type='text')
-add_table_column(table_name='data_statistics', column_name='next_milk_replacement_datetime', column_type='text')
-add_table_column(table_name='data_statistics', column_name='last_mixer_rinsing_datetime', column_type='text')
-add_table_column(table_name='data_statistics', column_name='general_mixer_rinsing_duration', column_type='text')
-add_table_column(table_name='data_statistics', column_name='next_mixer_rinsing_datetime', column_type='text')
-add_table_column(table_name='data_statistics', column_name='last_milk_mixer_warm_rinsing_datetime', column_type='text')
-add_table_column(table_name='data_statistics', column_name='general_milk_mixer_warm_rinsing_duration', column_type='text')
-add_table_column(table_name='data_statistics', column_name='next_milk_mixer_warm_rinsing_datetime', column_type='text')
-add_table_column(table_name='data_statistics', column_name='last_ffc_filter_replacement_datetime', column_type='text')
-add_table_column(table_name='data_statistics', column_name='general_ffc_filter_replacement_duration', column_type='text')
-add_table_column(table_name='data_statistics', column_name='next_ffc_filter_replacement_datetime', column_type='text')
+add_table_column(table_name='data_statistics', column_name='cleaning_alias', column_type='text')
+add_table_column(table_name='data_statistics', column_name='type_last_cleaning_datetime', column_type='text')
+add_table_column(table_name='data_statistics', column_name='type_cleaning_duration', column_type='text')
 add_table_column(table_name='data_statistics', column_name='date_formed', column_type='text')
+add_table_column(table_name='data_statistics', column_name='is_sent', column_type='text')
+
+if not does_object_exist('table', 'machine_activity'):
+    stmt = '''
+        create table machine_activity
+        (
+            id          integer
+                constraint data_statistics_pk
+                    primary key,
+        time_worked text,       
+        beverages_count text
+        wmf_error_count text,       
+        wmf_error_time text, 
+        stoppage_count text,       
+        stoppage_time text,       
+        date_formed text,
+        time_to_send text,
+        time_fact_send text,
+        is_sent text
+        )
+    '''
+
+add_table_column(table_name='machine_activity', column_name='time_worked', column_type='text')
+add_table_column(table_name='machine_activity', column_name='beverages_count', column_type='text')
+add_table_column(table_name='machine_activity', column_name='wmf_error_count', column_type='text')
+add_table_column(table_name='machine_activity', column_name='wmf_error_time', column_type='text')
+add_table_column(table_name='machine_activity', column_name='stoppage_count', column_type='text')
+add_table_column(table_name='machine_activity', column_name='stoppage_time', column_type='text')
+add_table_column(table_name='machine_activity', column_name='date_formed', column_type='text')
+add_table_column(table_name='machine_activity', column_name='time_to_send', column_type='text')
+add_table_column(table_name='machine_activity', column_name='time_fact_send', column_type='text')
+add_table_column(table_name='machine_activity', column_name='is_sent', column_type='text')
+
 
 if not does_object_exist('table', 'beverages_log'):
     stmt = '''

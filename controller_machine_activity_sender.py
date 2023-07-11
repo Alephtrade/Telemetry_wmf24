@@ -1,7 +1,6 @@
 import json
 import requests
 import logging
-from api.datastat import methods
 from datetime import timedelta, datetime
 from db.models import WMFSQLDriver
 from core.utils import timedelta_str, get_curr_time, initialize_logger
@@ -23,11 +22,9 @@ def worker():
             part_number = f.read()
     except Exception:
         return ''
-    data_cleaning = methods.get_clean_info()
-    data_main_stat = methods.get_main_data_stat()
+    data_main_stat = db_conn.get_machine_activity_to_send()
 
-    for item in data_cleaning:
-        data_for_request.append(item)
+    return data_main_stat
     for key, item in data_main_stat.items():
         data_for_request.append({key: item})
     data_for_request.append({"code": part_number})
