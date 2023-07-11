@@ -20,8 +20,13 @@ def get_main_data_stat():
     record = db_conn.is_record_machine_activity(time_now)
     if record is None:
         last_send = db_conn.get_last_machine_activity()
-        date_to_send = get_beverages_send_time(last_send[0])
-        db_conn.create_machine_activity(time_now, date_to_send)
+        if last_send is None:
+            now = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp()))
+            date_to_send = get_beverages_send_time(now)
+            db_conn.create_machine_activity(time_now, date_to_send)
+        else:
+            date_to_send = get_beverages_send_time(last_send[0])
+            db_conn.create_machine_activity(time_now, date_to_send)
     stoppage_time, wmf_error_time, time_count_default = timedelta(), timedelta(), timedelta(seconds=3600)
     stoppage_count, wmf_error_count = 0, 0
     unsent_records = db_conn.get_error_records(time_now - timedelta(hours=1), time_now)
