@@ -14,7 +14,7 @@ db_conn = WMFSQLDriver()
 initialize_logger('data_statistics_sender.log')
 
 def worker():
-    now_of_hour = str(datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp() // (60 * 60) * 60 * 60)))
+    now_of_hour = str(datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp())))
     data_for_request = []
     wm_conn = WMFMachineStatConnector()
     try:
@@ -26,25 +26,24 @@ def worker():
 
     for item in data_main_stat:
         data_for_request.append({"time_worked": item[0]})
-        data_for_request.append({"beverages_count": item[1]})
-        data_for_request.append({"wmf_error_count": item[2]})
-        data_for_request.append({"wmf_error_time": item[3]})
-        data_for_request.append({"stoppage_count": item[4]})
-        data_for_request.append({"stoppage_time": item[5]})
-        data_for_request.append({"date_formed": item[6]})
-        data_for_request.append({"time_to_send": item[7]})
-        data_for_request.append({"time_fact_send": item[8]})
-        data_for_request.append({"is_sent": item[9]})
+        data_for_request.append({"wmf_error_count": item[1]})
+        data_for_request.append({"wmf_error_time": item[2]})
+        data_for_request.append({"stoppage_count": item[3]})
+        data_for_request.append({"stoppage_time": item[4]})
+        data_for_request.append({"date_formed": item[5]})
+        data_for_request.append({"time_to_send": item[6]})
+        data_for_request.append({"time_fact_send": item[7]})
+        data_for_request.append({"is_sent": item[8]})
         data_for_request.append({"code": part_number})
-
-    return json.dumps(data_for_request)
-
-    url = "https://wmf24.ru/api/reportdata"
-    headers = {
-        'Content-Type': 'application/json'
-    }
-    response = requests.request("POST", url, headers=headers, data=json.dumps(data_for_request))
-    logging.info(f"WMFMachineStatConnector: GET response: {response.text}")
-    return response.text
+        url = "https://wmf24.ru/api/machineactivity"
+        headers = {
+            'Content-Type': 'application/json'
+        }
+        response = requests.request("POST", url, headers=headers, data=json.dumps(data_for_request))
+        logging.info(f"WMFMachineStatConnector: GET response: {response.text}")
+        db_conn.save_status_machine_activity(item[9], "id", "1")
+        db_conn.save_status_machine_activity(item[9], "time_fact_send", now_of_hour)
+        return response.text
+    return "DONE"
 
 print(worker())

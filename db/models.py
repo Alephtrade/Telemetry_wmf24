@@ -142,13 +142,25 @@ class WMFSQLDriver:
     def save_clean_or_rins(self, alias, operator, value_column):
         time_now = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp() // (60 * 60) * 60 * 60))
         cur = self.connection.cursor()
-        record_time = get_curr_time_str()
         stmt = f''' 
             UPDATE data_statistics 
             SET {operator} = "{value_column}"
-            WHERE date_formed = "{time_now}" AND cleaning_alias = "{alias}"
+            WHERE date_formed = "{time_now}" AND cleaning_alias = "{alias}" AND is_sent = 0
         '''
         logging.info(f'WMFSQLDriver save_last_record: key = {operator}, value = {value_column}')
+        cur.execute(stmt)
+        self.connection.commit()
+        cur.close()
+
+    def save_status_clean_or_rins(self, id_record, operator, value_status):
+        time_now = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp() // (60 * 60) * 60 * 60))
+        cur = self.connection.cursor()
+        stmt = f''' 
+            UPDATE data_statistics 
+            SET is_sent = "{value_status}"
+            WHERE date_formed = "{time_now}" AND id = "{id_record}"
+        '''
+        logging.info(f'WMFSQLDriver save_last_record: key = {operator}, value = {value_status}')
         cur.execute(stmt)
         self.connection.commit()
         cur.close()
@@ -156,13 +168,29 @@ class WMFSQLDriver:
     def get_clean_or_rins_to_send(self):
         cur = self.connection.cursor()
         stmt = ''' 
-            SELECT cleaning_alias, 
+            SELECT id
+            cleaning_alias, 
             type_last_cleaning_datetime, 
             type_cleaning_duration, 
             date_formed
             FROM data_statistics
-            WHERE is_sent = 1
+            WHERE is_sent = 0
             ORDER BY date_formed DESC 
+        '''
+        cur.execute(stmt)
+        res = cur.fetchall()
+        logging.info(f'WMFSQLDriver get_machine_activity_to_send: {res}')
+        cur.close()
+        return res
+
+    def get_clean_or_rins_to_queue(self):
+        cur = self.connection.cursor()
+        stmt = ''' 
+            SELECT id, cleaning_alias
+            FROM data_statistics
+            WHERE is_sent = 0
+            ORDER BY id DESC 
+            LIMIT 1
         '''
         cur.execute(stmt)
         res = cur.fetchall()
@@ -197,6 +225,18 @@ class WMFSQLDriver:
         self.connection.commit()
         cur.close()
 
+    def save_status_machine_activity(self, id_record, operator, value_status):
+        cur = self.connection.cursor()
+        stmt = f''' 
+            UPDATE data_statistics 
+            SET {operator} = "{value_status}"
+            WHERE id = "{id_record}"
+        '''
+        logging.info(f'WMFSQLDriver save_last_record: key = {operator}, value = {value_status}')
+        cur.execute(stmt)
+        self.connection.commit()
+        cur.close()
+
     def create_machine_activity(self, date_formed, time_to_sent):
         cur = self.connection.cursor()
         stmt = 'INSERT INTO machine_activity (date_formed, is_sent, time_to_send) VALUES (?, 0, ?)'
@@ -223,7 +263,6 @@ class WMFSQLDriver:
         cur = self.connection.cursor()
         stmt = ''' 
             SELECT time_worked, 
-            beverages_count, 
             wmf_error_count, 
             wmf_error_time, 
             stoppage_count, 
@@ -231,7 +270,8 @@ class WMFSQLDriver:
             date_formed, 
             time_to_send, 
             time_fact_send,
-            is_sent
+            is_sent,
+            id
             FROM machine_activity
             WHERE time_fact_send is NULL AND is_sent == 0
             ORDER BY id DESC 

@@ -93,7 +93,6 @@ if not does_object_exist('table', 'machine_activity'):
                 constraint data_statistics_pk
                     primary key,
         time_worked text,       
-        beverages_count text
         wmf_error_count text,       
         wmf_error_time text, 
         stoppage_count text,       
@@ -108,7 +107,6 @@ if not does_object_exist('table', 'machine_activity'):
     conn.commit()
 
 add_table_column(table_name='machine_activity', column_name='time_worked', column_type='text')
-add_table_column(table_name='machine_activity', column_name='beverages_count', column_type='text')
 add_table_column(table_name='machine_activity', column_name='wmf_error_count', column_type='text')
 add_table_column(table_name='machine_activity', column_name='wmf_error_time', column_type='text')
 add_table_column(table_name='machine_activity', column_name='stoppage_count', column_type='text')

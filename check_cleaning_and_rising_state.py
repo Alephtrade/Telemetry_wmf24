@@ -1,5 +1,6 @@
 import json
 import logging
+import requests
 from datetime import datetime, timedelta
 from db.models import WMFSQLDriver
 from wmf.models import WMFMachineStatConnector
@@ -31,7 +32,9 @@ def controller_manager(operator, alias):
                     print(f'save new durataion {alias}')
                     print(f'new time {datetime.now()}')
                     db_conn.save_clean_or_rins(alias, "type_last_cleaning_datetime", (datetime.now() + timedelta(hours=3)).strftime('%Y-%m-%d %H:%M:%S'))
-                    db_conn.save_clean_or_rins(alias, "is_sent", "1") #статус очереди на отправку 2 - отправлено, 1 - в очереди
+                    id_record = db_conn.get_clean_or_rins_to_queue()[0]
+                    db_conn.save_status_clean_or_rins(id_record, "is_sent", "1") #статус очереди на отправку 2 - отправлено, 1 - в очереди
+                    db_conn.create_clean_or_rins(now_of_hour, alias)
     else:
         return "machine is off"
 
@@ -44,14 +47,20 @@ def sender_report():
         return ''
     date_formated = []
     for item in data:
-        date_formated.append({"cleaning_alias": item[0]})
-        date_formated.append({"type_last_cleaning_datetime": item[1]})
-        date_formated.append({"type_cleaning_duration": item[2]})
-        date_formated.append({"date_formed": item[3]})
+        date_formated.append({"cleaning_alias": item[1]})
+        date_formated.append({"type_last_cleaning_datetime": item[2]})
+        date_formated.append({"type_cleaning_duration": item[3]})
+        date_formated.append({"date_formed": item[4]})
         date_formated.append({"code": part_number})
-
-    return json.dumps(date_formated)
-
+        url = "https://wmf24.ru/api/datastat"
+        headers = {
+            'Content-Type': 'application/json'
+        }
+        response = requests.request("POST", url, headers=headers, data=json.dumps(date_formated))
+        logging.info(f"WMFMachineStatConnector: GET response: {response.text}")
+        db_conn.save_status_clean_or_rins(item[0], "is_sent", "2")
+        return response.text
+    return "DONE"
 
 print(wm_conn.get_system_cleaning_state(), wm_conn.get_milk_cleaning_state(), wm_conn.get_foamer_rinsing_state(), wm_conn.get_milk_replacement_state(), wm_conn.get_mixer_rinsing_state(), wm_conn.get_milk_mixer_warm_rinsing_state(), wm_conn.get_ffc_filter_replacement_state())
 print(controller_manager(wm_conn.get_system_cleaning_state(), "general"))
