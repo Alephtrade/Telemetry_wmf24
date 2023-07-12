@@ -12,10 +12,6 @@ db_conn = WMFSQLDriver()
 
 def get_main_data_stat():
     time_now = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp() // (60 * 60) * 60 * 60))
-    wm_conn = WMFMachineStatConnector()
-    ws = websocket.create_connection(WS_URL)
-    if not wm_conn.ws:
-        return False
     last_send = db_conn.get_last_machine_activity()
     if last_send is None:
         now = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp()))
