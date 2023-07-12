@@ -6,7 +6,6 @@ from datetime import datetime, timedelta
 
 db_driver = WMFSQLDriver()
 
-
 def are_need_to_create():
     initialize_logger('send_statistics.txt')
     logging.info(f"beveragestatistics: Received Create start")

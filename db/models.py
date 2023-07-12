@@ -131,7 +131,9 @@ class WMFSQLDriver:
         stmt = f''' 
             SELECT id, {column_namee}
             FROM data_statistics 
-            WHERE ? NOT NULL AND cleaning_alias = ?
+            WHERE {column_namee} NOT NULL AND cleaning_alias = {alias}
+            ORDER BY id DESC 
+            LIMIT 1
         '''
         cur.execute(stmt, (column_namee, alias,))
         res = cur.fetchone()
@@ -295,10 +297,10 @@ class WMFSQLDriver:
         cur.close()
         return res
 
-    def create_clean_or_rins(self, date_formed, alias):
+    def create_clean_or_rins(self, cleaning_alias, type_last_cleaning_datetime, type_cleaning_duration):
         cur = self.connection.cursor()
-        stmt = 'INSERT INTO data_statistics (cleaning_alias, date_formed, is_sent) VALUES (?, ?, 0)'
-        cur.execute(stmt, (alias, date_formed,))
+        stmt = 'INSERT INTO data_statistics (cleaning_alias, type_last_cleaning_datetime, type_cleaning_duration, date_formed, is_sent) VALUES (?, ?, ?, ?, 0)'
+        cur.execute(stmt, (cleaning_alias, type_last_cleaning_datetime, type_cleaning_duration, type_cleaning_duration,))
         self.connection.commit()
         cur.close()
 
