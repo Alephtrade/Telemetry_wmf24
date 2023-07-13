@@ -7,7 +7,7 @@ cronjob="0 * * * * $croncmd"
 ( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
 
 croncmd="sh /root/wmf_1100_1500_5000_router/check_internet.sh"
-cronjob="*/5 * * * * $croncmd"
+cronjob="*/30 * * * * $croncmd"
 ( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
 
 croncmd="sh /root/wmf_1100_1500_5000_router/run_check_machine_status.sh"
