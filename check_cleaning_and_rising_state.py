@@ -16,10 +16,6 @@ wm_conn = WMFMachineStatConnector()
 
 def controller_manager(operator, alias):
     now_of_hour = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp() // (60 * 60) * 60 * 60))
-    record = db_conn.is_record_clean_or_rins(now_of_hour, alias)
-    if record is None:
-        db_conn.create_clean_or_rins(now_of_hour, alias)
-    logging.info(f'PartNumber: {wm_conn.part_number}, curr_cleaning_duration: {operator}')
     if operator is not None:
         if operator['durationInSeconds'] is not None and int(operator['durationInSeconds']) != -1:
             prev_cleaning_duration = db_conn.get_last_clean_or_rins("type_cleaning_duration", alias)[1]
@@ -31,12 +27,9 @@ def controller_manager(operator, alias):
                     db_conn.save_clean_or_rins(alias, "type_cleaning_duration", operator['durationInSeconds'])
                     print(f'save new durataion {alias}')
                     print(f'new time {datetime.now()}')
-                    db_conn.save_clean_or_rins(alias, "type_last_cleaning_datetime", (datetime.now() + timedelta(hours=3)).strftime('%Y-%m-%d %H:%M:%S'))
-                    id_record = db_conn.get_clean_or_rins_to_queue()[0]
-                    db_conn.save_status_clean_or_rins(id_record, "is_sent", "1") #статус очереди на отправку 2 - отправлено, 1 - в очереди
-                    db_conn.create_clean_or_rins(now_of_hour, alias)
-    else:
-        return "machine is off"
+                    db_conn.create_clean_or_rins(alias, "type_last_cleaning_datetime", (datetime.now() + timedelta(hours=3)).strftime('%Y-%m-%d %H:%M:%S'), operator['durationInSeconds'])
+    sender_report()
+
 
 def sender_report():
     data = db_conn.get_clean_or_rins_to_send()
@@ -46,21 +39,22 @@ def sender_report():
     except Exception:
         return ''
     date_formated = []
-    for item in data:
-        date_formated.append({"cleaning_alias": item[1]})
-        date_formated.append({"type_last_cleaning_datetime": item[2]})
-        date_formated.append({"type_cleaning_duration": item[3]})
-        date_formated.append({"date_formed": item[4]})
-        date_formated.append({"code": part_number})
-        url = "https://wmf24.ru/api/datastat"
-        headers = {
-            'Content-Type': 'application/json'
-        }
-        response = requests.request("POST", url, headers=headers, data=json.dumps(date_formated))
-        logging.info(f"WMFMachineStatConnector: GET response: {response.text}")
-        db_conn.save_status_clean_or_rins(item[0], "is_sent", "2")
-
-    return "DONE"
+    if data is not None:
+        for item in data:
+            date_formated.append({"cleaning_alias": item[1]})
+            date_formated.append({"type_last_cleaning_datetime": item[2]})
+            date_formated.append({"type_cleaning_duration": item[3]})
+            date_formated.append({"date_formed": item[4]})
+            date_formated.append({"code": part_number})
+            url = "https://wmf24.ru/api/datastat"
+            headers = {
+                'Content-Type': 'application/json'
+            }
+            response = requests.request("POST", url, headers=headers, data=json.dumps(date_formated))
+            logging.info(f"WMFMachineStatConnector: GET response: {response.text}")
+            db_conn.save_status_clean_or_rins(item[0], "is_sent", "2")
+        return "DONE"
+    return "nothing to send"
 
 print(wm_conn.get_system_cleaning_state(), wm_conn.get_milk_cleaning_state(), wm_conn.get_foamer_rinsing_state(), wm_conn.get_milk_replacement_state(), wm_conn.get_mixer_rinsing_state(), wm_conn.get_milk_mixer_warm_rinsing_state(), wm_conn.get_ffc_filter_replacement_state())
 print(controller_manager(wm_conn.get_system_cleaning_state(), "general"))
