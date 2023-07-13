@@ -22,7 +22,11 @@ croncmd="sh /root/wmf_1100_1500_5000_router/run_check_cleaning_and_rising.sh"
 cronjob="*/5 * * * * $croncmd"
 ( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
 
-croncmd="sh /root/wmf_1100_1500_5000_router/run_api_data_statistics.sh"
+croncmd="sh /root/wmf_1100_1500_5000_router/run_controller_machine_activity_creator.sh"
+cronjob="0 * * * * $croncmd"
+( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
+
+croncmd="sh /root/wmf_1100_1500_5000_router/run_controller_machine_activity_sender.sh"
 cronjob="* * * * * $croncmd"
 ( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
 
@@ -38,3 +42,6 @@ croncmd="sh /root/wmf_1100_1500_5000_router/run_beverage_send_worker.sh"
 cronjob="* * * * * $croncmd"
 ( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
 
+croncmd="sh /root/wmf_1100_1500_5000_router/run_service_statistics_worker.sh"
+cronjob="0 * * * * $croncmd"
+( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
