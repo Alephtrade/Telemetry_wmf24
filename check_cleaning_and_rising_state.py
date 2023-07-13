@@ -19,16 +19,23 @@ def controller_manager(operator, alias):
     if operator is not None:
         if operator['durationInSeconds'] is not None and int(operator['durationInSeconds']) != -1:
             prev_cleaning_duration = db_conn.get_last_clean_or_rins("type_cleaning_duration", alias)[1]
-            print(alias)
             logging.info(f'PartNumber: {wm_conn.part_number}, prev_cleaning_duration: {prev_cleaning_duration}')
-            print(f'prev {prev_cleaning_duration} - {alias}')
-            print(f'durationInSeconds {operator["durationInSeconds"]}')
+            logging.info(f'prev {prev_cleaning_duration} - {alias}')
+            logging.info(f'durationInSeconds {operator["durationInSeconds"]}')
             if prev_cleaning_duration != operator['durationInSeconds']:
                     db_conn.save_clean_or_rins(alias, "type_cleaning_duration", operator['durationInSeconds'])
-                    print(f'save new durataion {alias}')
-                    print(f'new time {datetime.now()}')
+                    logging.info(f'save new durataion {alias}')
+                    logging.info(f'new time {datetime.now()}')
                     db_conn.create_clean_or_rins(alias, "type_last_cleaning_datetime", (datetime.now() + timedelta(hours=3)).strftime('%Y-%m-%d %H:%M:%S'), operator['durationInSeconds'])
-    sender_report()
+                    send = sender_report()
+                    logging.info(f'{send}')
+            else:
+                logging.info(f'{prev_cleaning_duration} = {operator["durationInSeconds"]}')
+        else:
+            logging.info(f'{operator["durationInSeconds"]} is None or {int(operator["durationInSeconds"]) != -1}')
+    else:
+        logging.info(f'{operator} is none')
+
 
 
 def sender_report():
@@ -37,7 +44,7 @@ def sender_report():
         with open('part_number.txt') as f:
             part_number = f.read()
     except Exception:
-        return ''
+        logging.info(f'{part_number} is none')
     date_formated = []
     if data is not None:
         for item in data:
@@ -53,16 +60,17 @@ def sender_report():
             response = requests.request("POST", url, headers=headers, data=json.dumps(date_formated))
             logging.info(f"WMFMachineStatConnector: GET response: {response.text}")
             db_conn.save_status_clean_or_rins(item[0], "is_sent", "2")
-        return "DONE"
-    return "nothing to send"
+    else:
+        logging.info(f'{data} is none')
 
-print(wm_conn.get_system_cleaning_state(), wm_conn.get_milk_cleaning_state(), wm_conn.get_foamer_rinsing_state(), wm_conn.get_milk_replacement_state(), wm_conn.get_mixer_rinsing_state(), wm_conn.get_milk_mixer_warm_rinsing_state(), wm_conn.get_ffc_filter_replacement_state())
-print(controller_manager(wm_conn.get_system_cleaning_state(), "general"))
-print(controller_manager(wm_conn.get_milk_cleaning_state(), "general_milk"))
-print(controller_manager(wm_conn.get_foamer_rinsing_state(), "foamer"))
-print(controller_manager(wm_conn.get_milk_replacement_state(), "milk_replacement"))
-print(controller_manager(wm_conn.get_mixer_rinsing_state(), "general_mixer"))
-print(controller_manager(wm_conn.get_milk_mixer_warm_rinsing_state(), "milk_mixer_warm"))
-print(controller_manager(wm_conn.get_ffc_filter_replacement_state(), "ffc_filter"))
 
-print(sender_report())
+wm_conn.get_system_cleaning_state(), wm_conn.get_milk_cleaning_state(), wm_conn.get_foamer_rinsing_state(), wm_conn.get_milk_replacement_state(), wm_conn.get_mixer_rinsing_state(), wm_conn.get_milk_mixer_warm_rinsing_state(), wm_conn.get_ffc_filter_replacement_state()
+controller_manager(wm_conn.get_system_cleaning_state(), "general")
+controller_manager(wm_conn.get_milk_cleaning_state(), "general_milk")
+controller_manager(wm_conn.get_foamer_rinsing_state(), "foamer")
+controller_manager(wm_conn.get_milk_replacement_state(), "milk_replacement")
+controller_manager(wm_conn.get_mixer_rinsing_state(), "general_mixer")
+controller_manager(wm_conn.get_milk_mixer_warm_rinsing_state(), "milk_mixer_warm")
+controller_manager(wm_conn.get_ffc_filter_replacement_state(), "ffc_filter")
+
+sender_report()

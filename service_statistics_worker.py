@@ -23,7 +23,7 @@ def getServiceStatistics():
         with open('part_number.txt') as f:
             part_number = f.read()
     except Exception:
-        return ''
+        logging.info(f'{part_number} is none')
     logging.info(f"COFFEE_MACHINE: Received {part_number}")
     text_file = open("response.txt", "a")
     text_file.write(received_data)

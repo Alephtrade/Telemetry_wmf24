@@ -1,14 +1,16 @@
 import websocket
+import logging
 from datetime import timedelta, datetime
 from db.models import WMFSQLDriver
 from settings import prod as settings
 from wmf.models import WMFMachineStatConnector
-from core.utils import timedelta_int, get_beverages_send_time
+from core.utils import timedelta_int, get_beverages_send_time, initialize_logger
 
 WMF_URL = settings.WMF_DATA_URL
 WS_URL = settings.WS_URL
 DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
 db_conn = WMFSQLDriver()
+initialize_logger('controller_machine_activity_creator.py.log')
 
 def get_main_data_stat():
     time_now = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp() // (60 * 60) * 60 * 60))
@@ -73,12 +75,8 @@ def get_main_data_stat():
     db_conn.save_machine_activity("stoppage_count", stoppage_count)
     db_conn.save_machine_activity("stoppage_time", stoppage_time)
 
-    return {
-        "time_worked": time_count_default,
-        "wmf_error_count": wmf_error_count,
-        "wmf_error_time": wmf_error_time,
-        "stoppage_count": stoppage_count,
-        "stoppage_time": stoppage_time
-    }
+    logging.info(f'time_worked {time_count_default}, wmf_error_count {wmf_error_count}, wmf_error_time {wmf_error_time}, stoppage_count {stoppage_count}, stoppage_time: stoppage_time')
+    return True
+
 
 get_main_data_stat()

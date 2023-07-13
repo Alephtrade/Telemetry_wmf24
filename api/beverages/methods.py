@@ -16,20 +16,25 @@ WMF_URL = settings.WMF_DATA_URL
 WS_URL = settings.WS_URL
 DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
 db_conn = WMFSQLDriver()
+initialize_logger('api_beverages_methods.log')
 
 
 def Take_Create_Beverage_Statistics(last_send):
     wm_conn = WMFMachineStatConnector()
     ws = websocket.create_connection(WS_URL)
+    if not wm_conn.ws:
+        logging.info(f"error {wm_conn.ws}")
+        return False
     request = json.dumps({'function': 'getBeverageStatistics'})
     ws.send(request)
     received_data = ws.recv()
+    logging.info(f"error {received_data}")
     if received_data is not None or received_data != []:
         try:
             with open('part_number.txt') as f:
                 part_number = f.read()
         except Exception:
-            return ''
+            logging.info(f"part_number unknown")
         received_data = received_data.replace(']', '', 1)
         received_data = received_data + ', {"device_code" : ' + str(part_number) + '}]'
         logging.info(f"beveragestatistics: Received {received_data}")
@@ -40,21 +45,18 @@ def Take_Create_Beverage_Statistics(last_send):
         date_to_send = get_beverages_send_time(last_send)
         date_formed = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp()))
         for item in received:
-            # print(item)
             for k, item2 in item.items():
-                # print(item2)
                 if (k.startswith("device_code")):
                     device_code = item2
                 if (k.startswith("TotalCountRcp")):
-                    #summ += item2
                     recipes.append(item)
 
         summ = wm_conn.get_beverages_count()
         create_record = db_conn.create_beverages_log(device_code, summ, date_to_send, date_formed, json.dumps(recipes))
         ws.close()
-        return create_record
+        logging.info(f"result {create_record}")
     else:
-        return "machine off"
+        logging.info(f"machine off, exit")
 
 
 def Send_Statistics(data_info, id_record):
@@ -68,5 +70,7 @@ def Send_Statistics(data_info, id_record):
     now = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp()))
     if(json_res["id"]):
         update_record = db_conn.update_beverages_log(id_record, now)
-        return print("Обновление")
+        logging.info(f"update {update_record}")
+    else:
+        logging.info(f"error unknown id record")
     return response.json()
