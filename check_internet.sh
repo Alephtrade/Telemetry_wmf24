@@ -6,5 +6,5 @@ if ping -c $COUNT $IP > /dev/null 2>&1; then
   echo "Ping to $IP was successful."
 else
   echo "Ping to $IP failed."
-  #pip install -r requirements.txt && sh setup_openvpn.sh && /etc/init.d/network restart && reboot
+  pip install -r requirements.txt && sh setup_openvpn.sh && /etc/init.d/network restart && reboot
 fi
