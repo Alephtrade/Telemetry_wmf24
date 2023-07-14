@@ -16,10 +16,10 @@ WMF_URL = settings.WMF_DATA_URL
 WS_URL = settings.WS_URL
 DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
 db_conn = WMFSQLDriver()
-initialize_logger('api_beverages_methods.log')
 
 
 def Take_Create_Beverage_Statistics(last_send):
+    initialize_logger('beveragestatistics.log')
     wm_conn = WMFMachineStatConnector()
     ws = websocket.create_connection(WS_URL)
     if not wm_conn.ws:
@@ -28,7 +28,7 @@ def Take_Create_Beverage_Statistics(last_send):
     request = json.dumps({'function': 'getBeverageStatistics'})
     ws.send(request)
     received_data = ws.recv()
-    logging.info(f"error {received_data}")
+    logging.info(f"{received_data}")
     if received_data is not None or received_data != []:
         try:
             with open('part_number.txt') as f:
@@ -60,6 +60,7 @@ def Take_Create_Beverage_Statistics(last_send):
 
 
 def Send_Statistics(data_info, id_record):
+    initialize_logger('beverages_send_worker.py.log')
     logging.info(f"beveragestatistics: GET request: {data_info}")
     url = "https://wmf24.ru/api/beveragestatistics"
     headers = {

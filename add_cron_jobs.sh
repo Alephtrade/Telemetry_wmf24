@@ -1,3 +1,4 @@
+#!/bin/bash
 croncmd="sh /root/wmf_1100_1500_5000_router/start_error_collector.sh"
 cronjob="* * * * * $croncmd"
 ( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -

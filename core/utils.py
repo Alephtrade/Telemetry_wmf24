@@ -81,6 +81,7 @@ def get_next_date_formed(interval_minutes):
     return datetime.fromtimestamp(a)
 
 def get_beverages_send_time(last_send_time):
+    initialize_logger('get_beverages_send_time.log')
     code = get_part_number_local()
     url = f'https://wmf24.ru/api/get-coffee-machine-info/{code}'
     payload = {}
@@ -98,4 +99,5 @@ def get_beverages_send_time(last_send_time):
     a = int(next_time.timestamp() // (60 * 60) * 60 * 60) + body_response['interval_beverages'] * 60 * 60 + body_response['interval_beverages_min'] * 60
     if a < int(datetime.now().timestamp()):
         a = int(int(datetime.now().timestamp()) // (60 * 60) * 60 * 60) + 2 * 60 * 60 + 33 * 60
+    logging.info(f"created next time is:{a}")
     return datetime.fromtimestamp(a)
