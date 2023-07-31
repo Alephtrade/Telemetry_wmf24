@@ -5,5 +5,4 @@ error_report.json
 machine_info.txt
 ip_address.json
 logs/*.log*
-wmf.db
 wmf_backup.db

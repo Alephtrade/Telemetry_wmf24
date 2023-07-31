@@ -60,11 +60,23 @@ class WMFSQLDriver:
         cur.close()
 
     def close_error_code(self, error_code):
+        cur2 = self.connection.cursor()
+        stmt2 = ''' 
+                SELECT id, start_time
+                FROM error_code_stats
+                WHERE error_code = ? AND end_time IS NULL
+                ORDER BY id desc
+                LIMIT 1
+        '''
+        cur2.execute(stmt2)
+        res2 = cur2.fetchone()
+        cur2.close()
         cur = self.connection.cursor()
         end_time = get_curr_time_str()
+        duration_time_param = end_time - res2[1]
         stmt = ''' 
             UPDATE error_code_stats 
-            SET end_time = ?
+            SET end_time = ?, duration_time = duration_time_param
             WHERE id = (
                 SELECT id
                 FROM error_code_stats

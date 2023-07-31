@@ -46,6 +46,7 @@ add_table_column(table_name='last_record', column_name='beverages_count', column
 add_table_column(table_name='last_record', column_name='cleaning_duration', column_type='real default 0')
 add_table_column(table_name='last_record', column_name='cleaning_datetime', column_type='text')
 add_table_column(table_name='error_code_stats', column_name='error_text', column_type='text')
+add_table_column(table_name='error_code_stats', column_name='duration_time', column_type='text')
 
 if not does_object_exist('table', 'tg_reports'):
     stmt = '''
