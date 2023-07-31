@@ -73,7 +73,9 @@ class WMFSQLDriver:
         cur2.close()
         cur = self.connection.cursor()
         end_time = datetime.now() + timedelta(hours=3)
+        print(res2)
         duration_time_param = int(end_time.timestamp()) - int(datetime.strptime(res2[1], "%Y-%m-%d %H:%M:%S").timestamp())
+        print(duration_time_param)
         stmt = ''' 
             UPDATE error_code_stats 
             SET end_time = ?, duration_time = duration_time_param
@@ -85,7 +87,8 @@ class WMFSQLDriver:
                 LIMIT 1
             )
         '''
-        cur.execute(stmt, (end_time, error_code))
+        print(stmt)
+        print(cur.execute(stmt, (end_time, error_code)))
         self.connection.commit()
         cur.close()
 

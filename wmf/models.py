@@ -251,7 +251,7 @@ class WMFMachineErrorConnector:
                     self.current_errors.add(data.get("ErrorCode"))
                     self.db_driver.create_error_record(error_code, error_text)
                 elif info == "gone Error":
-                    self.db_driver.close_error_code(error_code)
+                    logging.info(self.db_driver.close_error_code(error_code))
                     if error_code in self.current_errors:
                         self.current_errors.remove(error_code)
             if data.get("function") == 'startPushDispensingFinished':
