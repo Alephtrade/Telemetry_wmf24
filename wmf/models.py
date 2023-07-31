@@ -2,7 +2,7 @@ import requests
 import websocket
 import json
 import logging
-from core.utils import print_exception, get_env_mode
+from core.utils import print_exception, get_env_mode, get_part_number_local
 from db.models import WMFSQLDriver
 from telegram.models import WMFTelegramBot
 
@@ -254,6 +254,9 @@ class WMFMachineErrorConnector:
                     self.db_driver.close_error_code(error_code)
                     if error_code in self.current_errors:
                         self.current_errors.remove(error_code)
+            if data.get("function") == 'startPushDispensingFinished':
+                info = data
+                logging.info(f"WMFMachineConnector: message={data}")
             # self.db_driver.save_last_record('current_errors', json.dumps(list(self.current_errors)))
         except Exception as ex:
             logging.error(f"WMFMachineConnector handle_error: error={ex}, stacktrace: {print_exception()}")
@@ -268,13 +271,14 @@ class WMFMachineErrorConnector:
 
     def on_open(self, ws):
         ws.send(json.dumps({"function": "startPushErrors"}))
+        ws.send(json.dumps({"function": "startPushDispensingFinished"}))
 
     def on_exit(self, ws):
         ws.close()
 
     def __init__(self):
         try:
-            self.part_number = self.get_part_number()
+            self.part_number = get_part_number_local()
             self.db_driver = WMFSQLDriver()
             self.current_errors = set()
             self.previous_errors = set()
@@ -303,11 +307,11 @@ class WMFMachineStatConnector:
         try:
             data = self.send_wmf_request('getMachineInfo')
             part_number = data.get('PartNumber')
-            with open('part_number.txt', 'w') as f:
+            with open('/root/wmf_1100_1500_5000_router/part_number.txt', 'w') as f:
                 f.write(str(part_number))
             return part_number
         except Exception:
-            with open('part_number.txt') as f:
+            with open('/root/wmf_1100_1500_5000_router/part_number.txt') as f:
                 return f.read()
 
     def get_wmf_machine_info(self):
@@ -316,7 +320,7 @@ class WMFMachineStatConnector:
         r = requests.get(url)
         logging.info(f"WMFMachineStatConnector: GET response: {r.content.decode('utf-8')}")
         data = r.json()
-        with open('machine_info.txt', 'w') as f:
+        with open('/root/wmf_1100_1500_5000_router/machine_info.txt', 'w') as f:
             f.write('Компания {company}, Филиал {filial}'.format(**data))
         return data
 
@@ -325,12 +329,67 @@ class WMFMachineStatConnector:
             data = self.send_wmf_request('getBeverageStatistics')
             self.beverage_stats_raw = data
             result = 0
+            print(data)
             for k, v in data.items():
                 if k not in ('function', 'returnvalue'):
-                    result += v if v else 0
+                    result += int(v) if v else 0
             return result
         else:
             return None
+
+    def get_system_cleaning_state(self):
+        if self.ws:
+            data = self.send_wmf_request('getSystemCleaningState')
+            return data
+        else:
+            return None
+
+    def get_milk_cleaning_state(self):
+        if self.ws:
+            data = self.send_wmf_request('getMilkCleaningState')
+            return data
+        else:
+            return None
+
+    def get_foamer_rinsing_state(self):
+        if self.ws:
+            data = self.send_wmf_request('getFoamerRinsingState')
+            return data
+        else:
+            return None
+
+    def get_milk_replacement_state(self):
+        if self.ws:
+            data = self.send_wmf_request('getMilkReplacementState')
+            return data
+        else:
+            return None
+
+    def get_mixer_rinsing_state(self):
+        if self.ws:
+            data = self.send_wmf_request('getMixerRinsingState')
+            return data
+        else:
+            return None
+
+    def get_milk_mixer_warm_rinsing_state(self):
+        if self.ws:
+            data = self.send_wmf_request('getMilkMixerWarmRinsingState')
+            return data
+        else:
+            return None
+
+    def get_ffc_filter_replacement_state(self):
+        if self.ws:
+            data = self.send_wmf_request('getFfcFilterReplacementState')
+            return data
+        else:
+            return None
+
+    def get_cleaning_duration(self):
+        if self.ws:
+            return self.send_wmf_request('getSystemCleaningState')['durationInSeconds']
+        return None
 
     def get_cleaning_state(self):
         if self.ws:
@@ -345,17 +404,12 @@ class WMFMachineStatConnector:
         else:
             return None
 
-    def get_cleaning_duration(self):
-        if self.ws:
-            return self.send_wmf_request('getSystemCleaningState')['durationInSeconds']
-        return None
-
     def __init__(self):
         try:
             self.ws = websocket.create_connection(self.WS_URL, timeout=5)
         except Exception:
             self.ws = None
-        self.part_number = self.get_part_number()
+        self.part_number = get_part_number_local()
         self.beverage_stats_raw = None
 
     def close(self):
