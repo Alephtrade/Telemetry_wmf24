@@ -72,8 +72,8 @@ class WMFSQLDriver:
         res2 = cur2.fetchone()
         cur2.close()
         cur = self.connection.cursor()
-        end_time = get_curr_time_str()
-        duration_time_param = end_time - res2[1]
+        end_time = datetime.now() + timedelta(hours=3)
+        duration_time_param = int(end_time.timestamp()) - int(datetime.strptime(res2[1], "%Y-%m-%d %H:%M:%S").timestamp())
         stmt = ''' 
             UPDATE error_code_stats 
             SET end_time = ?, duration_time = duration_time_param
