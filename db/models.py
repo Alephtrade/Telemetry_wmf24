@@ -68,17 +68,18 @@ class WMFSQLDriver:
                 ORDER BY id desc
                 LIMIT 1
         '''
-        cur2.execute(stmt2)
+        cur2.execute(stmt2, (error_code,))
         res2 = cur2.fetchone()
         cur2.close()
         cur = self.connection.cursor()
         end_time = datetime.now() + timedelta(hours=3)
         print(res2)
+        result_end_time = end_time.strftime('%Y-%m-%d %H:%M:%S')
         duration_time_param = int(end_time.timestamp()) - int(datetime.strptime(res2[1], "%Y-%m-%d %H:%M:%S").timestamp())
         print(duration_time_param)
         stmt = ''' 
             UPDATE error_code_stats 
-            SET end_time = ?, duration_time = duration_time_param
+            SET end_time = ?, duration_time = ?
             WHERE id = (
                 SELECT id
                 FROM error_code_stats
@@ -88,7 +89,7 @@ class WMFSQLDriver:
             )
         '''
         print(stmt)
-        print(cur.execute(stmt, (end_time, error_code)))
+        print(cur.execute(stmt, (result_end_time, error_code, duration_time_param,)))
         self.connection.commit()
         cur.close()
 
