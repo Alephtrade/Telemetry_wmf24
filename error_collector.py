@@ -39,7 +39,7 @@ def send_errors():
             print("been none")
             try_to_get_part_number = get_part_number_local()
         if wmf_conn.date_error_end is not None:
-            return wmf_conn.current_errors
+            logging.info(f'errors: {wmf_conn.current_errors}')
             errors = ','.join(str(err) for err in wmf_conn.current_errors)
             date_start = wmf_conn.date_error_start
             date_end = wmf_conn.date_error_end
