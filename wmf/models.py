@@ -259,7 +259,7 @@ class WMFMachineErrorConnector:
                     if error_code in self.current_errors:
                         self.date_error_end = datetime.now()
                         self.closing_error = error_code
-                        self.current_errors.remove(error_code)
+                        #self.current_errors.remove(error_code)
             if data.get("function") == 'startPushDispensingFinished':
                 info = data
                 logging.info(f"WMFMachineConnector: message={data}")
