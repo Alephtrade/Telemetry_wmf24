@@ -254,6 +254,8 @@ class WMFMachineErrorConnector:
                     self.db_driver.create_error_record(error_code, error_text)
                 elif info == "gone Error":
                     logging.info(self.db_driver.close_error_code(error_code))
+                    self.date_error_end = datetime.now()
+                    self.closing_error = error_code
                     if error_code in self.current_errors:
                         self.date_error_end = datetime.now()
                         self.closing_error = error_code

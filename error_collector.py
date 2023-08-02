@@ -56,7 +56,6 @@ def send_errors():
         elif wmf_conn.get_status() == 0:
             request = f'{WMF_URL}?code={try_to_get_part_number}&{DEFAULT_WMF_PARAMS}&error_id=0&status=0'
         if request:
-            print(request)
             logging.info(f'error_collector send_errors: => {request}')
             response = requests.post(request, timeout=settings.REQUEST_TIMEOUT)
             content = response.content.decode('utf-8')
