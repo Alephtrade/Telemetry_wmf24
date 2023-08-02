@@ -8,4 +8,7 @@ if ping -c $COUNT $IP > /dev/null 2>&1; then
 else
   echo "$TIME : Ping to $IP failed."
   /etc/init.d/network restart
+  if ping -c $COUNT $IP > /dev/null 2>&1; then
+    reboot
+  fi
 fi
