@@ -38,17 +38,16 @@ def send_errors():
         if try_to_get_part_number is None:
             print("been none")
             try_to_get_part_number = get_part_number_local()
-        if wmf_conn.closing_error is not None:
             logging.info(f'current_errors: {wmf_conn.current_errors}')
             logging.info(f'closing_error: {wmf_conn.closing_error}')
-            errors = wmf_conn.closing_error
-            date_start = wmf_conn.date_error_start
-            date_end = wmf_conn.date_error_end
-            request = f'{WMF_URL}?code={try_to_get_part_number}&{DEFAULT_WMF_PARAMS}&error_id={errors}&date_start={date_start}&date_end={date_end}status={wmf_conn.get_status()}'
-            wmf_conn.current_errors.remove(wmf_conn.closing_error)
-            wmf_conn.date_error_start = None
-            wmf_conn.date_error_end = None
-            wmf_conn.closing_error = None
+        errors = wmf_conn.closing_error
+        date_start = wmf_conn.date_error_start
+        date_end = wmf_conn.date_error_end
+        request = f'{WMF_URL}?code={try_to_get_part_number}&{DEFAULT_WMF_PARAMS}&error_id={errors}&date_start={date_start}&date_end={date_end}status={wmf_conn.get_status()}'
+        wmf_conn.current_errors.remove(wmf_conn.closing_error)
+        wmf_conn.date_error_start = None
+        wmf_conn.date_error_end = None
+        wmf_conn.closing_error = None
         if len(wmf_conn.current_errors) > 0 and wmf_conn.current_errors != wmf_conn.previous_errors:
             errors = ','.join(str(err) for err in wmf_conn.current_errors)
         elif len(wmf_conn.current_errors) == 0:
