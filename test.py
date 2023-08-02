@@ -24,7 +24,7 @@ def worker():
     if unset_errors:
         for record in unset_errors:
             request = f'{WMF_URL}?code={try_to_get_part_number}&{DEFAULT_WMF_PARAMS}&error_id={record[1]}&date_start={record[2]}&date_end={record[3]}&duration={record[5]}&status=1'
-            response = requests.post(request, timeout=settings.REQUEST_TIMEOUT)
+            response = requests.post(request)
             content = response.content.decode('utf-8')
     print(content)
     return content
