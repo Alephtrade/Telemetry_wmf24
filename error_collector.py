@@ -38,7 +38,7 @@ def send_errors():
         if try_to_get_part_number is None:
             print("been none")
             try_to_get_part_number = get_part_number_local()
-        if len(wmf_conn.date_error_end is not None):
+        if wmf_conn.date_error_end is not None:
             errors = ','.join(str(err) for err in wmf_conn.current_errors)
             request = f'{WMF_URL}?code={try_to_get_part_number}&{DEFAULT_WMF_PARAMS}&error_id={errors}&date_start={wmf_conn.date_error_start}&date_end={wmf_conn.date_error_end}status={wmf_conn.get_status()}'
         if len(wmf_conn.current_errors) > 0 and wmf_conn.current_errors != wmf_conn.previous_errors:
