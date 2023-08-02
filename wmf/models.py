@@ -256,7 +256,8 @@ class WMFMachineErrorConnector:
                     logging.info(self.db_driver.close_error_code(error_code))
                     if error_code in self.current_errors:
                         self.date_error_end = datetime.now()
-                        #self.current_errors.remove(error_code)
+                        self.closing_error = error_code
+                        self.current_errors.remove(error_code)
             if data.get("function") == 'startPushDispensingFinished':
                 info = data
                 logging.info(f"WMFMachineConnector: message={data}")
@@ -286,6 +287,7 @@ class WMFMachineErrorConnector:
             self.current_errors = set()
             self.date_error_start = None
             self.date_error_end = None
+            self.closing_error = None
             self.previous_errors = set()
             self.ws = websocket.WebSocketApp(self.WS_URL,
                                              on_open=self.on_open,
