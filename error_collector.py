@@ -40,12 +40,11 @@ def send_errors():
         unset_errors = db_conn.get_unsent_records()
         if unset_errors:
             for record in unset_errors:
-                if record[3]:
-                    request = f'{WMF_URL}?code={try_to_get_part_number}&{DEFAULT_WMF_PARAMS}&error_id={record[1]}&date_start={record[2]}&date_end={record[3]}&duration={record[5]}&status={wmf_conn.get_status()}'
-                    response = requests.post(request)
-                    content = response.content.decode('utf-8')
-                    db_conn.set_report_sent(record[0])
-                    logging.info(f'error_collector send_errors: <= {response} {content}')
+                request = f'{WMF_URL}?code={try_to_get_part_number}&{DEFAULT_WMF_PARAMS}&error_id={record[1]}&date_start={record[2]}&date_end={record[3]}&duration={record[5]}&status={wmf_conn.get_status()}'
+                response = requests.post(request)
+                content = response.content.decode('utf-8')
+                db_conn.set_report_sent(record[0])
+                logging.info(f'error_collector send_errors: <= {response} {content}')
         else:
             logging.info(f'error_collector send_errors: nothing to send')
     except Exception as ex:
