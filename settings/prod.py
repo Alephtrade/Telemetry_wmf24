@@ -4,7 +4,7 @@ import requests
 WS_IP = '192.168.8.101'
 WS_PORT = 25000
 WMF_BASE_URL = 'https://wmf24.ru'
-WMF_DATA_URL = "https://wmf24.ru/api/test2"
+WMF_DATA_URL = "https://wmf24.ru/api/errorhook"
 WS_URL = f'ws://{WS_IP}:{WS_PORT}/'
 DB_PATH = '/root/wmf_1100_1500_5000_router/wmf.db'
 TELEGRAM_BOT_TOKEN = '5797272389:AAFF7214btV4YpA0GgCQDmuRfi-zff2EtIM'
