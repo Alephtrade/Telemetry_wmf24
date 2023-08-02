@@ -8,14 +8,14 @@ from timeloop import Timeloop
 from core.utils import initialize_logger, print_exception, get_env_mode, get_part_number_local
 from wmf.models import WMFMachineErrorConnector
 from settings import prod as settings
-
+from db.models import WMFSQLDriver
 
 
 WMF_URL = settings.WMF_DATA_URL
 DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
 tl = Timeloop()
 initialize_logger('error_collector.log')
-
+db_conn = WMFSQLDriver()
 wmf_conn = WMFMachineErrorConnector()
 Thread(target=wmf_conn.run_websocket, args=()).start()
 
@@ -36,25 +36,11 @@ def send_errors():
         errors, request = '', ''
         try_to_get_part_number = wmf_conn.get_part_number()
         if try_to_get_part_number is None:
-            print("been none")
             try_to_get_part_number = get_part_number_local()
-        if wmf_conn.closing_error is not None:
-            logging.info(f'current_errors: {wmf_conn.current_errors}')
-            logging.info(f'closing_error: {wmf_conn.closing_error}')
-            errors = wmf_conn.closing_error
-            date_start = wmf_conn.date_error_start
-            date_end = wmf_conn.date_error_end
-            request = f'{WMF_URL}?code={try_to_get_part_number}&{DEFAULT_WMF_PARAMS}&error_id={errors}&date_start={date_start}&date_end={date_end}status={wmf_conn.get_status()}'
-            wmf_conn.current_errors.remove(wmf_conn.closing_error)
-            wmf_conn.date_error_start = None
-            wmf_conn.date_error_end = None
-            wmf_conn.closing_error = None
+        unset_errors = db_conn.get_unsent_records()
         if len(wmf_conn.current_errors) > 0 and wmf_conn.current_errors != wmf_conn.previous_errors:
             errors = ','.join(str(err) for err in wmf_conn.current_errors)
-        elif len(wmf_conn.current_errors) == 0:
-            errors = '0'
-        if errors:
-            request = f'{WMF_URL}?code={try_to_get_part_number}&{DEFAULT_WMF_PARAMS}&error_id={errors}&date_start={wmf_conn.date_error_start}&status={wmf_conn.get_status()}'
+            request = f'{WMF_URL}?code={try_to_get_part_number}&{DEFAULT_WMF_PARAMS}&error_id={errors}&date_start={date_start}&date_end={date_end}status={wmf_conn.get_status()}'
         elif wmf_conn.get_status() == 0:
             request = f'{WMF_URL}?code={try_to_get_part_number}&{DEFAULT_WMF_PARAMS}&error_id=0&status=0'
         if request:
@@ -62,11 +48,7 @@ def send_errors():
             logging.info(f'error_collector send_errors: => {request}')
             response = requests.post(request, timeout=settings.REQUEST_TIMEOUT)
             content = response.content.decode('utf-8')
-            if len(response.content) > settings.LOGGER_TEXT_LIMIT:
-                content = content[:settings.LOGGER_TEXT_LIMIT]
             logging.info(f'error_collector send_errors: <= {response} {content}')
-        wmf_conn.previous_errors = wmf_conn.current_errors.copy()
-        wmf_conn.db_driver.save_last_record('previous_errors', json.dumps(list(wmf_conn.previous_errors)))
     except Exception as ex:
         logging.error(f'error_collector send_errors: ERROR={ex}, stacktrace: {print_exception()}')
 

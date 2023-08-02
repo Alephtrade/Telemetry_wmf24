@@ -18,8 +18,9 @@ DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
 db_conn = WMFSQLDriver()
 
 def worker():
-    wm_conn = WMFMachineStatConnector()
-    return wm_conn.get_beverages_count()
+    unset_errors = db_conn.get_unsent_records()
+    print(unset_errors)
+    return unset_errors
 
 
 print(worker())

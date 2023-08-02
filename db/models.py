@@ -324,7 +324,7 @@ class WMFSQLDriver:
     def get_unsent_records(self):
         cur = self.connection.cursor()
         stmt = ''' 
-            SELECT id, error_code, start_time, end_time, error_text 
+            SELECT id, error_code, start_time, end_time, error_text, duration_time 
             FROM error_code_stats WHERE report_sent = 0
         '''
         cur.execute(stmt)

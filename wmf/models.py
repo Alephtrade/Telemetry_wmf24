@@ -2,7 +2,6 @@ import requests
 import websocket
 import json
 import logging
-from datetime import datetime, timedelta
 from core.utils import print_exception, get_env_mode, get_part_number_local
 from db.models import WMFSQLDriver
 from telegram.models import WMFTelegramBot
@@ -250,13 +249,11 @@ class WMFMachineErrorConnector:
                 error_text = self.ERROR_DESCRIPTION_DICT.get(error_code) or data.get("Error Text")
                 if info == "new Error":
                     self.current_errors.add(data.get("ErrorCode"))
-                    self.date_error_start = datetime.now()
                     self.db_driver.create_error_record(error_code, error_text)
                 elif info == "gone Error":
-                    logging.info(self.db_driver.close_error_code(error_code))
-                    self.date_error_end = datetime.now()
-                    self.closing_error = error_code
-                        #self.current_errors.remove(error_code)
+                    self.db_driver.close_error_code(error_code)
+                    if error_code in self.current_errors:
+                        self.current_errors.remove(error_code)
             if data.get("function") == 'startPushDispensingFinished':
                 info = data
                 logging.info(f"WMFMachineConnector: message={data}")
@@ -284,9 +281,6 @@ class WMFMachineErrorConnector:
             self.part_number = get_part_number_local()
             self.db_driver = WMFSQLDriver()
             self.current_errors = set()
-            self.date_error_start = None
-            self.date_error_end = None
-            self.closing_error = None
             self.previous_errors = set()
             self.ws = websocket.WebSocketApp(self.WS_URL,
                                              on_open=self.on_open,
