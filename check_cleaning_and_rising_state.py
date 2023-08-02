@@ -70,13 +70,32 @@ def sender_report():
         logging.info(f'{data} is none')
 
 
-wm_conn.get_system_cleaning_state(), wm_conn.get_milk_cleaning_state(), wm_conn.get_foamer_rinsing_state(), wm_conn.get_milk_replacement_state(), wm_conn.get_mixer_rinsing_state(), wm_conn.get_milk_mixer_warm_rinsing_state(), wm_conn.get_ffc_filter_replacement_state()
-controller_manager(wm_conn.get_system_cleaning_state(), "general")
-controller_manager(wm_conn.get_milk_cleaning_state(), "general_milk")
-controller_manager(wm_conn.get_foamer_rinsing_state(), "foamer")
-controller_manager(wm_conn.get_milk_replacement_state(), "milk_replacement")
-controller_manager(wm_conn.get_mixer_rinsing_state(), "general_mixer")
-controller_manager(wm_conn.get_milk_mixer_warm_rinsing_state(), "milk_mixer_warm")
-controller_manager(wm_conn.get_ffc_filter_replacement_state(), "ffc_filter")
+get_system_cleaning_state_data = wm_conn.get_system_cleaning_state()
+if get_system_cleaning_state_data is not None:
+    controller_manager(wm_conn.get_system_cleaning_state(), "general")
+
+get_milk_cleaning_state_data = wm_conn.get_milk_cleaning_state()
+if get_milk_cleaning_state_data is not None:
+    controller_manager(wm_conn.get_milk_cleaning_state(), "general_milk")
+
+get_foamer_rinsing_state_data = wm_conn.get_foamer_rinsing_state()
+if get_foamer_rinsing_state_data is not None:
+    controller_manager(wm_conn.get_foamer_rinsing_state(), "foamer")
+
+get_milk_replacement_state_data = wm_conn.get_milk_replacement_state()
+if get_milk_replacement_state_data is not None:
+    controller_manager(wm_conn.get_milk_replacement_state(), "milk_replacement")
+
+get_mixer_rinsing_state_data = wm_conn.get_mixer_rinsing_state()
+if get_mixer_rinsing_state_data is not None:
+    controller_manager(wm_conn.get_mixer_rinsing_state(), "general_mixer")
+
+get_milk_mixer_warm_rinsing_state_data = wm_conn.get_milk_mixer_warm_rinsing_state()
+if get_milk_mixer_warm_rinsing_state_data is not None:
+    controller_manager(wm_conn.get_milk_mixer_warm_rinsing_state(), "milk_mixer_warm")
+
+get_ffc_filter_replacement_state_data = wm_conn.get_ffc_filter_replacement_state()
+if get_ffc_filter_replacement_state_data is not None:
+    controller_manager(wm_conn.get_ffc_filter_replacement_state(), "ffc_filter")
 
 sender_report()
