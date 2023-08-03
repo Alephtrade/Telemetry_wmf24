@@ -22,21 +22,22 @@ CLEAN_DB_DAYS = 30
 REQUEST_RETRIES = 5
 
 
-#def get_chat_id():
-#    try:
-#        with open('/root/wmf_1100_1500_5000_router/part_number.txt') as f:
-#            part_number = f.read()
-#    except Exception:
-#        return ''
-#    #print(part_number)
-#    url = f'{WMF_BASE_URL}/api/get-coffee-machine-info/{part_number}'
-#    #print(url)
-#    r = requests.get(url)
-#    #print(r)
-#    data = r.json()
-#    #print(data)
-#    s = data["telegram_chat_id"]
-#    return TELEGRAM_CHAT_ID
-#
-#
-#print(get_chat_id())
+def get_chat_id():
+    if TELEGRAM_CHAT_ID == '' :
+        try:
+            with open('/root/wmf_1100_1500_5000_router/part_number.txt') as f:
+                part_number = f.read()
+        except Exception:
+            return ''
+        #print(part_number)
+        url = f'{WMF_BASE_URL}/api/get-coffee-machine-info/{part_number}'
+        #print(url)
+        r = requests.get(url)
+        #print(r)
+        data = r.json()
+        #print(data)
+        s = data["telegram_chat_id"]
+        return TELEGRAM_CHAT_ID
+
+
+print(get_chat_id())
