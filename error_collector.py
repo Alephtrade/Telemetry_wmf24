@@ -34,9 +34,9 @@ def send_errors():
     try:
         logging.info("error_collector send_errors: CALL")
         errors, request = '', ''
-        try_to_get_part_number = wmf_conn.get_part_number()
+        try_to_get_part_number = get_part_number_local()
         if try_to_get_part_number is None:
-            try_to_get_part_number = get_part_number_local()
+            try_to_get_part_number = wmf_conn.get_part_number()
         unset_errors = db_conn.get_unsent_records()
         if unset_errors:
             for record in unset_errors:
