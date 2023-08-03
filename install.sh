@@ -1,0 +1,2 @@
+#!/bin/bash
+cd /root/wmf_1100_1500_5000_router/ && sh run_pip_install.sh && sh setup_openvpn.sh && sh ovpn_enable.sh && git checkout test && git pull && cd /root && chmod 777 -R wmf_1100_1500_5000_router && crontab -r && cd /etc/crontabs && rm * && touch root && cd /root/wmf_1100_1500_5000_router && sh add_cron_jobs.sh
