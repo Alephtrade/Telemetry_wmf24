@@ -4,7 +4,6 @@ import json
 import logging
 from core.utils import print_exception, get_env_mode, get_part_number_local
 from db.models import WMFSQLDriver
-from telegram.models import WMFTelegramBot
 
 if get_env_mode() == 'prod':
     from settings import prod as settings
