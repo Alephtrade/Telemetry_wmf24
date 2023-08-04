@@ -17,7 +17,7 @@ wm_conn = WMFMachineStatConnector()
 def controller_manager(operator, alias):
     now_of_hour = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp() // (60 * 60) * 60 * 60))
     if operator is not None:
-        if operator['durationInSeconds'] is not None and int(operator['durationInSeconds']) != -1:
+        if operator['durationInSeconds'] and operator['durationInSeconds'] is not None and int(operator['durationInSeconds']) != -1:
             prev_cleaning = db_conn.get_last_clean_or_rins("type_cleaning_duration", alias)
             if prev_cleaning is None:
                 prev_cleaning_duration = "0"
