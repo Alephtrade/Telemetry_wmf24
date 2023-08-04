@@ -7,10 +7,5 @@ if ping -c $COUNT $IP > /dev/null 2>&1; then
   echo "$TIME : Ping to $IP was successful."
 else
   echo "$TIME : Ping to $IP failed."
-  /etc/init.d/network restart
-  if ping -c $COUNT $IP > /dev/null 2>&1; then
-    echo "$TIME : Ping after network restarted to $IP was successful."
-  else
-    reboot
-  fi
+  reboot
 fi
