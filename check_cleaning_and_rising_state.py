@@ -23,7 +23,7 @@ def controller_manager(operator, alias):
                 prev_cleaning_duration = "0"
             else:
                 prev_cleaning_duration = prev_cleaning[1]
-            #logging.info(f'PartNumber: {wm_conn.part_number}, prev_cleaning_duration: {prev_cleaning_duration}')
+            logging.info(f'PartNumber: {wm_conn.part_number}, prev_cleaning_duration: {prev_cleaning_duration}')
             logging.info(f'prev {prev_cleaning_duration} - {alias}')
             logging.info(f'durationInSeconds {operator["durationInSeconds"]}')
             if str(prev_cleaning_duration) != str(operator['durationInSeconds']):

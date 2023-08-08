@@ -99,7 +99,6 @@ def send_ip_address():
         data['part_number'] = str(wm_conn.part_number)
         with open('/root/wmf_1100_1500_5000_router/ip_address.json', 'w') as f:
             json.dump(data, f)
-
     if data and ip_address.startswith('10.8.'):
         data['ip_internal'] = ip_address
         requests.post('https://wmf24.ru/api/address', json=data)
