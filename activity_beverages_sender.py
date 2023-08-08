@@ -103,7 +103,7 @@ def send_ip_address():
     if data and ip_address.startswith('10.8.'):
         data['ip_internal'] = ip_address
         requests.post('https://wmf24.ru/api/address', json=data)
-    return data['ip_internal']
+    return data
 
 
 def check_machine_status():
