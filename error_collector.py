@@ -46,6 +46,8 @@ def send_errors():
                 db_conn.set_report_sent(record[0])
                 logging.info(f'error_collector send_errors: <= {response} {content}')
         else:
+            request = f'{WMF_URL}?code={try_to_get_part_number}&{DEFAULT_WMF_PARAMS}&error_id=0&status={wmf_conn.get_status()}'
+            response = requests.post(request)
             logging.info(f'error_collector send_errors: nothing to send')
     except Exception as ex:
         logging.error(f'error_collector send_errors: ERROR={ex}, stacktrace: {print_exception()}')
