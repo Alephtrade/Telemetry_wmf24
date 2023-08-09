@@ -23,4 +23,3 @@ def worker():
 
 
 print(worker())
-
