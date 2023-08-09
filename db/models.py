@@ -51,7 +51,7 @@ class WMFSQLDriver:
 
     def create_error_record(self, error_code, error_text='Неизвестная ошибка'):
         cur = self.connection.cursor()
-        stmt = 'INSERT INTO error_code_stats (error_code, error_date, start_time, error_text, duration) VALUES (?, ?, ?, ?, 0)'
+        stmt = 'INSERT INTO error_code_stats (error_code, error_date, start_time, error_text, duration_time) VALUES (?, ?, ?, ?, 0)'
         current_date = datetime.now() + timedelta(hours=3)
         error_date = current_date.strftime('%Y-%m-%d')
         start_time = current_date.strftime('%Y-%m-%d %H:%M:%S')
