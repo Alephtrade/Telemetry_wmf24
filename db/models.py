@@ -55,7 +55,7 @@ class WMFSQLDriver:
         current_date = datetime.now() + timedelta(hours=3)
         error_date = current_date.strftime('%Y-%m-%d')
         start_time = current_date.strftime('%Y-%m-%d %H:%M:%S')
-        cur.execute(stmt, (error_code, error_date, start_time, error_text))
+        cur.execute(stmt, (error_code, error_date, start_time, error_text,))
         self.connection.commit()
         cur.close()
 
