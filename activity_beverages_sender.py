@@ -148,7 +148,7 @@ def check_machine_status():
 
     if r:
         last_id, end_time = r
-    if status == 1 and (end_time is None and last_id is not None):
+    if status == 1 and (end_time is None):
         logging.info(f'status is 1 and last_id is {last_id}, calling close_error_code_by_id({last_id})')
         db_driver.close_error_code_by_id(last_id)
     elif status == 0 and (end_time is not None or last_id is None):
