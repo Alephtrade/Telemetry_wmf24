@@ -158,6 +158,7 @@ def check_machine_status():
     db_driver.close()
 
 
+
 check_machine_status()
 send_ip_address()
 beverages_send_worker()
