@@ -130,7 +130,6 @@ def are_need_to_create():
     else:
         get = methods.Take_Create_Beverage_Statistics(last_send[3])
         logging.info(f"beveragestatistics: Sending {get}")
-
         logging.info(f"{get}")
     print(get)
     return get
