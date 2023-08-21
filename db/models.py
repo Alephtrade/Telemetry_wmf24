@@ -118,6 +118,18 @@ class WMFSQLDriver:
         cur.close()
         return res
 
+    def get_error_last_record(self):
+        cur = self.connection.cursor()
+        stmt = '''
+            SELECT id, end_time FROM error_code_stats
+            ORDER BY id DESC 
+            LIMIT 1
+        '''
+        cur.execute(stmt)
+        res = cur.fetchone()
+        cur.close()
+        return res
+
     def get_last_record(self):
         cur = self.connection.cursor()
         stmt = ''' 
@@ -325,7 +337,7 @@ class WMFSQLDriver:
         cur = self.connection.cursor()
         stmt = ''' 
             SELECT id, error_code, start_time, end_time, error_text, duration_time 
-            FROM error_code_stats WHERE report_sent = 0
+            FROM error_code_stats WHERE report_sent = 0 AND end_time is not NULL
         '''
         cur.execute(stmt)
         res = cur.fetchall()

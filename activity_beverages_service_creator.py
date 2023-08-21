@@ -124,10 +124,13 @@ def are_need_to_create():
     if last_send is None:
         now = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp()))
         get = methods.Take_Create_Beverage_Statistics(now)
+        logging.info(f"beveragestatistics: Sending {get}")
         logging.info(f" last_send unknown")
         logging.info(f"{get}")
     else:
         get = methods.Take_Create_Beverage_Statistics(last_send[3])
+        logging.info(f"beveragestatistics: Sending {get}")
+
         logging.info(f"{get}")
     print(get)
     return get
