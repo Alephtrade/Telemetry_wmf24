@@ -25,7 +25,7 @@ def worker():
     summ = 0
     device_code = ""
     recipes = []
-    date_to_send = get_beverages_send_time(last_send)
+    date_to_send = get_beverages_send_time("2023-08-22 15:30:00")
     date_formed = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp()))
     try:
         ws = websocket.create_connection(WS_URL, timeout=5)
