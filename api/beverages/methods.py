@@ -57,7 +57,8 @@ def Take_Create_Beverage_Statistics(last_send):
                         device_code = item2
                     if (k.startswith("TotalCountRcp")):
                         recipes.append(item)
-            summ = wm_conn.get_beverages_count()
+                        summ += item2
+            #summ = wm_conn.get_beverages_count()
             ws.close()
     if fake_data:
         last_record = db_conn.get_last_beverages_log()
