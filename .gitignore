@@ -6,3 +6,4 @@ machine_info.txt
 ip_address.json
 logs/*.log*
 wmf_backup.db
+wmf.db
