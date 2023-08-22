@@ -1,1 +1,1 @@
-cd ~/wmf_1100_1500_5000_router && git pull
+cd ~/wmf_1100_1500_5000_router && git reset HEAD --hard && git pull
