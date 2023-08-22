@@ -53,12 +53,12 @@ def worker():
             received = ast.literal_eval(received_data)
             for item in received:
                 for k, item2 in item.items():
-                    return item2
                     if (k.startswith("device_code")):
                         device_code = item2
                     if (k.startswith("TotalCountRcp")):
+                        summ += item2
                         recipes.append(item)
-            summ = wm_conn.get_beverages_count()
+            #summ = wm_conn.get_beverages_count()
             ws.close()
     if fake_data:
         last_record = db_conn.get_last_beverages_log()
