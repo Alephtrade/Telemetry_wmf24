@@ -18,8 +18,7 @@ DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
 db_conn = WMFSQLDriver()
 
 def worker():
-    print(db_conn.create_error_record(64, ""))
-    return print(db_conn.create_error_record(64, ""))
+    return print(db_conn.get_error_last_record())
 
 
 print(worker())
