@@ -344,6 +344,17 @@ class WMFSQLDriver:
         cur.close()
         return res
 
+    def get_unsent_records_with_end_time(self):
+        cur = self.connection.cursor()
+        stmt = ''' 
+            SELECT id, error_code, start_time, end_time, error_text, duration_time 
+            FROM error_code_stats WHERE report_sent = 2 AND end_time is not Null
+        '''
+        cur.execute(stmt)
+        res = cur.fetchall()
+        cur.close()
+        return res
+
     def get_error_records(self, prev_hour, now_hour):
         cur = self.connection.cursor()
         stmt = f''' 
