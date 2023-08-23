@@ -43,7 +43,8 @@ def send_errors():
                 request = f'{WMF_URL}?code={try_to_get_part_number}&{DEFAULT_WMF_PARAMS}&error_id={record[1]}&date_start={record[2]}&date_end={record[3]}&duration={record[5]}&status={wmf_conn.get_status()}'
                 response = requests.post(request)
                 content = response.content.decode('utf-8')
-                db_conn.set_report_sent(record[0])
+                if record[3] is not None:
+                    db_conn.set_report_sent(record[0])
                 logging.info(f'error_collector send_errors: <= {response} {content}')
         else:
             request = f'{WMF_URL}?code={try_to_get_part_number}&{DEFAULT_WMF_PARAMS}&error_id=0&status={wmf_conn.get_status()}'
