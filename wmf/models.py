@@ -10,6 +10,7 @@ if get_env_mode() == 'prod':
 else:
     from settings import test as settings
 
+db_conn = WMFSQLDriver()
 
 class WMFMachineErrorConnector:
     WMF_URL = settings.WMF_DATA_URL
@@ -248,7 +249,7 @@ class WMFMachineErrorConnector:
                 error_text = self.ERROR_DESCRIPTION_DICT.get(error_code) or data.get("Error Text")
                 if info == "new Error":
                     self.current_errors.add(data.get("ErrorCode"))
-                    last_error_id = WMFSQLDriver.get_error_last_record()
+                    last_error_id = db_conn.get_error_last_record()
                     if(last_error_id[0] != "62" and last_error_id[0] != "-1" and last_error_id[1] is not None):
                         self.db_driver.create_error_record(error_code, error_text)
                 elif info == "gone Error":
