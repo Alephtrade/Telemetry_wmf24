@@ -337,7 +337,7 @@ class WMFSQLDriver:
         cur = self.connection.cursor()
         stmt = ''' 
             SELECT id, error_code, start_time, end_time, error_text, duration_time 
-            FROM error_code_stats WHERE report_sent = 0 AND end_time is not NULL
+            FROM error_code_stats WHERE report_sent = 0
         '''
         cur.execute(stmt)
         res = cur.fetchall()
@@ -363,6 +363,17 @@ class WMFSQLDriver:
         stmt = ''' 
             UPDATE error_code_stats 
             SET report_sent = 1
+            WHERE id = ?
+        '''
+        cur.execute(stmt, (rec_id,))
+        self.connection.commit()
+        cur.close()
+
+    def set_report_pre_sent(self, rec_id):
+        cur = self.connection.cursor()
+        stmt = ''' 
+            UPDATE error_code_stats 
+            SET report_sent = 2
             WHERE id = ?
         '''
         cur.execute(stmt, (rec_id,))

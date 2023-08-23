@@ -44,6 +44,8 @@ def send_errors():
                 response = requests.post(request)
                 content = response.content.decode('utf-8')
                 if record[3] is not None:
+                    db_conn.set_report_pre_sent(record[0])
+                else:
                     db_conn.set_report_sent(record[0])
                 logging.info(f'error_collector send_errors: <= {response} {content}')
         else:
