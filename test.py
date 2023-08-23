@@ -19,60 +19,10 @@ db_conn = WMFSQLDriver()
 
 
 def worker():
-    initialize_logger('beveragestatistics.log')
-    wm_conn = WMFMachineStatConnector()
-    fake_data = False
-    summ = 0
-    device_code = ""
-    recipes = []
-    date_to_send = get_beverages_send_time("2023-08-22 15:30:00")
-    date_formed = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp()))
-    try:
-        ws = websocket.create_connection(WS_URL, timeout=5)
-    except Exception:
-        ws = None
-        fake_data = True
-        logging.info(f"error {wm_conn.ws}")
-    if not wm_conn.ws:
-        logging.info(f"error {wm_conn.ws}")
-        fake_data = True
-    else:
-        request = json.dumps({'function': 'getBeverageStatistics'})
-        ws.send(request)
-        received_data = ws.recv()
-        logging.info(f"{received_data}")
-        if received_data is not None or received_data != []:
-            try:
-                with open('/root/wmf_1100_1500_5000_router/part_number.txt') as f:
-                    part_number = f.read()
-            except Exception:
-                logging.info(f"part_number unknown")
-            received_data = received_data.replace(']', '', 1)
-            received_data = received_data + ', {"device_code" : ' + str(part_number) + '}]'
-            logging.info(f"beveragestatistics: Received {received_data}")
-            received = ast.literal_eval(received_data)
-            for item in received:
-                for k, item2 in item.items():
-                    if (k.startswith("device_code")):
-                        device_code = item2
-                    if (k.startswith("TotalCountRcp")):
-                        summ += item2
-                        recipes.append(item)
-            #summ = wm_conn.get_beverages_count()
-            ws.close()
-    if fake_data:
-        last_record = db_conn.get_last_beverages_log()
-        if last_record is None:
-            create_record = db_conn.create_beverages_log("0", "0", "1970-01-01 00:00:00", "1970-01-01 00:00:00",
-                                                         "{}")
-        else:
-            create_record = db_conn.create_beverages_log(str(last_record[0]), str(last_record[1]),
-                                                         str(last_record[2]), str(date_formed), str(last_record[5]))
-    else:
-        create_record = db_conn.create_beverages_log(str(device_code), str(summ), str(date_to_send),
-                                                     str(date_formed), json.dumps(recipes))
-        logging.info(f"result {create_record}")
-    return create_record
+    last_error_id = db_conn.get_error_last_record()
+    print(last_error_id)
+    if (last_error_id[0] != "62" and last_error_id[0] != "-1" and last_error_id[1] is not None):
+        return True
 
 
 print(worker())
