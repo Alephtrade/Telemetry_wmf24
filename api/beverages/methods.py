@@ -68,7 +68,7 @@ def Take_Create_Beverage_Statistics(last_send):
             create_record = db_conn.create_beverages_log(str(last_record[0]), str(last_record[1]), str(last_record[2]), str(date_formed), str(last_record[5]))
     else:
         if recipes == []:
-            Take_Create_Beverage_Statistics()
+            Take_Create_Beverage_Statistics(last_send)
         else:
             create_record = db_conn.create_beverages_log(str(device_code), str(summ), str(date_to_send), str(date_formed), json.dumps(recipes))
             logging.info(f"result {create_record}")
