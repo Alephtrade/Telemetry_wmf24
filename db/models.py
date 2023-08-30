@@ -121,7 +121,7 @@ class WMFSQLDriver:
     def get_error_last_record(self):
         cur = self.connection.cursor()
         stmt = '''
-            SELECT id, end_time FROM error_code_stats
+            SELECT error_code, end_time FROM error_code_stats
             ORDER BY id DESC 
             LIMIT 1
         '''

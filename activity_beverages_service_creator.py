@@ -121,14 +121,27 @@ def are_need_to_create():
     logging.info(f"beveragestatistics: Received Create start")
     last_send = db_conn.get_last_beverages_log()
     logging.info(f"{last_send}")
+    iter = 0
     if last_send is None:
         now = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp()))
         get = methods.Take_Create_Beverage_Statistics(now)
+        if get is None:
+            get = methods.Take_Create_Beverage_Statistics(now)
+            if get is None:
+                get = methods.Take_Create_Beverage_Statistics(now)
+                if get is None:
+                    get = methods.Take_Create_Beverage_Statistics(now)
         logging.info(f"beveragestatistics: Sending {get}")
         logging.info(f" last_send unknown")
         logging.info(f"{get}")
     else:
         get = methods.Take_Create_Beverage_Statistics(last_send[3])
+        if get is None:
+            get = methods.Take_Create_Beverage_Statistics(last_send[3])
+            if get is None:
+                get = methods.Take_Create_Beverage_Statistics(last_send[3])
+                if get is None:
+                    get = methods.Take_Create_Beverage_Statistics(last_send[3])
         logging.info(f"beveragestatistics: Sending {get}")
         logging.info(f"{get}")
     print(get)
