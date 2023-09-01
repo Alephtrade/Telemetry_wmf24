@@ -61,11 +61,12 @@ def Take_Create_Beverage_Statistics(last_send):
             #summ = wm_conn.get_beverages_count()
             ws.close()
     if fake_data:
-        last_record = db_conn.get_last_beverages_log()
-        if last_record is None:
-            create_record = db_conn.create_beverages_log(part_number, "0", "1970-01-01 00:00:00", "1970-01-01 00:00:00", "[{'TotalCountRcp': 0}]")
-        else:
-            create_record = db_conn.create_beverages_log(str(last_record[0]), str(last_record[1]), str(last_record[2]), str(date_formed), str(last_record[5]))
+        create_record = None
+        #last_record = db_conn.get_last_beverages_log()
+        #if last_record is None:
+        #    create_record = db_conn.create_beverages_log(part_number, "0", "1970-01-01 00:00:00", "1970-01-01 00:00:00", "[{'TotalCountRcp': 0}]")
+        #else:
+           # create_record = db_conn.create_beverages_log(str(last_record[0]), str(last_record[1]), str(last_record[2]), str(date_formed), str(last_record[5]))
     else:
         if recipes == []:
             create_record = None
