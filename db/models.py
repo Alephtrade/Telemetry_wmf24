@@ -490,6 +490,7 @@ class WMFSQLDriver:
         cur.execute(stmt, (device_code, summ, time_to_send, date_formed, recipes))
         self.connection.commit()
         cur.close()
+        return True
 
     def get_last_beverages_log(self):
         cur = self.connection.cursor()
