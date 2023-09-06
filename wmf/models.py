@@ -403,7 +403,11 @@ class WMFMachineStatConnector:
 
     def get_error_active(self):
         if self.ws:
-            return self.send_wmf_request('getErrorActive')
+            request = json.dumps({"function":"getErrorActive","a_iIndex":0})
+            logging.info(f"COFFEE_MACHINE: Sending {request}")
+            self.ws.send(request)
+            received_data = self.ws.recv()
+            return received_data
         return None
 
     def get_cleaning_state(self):

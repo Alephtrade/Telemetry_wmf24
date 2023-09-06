@@ -24,6 +24,6 @@ wmf_conn = WMFMachineErrorConnector()
 wmf2_conn = WMFMachineStatConnector()
 
 def worker():
-    return [wmf2_conn.get_error_active_count, wmf2_conn.get_error_active]
+    return [wmf2_conn.get_error_active_count(), wmf2_conn.get_error_active()]
 
 print(worker())
