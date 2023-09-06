@@ -312,12 +312,12 @@ class WMFSQLDriver:
         cur.close()
         return res
 
-    def get_last_service_statistics(self):
+    def get_last_service_statistics(self, date_tod):
         cur = self.connection.cursor()
-        stmt = ''' 
+        stmt = f''' 
             SELECT id, date_formed, is_sent
             FROM service_statistics
-            WHERE is_sent = 0
+            WHERE is_sent = 0 AND date_formed != {date_tod}
             ORDER BY id DESC 
             LIMIT 1
         '''

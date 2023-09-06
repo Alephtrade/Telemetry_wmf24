@@ -3,7 +3,7 @@ import logging
 import requests
 import json
 import time
-from datetime import timedelta, datetime
+from datetime import timedelta, datetime, date
 from db.models import WMFSQLDriver
 from settings import prod as settings
 from core.utils import timedelta_int, get_beverages_send_time, initialize_logger, get_part_number_local
@@ -93,12 +93,11 @@ def get_service_statistics():
         ws = None
         logging.info(f"error {ws}")
         return False
-    actual = db_conn.get_last_service_statistics()
+    actual = db_conn.get_last_service_statistics(date.today())
     if actual is None:
-        date_formed = str(datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp())))
-        record = db_conn.create_service_record(date_formed)
+        record = db_conn.create_service_record(date.today())
         actual = db_conn.get_last_service_statistics()
-    if actual[2] == 0:
+    if actual[2] == "0":
         request = json.dumps({'function': 'getServiceStatistics'})
         logging.info(f"COFFEE_MACHINE: Sending {request}")
         ws.send(request)
