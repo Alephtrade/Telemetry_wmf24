@@ -96,6 +96,7 @@ def get_service_statistics():
         logging.info(f"error {ws}")
         return False
     actual = db_conn.get_last_service_statistics(date_today)
+    print(actual)
     if actual is None:
         record = db_conn.create_service_record(date_today)
         actual = db_conn.get_last_service_statistics(date_today)
