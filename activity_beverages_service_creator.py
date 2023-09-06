@@ -88,7 +88,9 @@ def get_main_clean_stat():
 def get_service_statistics():
     initialize_logger('getServiceStatistics.log')
     date_today = date.today()
-    print(date_today)
+    logging.info(f"COFFEE_MACHINE: today date in service_stat {date_today}")
+
+    #print(date_today)
     try:
         ws = websocket.create_connection(WS_URL, timeout=5)
     except Exception:
@@ -96,14 +98,17 @@ def get_service_statistics():
         logging.info(f"error {ws}")
         return False
     actual = db_conn.get_last_service_statistics(date_today)
-    print(actual)
+    logging.info(f"COFFEE_MACHINE: last service_stat record {actual}")
+    #print(actual)
     if actual is None:
-        print("create")
+        #print("create")
         record = db_conn.create_service_record(date_today)
+        logging.info(f"COFFEE_MACHINE: created record service_stat {record}")
         actual = db_conn.get_last_service_statistics(date_today)
     else:
         if actual[2] == "0":
-            print("form")
+            #print("form")
+            logging.info(f"COFFEE_MACHINE: updating record service_stat {record}")
             request = json.dumps({'function': 'getServiceStatistics'})
             logging.info(f"COFFEE_MACHINE: Sending {request}")
             ws.send(request)
