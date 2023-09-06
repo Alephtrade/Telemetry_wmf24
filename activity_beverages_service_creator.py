@@ -99,33 +99,34 @@ def get_service_statistics():
     if actual is None:
         record = db_conn.create_service_record(date_today)
         actual = db_conn.get_last_service_statistics(date_today)
-    if actual[2] == "0":
-        request = json.dumps({'function': 'getServiceStatistics'})
-        logging.info(f"COFFEE_MACHINE: Sending {request}")
-        ws.send(request)
-        received_data = ws.recv()
-        logging.info(f"servicestatistics: Received {received_data}")
-        part_number = get_part_number_local()
-        logging.info(f"COFFEE_MACHINE: Received {part_number}")
-        text_file = open("response.txt", "a")
-        text_file.write(received_data)
-        ts = time.time()
-        int_ts = int(ts)
-        received_data = received_data.replace(']', '', 1)
-        received_data = received_data + ', {"device_code" : ' + str(part_number) + '}, {"timestamp_create" : ' + str(int_ts) + '}]'
+    else:
+        if actual[2] == "0":
+            request = json.dumps({'function': 'getServiceStatistics'})
+            logging.info(f"COFFEE_MACHINE: Sending {request}")
+            ws.send(request)
+            received_data = ws.recv()
+            logging.info(f"servicestatistics: Received {received_data}")
+            part_number = get_part_number_local()
+            logging.info(f"COFFEE_MACHINE: Received {part_number}")
+            text_file = open("response.txt", "a")
+            text_file.write(received_data)
+            ts = time.time()
+            int_ts = int(ts)
+            received_data = received_data.replace(']', '', 1)
+            received_data = received_data + ', {"device_code" : ' + str(part_number) + '}, {"timestamp_create" : ' + str(int_ts) + '}]'
 
-        url = "https://wmf24.ru/api/servicestatistics"
-        headers = {
-            'Content-Type': 'application/json'
-        }
-        print(received_data)
-        response = requests.request("POST", url, headers=headers, data=received_data)
-        print(response.text)
-        logging.info(f"servicestatistics: GET response: {response.text}")
-        db_conn.save_status_service_statistics(actual[0], "date_fact_send", str(datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp()))))
-        db_conn.save_status_service_statistics(actual[0], "is_sent", "1")
-        ws.close()
-        return True
+            url = "https://wmf24.ru/api/servicestatistics"
+            headers = {
+                'Content-Type': 'application/json'
+            }
+            print(received_data)
+            response = requests.request("POST", url, headers=headers, data=received_data)
+            print(response.text)
+            logging.info(f"servicestatistics: GET response: {response.text}")
+            db_conn.save_status_service_statistics(actual[0], "date_fact_send", str(datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp()))))
+            db_conn.save_status_service_statistics(actual[0], "is_sent", "1")
+            ws.close()
+            return True
 
 def are_need_to_create():
     initialize_logger('beveragestatistics.log')

@@ -317,7 +317,7 @@ class WMFSQLDriver:
         stmt = f''' 
             SELECT id, date_formed, is_sent
             FROM service_statistics
-            WHERE is_sent = 0 AND date_formed != {date_tod}
+            WHERE is_sent = 0 AND date_formed = {date_tod}
             ORDER BY id DESC 
             LIMIT 1
         '''
