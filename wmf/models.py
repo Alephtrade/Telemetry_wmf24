@@ -396,6 +396,16 @@ class WMFMachineStatConnector:
             return self.send_wmf_request('getSystemCleaningState')['durationInSeconds']
         return None
 
+    def get_error_active_count(self):
+        if self.ws:
+            return self.send_wmf_request('getErrorActiveCount')
+        return None
+
+    def get_error_active(self):
+        if self.ws:
+            return self.send_wmf_request('getErrorActive')
+        return None
+
     def get_cleaning_state(self):
         if self.ws:
             data = self.send_wmf_request('getSystemCleaningState')
