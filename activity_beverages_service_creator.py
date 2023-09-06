@@ -21,7 +21,7 @@ def get_main_clean_stat():
     now = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp()))
     get_last_data_statistics = db_conn.get_last_data_statistics()
     print(get_last_data_statistics)
-    date_to_send = get_beverages_send_time(get_last_data_statistics)
+    date_to_send = get_beverages_send_time(get_last_data_statistics[0])
     db_conn.create_data_statistics(time_now, date_to_send)
     stoppage_time, wmf_error_time, time_count_default = timedelta(), timedelta(), timedelta(seconds=3600)
     stoppage_count, wmf_error_count = 0, 0
