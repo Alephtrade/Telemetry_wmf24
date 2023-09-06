@@ -6,7 +6,7 @@ from threading import Thread
 from datetime import timedelta
 from timeloop import Timeloop
 from core.utils import initialize_logger, print_exception, get_env_mode, get_part_number_local
-from wmf.models import WMFMachineErrorConnector
+from wmf.models import WMFMachineErrorConnector, WMFMachineStatConnector
 from settings import prod as settings
 from db.models import WMFSQLDriver
 
@@ -17,6 +17,7 @@ tl = Timeloop()
 initialize_logger('error_collector.log')
 db_conn = WMFSQLDriver()
 wmf_conn = WMFMachineErrorConnector()
+wmf_part_number_operator = WMFMachineStatConnector()
 Thread(target=wmf_conn.run_websocket, args=()).start()
 
 
@@ -36,7 +37,7 @@ def send_errors():
         errors, request = '', ''
         try_to_get_part_number = get_part_number_local()
         if try_to_get_part_number is None:
-            try_to_get_part_number = wmf_conn.get_part_number()
+            try_to_get_part_number = wmf_part_number_operator.get_part_number()
         unset_errors = db_conn.get_unsent_records()
         if unset_errors:
             for record in unset_errors:
