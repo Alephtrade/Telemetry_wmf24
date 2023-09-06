@@ -339,11 +339,10 @@ class WMFSQLDriver:
         self.connection.commit()
         cur.close()
 
-    def create_service_record(self):
-        date_formed123 = str(datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp())))
+    def create_service_record(self, date_formed):
         cur = self.connection.cursor()
         stmt = 'INSERT INTO service_statistics (date_formed, date_fact_send, is_sent) VALUES (?, Null, 0)'
-        cur.execute(stmt, date_formed123)
+        cur.execute(stmt, date_formed)
         self.connection.commit()
         cur.close()
 
