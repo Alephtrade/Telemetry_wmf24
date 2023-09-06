@@ -88,6 +88,7 @@ def get_main_clean_stat():
 def get_service_statistics():
     initialize_logger('getServiceStatistics.log')
     date_today = date.today()
+    print(date_today)
     try:
         ws = websocket.create_connection(WS_URL, timeout=5)
     except Exception:
@@ -121,7 +122,7 @@ def get_service_statistics():
         response = requests.request("POST", url, headers=headers, data=received_data)
         print(response.text)
         logging.info(f"servicestatistics: GET response: {response.text}")
-        db_conn.save_status_service_statistics(actual[0], "date_formed", str(datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp()))))
+        db_conn.save_status_service_statistics(actual[0], "date_fact_send", str(datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp()))))
         db_conn.save_status_service_statistics(actual[0], "is_sent", "1")
         ws.close()
         return True
