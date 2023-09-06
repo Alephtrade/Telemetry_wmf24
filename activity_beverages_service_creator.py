@@ -87,15 +87,16 @@ def get_main_clean_stat():
     
 def get_service_statistics():
     initialize_logger('getServiceStatistics.log')
+    date_today = date.today()
     try:
         ws = websocket.create_connection(WS_URL, timeout=5)
     except Exception:
         ws = None
         logging.info(f"error {ws}")
         return False
-    actual = db_conn.get_last_service_statistics(date.today())
+    actual = db_conn.get_last_service_statistics(date_today)
     if actual is None:
-        record = db_conn.create_service_record(date.today())
+        record = db_conn.create_service_record(date_today)
         actual = db_conn.get_last_service_statistics()
     if actual[2] == "0":
         request = json.dumps({'function': 'getServiceStatistics'})
