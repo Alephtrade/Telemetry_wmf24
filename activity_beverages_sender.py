@@ -95,6 +95,7 @@ def send_ip_address():
             data = json.load(f)
     except FileNotFoundError:
         wm_conn = WMFMachineStatConnector()
+        part_number = wm_conn.get_part_number()
         data = wm_conn.get_wmf_machine_info()
         data['part_number'] = str(wm_conn.part_number)
         with open('/root/wmf_1100_1500_5000_router/ip_address.json', 'w') as f:
