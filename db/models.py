@@ -279,7 +279,7 @@ class WMFSQLDriver:
         stmt = ''' 
             SELECT time_fact_send
             FROM data_statistics
-            WHERE time_fact_send NOT NULL AND is_sent != 0
+            WHERE time_fact_send NOT NULL
             ORDER BY id DESC 
             LIMIT 1
         '''
