@@ -98,7 +98,7 @@ def get_service_statistics():
     actual = db_conn.get_last_service_statistics(date_today)
     if actual is None:
         record = db_conn.create_service_record(date_today)
-        actual = db_conn.get_last_service_statistics()
+        actual = db_conn.get_last_service_statistics(date_today)
     if actual[2] == "0":
         request = json.dumps({'function': 'getServiceStatistics'})
         logging.info(f"COFFEE_MACHINE: Sending {request}")
