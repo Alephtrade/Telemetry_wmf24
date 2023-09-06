@@ -312,6 +312,40 @@ class WMFSQLDriver:
         cur.close()
         return res
 
+    def get_last_service_statistics(self):
+        cur = self.connection.cursor()
+        stmt = ''' 
+            SELECT id, date_formed, is_sent
+            FROM service_statistics
+            WHERE is_sent = 0
+            ORDER BY id DESC 
+            LIMIT 1
+        '''
+        cur.execute(stmt)
+        res = cur.fetchone()
+        logging.info(f'WMFSQLDriver get_last_data_statistics: {res}')
+        cur.close()
+        return res
+
+    def save_status_service_statistics(self, id_record, operator, value_status):
+        cur = self.connection.cursor()
+        stmt = f''' 
+            UPDATE service_statistics 
+            SET "{operator}" = "{value_status}"
+            WHERE id = "{id_record}"
+        '''
+        logging.info(f'WMFSQLDriver save_last_record: key = {operator}, value = {value_status}')
+        cur.execute(stmt)
+        self.connection.commit()
+        cur.close()
+
+    def create_service_record(self):
+        date_formed = str(datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp())))
+        cur = self.connection.cursor()
+        stmt = 'INSERT INTO service_statistics (date_formed, date_fact_send, is_sent) VALUES (?, Null, 0)'
+        cur.execute(stmt, (date_formed))
+        self.connection.commit()
+        cur.close()
 
     def is_record_clean_or_rins(self, time_delta, alias):
         cur = self.connection.cursor()

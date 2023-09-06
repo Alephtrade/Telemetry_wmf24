@@ -82,6 +82,25 @@ add_table_column(table_name='downtimes', column_name='date_start', column_type='
 add_table_column(table_name='downtimes', column_name='date_end', column_type='text')
 add_table_column(table_name='downtimes', column_name='status', column_type='text')
 
+if not does_object_exist('table', 'service_statistics'):
+    stmt = '''
+        create table service_statistics
+        (
+            id          integer
+                constraint service_statistics_pk
+                    primary key,
+            date_formed text,
+            date_fact_send   text,
+            is_sent        text
+        )
+    '''
+    cur.execute(stmt)
+    conn.commit()
+
+add_table_column(table_name='service_statistics', column_name='date_formed', column_type='text')
+add_table_column(table_name='service_statistics', column_name='date_fact_send', column_type='text')
+add_table_column(table_name='service_statistics', column_name='is_sent', column_type='text')
+
 if not does_object_exist('table', 'cleaning_statistic'):
     stmt = '''
         create table cleaning_statistic
