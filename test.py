@@ -44,8 +44,13 @@ def worker():
         logging.info(f'status is 1 and last_id is {last_id}, calling close_error_code_by_id({last_id})')
         db_driver.close_error_code_by_id(last_id)
         unclosed = db_driver.get_error_empty_record()
-        for item in unclosed:
-            print(item[0])
-        return unclosed
+        for item in unclosed: #0 - id 1 - end_time 2-code
+            ws = websocket.create_connection(WS_URL)
+            request = json.dumps({'function': 'isErrorActive', 'a_iErrorCode': item[2]})
+            logging.info(f"COFFEE_MACHINE: Sending {request}")
+            ws.send(request)
+            received_data = ws.recv()
+            print(received_data)
+        return item[2]
 
 print(worker())
