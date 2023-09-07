@@ -50,7 +50,8 @@ def worker():
             logging.info(f"COFFEE_MACHINE: Sending {request}")
             ws.send(request)
             received_data = ws.recv()
-            print(received_data)
+            for response in received_data:
+                print(response["returnvalue"])
         return item[2]
 
 print(worker())
