@@ -50,8 +50,6 @@ def worker():
             logging.info(f"COFFEE_MACHINE: Sending {request}")
             ws.send(request)
             received_data = ws.recv()
-            for response in received_data:
-                print(response["returnvalue"])
-        return item[2]
+            return WMFMachineStatConnector.normalize_json(received_data).get('returnvalue')
 
 print(worker())
