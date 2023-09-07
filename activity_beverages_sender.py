@@ -4,7 +4,7 @@ import requests
 import json
 import ast
 import socket
-from datetime import timedelta, datetime
+from datetime import timedelta, datetime, time
 from db.models import WMFSQLDriver
 from settings import prod as settings
 from core.utils import timedelta_int, get_beverages_send_time, initialize_logger
@@ -121,11 +121,16 @@ def check_machine_status():
     logging.info(f'status is: {status}')
     last_id, end_time = None, None
     r = db_driver.get_error_last_stat_record('-1')
-    k = db_driver.get_error_last_stat_record('62')
+    #k = db_driver.get_error_last_stat_record('62')
     if r is not None:
-        render_errors_closing(r, status)
-    if k is not None:
-        render_errors_closing(k, status)
+        last_id, end_time = r
+    else:
+        end_time = time()
+        last_id = 0
+    render_errors_closing(last_id, end_time, status)
+
+    #if k is not None:
+     #   render_errors_closing(k, status)
 
     d_id = None
     d_date_start = None
@@ -150,10 +155,10 @@ def check_machine_status():
     logging.info(f'last_stat_record: {r}')
     logging.info(f'downtime_last_record: {d}')
 
-    db_driver.close()
+    #db_driver.close()
 
-def render_errors_closing(m, status):
-    last_id, end_time = m
+def render_errors_closing(last_id, end_time, status):
+    db_driver = WMFSQLDriver()
     if status == 0 and (end_time is None):
         logging.info(f'status is 0 and end_time is none, downtime is active')
     elif status == 0 and (end_time is not None):
@@ -161,9 +166,10 @@ def render_errors_closing(m, status):
         db_driver.create_error_record('-1', 'Кофемашина недоступна')
     elif status == 1:
         logging.info(f'status is 1 and last_id is {last_id}, calling close_error_code_by_id({last_id})')
-        db_driver.close_error_code_by_id(last_id)
+        if last_id != 0:
+            db_driver.close_error_code_by_id(last_id)
         unclosed = db_driver.get_error_empty_record()
-        for item in unclosed:  # 0 - id 1 - end_time 2-code
+        for item in unclosed:  # 0 - id 1 - end_time 2 - code
             ws = websocket.create_connection(WS_URL)
             request = json.dumps({'function': 'isErrorActive', 'a_iErrorCode': item[2]})
             logging.info(f"COFFEE_MACHINE: Sending {request}")
