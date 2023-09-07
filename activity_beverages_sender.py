@@ -105,7 +105,6 @@ def send_ip_address():
         requests.post('https://wmf24.ru/api/address', json=data)
     return data
 
-
 def check_machine_status():
     initialize_logger('check_machine_status.log')
     db_driver = WMFSQLDriver()
@@ -123,13 +122,16 @@ def check_machine_status():
     last_id, end_time = None, None
     r = db_driver.get_error_last_stat_record('-1')
     k = db_driver.get_error_last_stat_record('62')
-
-    d = db_driver.get_last_downtime()
+    if r is not None:
+        render_errors_closing(r, status)
+    if k is not None:
+        render_errors_closing(k, status)
 
     d_id = None
     d_date_start = None
     d_date_end = None
     d_status = None
+    d = db_driver.get_last_downtime()
     if d:
         d_id, d_date_start, d_date_end, d_status = d
         if status == 1:
@@ -148,8 +150,10 @@ def check_machine_status():
     logging.info(f'last_stat_record: {r}')
     logging.info(f'downtime_last_record: {d}')
 
-    if r:
-        last_id, end_time = r
+    db_driver.close()
+
+def render_errors_closing(m, status):
+    last_id, end_time = m
     if status == 0 and (end_time is None):
         logging.info(f'status is 0 and end_time is none, downtime is active')
     elif status == 0 and (end_time is not None):
@@ -159,21 +163,14 @@ def check_machine_status():
         logging.info(f'status is 1 and last_id is {last_id}, calling close_error_code_by_id({last_id})')
         db_driver.close_error_code_by_id(last_id)
         unclosed = db_driver.get_error_empty_record()
-        print(unclosed)
-        return unclosed
-
-
-    if k:
-        last_id, end_time = k
-    if status == 1 and (end_time is None):
-        logging.info(f'status is 1 and last_id is {last_id}, calling close_error_code_by_id({last_id})')
-        db_driver.close_error_code_by_id(last_id)
-    elif status == 0 and (end_time is not None or last_id is None):
-        logging.info(f'status is 0 and end_time is {end_time}, calling create_error_record(-1)')
-        db_driver.create_error_record('-1', 'Кофемашина недоступна')
-
-
-    db_driver.close()
+        for item in unclosed:  # 0 - id 1 - end_time 2-code
+            ws = websocket.create_connection(WS_URL)
+            request = json.dumps({'function': 'isErrorActive', 'a_iErrorCode': item[2]})
+            logging.info(f"COFFEE_MACHINE: Sending {request}")
+            ws.send(request)
+            received_data = ws.recv()
+            if (WMFMachineStatConnector.normalize_json(received_data).get('returnvalue')) == 0:
+                db_driver.close_error_code_by_id(item[2])
 
 
 

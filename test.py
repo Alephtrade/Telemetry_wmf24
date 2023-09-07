@@ -50,6 +50,7 @@ def worker():
             logging.info(f"COFFEE_MACHINE: Sending {request}")
             ws.send(request)
             received_data = ws.recv()
-            return WMFMachineStatConnector.normalize_json(received_data).get('returnvalue')
+            if (WMFMachineStatConnector.normalize_json(received_data).get('returnvalue')) == 0:
+                db_driver.close_error_code_by_id(item[2])
 
 print(worker())
