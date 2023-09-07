@@ -32,8 +32,8 @@ def worker():
             status = 1
     except Exception:
         status = 0
-    r = db_driver.get_error_last_stat_record('-1')
-    if r:
+    r = db_driver.get_error_last_stat_record('62')
+    if r is not None:
         last_id, end_time = r
     if status == 0 and (end_time is None):
         logging.info(f'status is 0 and end_time is none, downtime is active')
@@ -44,7 +44,8 @@ def worker():
         logging.info(f'status is 1 and last_id is {last_id}, calling close_error_code_by_id({last_id})')
         db_driver.close_error_code_by_id(last_id)
         unclosed = db_driver.get_error_empty_record()
-        print(unclosed)
+        for item in unclosed:
+            print(item[0])
         return unclosed
 
 print(worker())
