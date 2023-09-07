@@ -118,6 +118,18 @@ class WMFSQLDriver:
         cur.close()
         return res
 
+    def get_error_empty_record(self):
+        cur = self.connection.cursor()
+        stmt = '''
+            SELECT id, end_time, error_code FROM error_code_stats
+            WHERE end_time is Null
+            ORDER BY id DESC 
+        '''
+        cur.execute(stmt)
+        res = cur.fetchall()
+        cur.close()
+        return res
+
     def get_error_last_record(self):
         cur = self.connection.cursor()
         stmt = '''
