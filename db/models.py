@@ -93,15 +93,32 @@ class WMFSQLDriver:
         self.connection.commit()
         cur.close()
 
+    def get_error_by_id(self, error_id):
+        cur = self.connection.cursor()
+        stmt = '''
+            SELECT id, start_time, code FROM error_code_stats
+            WHERE id = ?
+            ORDER BY id DESC 
+            LIMIT 1
+        '''
+        cur.execute(stmt, (error_id,))
+        res = cur.fetchone()
+        cur.close()
+        return res
+
     def close_error_code_by_id(self, last_id):
+        that_error_record = self.get_error_by_id(last_id)
+        start_time = self.get_error_prev_record(that_error_record[1])[1]
+        start_time_formated = int(datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S').timestamp())
+        duration = str((int((datetime.now() + timedelta(hours=3)).timestamp()) - start_time_formated))
         cur = self.connection.cursor()
         end_time = get_curr_time_str()
         stmt = ''' 
             UPDATE error_code_stats 
-            SET end_time = ?
+            SET end_time = ?, duration_time = ?
             WHERE id = ?
         '''
-        cur.execute(stmt, (end_time, last_id))
+        cur.execute(stmt, (end_time, duration, last_id))
         self.connection.commit()
         cur.close()
 
