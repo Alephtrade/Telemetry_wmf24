@@ -110,7 +110,7 @@ class WMFSQLDriver:
         print(last_id)
         that_error_record = self.get_error_by_id(last_id)
         print(that_error_record)
-        start_time = self.get_error_prev_record(that_error_record[1])[1]
+        start_time = self.get_error_prev_record(that_error_record[2])[1]
         start_time_formated = int(datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S').timestamp())
         duration = str((int((datetime.now() + timedelta(hours=3)).timestamp()) - start_time_formated))
         cur = self.connection.cursor()
