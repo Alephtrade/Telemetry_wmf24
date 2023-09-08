@@ -96,7 +96,7 @@ class WMFSQLDriver:
     def get_error_by_id(self, error_id):
         cur = self.connection.cursor()
         stmt = '''
-            SELECT id, start_time, code FROM error_code_stats
+            SELECT id, start_time, error_code FROM error_code_stats
             WHERE id = ?
             ORDER BY id DESC 
             LIMIT 1
