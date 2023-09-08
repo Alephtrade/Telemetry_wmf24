@@ -119,8 +119,7 @@ def check_machine_status():
         status = 0
 
     logging.info(f'status is: {status}')
-    r = db_driver.get
-    _error_last_stat_record('-1')
+    r = db_driver.get_error_last_stat_record('-1')
     #k = db_driver.get_error_last_stat_record('62')
     if r is not None:
         last_id, end_time = r
