@@ -108,6 +108,7 @@ class WMFSQLDriver:
 
     def close_error_code_by_id(self, last_id):
         that_error_record = self.get_error_by_id(last_id)
+        print(that_error_record)
         d_id, start_time, error_code = that_error_record
         start_time_formated = int(datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S').timestamp())
         duration = str((int((datetime.now() + timedelta(hours=3)).timestamp()) - start_time_formated))
