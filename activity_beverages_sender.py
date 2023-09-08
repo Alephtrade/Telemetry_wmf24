@@ -119,7 +119,8 @@ def check_machine_status():
         status = 0
 
     logging.info(f'status is: {status}')
-    r = db_driver.get_error_last_stat_record('-1')
+    r = db_driver.get
+    _error_last_stat_record('-1')
     #k = db_driver.get_error_last_stat_record('62')
     if r is not None:
         last_id, end_time = r
@@ -175,7 +176,7 @@ def render_errors_closing(last_id, end_time, status):
             ws.send(request)
             received_data = ws.recv()
             if (WMFMachineStatConnector.normalize_json(received_data).get('returnvalue')) == 0:
-                db_driver.close_error_code_by_id(item[2])
+                db_driver.close_error_code(item[2])
 
 
 
