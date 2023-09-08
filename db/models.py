@@ -125,6 +125,7 @@ class WMFSQLDriver:
         cur.execute(stmt, (end_time, duration, last_id))
         self.connection.commit()
         cur.close()
+        return True
 
     def get_error_last_stat_record(self, error_code):
         cur = self.connection.cursor()
