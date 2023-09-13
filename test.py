@@ -13,7 +13,7 @@ sys.path.append("../../")
 from db.models import WMFSQLDriver
 from settings import prod as settings
 from wmf.models import WMFMachineStatConnector, WMFMachineErrorConnector
-from core.utils import initialize_logger, get_beverages_send_time
+from core.utils import initialize_logger, print_exception, get_env_mode, get_part_number_local
 
 
 WMF_URL = settings.WMF_DATA_URL
@@ -24,18 +24,9 @@ wmf_conn = WMFMachineErrorConnector()
 wmf2_conn = WMFMachineStatConnector()
 
 def worker():
-    data = WMFMachineStatConnector.send_wmf_request('getMachineInfo')
-    print(data)
-    print(1)
-    request = json.dumps({'function': 'getMachineInfo'})
-    logging.info(f"WMFMachineStatConnector: Sending {request}")
-    WMFMachineStatConnector.ws.send(request)
-    received_data = WMFMachineStatConnector.ws.recv()
-    logging.info(f"WMFMachineStatConnector: Received {received_data}")
-    print(WMFMachineStatConnector.normalize_json(received_data))
-    part_number = data.get('PartNumber')
-    with open('/root/wmf_1100_1500_5000_router/part_number.txt', 'w') as f:
-        f.write(str(part_number))
-    return part_number
+    try_to_get_part_number = get_part_number_local()
+    if try_to_get_part_number is None:
+        try_to_get_part_number = wmf_conn.get_part_number()
+    print(try_to_get_part_number)
 
 print(worker())
