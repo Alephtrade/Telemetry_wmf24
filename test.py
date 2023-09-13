@@ -39,9 +39,9 @@ def get_part_number():
          print(received_data)
          ws.close()
          return WMFMachineStatConnector.normalize_json(received_data).get('PartNumber')
-     except Exception as ex:
-         logging.info(f"COFFEE_MACHINE: Get machine info error, HOST {WS_URL} - {ex}")
-         print(ex)
-         return None
+    except Exception as ex:
+        logging.info(f"COFFEE_MACHINE: Get machine info error, HOST {WS_URL} - {ex}")
+        print(ex)
+        return None
 
 print(worker())
