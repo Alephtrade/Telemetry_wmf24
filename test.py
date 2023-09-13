@@ -24,33 +24,14 @@ wmf_conn = WMFMachineErrorConnector()
 wmf2_conn = WMFMachineStatConnector()
 
 def worker():
-    status = None
     try:
-        ws = websocket.create_connection(settings.WS_URL, timeout=settings.WEBSOCKET_CONNECT_TIMEOUT)
-        if ws.connected:
-            ws.close()
-            status = 1
+        data = WMFMachineStatConnector.send_wmf_request('getMachineInfo')
+        part_number = data.get('PartNumber')
+        with open('/root/wmf_1100_1500_5000_router/part_number.txt', 'w') as f:
+            f.write(str(part_number))
+        return part_number
     except Exception:
-        status = 0
-    r = db_driver.get_error_last_stat_record('62')
-    if r is not None:
-        last_id, end_time = r
-    if status == 0 and (end_time is None):
-        logging.info(f'status is 0 and end_time is none, downtime is active')
-    elif status == 0 and (end_time is not None):
-        logging.info(f'status is 0 and end_time is {end_time}, calling create_error_record(-1)')
-        db_driver.create_error_record('-1', 'Кофемашина недоступна')
-    elif status == 1:
-        logging.info(f'status is 1 and last_id is {last_id}, calling close_error_code_by_id({last_id})')
-        db_driver.close_error_code_by_id(last_id)
-        unclosed = db_driver.get_error_empty_record()
-        for item in unclosed: #0 - id 1 - end_time 2-code
-            ws = websocket.create_connection(WS_URL)
-            request = json.dumps({'function': 'isErrorActive', 'a_iErrorCode': item[2]})
-            logging.info(f"COFFEE_MACHINE: Sending {request}")
-            ws.send(request)
-            received_data = ws.recv()
-            if (WMFMachineStatConnector.normalize_json(received_data).get('returnvalue')) == 0:
-                db_driver.close_error_code_by_id(item[2])
+        with open('/root/wmf_1100_1500_5000_router/part_number.txt') as f:
+            return f.read()
 
 print(worker())
