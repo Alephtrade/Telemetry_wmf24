@@ -54,7 +54,8 @@ def controller_data_statistics_sender():
         with open('/root/wmf_1100_1500_5000_router/part_number.txt') as f:
             part_number = f.read()
     except Exception:
-        logging.info(f'{part_number} is none')
+        wm_conn = WMFMachineStatConnector()
+        part_number = wm_conn.get_part_number()
     data_main_stat = db_conn.get_data_statistics_to_send()
     if data_main_stat is not None:
         for item in data_main_stat:
