@@ -108,7 +108,6 @@ def get_service_statistics():
     else:
         if actual[2] == "0":
             #print("form")
-            logging.info(f"COFFEE_MACHINE: updating record service_stat {record}")
             request = json.dumps({'function': 'getServiceStatistics'})
             logging.info(f"COFFEE_MACHINE: Sending {request}")
             ws.send(request)
