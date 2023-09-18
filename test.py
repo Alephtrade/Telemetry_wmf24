@@ -24,8 +24,10 @@ wmf_conn = WMFMachineErrorConnector()
 wmf2_conn = WMFMachineStatConnector()
 
 def worker():
-    time_now = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp() // (60 * 60) * 60 * 60))
-    now = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp()))
+    time_now = datetime.fromtimestamp(int(datetime.now().timestamp() // (60 * 60) * 60 * 60))
+    now = datetime.fromtimestamp(int(datetime.now().timestamp()))
+    print(time_now - timedelta(hours=1))
+    print(time_now)
     print(db_driver.get_error_records(time_now - timedelta(hours=1), time_now))
 
 
