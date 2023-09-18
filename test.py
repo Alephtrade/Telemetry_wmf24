@@ -24,19 +24,7 @@ wmf_conn = WMFMachineErrorConnector()
 wmf2_conn = WMFMachineStatConnector()
 
 def worker():
-    try_to_get_part_number = get_part_number_local()
-    if try_to_get_part_number is None:
-        try_to_get_part_number = get_part_number()
-    print(try_to_get_part_number)
-
-def get_part_number():
-    ws = websocket.create_connection(WS_URL)
-    request = json.dumps({'function': 'getMachineInfo'})
-    print(request)
-    ws.send(request)
-    received_data = ws.recv()
-    print(received_data)
-    return received_data
+    print(db_driver.get_error_records())
 
 
-print(get_part_number())
+print(worker())

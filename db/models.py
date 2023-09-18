@@ -425,9 +425,9 @@ class WMFSQLDriver:
         stmt = f''' 
             SELECT id, error_code, start_time, end_time, error_text 
             FROM error_code_stats 
-            WHERE end_time >= "{prev_hour}" AND end_time < "{now_hour}" 
+            WHERE (end_time >= "{prev_hour}" AND end_time < "{now_hour}" 
             OR start_time >= "{prev_hour}" AND start_time < "{now_hour}"
-            OR start_time < "{prev_hour}" AND end_time is NULL AND error_code != 62
+            OR start_time < "{prev_hour}" AND (end_time is NULL OR end_time >= "{prev_hour}")) AND error_code != 62 AND error_code != "-1"
         '''
         cur.execute(stmt)
         res = cur.fetchall()
