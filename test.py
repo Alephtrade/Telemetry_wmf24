@@ -13,22 +13,78 @@ sys.path.append("../../")
 from db.models import WMFSQLDriver
 from settings import prod as settings
 from wmf.models import WMFMachineStatConnector, WMFMachineErrorConnector
-from core.utils import initialize_logger, print_exception, get_env_mode, get_part_number_local
+from core.utils import initialize_logger, print_exception, get_env_mode, get_part_number_local, get_beverages_send_time, timedelta_int
 
 
 WMF_URL = settings.WMF_DATA_URL
 WS_URL = settings.WS_URL
 DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
-db_driver = WMFSQLDriver()
+db_conn = WMFSQLDriver()
 wmf_conn = WMFMachineErrorConnector()
 wmf2_conn = WMFMachineStatConnector()
 
 def worker():
-    time_now = datetime.fromtimestamp(int(datetime.now().timestamp() // (60 * 60) * 60 * 60))
-    now = datetime.fromtimestamp(int(datetime.now().timestamp()))
-    print(time_now - timedelta(hours=1))
-    print(time_now)
-    print(db_driver.get_error_records(time_now - timedelta(hours=1), time_now))
+    time_now = datetime.fromtimestamp(int((datetime.now()).timestamp() // (60 * 60) * 60 * 60))
+    prev_hour = time_now - timedelta(hours=1)
+    unsent_records = db_conn.get_error_records(prev_hour, time_now)
+    unsent_disconnect_records = db_conn.get_all_error_records_by_code(prev_hour, time_now, "-1")
+    #return print(unsent_disconnect_records)
+    print(unsent_records)
+    date_end_prev_error = prev_hour
+    wmf_error_time = 0
+    per_error_time = timedelta()
+    total_disconnect_time = 0
+    disconnect_time = timedelta()
+    for rec_id, error_code, start_time, end_time, error_text in unsent_records:
+        #print(start_time)
+        if(type(start_time) is not datetime):
+            start_time = datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
+        if (type(end_time) is not datetime):
+            end_time = datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S')
+        if start_time < date_end_prev_error:
+            start_time = date_end_prev_error
+        if end_time is None or end_time > time_now:
+            end_time = time_now
+        if end_time < date_end_prev_error:
+            end_time = date_end_prev_error
+        for disconnect_rec_id, disconnect_error_code, disconnect_start_time, disconnect_end_time, disconnect_error_text in unsent_disconnect_records:
+            # print(start_time)
+            if (type(disconnect_start_time) is not datetime):
+                disconnect_start_time = datetime.strptime(disconnect_start_time, '%Y-%m-%d %H:%M:%S')
+            if (type(disconnect_end_time) is not datetime and disconnect_end_time is not None):
+                disconnect_end_time = datetime.strptime(disconnect_end_time, '%Y-%m-%d %H:%M:%S')
+            if disconnect_start_time < start_time: # 3.4.1
+                disconnect_start_time = prev_hour
+            if disconnect_end_time is None or disconnect_end_time > time_now: # 3.4.2
+                disconnect_end_time = time_now
+            if start_time < disconnect_start_time and end_time > disconnect_end_time: # 3.4.3
+                start_time = disconnect_end_time - (disconnect_start_time - start_time)
+            else:
+                if start_time >= disconnect_start_time and start_time < disconnect_end_time: # 3.4.3.1
+                    start_time = disconnect_end_time
+                if end_time > disconnect_start_time and end_time < disconnect_end_time: # 3.4.3.2
+                    end_time = disconnect_start_time
+        if disconnect_start_time < time_now:
+            disconnect_start_time = prev_hour
+        if disconnect_end_time is None or disconnect_end_time > time_now:
+            disconnect_end_time = time_now
+        disconnect_time = disconnect_end_time - disconnect_start_time
+        disconnect_time = timedelta_int(disconnect_time)
+        if disconnect_time < 0:
+            disconnect_time = 0
+        total_disconnect_time += disconnect_time
+        per_error_time = end_time - start_time
+        per_error_time = timedelta_int(per_error_time)
+        if per_error_time < 0:
+            per_error_time = 0
+        wmf_error_time += per_error_time
+        date_end_prev_error = end_time
 
 
-print(worker())
+    print({
+        "wmf_error_time": wmf_error_time,
+        "disconnect_time": disconnect_time
+    })
+
+
+worker()

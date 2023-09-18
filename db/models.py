@@ -436,6 +436,21 @@ class WMFSQLDriver:
         cur.close()
         return res
 
+    def get_all_error_records_by_code(self, prev_hour, now_hour, code):
+        cur = self.connection.cursor()
+        stmt = f''' 
+            SELECT id, error_code, start_time, end_time, error_text 
+            FROM error_code_stats 
+            WHERE ((end_time > "{prev_hour}" AND end_time <= "{now_hour}")
+            OR (start_time >= "{prev_hour}" AND start_time < "{now_hour}")
+            OR (start_time <= "{prev_hour}" AND (end_time is NULL OR end_time > "{prev_hour}")))
+            AND error_code == "{code}"
+        '''
+        cur.execute(stmt)
+        res = cur.fetchall()
+        cur.close()
+        return res
+
     def set_report_sent(self, rec_id):
         cur = self.connection.cursor()
         stmt = ''' 
