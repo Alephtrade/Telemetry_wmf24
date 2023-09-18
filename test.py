@@ -24,7 +24,7 @@ wmf_conn = WMFMachineErrorConnector()
 wmf2_conn = WMFMachineStatConnector()
 
 def worker():
-    time_now = datetime.fromtimestamp(int((datetime.now()).timestamp() // (60 * 60) * 60 * 60))
+    time_now = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp() // (60 * 60) * 60 * 60))
     prev_hour = time_now - timedelta(hours=1)
     unsent_records = db_conn.get_error_records(prev_hour, time_now)
     unsent_disconnect_records = db_conn.get_all_error_records_by_code(prev_hour, time_now, "-1")
