@@ -18,71 +18,95 @@ db_conn = WMFSQLDriver()
 def get_main_clean_stat():
     initialize_logger('controller_cleaning_statistic_creator.py.log')
     time_now = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp() // (60 * 60) * 60 * 60))
-    now = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp()))
+    prev_hour = time_now - timedelta(hours=1)
     get_last_data_statistics = db_conn.get_last_data_statistics()
-    print(get_last_data_statistics)
-    date_to_send = get_beverages_send_time(get_last_data_statistics[0])
+    if get_last_data_statistics is not None and len(get_last_data_statistics) > 0:
+        date_to_send = get_beverages_send_time(get_last_data_statistics[0])
+    else:
+        date_to_send = get_beverages_send_time(time_now)
+    print(date_to_send)
     db_conn.create_data_statistics(time_now, date_to_send)
-    stoppage_time, wmf_error_time, time_count_default = timedelta(), timedelta(), timedelta(seconds=3600)
-    stoppage_count, wmf_error_count = 0, 0
-    unsent_records = db_conn.get_error_records(time_now - timedelta(hours=1), time_now)
+    unsent_records = db_conn.get_error_records(prev_hour, time_now)
+    unsent_disconnect_records = db_conn.get_all_error_records_by_code(prev_hour, time_now, "-1")
+    date_end_prev_error = prev_hour
+    wmf_error_time = 0
+    per_error_time = timedelta()
+    total_disconnect_time = 0
+    disconnect_time = timedelta()
+    wmf_error_count = 0
+    disconnect_count = 0
     for rec_id, error_code, start_time, end_time, error_text in unsent_records:
-        #print(unsent_records)
-        date_error_start = datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
-        if date_error_start < (time_now - timedelta(hours=1)) and end_time is None:
-            #print("1")
-            stoppage_count = 0
-            wmf_error_count = 0
-            if error_code == -1:
-                stoppage_time = timedelta(seconds=3600)
-                wmf_error_time = timedelta()
+        # print(start_time)
+        if (type(start_time) is not datetime):
+            start_time = datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
+        if (type(end_time) is not datetime):
+            end_time = datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S')
+        if start_time < date_end_prev_error:
+            start_time = date_end_prev_error
+        if end_time is None or end_time > time_now:
+            end_time = time_now
+        if end_time < date_end_prev_error:
+            end_time = date_end_prev_error
+        for disconnect_rec_id, disconnect_error_code, disconnect_start_time, disconnect_end_time, disconnect_error_text in unsent_disconnect_records:
+            # print(start_time)
+            if (type(disconnect_start_time) is not datetime):
+                disconnect_start_time = datetime.strptime(disconnect_start_time, '%Y-%m-%d %H:%M:%S')
+            if (type(disconnect_end_time) is not datetime and disconnect_end_time is not None):
+                disconnect_end_time = datetime.strptime(disconnect_end_time, '%Y-%m-%d %H:%M:%S')
+            if disconnect_start_time < start_time:  # 3.4.1
+                disconnect_start_time = prev_hour
+            if disconnect_end_time is None or disconnect_end_time > time_now:  # 3.4.2
+                disconnect_end_time = time_now
+            if start_time < disconnect_start_time and end_time > disconnect_end_time:  # 3.4.3
+                start_time = disconnect_end_time - (disconnect_start_time - start_time)
             else:
-                stoppage_time = timedelta()
-                wmf_error_time = timedelta(seconds=3600)
-            break
-        elif date_error_start >= (time_now - timedelta(hours=1)) and end_time is not None:
-            #print("2")
-            duration_time = datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S') - datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
-            if error_code == -1:
-                stoppage_count += 1
-            else:
-                wmf_error_count += 1
-        elif end_time is not None:
-            #print("3")
-            duration_time = datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S') - (time_now - timedelta(hours=1))
-            if error_code == -1:
-                stoppage_count += 1
-            else:
-                wmf_error_count += 1
-        else:
-            #print("4")
-            duration_time = time_now - datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
-        time_count_default -= duration_time
-        if error_code == -1:
-            stoppage_time += duration_time
-        else:
-            wmf_error_time += duration_time
-    #print({"time_worked": time_count_default, "wmf_error_count": wmf_error_count, "wmf_error_time": wmf_error_time, "stoppage_count": stoppage_count, "stoppage_time": stoppage_time})
+                if start_time >= disconnect_start_time and start_time < disconnect_end_time:  # 3.4.3.1
+                    start_time = disconnect_end_time
+                if end_time > disconnect_start_time and end_time < disconnect_end_time:  # 3.4.3.2
+                    end_time = disconnect_start_time
+            if disconnect_start_time < time_now:
+                disconnect_start_time = prev_hour
+            if disconnect_end_time is None or disconnect_end_time > time_now:
+                disconnect_end_time = time_now
+            disconnect_time = disconnect_end_time - disconnect_start_time
+            disconnect_time = timedelta_int(disconnect_time)
+            if disconnect_time < 0:
+                disconnect_time = 0
+            total_disconnect_time += disconnect_time
+            disconnect_count += 1
+        per_error_time = end_time - start_time
+        per_error_time = timedelta_int(per_error_time)
+        if per_error_time < 0:
+            per_error_time = 0
+        wmf_error_time += per_error_time
+        wmf_error_count += 1
+        date_end_prev_error = end_time
 
-    wmf_error_time = timedelta_int(wmf_error_time)
-    time_count_default = timedelta_int(time_count_default)
-    stoppage_time = timedelta_int(stoppage_time)
+    wmf_work_time = 3600 - wmf_error_time - total_disconnect_time
 
-    if(wmf_error_time > 3600):
+    if wmf_error_time > 3600:
         wmf_error_time = 3600
-    if(time_count_default < 0):
-        time_count_default = 0
-    if(stoppage_time > 3600):
-        stoppage_time = 3600
+    if wmf_work_time < 0:
+        wmf_work_time = 0
+    if total_disconnect_time > 3600:
+        total_disconnect_time = 3600
+
     #print({"time_worked", time_count_default, "wmf_error_count", wmf_error_count, "wmf_error_time", wmf_error_time, "stoppage_count", stoppage_count, "stoppage_time", stoppage_time})
-    db_conn.save_data_statistics("time_worked", time_count_default)
+    db_conn.save_data_statistics("time_worked", wmf_work_time)
     db_conn.save_data_statistics("wmf_error_count", wmf_error_count)
     db_conn.save_data_statistics("wmf_error_time", wmf_error_time)
-    db_conn.save_data_statistics("stoppage_count", stoppage_count)
-    db_conn.save_data_statistics("stoppage_time", stoppage_time)
+    db_conn.save_data_statistics("stoppage_count", disconnect_count)
+    db_conn.save_data_statistics("stoppage_time", total_disconnect_time)
 
-    logging.info(f'time_worked {time_count_default}, wmf_error_count {wmf_error_count}, wmf_error_time {wmf_error_time}, stoppage_count {stoppage_count}, stoppage_time: stoppage_time')
-    return True
+    logging.info(f'time_worked {wmf_work_time}, wmf_error_count {wmf_error_count}, wmf_error_time {wmf_error_time}, stoppage_count {disconnect_count}, stoppage_time: {total_disconnect_time}')
+    return [
+        {
+            "wmf_work_time": wmf_work_time,
+            "wmf_error_count": wmf_error_count,
+            "wmf_error_time": wmf_error_time,
+            "disconnect_count": disconnect_count,
+            "disconnect_time": total_disconnect_time
+        }]
 
     
 def get_service_statistics():
@@ -167,6 +191,6 @@ def are_need_to_create():
     return get
 
 
-print(are_need_to_create())
-print(get_service_statistics())
+#print(are_need_to_create())
+#print(get_service_statistics())
 print(get_main_clean_stat())

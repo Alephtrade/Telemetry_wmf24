@@ -64,15 +64,15 @@ def worker():
                     start_time = disconnect_end_time
                 if end_time > disconnect_start_time and end_time < disconnect_end_time: # 3.4.3.2
                     end_time = disconnect_start_time
-        if disconnect_start_time < time_now:
-            disconnect_start_time = prev_hour
-        if disconnect_end_time is None or disconnect_end_time > time_now:
-            disconnect_end_time = time_now
-        disconnect_time = disconnect_end_time - disconnect_start_time
-        disconnect_time = timedelta_int(disconnect_time)
-        if disconnect_time < 0:
-            disconnect_time = 0
-        total_disconnect_time += disconnect_time
+            if disconnect_start_time < time_now:
+                disconnect_start_time = prev_hour
+            if disconnect_end_time is None or disconnect_end_time > time_now:
+                disconnect_end_time = time_now
+            disconnect_time = disconnect_end_time - disconnect_start_time
+            disconnect_time = timedelta_int(disconnect_time)
+            if disconnect_time < 0:
+                disconnect_time = 0
+            total_disconnect_time += disconnect_time
         per_error_time = end_time - start_time
         per_error_time = timedelta_int(per_error_time)
         if per_error_time < 0:
