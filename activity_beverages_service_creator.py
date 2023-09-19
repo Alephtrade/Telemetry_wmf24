@@ -99,14 +99,15 @@ def get_main_clean_stat():
     db_conn.save_data_statistics("stoppage_time", total_disconnect_time)
 
     logging.info(f'time_worked {wmf_work_time}, wmf_error_count {wmf_error_count}, wmf_error_time {wmf_error_time}, stoppage_count {disconnect_count}, stoppage_time: {total_disconnect_time}')
-    return [
+    print(
         {
             "wmf_work_time": wmf_work_time,
             "wmf_error_count": wmf_error_count,
             "wmf_error_time": wmf_error_time,
             "disconnect_count": disconnect_count,
             "disconnect_time": total_disconnect_time
-        }]
+        })
+    return True
 
     
 def get_service_statistics():
@@ -191,6 +192,6 @@ def are_need_to_create():
     return get
 
 
-#print(are_need_to_create())
-#print(get_service_statistics())
+print(are_need_to_create())
+print(get_service_statistics())
 print(get_main_clean_stat())
