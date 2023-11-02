@@ -1,27 +1,33 @@
-import sys
-import websocket
-import logging
-import requests
-import json
-import ast
-import socket
-from datetime import timedelta, datetime
-from api.beverages import methods
+#import sys
+#import websocket
+#import logging
+#import requests
+#import json
+#import ast
+#import socket
+#from datetime import timedelta, datetime
+#from api.beverages import methods
+from timezonefinder import TimezoneFinder
+from datetime import datetime, timezone
+import pytz
 
 
-sys.path.append("../../")
-from db.models import WMFSQLDriver
-from settings import prod as settings
-from wmf.models import WMFMachineStatConnector, WMFMachineErrorConnector
-from core.utils import initialize_logger, print_exception, get_env_mode, get_part_number_local, get_beverages_send_time, timedelta_int
 
 
-WMF_URL = settings.WMF_DATA_URL
-WS_URL = settings.WS_URL
-DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
-db_conn = WMFSQLDriver()
-wmf_conn = WMFMachineErrorConnector()
-wmf2_conn = WMFMachineStatConnector()
+
+#sys.path.append("../../")
+#from db.models import WMFSQLDriver
+#from settings import prod as settings
+#from wmf.models import WMFMachineStatConnector, WMFMachineErrorConnector
+#from core.utils import initialize_logger, print_exception, get_env_mode, get_part_number_local, get_beverages_send_time, timedelta_int
+#
+#
+#WMF_URL = settings.WMF_DATA_URL
+#WS_URL = settings.WS_URL
+#DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
+#db_conn = WMFSQLDriver()
+#wmf_conn = WMFMachineErrorConnector()
+#wmf2_conn = WMFMachineStatConnector()
 
 #def worker():
 #    time_now = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp() // (60 * 60) * 60 * 60))
@@ -87,11 +93,22 @@ wmf2_conn = WMFMachineStatConnector()
 #    })
 
 def worker():
-    ws = websocket.create_connection(WS_URL, timeout=5)
-    request = json.dumps({'function': 'getRecipeReturns'})
-    ws.send(request)
-    received_data = ws.recv()
-    print(received_data)
+    #ws = websocket.create_connection(WS_URL, timeout=5)
+    #request = json.dumps({'function': 'deleteRecipe'})
+    #ws.send(request)
+    #received_data = ws.recv()
+    #print(received_data)
+    obj = TimezoneFinder()
+    latitude = 37.388746
+    longitude = 55.827224
+    result = obj.timezone_at(lng=latitude, lat=longitude)
+
+    dt_to_convert = datetime.utcnow().replace(tzinfo=timezone.utc)
+    print(datetime.now(pytz.timezone(result)).strftime("%z"))
+    tz = datetime.strptime(datetime.now(pytz.timezone(result)).strftime("%z"), '%z').tzinfo
+    print(dt_to_convert.astimezone(tz))
+    tz = datetime.strptime('+0600', '%z').tzinfo
+    print(dt_to_convert.astimezone(tz))
 
 
 worker()
