@@ -6,7 +6,7 @@ import logging
 #rom core.utils import print_exception, get_env_mode
 #from db.models import WMFSQLDriver
 
-WS_IP = '192.168.8.101'
+WS_IP = '169.254.92.211'
 WS_PORT = 25000
 WMF_BASE_URL = 'https://wmf24.ru'
 WMF_DATA_URL = "https://wmf24.ru/api/test2"
@@ -25,6 +25,3 @@ def send_wmf_request(wmf_command):
     received_data = ws.recv()
     logging.info(f"WMFMachineStatConnector: Received {received_data}")
     return (received_data)
-print('---')
-c = (sys.argv)
-print(send_wmf_request(c[1]))

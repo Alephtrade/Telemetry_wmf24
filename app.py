@@ -13,9 +13,7 @@ def hello_world():  # put application's code here
 
 @app.route('/console')
 def terra():  # put application's code here
-    print('---')
-    c = sys.argv
-    return jsonify(send_wmf_request(c[1]), 200)
+    return jsonify(send_wmf_request('{"function": "restart"}'), 200)
 
 if __name__ == '__main__':
     app.run()
