@@ -102,13 +102,14 @@ def worker():
     latitude = 37.388746
     longitude = 55.827224
     result = obj.timezone_at(lng=latitude, lat=longitude)
-
+#
+    d = []
     dt_to_convert = datetime.utcnow().replace(tzinfo=timezone.utc)
-    print(datetime.now(pytz.timezone(result)).strftime("%z"))
+    d.append(datetime.now(pytz.timezone(result)).strftime("%z"))
     tz = datetime.strptime(datetime.now(pytz.timezone(result)).strftime("%z"), '%z').tzinfo
-    print(dt_to_convert.astimezone(tz))
+    d.append(dt_to_convert.astimezone(tz))
     tz = datetime.strptime('+0600', '%z').tzinfo
-    print(dt_to_convert.astimezone(tz))
+    d.append(dt_to_convert.astimezone(tz))
+    return d
 
-
-worker()
+#worker()
