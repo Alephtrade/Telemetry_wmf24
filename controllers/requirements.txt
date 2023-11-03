@@ -4,3 +4,5 @@ websocket-client~=1.2.3
 requests~=2.27.1
 timeloop~=1.0.2
 urllib3==1.26.9
+timezonefinder
+geopy
