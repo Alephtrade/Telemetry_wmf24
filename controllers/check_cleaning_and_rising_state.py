@@ -2,10 +2,10 @@ import json
 import logging
 import requests
 from datetime import datetime, timedelta
-from db.models import WMFSQLDriver
-from wmf.models import WMFMachineStatConnector
-from settings import prod as settings
-from core.utils import initialize_logger
+from controllers.db.models import WMFSQLDriver
+from controllers.wmf.models import WMFMachineStatConnector
+from controllers.settings import prod as settings
+from controllers.core.utils import initialize_logger
 
 initialize_logger('check_cleaning_and_rising_state.log')
 WMF_URL = settings.WMF_DATA_URL

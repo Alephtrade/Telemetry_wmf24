@@ -2,8 +2,8 @@ import requests
 import websocket
 import json
 import logging
-from core.utils import print_exception, get_env_mode, get_part_number_local
-from db.models import WMFSQLDriver
+from controllers.core.utils import print_exception, get_env_mode, get_part_number_local
+from controllers.db.models import WMFSQLDriver
 
 if get_env_mode() == 'prod':
     from settings import prod as settings

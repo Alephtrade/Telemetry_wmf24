@@ -5,11 +5,11 @@ import json
 import ast
 import socket
 from datetime import timedelta, datetime, time
-from db.models import WMFSQLDriver
-from settings import prod as settings
-from core.utils import timedelta_int, get_beverages_send_time, initialize_logger
-from api.beverages import methods
-from wmf.models import WMFMachineStatConnector
+from controllers.db.models import WMFSQLDriver
+from controllers.settings import prod as settings
+from controllers.core.utils import timedelta_int, get_beverages_send_time, initialize_logger
+from controllers.api.beverages import methods
+from controllers.wmf.models import WMFMachineStatConnector
 
 
 WMF_URL = settings.WMF_DATA_URL

@@ -1,5 +1,5 @@
 import sqlite3
-from settings import prod as settings
+from controllers.settings import prod as settings
 
 
 def does_column_exist(table_name, column_name):

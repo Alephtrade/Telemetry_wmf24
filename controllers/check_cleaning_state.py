@@ -1,8 +1,8 @@
 import logging
-from datetime import datetime, timedelta
-from db.models import WMFSQLDriver
-from wmf.models import WMFMachineStatConnector
-from core.utils import initialize_logger
+from controllers.datetime import datetime, timedelta
+from controllers.db.models import WMFSQLDriver
+from controllers.wmf.models import WMFMachineStatConnector
+from controllers.core.utils import initialize_logger
 
 initialize_logger('check_cleaning_state.log')
 db_conn = WMFSQLDriver()

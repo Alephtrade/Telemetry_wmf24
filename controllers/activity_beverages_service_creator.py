@@ -4,10 +4,10 @@ import requests
 import json
 import time
 from datetime import timedelta, datetime, date
-from db.models import WMFSQLDriver
-from settings import prod as settings
-from core.utils import timedelta_int, get_beverages_send_time, initialize_logger, get_part_number_local
-from api.beverages import methods
+from controllers.db.models import WMFSQLDriver
+from controllers.settings import prod as settings
+from controllers.core.utils import timedelta_int, get_beverages_send_time, initialize_logger, get_part_number_local
+from controllers.api.beverages import methods
 
 
 WMF_URL = settings.WMF_DATA_URL

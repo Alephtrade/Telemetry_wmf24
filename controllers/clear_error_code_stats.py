@@ -1,5 +1,5 @@
 import sqlite3
-from settings import prod as settings
+from controllers.settings import prod as settings
 
 conn = sqlite3.connect(settings.DB_PATH, check_same_thread=False)
 cur = conn.cursor()

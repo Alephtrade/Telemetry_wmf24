@@ -1,7 +1,7 @@
 import sqlite3
 import logging
 from datetime import datetime, timedelta
-from settings import prod as settings
+from controllers.settings import prod as settings
 from core.utils import get_curr_time_str
 
 

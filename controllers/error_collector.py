@@ -5,10 +5,10 @@ import logging
 from threading import Thread
 from datetime import timedelta
 from timeloop import Timeloop
-from core.utils import initialize_logger, print_exception, get_env_mode, get_part_number_local
-from wmf.models import WMFMachineErrorConnector
-from settings import prod as settings
-from db.models import WMFSQLDriver
+from controllers.core.utils import initialize_logger, print_exception, get_env_mode, get_part_number_local
+from controllers.wmf.models import WMFMachineErrorConnector
+from controllers.settings import prod as settings
+from controllers.db.models import WMFSQLDriver
 
 
 WMF_URL = settings.WMF_DATA_URL

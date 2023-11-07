@@ -3,8 +3,8 @@ import websocket
 import sys
 import json
 import logging
-#rom core.utils import print_exception, get_env_mode
-#from db.models import WMFSQLDriver
+#rom controllers.core.utils import print_exception, get_env_mode
+#from controllers.db.models import WMFSQLDriver
 
 WS_IP = '169.254.92.211'
 WS_PORT = 25000
