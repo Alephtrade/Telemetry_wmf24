@@ -7,10 +7,10 @@ import sys
 import requests
 
 sys.path.append("../../")
-from db.models import WMFSQLDriver
-from core.utils import initialize_logger, get_beverages_send_time
-from settings import prod as settings
-from wmf.models import WMFMachineStatConnector
+from controllers.db.models import WMFSQLDriver
+from controllers.core.utils import initialize_logger, get_beverages_send_time
+from controllers.settings import prod as settings
+from controllers.wmf.models import WMFMachineStatConnector
 
 WMF_URL = settings.WMF_DATA_URL
 WS_URL = settings.WS_URL

@@ -45,23 +45,30 @@ if not does_object_exist('table', 'last_record'):
 add_table_column(table_name='last_record', column_name='beverages_count', column_type='integer default 0')
 add_table_column(table_name='last_record', column_name='cleaning_duration', column_type='real default 0')
 add_table_column(table_name='last_record', column_name='cleaning_datetime', column_type='text')
-add_table_column(table_name='error_code_stats', column_name='error_text', column_type='text')
-add_table_column(table_name='error_code_stats', column_name='duration_time', column_type='text')
 
-if not does_object_exist('table', 'tg_reports'):
+if not does_object_exist('table', 'error_code_stats'):
     stmt = '''
-        create table tg_reports
+        create table error_code_stats
         (
             id          integer
-                constraint tg_reports_pk
+                constraint error_code_stats_pk
                     primary key,
-            date_formed text,
-            date_sent   text,
-            body        text
+            aleph_id text,
+            error_code text,
+            error_date   text,
+            start_time   text,
+            end_time   text,
+            report_sent   text,
+            error_text   text,
+            duration_time   text
         )
     '''
     cur.execute(stmt)
     conn.commit()
+
+add_table_column(table_name='error_code_stats', column_name='aleph_id', column_type='text')
+add_table_column(table_name='error_code_stats', column_name='error_text', column_type='text')
+add_table_column(table_name='error_code_stats', column_name='duration_time', column_type='text')
 
 if not does_object_exist('table', 'downtimes'):
     stmt = '''
@@ -70,6 +77,7 @@ if not does_object_exist('table', 'downtimes'):
             id          integer
                 constraint downtimes_pk
                     primary key,
+            aleph_id text,
             date_start text,
             date_end   text,
             status        text
@@ -78,6 +86,7 @@ if not does_object_exist('table', 'downtimes'):
     cur.execute(stmt)
     conn.commit()
 
+add_table_column(table_name='downtimes', column_name='aleph_id', column_type='text')
 add_table_column(table_name='downtimes', column_name='date_start', column_type='text')
 add_table_column(table_name='downtimes', column_name='date_end', column_type='text')
 add_table_column(table_name='downtimes', column_name='status', column_type='text')
@@ -89,6 +98,7 @@ if not does_object_exist('table', 'service_statistics'):
             id          integer
                 constraint service_statistics_pk
                     primary key,
+            aleph_id text,
             date_formed text,
             date_fact_send   text,
             is_sent        text
@@ -97,6 +107,7 @@ if not does_object_exist('table', 'service_statistics'):
     cur.execute(stmt)
     conn.commit()
 
+add_table_column(table_name='service_statistics', column_name='aleph_id', column_type='text')
 add_table_column(table_name='service_statistics', column_name='date_formed', column_type='text')
 add_table_column(table_name='service_statistics', column_name='date_fact_send', column_type='text')
 add_table_column(table_name='service_statistics', column_name='is_sent', column_type='text')
@@ -108,6 +119,7 @@ if not does_object_exist('table', 'cleaning_statistic'):
             id          integer
                 constraint cleaning_statistic_pk
                     primary key,
+            aleph_id text,
             cleaning_alias text,
             type_last_cleaning_datetime text,
             type_cleaning_duration  text,
@@ -118,6 +130,7 @@ if not does_object_exist('table', 'cleaning_statistic'):
     cur.execute(stmt)
     conn.commit()
 
+add_table_column(table_name='cleaning_statistic', column_name='aleph_id', column_type='text')
 add_table_column(table_name='cleaning_statistic', column_name='cleaning_alias', column_type='text')
 add_table_column(table_name='cleaning_statistic', column_name='type_last_cleaning_datetime', column_type='text')
 add_table_column(table_name='cleaning_statistic', column_name='type_cleaning_duration', column_type='text')
@@ -131,6 +144,7 @@ if not does_object_exist('table', 'data_statistics'):
             id          integer
                 constraint data_statistics_pk
                     primary key,
+        aleph_id text,
         time_worked text,       
         wmf_error_count text,       
         wmf_error_time text, 
@@ -145,6 +159,7 @@ if not does_object_exist('table', 'data_statistics'):
     cur.execute(stmt)
     conn.commit()
 
+add_table_column(table_name='data_statistics', column_name='aleph_id', column_type='text')
 add_table_column(table_name='data_statistics', column_name='time_worked', column_type='text')
 add_table_column(table_name='data_statistics', column_name='wmf_error_count', column_type='text')
 add_table_column(table_name='data_statistics', column_name='wmf_error_time', column_type='text')
@@ -163,7 +178,7 @@ if not does_object_exist('table', 'beverages_log'):
             id          integer
                 constraint beverages_log_pk
                     primary key,
-            device_code text,
+            aleph_id text,
             summ   text,
             time_to_send        text
             time_fact_send     text
@@ -174,12 +189,32 @@ if not does_object_exist('table', 'beverages_log'):
     cur.execute(stmt)
     conn.commit()
 
-add_table_column(table_name='beverages_log', column_name='device_code', column_type='text')
+add_table_column(table_name='beverages_log', column_name='aleph_id', column_type='text')
 add_table_column(table_name='beverages_log', column_name='summ', column_type='text')
 add_table_column(table_name='beverages_log', column_name='time_to_send', column_type='text')
 add_table_column(table_name='beverages_log', column_name='time_fact_send', column_type='text')
 add_table_column(table_name='beverages_log', column_name='date_formed', column_type='text')
 add_table_column(table_name='beverages_log', column_name='recipes', column_type='text')
+
+if not does_object_exist('table', 'devices'):
+    stmt = '''
+        create table devices
+        (
+            id          integer
+                constraint devices_pk
+                    primary key,
+            aleph_id text,
+            utc   text,
+            address        text
+        )
+    '''
+    cur.execute(stmt)
+    conn.commit()
+
+add_table_column(table_name='devices', column_name='id', column_type='text')
+add_table_column(table_name='devices', column_name='aleph_id', column_type='text')
+add_table_column(table_name='devices', column_name='utc', column_type='text')
+add_table_column(table_name='devices', column_name='address', column_type='text')
 
 cur.close()
 conn.close()

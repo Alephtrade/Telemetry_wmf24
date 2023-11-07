@@ -1,31 +1,26 @@
-#import sys
-#import websocket
-#import logging
-#import requests
-#import json
-#import ast
-#import socket
-#from datetime import timedelta, datetime
-#from api.beverages import methods
+import sys
+import websocket
+import logging
+import requests
+import json
+import ast
+import socket
+from datetime import timedelta, datetime
+from controllers.api.beverages import methods
 from timezonefinder import TimezoneFinder
 from datetime import datetime, timezone
 import pytz
-
-
-
-
-
-#sys.path.append("../../")
-#from db.models import WMFSQLDriver
-#from settings import prod as settings
-#from wmf.models import WMFMachineStatConnector, WMFMachineErrorConnector
-#from core.utils import initialize_logger, print_exception, get_env_mode, get_part_number_local, get_beverages_send_time, timedelta_int
+sys.path.append("../../")
+from controllers.db.models import WMFSQLDriver
+from controllers.settings import prod as settings
+from controllers.wmf.models import WMFMachineStatConnector, WMFMachineErrorConnector
+from controllers.core.utils import initialize_logger, print_exception, get_env_mode, get_part_number_local, get_beverages_send_time, timedelta_int
 #
 #
 #WMF_URL = settings.WMF_DATA_URL
 #WS_URL = settings.WS_URL
 #DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
-#db_conn = WMFSQLDriver()
+db_conn = WMFSQLDriver()
 #wmf_conn = WMFMachineErrorConnector()
 #wmf2_conn = WMFMachineStatConnector()
 
@@ -99,17 +94,20 @@ def worker():
     #received_data = ws.recv()
     #print(received_data)
     obj = TimezoneFinder()
-    latitude = 37.388746
-    longitude = 55.827224
+    latitude = 37.6156
+    longitude = 55.7522
     result = obj.timezone_at(lng=latitude, lat=longitude)
 #
     d = []
     dt_to_convert = datetime.utcnow().replace(tzinfo=timezone.utc)
-    d.append(datetime.now(pytz.timezone(result)).strftime("%z"))
-    tz = datetime.strptime(datetime.now(pytz.timezone(result)).strftime("%z"), '%z').tzinfo
-    d.append(dt_to_convert.astimezone(tz))
+    d.append(datetime.now(pytz.timezone(result)).strftime("%m/%d/%Y, %H:%M:%S %z"))
+    d.append(dt_to_convert)
+    #tz = datetime.strptime(datetime.now(pytz.timezone(result)).strftime("%z"), '%z').tzinfo
+    #d.append(dt_to_convert.astimezone(tz))
     tz = datetime.strptime('+0600', '%z').tzinfo
-    d.append(dt_to_convert.astimezone(tz))
-    return d
+    d.append(dt_to_convert.astimezone(tz).strftime("%m/%d/%Y, %H:%M:%S %z"))
+    new_date = str(dt_to_convert.astimezone(tz))
+    return str(tz)
+    return new_date
 
 #worker()

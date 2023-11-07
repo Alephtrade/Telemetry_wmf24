@@ -1,10 +1,8 @@
 from datetime import datetime, timedelta
 from controllers.db.models import WMFSQLDriver
 from controllers.core.utils import get_env_mode
-if get_env_mode() == 'prod':
-    from controllers.settings import prod as settings
-else:
-    from controllers.settings import test as settings
+from controllers.settings import prod as settings
+
 
 db_driver = WMFSQLDriver()
 

@@ -4,11 +4,7 @@ import json
 import logging
 from controllers.core.utils import print_exception, get_env_mode, get_part_number_local
 from controllers.db.models import WMFSQLDriver
-
-if get_env_mode() == 'prod':
-    from settings import prod as settings
-else:
-    from settings import test as settings
+from controllers.settings import prod as settings
 
 db_conn = WMFSQLDriver()
 
