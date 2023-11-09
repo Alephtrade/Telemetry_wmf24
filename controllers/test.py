@@ -96,9 +96,9 @@ def worker():
     obj = TimezoneFinder()
     latitude = 100.7522
     longitude = 13.6156
-    result = obj.timezone_at_land(lng=latitude, lat=longitude)
+    result = obj.timezone_at(lng=latitude, lat=longitude)
 
-    return result
+    #return result
     d = []
     dt_to_convert = datetime.utcnow().replace(tzinfo=timezone.utc)
     #d.append(datetime.now(pytz.timezone(result)).strftime("%m/%d/%Y, %H:%M:%S %z"))

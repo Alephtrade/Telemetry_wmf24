@@ -205,7 +205,9 @@ if not does_object_exist('table', 'devices'):
                     primary key,
             aleph_id text,
             utc   text,
-            address        text
+            address        text,
+            type   text,
+            status text
         )
     '''
     cur.execute(stmt)
@@ -215,6 +217,8 @@ add_table_column(table_name='devices', column_name='id', column_type='text')
 add_table_column(table_name='devices', column_name='aleph_id', column_type='text')
 add_table_column(table_name='devices', column_name='utc', column_type='text')
 add_table_column(table_name='devices', column_name='address', column_type='text')
+add_table_column(table_name='devices', column_name='type', column_type='text')
+add_table_column(table_name='devices', column_name='status', column_type='text')
 
 cur.close()
 conn.close()

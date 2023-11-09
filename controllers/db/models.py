@@ -12,6 +12,31 @@ class WMFSQLDriver:
     def close(self):
         self.connection.close()
 
+    def create_device(self, device_aleph_id, device_utc, device_ip, device_model, device_status):
+        cur = self.connection.cursor()
+        stmt = 'INSERT INTO devices (aleph_id, utc, address, type, status) VALUES (?, ?, ?, ?, ?)'
+        cur.execute(stmt, (device_aleph_id, device_utc, device_ip, device_model, device_status,))
+        self.connection.commit()
+        cur.close()
+
+    def clean_devices(self):
+            cur = self.connection.cursor()
+            stmt = '''
+                SELECT id 
+                FROM devices 
+                ORDER BY id DESC 
+                LIMIT 1
+            '''
+            cur.execute(stmt)
+            res = cur.fetchone()
+            if not res:
+                return
+            last_id = res[0]
+            stmt = 'DELETE FROM devices WHERE id not null '
+            cur.execute(stmt)
+            self.connection.commit()
+            cur.close()
+
     def clean_error_stats(self, error_date):
         cur = self.connection.cursor()
         stmt = '''
