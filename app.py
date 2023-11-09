@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from controllers.test import worker
 from flask import jsonify
 from controllers.wmf.ssh_send_com import send_wmf_request
@@ -17,10 +17,12 @@ def terra():  # put application's code here
 
 @app.route('/migration')
 def imported():  # put application's code here
-    import controllers.apply_migration
-    update = controllers.apply_migration
-    return jsonify("welcome", 200)
+    password = request.args.get('access')
+    if password == '123':
+        import controllers.apply_migration
+        return jsonify("welcome", 200)
+    else:
+        return 403
 
 if __name__ == '__main__':
-    app.run()
     app.run(host="0.0.0.0", port=80)

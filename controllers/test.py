@@ -94,18 +94,19 @@ def worker():
     #received_data = ws.recv()
     #print(received_data)
     obj = TimezoneFinder()
-    latitude = 37.6156
-    longitude = 55.7522
-    result = obj.timezone_at(lng=latitude, lat=longitude)
-#
+    latitude = 100.7522
+    longitude = 13.6156
+    result = obj.timezone_at_land(lng=latitude, lat=longitude)
+
+    return result
     d = []
     dt_to_convert = datetime.utcnow().replace(tzinfo=timezone.utc)
-    d.append(datetime.now(pytz.timezone(result)).strftime("%m/%d/%Y, %H:%M:%S %z"))
-    d.append(dt_to_convert)
-    #tz = datetime.strptime(datetime.now(pytz.timezone(result)).strftime("%z"), '%z').tzinfo
+    #d.append(datetime.now(pytz.timezone(result)).strftime("%m/%d/%Y, %H:%M:%S %z"))
+    #d.append(dt_to_convert)
+    tz = datetime.strptime(datetime.now(pytz.timezone(result)).strftime("%z"), '%z').tzinfo
     #d.append(dt_to_convert.astimezone(tz))
-    tz = datetime.strptime('+0600', '%z').tzinfo
-    d.append(dt_to_convert.astimezone(tz).strftime("%m/%d/%Y, %H:%M:%S %z"))
+    #tz = datetime.strptime('+0600', '%z').tzinfo
+    #d.append(dt_to_convert.astimezone().strftime("%m/%d/%Y, %H:%M:%S %z"))
     new_date = str(dt_to_convert.astimezone(tz))
     return str(tz)
     return new_date
