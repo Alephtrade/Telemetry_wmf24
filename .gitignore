@@ -1,0 +1,10 @@
+config.env
+part_number.txt
+error_report.xlsx
+error_report.json
+machine_info.txt
+ip_address.json
+logs/*.log*
+wmf_backup.db
+controllers/wmf.db
+.idea

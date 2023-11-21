@@ -3,11 +3,12 @@ import json
 from flask import Flask, request
 from controllers.test import worker
 from flask import jsonify
+from controllers.db.models import WMFSQLDriver
 from controllers.wmf.ssh_send_com import send_wmf_request
 import sys
 
 app = Flask(__name__)
-
+db_conn = WMFSQLDriver()
 
 @app.route('/')
 def hello_world():  # put application's code here
@@ -15,9 +16,14 @@ def hello_world():  # put application's code here
 
 @app.route('/console')
 def terra():  # put application's code here
-    return jsonify(send_wmf_request('{"function": "restart"}'), 200)
+    from controllers import error_collector
+    devices = db_conn.get_devices()
+    result = error_collector.worker(devices[0][1], devices[0][2])
+    return jsonify(result)
+    #return jsonify(send_wmf_request('{"function": "restart"}'), 200)
 
-@app.route('/migration')
+
+@app.route('/migration_database')
 def imported():  # put application's code here
     password = request.args.get('access')
     if password == '123':

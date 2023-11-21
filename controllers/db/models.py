@@ -6,6 +6,8 @@ from controllers.core.utils import get_curr_time_str
 
 
 class WMFSQLDriver:
+
+
     def __init__(self, db_path=settings.DB_PATH):
         self.connection = sqlite3.connect(db_path, check_same_thread=False)
 
@@ -18,6 +20,19 @@ class WMFSQLDriver:
         cur.execute(stmt, (device_aleph_id, device_utc, device_ip, device_model, device_status,))
         self.connection.commit()
         cur.close()
+
+    def get_device_field_by_aleph_id(self, aleph_id, field_name):
+        cur = self.connection.cursor()
+        stmt = f'''
+            SELECT {field_name} FROM devices
+            WHERE aleph_id = "{aleph_id}"
+            ORDER BY id DESC 
+            LIMIT 1
+        '''
+        cur.execute(stmt)
+        res = cur.fetchone()
+        cur.close()
+        return res
 
     def clean_devices(self):
             cur = self.connection.cursor()
@@ -36,6 +51,19 @@ class WMFSQLDriver:
             cur.execute(stmt)
             self.connection.commit()
             cur.close()
+
+    def get_devices(self):
+        cur = self.connection.cursor()
+        stmt = ''' 
+            SELECT id, aleph_id, address
+            FROM devices
+            ORDER BY id ASC 
+        '''
+        cur.execute(stmt)
+        res = cur.fetchall()
+        logging.info(f'WMFSQLDriver get_devices: {res}')
+        cur.close()
+        return res
 
     def clean_error_stats(self, error_date):
         cur = self.connection.cursor()
@@ -74,31 +102,31 @@ class WMFSQLDriver:
         self.connection.commit()
         cur.close()
 
-    def create_error_record(self, error_code, error_text='Неизвестная ошибка'):
+    def create_error_record(self, aleph_id, error_code, error_text='Неизвестная ошибка'):
         cur = self.connection.cursor()
-        stmt = 'INSERT INTO error_code_stats (error_code, error_date, start_time, error_text, duration_time) VALUES (?, ?, ?, ?, 0)'
+        stmt = 'INSERT INTO error_code_stats (aleph_id, error_code, error_date, start_time, error_text, duration_time) VALUES (?, ?, ?, ?, ?, 0)'
         current_date = datetime.now() + timedelta(hours=3)
         error_date = current_date.strftime('%Y-%m-%d')
         start_time = current_date.strftime('%Y-%m-%d %H:%M:%S')
-        cur.execute(stmt, (error_code, error_date, start_time, error_text,))
+        cur.execute(stmt, (aleph_id, error_code, error_date, start_time, error_text,))
         self.connection.commit()
         cur.close()
 
-    def get_error_prev_record(self, error_code):
+    def get_error_prev_record(self, aleph_id, error_code):
         cur = self.connection.cursor()
         stmt = '''
             SELECT id, start_time FROM error_code_stats
-            WHERE error_code = ?
+            WHERE error_code = ? AND aleph_id = ?
             ORDER BY id DESC 
             LIMIT 1
         '''
-        cur.execute(stmt, (error_code,))
+        cur.execute(stmt, (error_code, aleph_id,))
         res = cur.fetchone()
         cur.close()
         return res
 
-    def close_error_code(self, error_code):
-        start_time = self.get_error_prev_record(error_code)[1]
+    def close_error_code(self, aleph_id, error_code):
+        start_time = self.get_error_prev_record(aleph_id, error_code)[1]
         start_time_formated = int(datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S').timestamp())
         duration = str((int((datetime.now() + timedelta(hours=3)).timestamp()) - start_time_formated))
         cur = self.connection.cursor()
@@ -109,12 +137,12 @@ class WMFSQLDriver:
             WHERE id = (
                 SELECT id
                 FROM error_code_stats
-                WHERE error_code = ? AND end_time IS NULL
+                WHERE aleph_id = ? AND error_code = ? AND end_time IS NULL
                 ORDER BY id desc
                 LIMIT 1
             )
         '''
-        cur.execute(stmt, (end_time, duration, error_code))
+        cur.execute(stmt, (end_time, duration, aleph_id, error_code))
         self.connection.commit()
         cur.close()
 

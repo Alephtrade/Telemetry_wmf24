@@ -10,7 +10,6 @@ db_conn = WMFSQLDriver()
 
 class WMFMachineErrorConnector:
     WMF_URL = settings.WMF_DATA_URL
-    WS_URL = settings.WS_URL
     DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
     ERROR_DESCRIPTION_DICT = {
         13:	'Ошибка мотора, энкодера',
@@ -249,11 +248,11 @@ class WMFMachineErrorConnector:
                     #last_error_id = db_conn.get_error_last_record()
                     #if last_error_id != [] and last_error_id is not None:
                     #    if last_error_id[0] != "62" and last_error_id[0] != "-1" or last_error_id[1] is not None:
-                    self.db_driver.create_error_record(error_code, error_text)
+                    self.db_driver.create_error_record(self.aleph_id, error_code, error_text)
                     #else:
                     #    self.db_driver.create_error_record(error_code, error_text)
                 elif info == "gone Error":
-                    self.db_driver.close_error_code(error_code)
+                    self.db_driver.close_error_code(self.aleph_id, error_code)
                     if error_code in self.current_errors:
                         self.current_errors.remove(error_code)
             if data.get("function") == 'startPushDispensingFinished':
@@ -278,12 +277,14 @@ class WMFMachineErrorConnector:
     def on_exit(self, ws):
         ws.close()
 
-    def __init__(self):
+    def __init__(self, aleph_id, ip):
         try:
+            self.aleph_id = aleph_id
             self.part_number = get_part_number_local()
             self.db_driver = WMFSQLDriver()
             self.current_errors = set()
             self.previous_errors = set()
+            self.WS_URL = f'ws://{ip}:{settings.WS_PORT}/'
             self.ws = websocket.WebSocketApp(self.WS_URL,
                                              on_open=self.on_open,
                                              on_message=self.on_message,
