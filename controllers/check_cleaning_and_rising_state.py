@@ -2,6 +2,8 @@ import json
 import logging
 import requests
 from datetime import datetime, timedelta
+import sys
+sys.path.append('./')
 from controllers.db.models import WMFSQLDriver
 from controllers.wmf.models import WMFMachineStatConnector
 from controllers.settings import prod as settings
@@ -12,13 +14,13 @@ WMF_URL = settings.WMF_DATA_URL
 WS_URL = settings.WS_URL
 DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
 db_conn = WMFSQLDriver()
-wm_conn = WMFMachineStatConnector()
 
-def controller_manager(operator, alias):
+def controller_manager(device, operator, alias):
     now_of_hour = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp() // (60 * 60) * 60 * 60))
     if operator is not None:
+        print(operator)
         if operator['durationInSeconds'] and operator['durationInSeconds'] is not None and int(operator['durationInSeconds']) != -1:
-            prev_cleaning = db_conn.get_last_clean_or_rins("type_cleaning_duration", alias)
+            prev_cleaning = db_conn.get_last_clean_or_rins(device[1], "type_cleaning_duration", alias)
             if prev_cleaning is None:
                 prev_cleaning_duration = "0"
             else:
@@ -28,11 +30,11 @@ def controller_manager(operator, alias):
             logging.info(f'durationInSeconds {operator["durationInSeconds"]}')
             if str(prev_cleaning_duration) != str(operator['durationInSeconds']):
                 print("!=")
-                db_conn.save_clean_or_rins(alias, "type_cleaning_duration", operator['durationInSeconds'])
+                db_conn.save_clean_or_rins(device[1], alias, "type_cleaning_duration", operator['durationInSeconds'])
                 logging.info(f'save new duration {alias}')
                 logging.info(f'new time {datetime.now()}')
                 type_last_cleaning_datetime = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp() - operator['durationInSeconds']))
-                return db_conn.create_clean_or_rins(alias, type_last_cleaning_datetime, operator['durationInSeconds'], (datetime.now() + timedelta(hours=3)).strftime('%Y-%m-%d %H:%M:%S'))
+                return db_conn.create_clean_or_rins(device[1], alias, type_last_cleaning_datetime, operator['durationInSeconds'], (datetime.now() + timedelta(hours=3)).strftime('%Y-%m-%d %H:%M:%S'))
                 send = sender_report()
                 logging.info(f'{send}')
             else:
@@ -50,7 +52,8 @@ def sender_report():
         with open('/root/wmf_1100_1500_5000_router/part_number.txt') as f:
             part_number = f.read()
     except Exception:
-        logging.info(f'{part_number} is none')
+        part_number = wm_conn.get_part_number()
+
     date_formated = []
     if data is not None:
         for item in data:
@@ -69,33 +72,36 @@ def sender_report():
     else:
         logging.info(f'{data} is none')
 
+devices = db_conn.get_devices()
+for device in devices:
+    wm_conn = WMFMachineStatConnector(device[1], device[2])
+    get_system_cleaning_state_data = wm_conn.get_system_cleaning_state()
+    if get_system_cleaning_state_data is not None:
+        controller_manager(device, wm_conn.get_system_cleaning_state(), "general")
 
-get_system_cleaning_state_data = wm_conn.get_system_cleaning_state()
-if get_system_cleaning_state_data is not None:
-    controller_manager(wm_conn.get_system_cleaning_state(), "general")
+    get_milk_cleaning_state_data = wm_conn.get_milk_cleaning_state()
+    if get_milk_cleaning_state_data is not None:
+        controller_manager(device, wm_conn.get_milk_cleaning_state(), "general_milk")
 
-get_milk_cleaning_state_data = wm_conn.get_milk_cleaning_state()
-if get_milk_cleaning_state_data is not None:
-    controller_manager(wm_conn.get_milk_cleaning_state(), "general_milk")
+    get_foamer_rinsing_state_data = wm_conn.get_foamer_rinsing_state()
+    if get_foamer_rinsing_state_data is not None:
+        controller_manager(device, wm_conn.get_foamer_rinsing_state(), "foamer")
 
-get_foamer_rinsing_state_data = wm_conn.get_foamer_rinsing_state()
-if get_foamer_rinsing_state_data is not None:
-    controller_manager(wm_conn.get_foamer_rinsing_state(), "foamer")
+    get_milk_replacement_state_data = wm_conn.get_milk_replacement_state()
+    if get_milk_replacement_state_data is not None:
+        controller_manager(device, wm_conn.get_milk_replacement_state(), "milk_replacement")
 
-get_milk_replacement_state_data = wm_conn.get_milk_replacement_state()
-if get_milk_replacement_state_data is not None:
-    controller_manager(wm_conn.get_milk_replacement_state(), "milk_replacement")
+    get_mixer_rinsing_state_data = wm_conn.get_mixer_rinsing_state()
+    if get_mixer_rinsing_state_data is not None:
+        controller_manager(device, wm_conn.get_mixer_rinsing_state(), "general_mixer")
 
-get_mixer_rinsing_state_data = wm_conn.get_mixer_rinsing_state()
-if get_mixer_rinsing_state_data is not None:
-    controller_manager(wm_conn.get_mixer_rinsing_state(), "general_mixer")
+    get_milk_mixer_warm_rinsing_state_data = wm_conn.get_milk_mixer_warm_rinsing_state()
+    if get_milk_mixer_warm_rinsing_state_data is not None:
+        controller_manager(device, wm_conn.get_milk_mixer_warm_rinsing_state(), "milk_mixer_warm")
 
-get_milk_mixer_warm_rinsing_state_data = wm_conn.get_milk_mixer_warm_rinsing_state()
-if get_milk_mixer_warm_rinsing_state_data is not None:
-    controller_manager(wm_conn.get_milk_mixer_warm_rinsing_state(), "milk_mixer_warm")
+    get_ffc_filter_replacement_state_data = wm_conn.get_ffc_filter_replacement_state()
+    if get_ffc_filter_replacement_state_data is not None:
+        controller_manager(device, wm_conn.get_ffc_filter_replacement_state(), "ffc_filter")
 
-get_ffc_filter_replacement_state_data = wm_conn.get_ffc_filter_replacement_state()
-if get_ffc_filter_replacement_state_data is not None:
-    controller_manager(wm_conn.get_ffc_filter_replacement_state(), "ffc_filter")
-
-sender_report()
+    wm_conn.close()
+    sender_report()

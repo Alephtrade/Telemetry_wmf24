@@ -5,7 +5,6 @@ import logging
 from controllers.core.utils import print_exception, get_env_mode, get_part_number_local
 from controllers.db.models import WMFSQLDriver
 from controllers.settings import prod as settings
-
 db_conn = WMFSQLDriver()
 
 class WMFMachineErrorConnector:
@@ -310,12 +309,12 @@ class WMFMachineStatConnector:
         try:
             data = self.send_wmf_request('getMachineInfo')
             part_number = data.get('PartNumber')
-            with open('/root/wmf_1100_1500_5000_router/part_number.txt', 'w') as f:
-                f.write(str(part_number))
+            #with open('/root/wmf_1100_1500_5000_router/part_number.txt', 'w') as f:
+            #    f.write(str(part_number))
             return part_number
         except Exception:
-            with open('/root/wmf_1100_1500_5000_router/part_number.txt') as f:
-                return f.read()
+         #   with open('/root/wmf_1100_1500_5000_router/part_number.txt') as f:
+            return Exception
 
     def get_wmf_machine_info(self):
         url = f'{self.WMF_BASE_URL}/api/get-coffee-machine-info/{self.part_number}'
@@ -421,12 +420,18 @@ class WMFMachineStatConnector:
         else:
             return None
 
-    def __init__(self):
+    def __init__(self, aleph_id, ip):
         try:
+            self.aleph_id = aleph_id
+            self.part_number = get_part_number_local()
+            self.db_driver = WMFSQLDriver()
+            self.current_errors = set()
+            self.previous_errors = set()
+            self.WS_URL = f'ws://{ip}:{settings.WS_PORT}/'
             self.ws = websocket.create_connection(self.WS_URL, timeout=5)
         except Exception:
             self.ws = None
-        self.part_number = get_part_number_local()
+        self.part_number = self.get_part_number()
         self.beverage_stats_raw = None
 
     def close(self):

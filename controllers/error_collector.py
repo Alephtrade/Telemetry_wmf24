@@ -5,6 +5,8 @@ import logging
 from threading import Thread
 from datetime import timedelta
 from timeloop import Timeloop
+import sys
+sys.path.append('./')
 from controllers.core.utils import initialize_logger, print_exception, get_env_mode, get_part_number_local
 from controllers.wmf.models import WMFMachineErrorConnector
 from controllers.settings import prod as settings
@@ -13,6 +15,7 @@ from controllers.db.models import WMFSQLDriver
 def worker(aleph_id, ip):
     WMF_URL = settings.WMF_DATA_URL
     tl = Timeloop()
+    print(ip)
     initialize_logger('error_collector.log')
     db_conn = WMFSQLDriver()
     wmf_conn = WMFMachineErrorConnector(aleph_id, ip)
@@ -63,8 +66,15 @@ def worker(aleph_id, ip):
         except Exception as ex:
             logging.error(f'error_collector send_errors: ERROR={ex}, stacktrace: {print_exception()}')
 
-
     tl.start()
     logging.info('error_collector.py started and running...')
     return "error_collector.py started and running..."
     atexit.register(on_exit)
+
+db_conn = WMFSQLDriver()
+devices = db_conn.get_devices()
+print(devices)
+result = []
+for device in devices:
+    result = worker(device[1], device[2])
+

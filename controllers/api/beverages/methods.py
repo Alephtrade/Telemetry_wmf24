@@ -12,23 +12,27 @@ from controllers.core.utils import initialize_logger, get_beverages_send_time
 from controllers.settings import prod as settings
 from controllers.wmf.models import WMFMachineStatConnector
 
-WMF_URL = settings.WMF_DATA_URL
 WS_URL = settings.WS_URL
 DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
 db_conn = WMFSQLDriver()
 
 
-def Take_Create_Beverage_Statistics(last_send):
+def Take_Create_Beverage_Statistics(last_send, device):
     initialize_logger('beveragestatistics.log')
-    wm_conn = WMFMachineStatConnector()
+    wm_conn = WMFMachineStatConnector(device[1], device[2])
     fake_data = False
     summ = 0
     device_code = ""
     recipes = []
-    date_to_send = get_beverages_send_time(last_send)
+    #date_to_send = get_beverages_send_time(last_send)
+    #
+    date_to_send = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp() // (60 * 60) * 60 * 60))
+
+    #
     date_formed = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp()))
     try:
-        ws = websocket.create_connection(WS_URL, timeout=5)
+        WS_IP = f'ws://{device[2]}:25000/'
+        ws = websocket.create_connection(WS_IP, timeout=5)
     except Exception:
         ws = None
         fake_data = True
@@ -46,7 +50,7 @@ def Take_Create_Beverage_Statistics(last_send):
                 with open('/root/wmf_1100_1500_5000_router/part_number.txt') as f:
                     part_number = f.read()
             except Exception:
-                logging.info(f"part_number unknown")
+                part_number = wm_conn.get_part_number()
             received_data = received_data.replace(']', '', 1)
             received_data = received_data + ', {"device_code" : ' + str(part_number) + '}]'
             logging.info(f"beveragestatistics: Received {received_data}")

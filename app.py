@@ -14,12 +14,9 @@ db_conn = WMFSQLDriver()
 def hello_world():  # put application's code here
     return jsonify(worker()), 200
 
-@app.route('/console')
+@app.route('/test')
 def terra():  # put application's code here
-    from controllers import error_collector
-    devices = db_conn.get_devices()
-    result = error_collector.worker(devices[0][1], devices[0][2])
-    return jsonify(result)
+    return jsonify("123")
     #return jsonify(send_wmf_request('{"function": "restart"}'), 200)
 
 

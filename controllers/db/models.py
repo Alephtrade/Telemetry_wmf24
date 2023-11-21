@@ -1,12 +1,13 @@
 import sqlite3
 import logging
+import sys
+sys.path.append('./')
 from datetime import datetime, timedelta
 from controllers.settings import prod as settings
 from controllers.core.utils import get_curr_time_str
 
 
 class WMFSQLDriver:
-
 
     def __init__(self, db_path=settings.DB_PATH):
         self.connection = sqlite3.connect(db_path, check_same_thread=False)
@@ -35,22 +36,22 @@ class WMFSQLDriver:
         return res
 
     def clean_devices(self):
-            cur = self.connection.cursor()
-            stmt = '''
-                SELECT id 
-                FROM devices 
-                ORDER BY id DESC 
-                LIMIT 1
-            '''
-            cur.execute(stmt)
-            res = cur.fetchone()
-            if not res:
-                return
-            last_id = res[0]
-            stmt = 'DELETE FROM devices WHERE id not null '
-            cur.execute(stmt)
-            self.connection.commit()
-            cur.close()
+        cur = self.connection.cursor()
+        stmt = '''
+            SELECT id 
+            FROM devices 
+            ORDER BY id DESC 
+            LIMIT 1
+        '''
+        cur.execute(stmt)
+        res = cur.fetchone()
+        if not res:
+            return
+        last_id = res[0]
+        stmt = 'DELETE FROM devices WHERE id not null '
+        cur.execute(stmt)
+        self.connection.commit()
+        cur.close()
 
     def get_devices(self):
         cur = self.connection.cursor()
@@ -231,7 +232,7 @@ class WMFSQLDriver:
         record_time = get_curr_time_str()
         stmt = f''' 
             UPDATE last_record 
-            SET {key} = ?, record_time = ?
+            SET {key} = ?, cleaning_datetime = ?
             WHERE id = 1
         '''
         logging.info(f'WMFSQLDriver save_last_record: key = {key}, value = {value}')
@@ -239,12 +240,12 @@ class WMFSQLDriver:
         self.connection.commit()
         cur.close()
 
-    def get_last_clean_or_rins(self, column_namee, alias):
+    def get_last_clean_or_rins(self, aleph_id, column_namee, alias):
         cur = self.connection.cursor()
         stmt = f''' 
             SELECT id, {column_namee}
             FROM cleaning_statistic 
-            WHERE {column_namee} NOT NULL AND cleaning_alias = "{alias}"
+            WHERE {column_namee} NOT NULL AND cleaning_alias = "{alias}" AND aleph_id = "{aleph_id}"
             ORDER BY id DESC 
             LIMIT 1
         '''
@@ -254,13 +255,13 @@ class WMFSQLDriver:
         logging.info(f'WMFSQLDriver get_last_record: {res}')
         return res
 
-    def save_clean_or_rins(self, alias, operator, value_column):
+    def save_clean_or_rins(self, aleph_id, alias, operator, value_column):
         time_now = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp() // (60 * 60) * 60 * 60))
         cur = self.connection.cursor()
         stmt = f''' 
             UPDATE cleaning_statistic 
             SET {operator} = "{value_column}"
-            WHERE date_formed = "{time_now}" AND cleaning_alias = "{alias}" AND is_sent = 0
+            WHERE aleph_id = "{aleph_id}" date_formed = "{time_now}" AND cleaning_alias = "{alias}" AND is_sent = 0
         '''
         logging.info(f'WMFSQLDriver save_last_record: key = {operator}, value = {value_column}')
         cur.execute(stmt)
@@ -326,14 +327,14 @@ class WMFSQLDriver:
         cur.close()
         return res
 
-    def save_data_statistics(self, operator, value_column):
+    def save_data_statistics(self, aleph_id, operator, value_column):
         time_now = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp() // (60 * 60) * 60 * 60))
         cur = self.connection.cursor()
         record_time = get_curr_time_str()
         stmt = f''' 
             UPDATE data_statistics 
             SET {operator} = "{value_column}"
-            WHERE date_formed = "{time_now}"
+            WHERE date_formed = "{time_now}" AND aleph_id = "{aleph_id}"
         '''
         logging.info(f'WMFSQLDriver save_last_record: key = {operator}, value = {value_column}')
         cur.execute(stmt)
@@ -397,12 +398,12 @@ class WMFSQLDriver:
         cur.close()
         return res
 
-    def get_last_service_statistics(self, date_tod):
+    def get_last_service_statistics(self, aleph_id, date_tod):
         cur = self.connection.cursor()
         stmt = f''' 
             SELECT id, date_formed, is_sent
             FROM service_statistics
-            WHERE date_formed = '{date_tod}'
+            WHERE date_formed = '{date_tod}' AND aleph_id = "{aleph_id}"
             ORDER BY id DESC 
             LIMIT 1
         '''
@@ -424,10 +425,10 @@ class WMFSQLDriver:
         self.connection.commit()
         cur.close()
 
-    def create_service_record(self, date_formed):
+    def create_service_record(self, aleph_id, date_formed):
         cur = self.connection.cursor()
-        stmt = 'INSERT INTO service_statistics (date_formed, date_fact_send, is_sent) VALUES (?, ?, ?)'
-        cur.execute(stmt, (date_formed, None, "0",))
+        stmt = 'INSERT INTO service_statistics (aleph_id, date_formed, date_fact_send, is_sent) VALUES (?, ?, ?, ?)'
+        cur.execute(stmt, (aleph_id, date_formed, None, "0",))
         self.connection.commit()
         cur.close()
 
@@ -443,10 +444,10 @@ class WMFSQLDriver:
         cur.close()
         return res
 
-    def create_clean_or_rins(self, cleaning_alias, type_last_cleaning_datetime, type_cleaning_duration, date_formed):
+    def create_clean_or_rins(self, aleph_id, cleaning_alias, type_last_cleaning_datetime, type_cleaning_duration, date_formed):
         cur = self.connection.cursor()
-        stmt = 'INSERT INTO cleaning_statistic (cleaning_alias, type_last_cleaning_datetime, type_cleaning_duration, date_formed, is_sent) VALUES (?, ?, ?, ?, 0)'
-        cur.execute(stmt, (cleaning_alias, type_last_cleaning_datetime, type_cleaning_duration, date_formed))
+        stmt = 'INSERT INTO cleaning_statistic (aleph_id, cleaning_alias, type_last_cleaning_datetime, type_cleaning_duration, date_formed, is_sent) VALUES (?, ?, ?, ?, ?, 0)'
+        cur.execute(stmt, (aleph_id, cleaning_alias, type_last_cleaning_datetime, type_cleaning_duration, date_formed))
         self.connection.commit()
         cur.close()
 
@@ -630,7 +631,7 @@ class WMFSQLDriver:
     def get_last_beverages_log(self):
         cur = self.connection.cursor()
         stmt = ''' 
-            SELECT device_code, summ, time_to_send, time_fact_send, date_formed, recipes
+            SELECT aleph_id, summ, time_to_send, time_fact_send, date_formed, recipes
             FROM beverages_log
             WHERE time_fact_send NOT NULL
             ORDER BY id DESC 
@@ -669,4 +670,4 @@ class WMFSQLDriver:
 
 if __name__ == '__main__':
     db_conn = WMFSQLDriver(db_path='../wmf.db')
-    print(db_conn.get_last_record())
+    print(db_conn.get_device_field_by_aleph_id())
