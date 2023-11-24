@@ -616,14 +616,14 @@ class WMFSQLDriver:
         self.connection.commit()
         cur.close()
 
-    def create_beverages_log(self, device_code, summ, time_to_send, date_formed, recipes):
+    def create_beverages_log(self, aleph_id, summ, time_to_send, date_formed, recipes):
         cur = self.connection.cursor()
         stmt = '''
         INSERT INTO beverages_log 
-        (device_code, summ, time_to_send, date_formed, recipes) 
+        (aleph_id, summ, time_to_send, date_formed, recipes) 
         VALUES (?, ?, ?, ?, ?)
         '''
-        cur.execute(stmt, (device_code, summ, time_to_send, date_formed, recipes))
+        cur.execute(stmt, (aleph_id, summ, time_to_send, date_formed, recipes))
         self.connection.commit()
         cur.close()
         return True
