@@ -6,13 +6,14 @@ from flask import jsonify
 from controllers.db.models import WMFSQLDriver
 from controllers.wmf.ssh_send_com import send_wmf_request
 import sys
+from controllers.machine_installation import test
 
 app = Flask(__name__)
 db_conn = WMFSQLDriver()
 
 @app.route('/')
 def hello_world():  # put application's code here
-    return jsonify(worker()), 200
+    return jsonify(test()), 200
 
 @app.route('/test')
 def terra():  # put application's code here
