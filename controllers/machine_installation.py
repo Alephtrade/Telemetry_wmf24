@@ -62,6 +62,7 @@ def splitter(stroka, operator):
     return stroka.split(operator)
 
 def utc_calc(latitude, longitude):
+    global machine_time
     obj = TimezoneFinder()
     db_conn.clean_devices()
     split_result = []
@@ -87,4 +88,5 @@ def utc_calc(latitude, longitude):
         split_result.append([True, 0, 0])
     for time in split_result:
         machine_time = time_format(time)
+
     return machine_time
