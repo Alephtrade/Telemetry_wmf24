@@ -8,18 +8,25 @@ import logging
 
 
 def test():
-    return require("10.8.0.6")
+    return require_info("10.8.0.6")[0]["MachineName"]
     nm = nmap.PortScanner()
     hosts = nm.scan(hosts='10.8.0.0/24', arguments='-sn')
     ips = []
     for host in hosts["scan"]:
         if host != "10.8.0.1":
             machine = []
+            response = require(host)
+            url = "https://wmf24.ru/api/get-coffee-machine-info/"
+            headers = {
+                'Content-Type': 'application/json'
+            }
+            response = requests.request("POST", url, headers=headers, data=json.dumps(data_for_request))
             machine.append({require(host)})
-        #ips.append(require(host))
+
+            #ips.append(require(host))
             return machine
 
-def require(ip):
+def require_info(ip):
     WS_URL = f'ws://{ip}:25000/'
     try:
         ws = websocket.create_connection(WS_URL, timeout=5)
