@@ -13,7 +13,7 @@ def test():
         if host != "10.8.0.1":
             machine = []
             machine.append({"IP": host})
-            machine.append({"BODY": require(host)})
+            machine.append({"BODY": json.loads(require(host))})
         #ips.append(require(host))
             return machine
 
