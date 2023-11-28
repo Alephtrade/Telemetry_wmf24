@@ -10,8 +10,11 @@ def test():
     hosts = nm.scan(hosts='10.8.0.0/24', arguments='-sn')
     ips = []
     for host in hosts["scan"]:
-        ips.append(require(host))
-    return ips
+        machine = []
+        machine.append({"IP": host})
+        machine.append({"BODY": require(host)})
+        #ips.append(require(host))
+    return machine
 
 def require(ip):
     WS_URL = f'ws://{ip}:25000/'
