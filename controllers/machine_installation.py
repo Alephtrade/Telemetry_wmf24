@@ -11,10 +11,11 @@ def test():
     ips = []
     for host in hosts["scan"]:
         if host != "10.8.0.1":
+            return require(host)
             machine = []
-            machine.append({"BODY": json.loads(require(host))})
+            machine.append({"BODY": })
         #ips.append(require(host))
-            return machine
+
 
 def require(ip):
     WS_URL = f'ws://{ip}:25000/'
