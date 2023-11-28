@@ -68,7 +68,7 @@ def utc_calc(latitude, longitude):
     split_result = []
     times = []
     positive = True
-    result = obj.timezone_at(lng=longitude, lat=latitude)
+    result = obj.timezone_at(lng=float(longitude), lat=float(latitude))
     dt_to_convert = datetime.utcnow().replace(tzinfo=timezone.utc)
     tz = datetime.strptime(datetime.now(pytz.timezone(result)).strftime("%z"), '%z').tzinfo
     timezone_machine = str(tz)
