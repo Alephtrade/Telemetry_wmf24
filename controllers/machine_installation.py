@@ -30,6 +30,6 @@ def require(ip):
     ws.send(request)
     received_data = ws.recv()
     logging.info(f"WMFMachineStatConnector: Received {received_data}")
-    received_data = json.loads(received_data)
-    received_data.append({"IP": ip})
-    return received_data
+    received_data2 = json.loads(received_data)
+    received_data2.append({"IP": ip})
+    return received_data2
