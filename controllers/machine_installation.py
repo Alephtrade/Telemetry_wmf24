@@ -6,6 +6,7 @@ import logging
 
 
 def test():
+    return require("10.8.0.6")
     nm = nmap.PortScanner()
     hosts = nm.scan(hosts='10.8.0.0/24', arguments='-sn')
     ips = []
