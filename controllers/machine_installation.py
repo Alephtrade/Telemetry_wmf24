@@ -1,5 +1,4 @@
 from collections import deque
-
 import nmap
 import requests
 import websocket
@@ -22,7 +21,6 @@ def test():
             }
             response = requests.request("POST", url, headers=headers, data=json.dumps(data_for_request))
             machine.append({require(host)})
-
             #ips.append(require(host))
             return machine
 
@@ -40,5 +38,9 @@ def require_info(ip):
     received_data = ws.recv()
     logging.info(f"WMFMachineStatConnector: Received {received_data}")
     received_data2 = deque(json.loads(received_data))
-    received_data2.appendleft({"IP": ip})
-    return list(received_data2)
+    formatted = {}
+    for var in list(received_data2):
+        for i in var:
+            formatted[i] = var[i]
+    formatted["ip"] = ip
+    return formatted
