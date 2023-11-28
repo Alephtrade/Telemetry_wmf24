@@ -11,11 +11,10 @@ def test():
     ips = []
     for host in hosts["scan"]:
         if host != "10.8.0.1":
-            return require(host)
             machine = []
-            machine.append({"BODY": })
+            machine.append({"BODY": json.loads(require(host))})
         #ips.append(require(host))
-
+            return machine
 
 def require(ip):
     WS_URL = f'ws://{ip}:25000/'
@@ -30,5 +29,5 @@ def require(ip):
     ws.send(request)
     received_data = ws.recv()
     logging.info(f"WMFMachineStatConnector: Received {received_data}")
-    received_data = (json.loads(received_data)).append("IP": ip)
+    received_data = (json.loads(received_data)).append({"IP": ip})
     return received_data
