@@ -13,7 +13,6 @@ db_conn = WMFSQLDriver()
 
 
 def test():
-    return utc_calc("37.61556", "55.75222")
     nm = nmap.PortScanner()
     hosts = nm.scan(hosts='10.8.0.0/24', arguments='-sn')
     machine = []
@@ -26,7 +25,7 @@ def test():
             }
             response = requests.request("POST", url, headers=headers, data=json.dumps(machine_response))
 
-            db_conn.create_device(response["aleph_id"], device_utc, machine_response["ip"], machine_response["ProductName"], 1)
+            db_conn.create_device(response["aleph_id"], utc_calc(machine_response["latitude"], machine_response["longitude"]), machine_response["ip"], machine_response["ProductName"], 1)
             machine.append({require_info(host)})
             #ips.append(require(host))
             return machine
