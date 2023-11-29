@@ -37,7 +37,7 @@ class WMFSQLDriver:
         cur = self.connection.cursor()
         stmt = ''' 
             UPDATE devices 
-            SET aleph_id = ?, utc = ?, address = ?, type = ?, status = ?
+            SET utc = ?, address = ?, type = ?, status = ?
             WHERE aleph_id = ?
         '''
         cur.execute(stmt, (utc, address, type, status, aleph_id))
