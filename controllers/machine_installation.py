@@ -29,7 +29,7 @@ def test():
             db_conn.create_device(uuid.uuid4(), utc_calc(machine_response["latitude"], machine_response["longitude"]), machine_response["ip"], machine_response["ProductName"], str(1))
             machine.append({require_info(host)})
             #ips.append(require(host))
-            return machine
+    return machine
 
 def require_info(ip):
     WS_URL = f'ws://{ip}:25000/'
