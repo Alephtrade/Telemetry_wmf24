@@ -1,4 +1,6 @@
 import sqlite3
+import sys
+sys.path.append('./')
 from controllers.settings import prod as settings
 
 
