@@ -1,3 +1,3 @@
 #!/bin/bash
-cd ~/wmf_1100_1500_5000_router
-python3 /root/wmf_1100_1500_5000_router/activity_beverages_sender.py
+cd /var/www/Telemetry_wmf24
+python3 /var/www/Telemetry_wmf24/controllers/activity_beverages_sender.py
