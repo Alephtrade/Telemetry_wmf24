@@ -381,10 +381,10 @@ class WMFSQLDriver:
         self.connection.commit()
         cur.close()
 
-    def create_data_statistics(self, date_formed, time_to_sent):
+    def create_data_statistics(self, aleph_id, date_formed, time_to_sent):
         cur = self.connection.cursor()
-        stmt = 'INSERT INTO data_statistics (date_formed, is_sent, time_to_send) VALUES (?, 0, ?)'
-        cur.execute(stmt, (date_formed, time_to_sent,))
+        stmt = 'INSERT INTO data_statistics (aleph_id, date_formed, is_sent, time_to_send) VALUES (?, ?, 0, ?)'
+        cur.execute(stmt, (aleph_id, date_formed, time_to_sent,))
         self.connection.commit()
         cur.close()
 
@@ -502,7 +502,7 @@ class WMFSQLDriver:
         cur.close()
         return res
 
-    def get_error_records(self, prev_hour, now_hour):
+    def get_error_records(self, prev_hour, now_hour, aleph_id):
         cur = self.connection.cursor()
         stmt = f''' 
             SELECT id, error_code, start_time, end_time, error_text 
@@ -512,13 +512,14 @@ class WMFSQLDriver:
             OR (start_time <= "{prev_hour}" AND (end_time is NULL OR end_time > "{prev_hour}")))
             AND error_code != "62"
             AND error_code != "-1"
+            AND aleph_id = "{aleph_id}"
         '''
         cur.execute(stmt)
         res = cur.fetchall()
         cur.close()
         return res
 
-    def get_all_error_records_by_code(self, prev_hour, now_hour, code):
+    def get_all_error_records_by_code(self, aleph_id, prev_hour, now_hour, code):
         cur = self.connection.cursor()
         stmt = f''' 
             SELECT id, error_code, start_time, end_time, error_text 
@@ -527,6 +528,7 @@ class WMFSQLDriver:
             OR (start_time >= "{prev_hour}" AND start_time < "{now_hour}")
             OR (start_time <= "{prev_hour}" AND (end_time is NULL OR end_time > "{prev_hour}")))
             AND error_code == "{code}"
+            AND aleph_id = "{aleph_id}"
         '''
         cur.execute(stmt)
         res = cur.fetchall()

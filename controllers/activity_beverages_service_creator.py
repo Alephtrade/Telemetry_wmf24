@@ -28,9 +28,9 @@ def get_main_clean_stat(device):
     #date_to_send = get_beverages_send_time(time_now)
     date_to_send = time_now
     print(date_to_send)
-    db_conn.create_data_statistics(time_now, date_to_send)
-    unsent_records = db_conn.get_error_records(prev_hour, time_now)
-    unsent_disconnect_records = db_conn.get_all_error_records_by_code(prev_hour, time_now, "-1")
+    db_conn.create_data_statistics(device[1], time_now, date_to_send)
+    unsent_records = db_conn.get_error_records(prev_hour, time_now, device[1])
+    unsent_disconnect_records = db_conn.get_all_error_records_by_code(device[1], prev_hour, time_now, "-1")
     date_end_prev_error = prev_hour
     wmf_error_time = 0
     per_error_time = timedelta()
