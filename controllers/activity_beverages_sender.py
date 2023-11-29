@@ -5,6 +5,9 @@ import json
 import ast
 import socket
 from datetime import timedelta, datetime, time
+import sys
+sys.path.append('./')
+sys.path.append('/var/www/Telemetry_wmf24/')
 from controllers.db.models import WMFSQLDriver
 from controllers.settings import prod as settings
 from controllers.core.utils import timedelta_int, get_beverages_send_time, initialize_logger

@@ -2,6 +2,7 @@ import logging
 from datetime import datetime, timedelta
 import sys
 sys.path.append('./')
+sys.path.append('/var/www/Telemetry_wmf24/')
 from controllers.db.models import WMFSQLDriver
 from controllers.wmf.models import WMFMachineStatConnector
 from controllers.core.utils import initialize_logger
