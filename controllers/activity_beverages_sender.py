@@ -90,7 +90,7 @@ def check_machine_status(aleph_id, ip):
 
     status = None
     try:
-        ws = websocket.create_connection(settings.WS_URL, timeout=settings.WEBSOCKET_CONNECT_TIMEOUT)
+        ws = websocket.create_connection(WS_URL, timeout=settings.WEBSOCKET_CONNECT_TIMEOUT)
         if ws.connected:
             ws.close()
             status = 1
