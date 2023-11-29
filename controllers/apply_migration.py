@@ -203,7 +203,8 @@ if not does_object_exist('table', 'devices'):
             id          integer
                 constraint devices_pk
                     primary key,
-            aleph_id text,
+            aleph_id text constraint devices_pk
+                    primary key,
             utc   text,
             address        text,
             type   text,
