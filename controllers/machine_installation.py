@@ -22,12 +22,16 @@ def test():
     machine = []
     for host in hosts["scan"]:
         if host != "10.8.0.1":
+            data_for_request = {}
             machine_response = require_info(host)
-            url = f'https://wmf24.ru/api/get-coffee-machine-info/{machine_response["MachineName"]}'
+            data_for_request["serial_number"] = machine_response["MachineName"]
+            data_for_request["model"] = machine_response["ProductName"]
+            data_for_request["ip"] = machine_response["ip"]
+            url = "https://wmf24.ru/api/machine_check"
             headers = {
                 'Content-Type': 'application/json'
             }
-            #response = requests.request("POST", url, headers=headers, data=json.dumps(machine_response))
+            response = requests.request("POST", url, headers=headers, data=json.dumps(data_for_request))
             aleph_id = uuid.uuid4()
             latitude = 37.61556
             longitude = 55.75222
