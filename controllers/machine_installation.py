@@ -26,7 +26,7 @@ def test():
             }
             #response = requests.request("POST", url, headers=headers, data=json.dumps(machine_response))
             latitude = 37.61556
-            longitude = longitude
+            longitude = 55.75222
 
             db_conn.create_device(uuid.uuid4(), utc_calc(latitude, longitude), machine_response["ip"], machine_response["ProductName"], str(1))
             machine.append({require_info(host)})
