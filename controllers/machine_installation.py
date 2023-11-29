@@ -1,4 +1,6 @@
 from collections import deque
+import sys
+sys.path.append('./')
 import nmap
 import requests
 import websocket
