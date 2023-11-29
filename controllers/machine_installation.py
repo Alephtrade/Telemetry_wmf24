@@ -8,6 +8,7 @@ from datetime import datetime, timezone
 import pytz
 import logging
 from controllers.db.models import WMFSQLDriver
+import uuid
 
 db_conn = WMFSQLDriver()
 
@@ -24,7 +25,7 @@ def test():
                 'Content-Type': 'application/json'
             }
             response = requests.request("POST", url, headers=headers, data=json.dumps(machine_response))
-
+            response["aleph_id"] = uuid.uuid4()
             db_conn.create_device(response["aleph_id"], utc_calc(machine_response["latitude"], machine_response["longitude"]), machine_response["ip"], machine_response["ProductName"], 1)
             machine.append({require_info(host)})
             #ips.append(require(host))
