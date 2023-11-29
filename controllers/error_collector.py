@@ -37,32 +37,29 @@ def worker(aleph_id, ip):
         try:
             logging.info("error_collector send_errors: CALL")
             errors, request = '', ''
-            try_to_get_part_number = get_part_number_local()
-            if try_to_get_part_number is None:
-                try_to_get_part_number = wmf_conn.get_part_number()
             unset_errors = db_conn.get_unsent_records()
             if unset_errors:
                 for record in unset_errors:
-                    request = f'{WMF_URL}?code={try_to_get_part_number}&error_id={record[1]}&date_start={record[2]}&date_end={record[3]}&duration={record[5]}&status={wmf_conn.get_status()}'
-                    response = requests.post(request)
-                    content = response.content.decode('utf-8')
+                    #request = f'{WMF_URL}?code={try_to_get_part_number}&error_id={record[1]}&date_start={record[2]}&date_end={record[3]}&duration={record[5]}&status={wmf_conn.get_status()}'
+                    #response = requests.post(request)
+                    #content = response.content.decode('utf-8')
                     if record[3] is not None:
                         db_conn.set_report_sent(record[0])
                     else:
                         db_conn.set_report_pre_sent(record[0])
-                    logging.info(f'error_collector send_errors: <= {response} {content}')
+                    #logging.info(f'error_collector send_errors: <= {response} {content}')
             else:
                 unset_errors = db_conn.get_unsent_records_with_end_time()
                 if unset_errors:
                     for record in unset_errors:
-                        request = f'{WMF_URL}?code={try_to_get_part_number}&error_id={record[1]}&date_start={record[2]}&date_end={record[3]}&duration={record[5]}&status={wmf_conn.get_status()}'
-                        response = requests.post(request)
-                        content = response.content.decode('utf-8')
+                        #request = f'{WMF_URL}?code={try_to_get_part_number}&error_id={record[1]}&date_start={record[2]}&date_end={record[3]}&duration={record[5]}&status={wmf_conn.get_status()}'
+                        #response = requests.post(request)
+                        #content = response.content.decode('utf-8')
                         db_conn.set_report_sent(record[0])
-                        logging.info(f'error_collector send_errors: <= {response} {content}')
+                        #logging.info(f'error_collector send_errors: <= {response} {content}')
                 else:
-                    request = f'{WMF_URL}?code={try_to_get_part_number}&error_id=0&status={wmf_conn.get_status()}'
-                    response = requests.post(request)
+                    #request = f'{WMF_URL}?code={try_to_get_part_number}&error_id=0&status={wmf_conn.get_status()}'
+                    #response = requests.post(request)
                     logging.info(f'error_collector send_errors: nothing to send')
         except Exception as ex:
             logging.error(f'error_collector send_errors: ERROR={ex}, stacktrace: {print_exception()}')

@@ -670,7 +670,7 @@ class WMFSQLDriver:
     def get_not_sended_beverages_log(self):
         cur = self.connection.cursor()
         stmt = ''' 
-            SELECT device_code, summ, time_to_send, time_fact_send, date_formed, recipes, id
+            SELECT aleph_id, summ, time_to_send, time_fact_send, date_formed, recipes, id
             FROM beverages_log
             WHERE time_fact_send is NULL
         '''
