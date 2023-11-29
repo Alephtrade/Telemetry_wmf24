@@ -15,12 +15,35 @@ class WMFSQLDriver:
     def close(self):
         self.connection.close()
 
+    def find_device_by_aleph_id(self, aleph_id):
+        cur = self.connection.cursor()
+        stmt = f'''SELECT * FROM devices WHERE aleph_id = "{aleph_id}"'''
+        cur.execute(stmt)
+        res = cur.fetchone()
+        cur.close()
+        if res is not None:
+            return True
+        else:
+            return False
+
     def create_device(self, device_aleph_id, device_utc, device_ip, device_model, device_status):
         cur = self.connection.cursor()
-        stmt = 'INSERT INTO devices (aleph_id, utc, address, type, status) VALUES (?, ?, ?, ?, ?) ON CONFLICT(aleph_id) DO UPDATE SET aleph_id = ?, utc = ?, address = ?, type = ?, status = ?;'
-        cur.execute(stmt, (device_aleph_id, device_utc, device_ip, device_model, device_status,device_aleph_id, device_utc, device_ip, device_model, device_status,))
+        stmt = 'INSERT INTO devices (aleph_id, utc, address, type, status) VALUES (?, ?, ?, ?, ?)'
+        cur.execute(stmt, (device_aleph_id, device_utc, device_ip, device_model, device_status,))
         self.connection.commit()
         cur.close()
+
+    def update_device_info(self, aleph_id, utc, address, type, status):
+        cur = self.connection.cursor()
+        stmt = ''' 
+            UPDATE devices 
+            SET aleph_id = ?, utc = ?, address = ?, type = ?, status = ?
+            WHERE aleph_id = ?
+        '''
+        cur.execute(stmt, (utc, address, type, status, aleph_id))
+        self.connection.commit()
+        cur.close()
+        return True
 
     def get_device_field_by_aleph_id(self, aleph_id, field_name):
         cur = self.connection.cursor()

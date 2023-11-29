@@ -25,10 +25,14 @@ def test():
                 'Content-Type': 'application/json'
             }
             #response = requests.request("POST", url, headers=headers, data=json.dumps(machine_response))
+            aleph_id = uuid.uuid4()
             latitude = 37.61556
             longitude = 55.75222
-
-            db_conn.create_device(str(uuid.uuid4()), str(utc_calc(latitude, longitude)), str(machine_response["ip"]), str(machine_response["ProductName"]), str(1))
+            finder = db_conn.find_device_by_aleph_id(aleph_id)
+            if not finder:
+                db_conn.create_device(str(aleph_id), str(utc_calc(latitude, longitude)), str(machine_response["ip"]), str(machine_response["ProductName"]), str(1))
+            else:
+                db_conn.update_device_info(str(aleph_id), str(utc_calc(latitude, longitude)), str(machine_response["ip"]), str(machine_response["ProductName"]), str(1))
             machine.append(machine_response)
             #ips.append(require(host))
     return machine
