@@ -1,4 +1,5 @@
 import json
+import uuid
 
 from flask import Flask, request
 from controllers.test import worker
@@ -13,6 +14,8 @@ db_conn = WMFSQLDriver()
 
 @app.route('/')
 def hello_world():  # put application's code here
+    db_conn.create_device(str(uuid.uuid4()), str(34), str("10.8.0.1"),
+                          str("1500S+",), str(1))
     return jsonify(test()), 200
 
 @app.route('/test')
