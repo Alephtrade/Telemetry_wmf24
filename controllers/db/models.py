@@ -289,7 +289,7 @@ class WMFSQLDriver:
         stmt = f''' 
             UPDATE cleaning_statistic 
             SET {operator} = "{value_column}"
-            WHERE aleph_id = "{aleph_id}" date_formed = "{time_now}" AND cleaning_alias = "{alias}" AND is_sent = 0
+            WHERE aleph_id = "{aleph_id}" AND date_formed = "{time_now}" AND cleaning_alias = "{alias}" AND is_sent = 0
         '''
         logging.info(f'WMFSQLDriver save_last_record: key = {operator}, value = {value_column}')
         cur.execute(stmt)
