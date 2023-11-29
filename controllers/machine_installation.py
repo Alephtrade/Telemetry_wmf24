@@ -1,6 +1,7 @@
 from collections import deque
 import sys
 sys.path.append('./')
+sys.path.append('/var/www/Telemetry_wmf24/')
 import nmap
 import requests
 import websocket
