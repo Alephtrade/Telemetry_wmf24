@@ -14,9 +14,9 @@ db_conn = WMFSQLDriver()
 
 @app.route('/')
 def hello_world():  # put application's code here
-    db_conn.create_device(str(uuid.uuid4()), str(34), str("10.8.0.1"),
+    creator = db_conn.create_device(str(uuid.uuid4()), str(34), str("10.8.0.1"),
                           str("1500S+",), str(1))
-    return jsonify(test()), 200
+    return jsonify(creator), 200
 
 @app.route('/test')
 def terra():  # put application's code here
