@@ -25,6 +25,7 @@ def test():
             #    'Content-Type': 'application/json'
             #}
             #response = requests.request("POST", url, headers=headers, data=json.dumps(machine_response))
+            return machine_response
             db_conn.create_device(uuid.uuid4(), utc_calc(machine_response["latitude"], machine_response["longitude"]), machine_response["ip"], machine_response["ProductName"], str(1))
             machine.append({require_info(host)})
             #ips.append(require(host))
