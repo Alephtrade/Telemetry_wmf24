@@ -32,7 +32,7 @@ def test():
                 'Content-Type': 'application/json'
             }
             response = requests.request("POST", url, headers=headers, data=json.dumps(data_for_request))
-            aleph_id = uuid.uuid4()
+            aleph_id = "4 floor"
             latitude = 37.61556
             longitude = 55.75222
             finder = db_conn.find_device_by_aleph_id(aleph_id)
