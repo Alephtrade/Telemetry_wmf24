@@ -235,6 +235,7 @@ class WMFMachineErrorConnector:
             return 0
 
     def on_message(self, ws, message):
+        print(message)
         try:
             logging.info(f"WMFMachineConnector: message={json.loads(message.encode('utf-8'))}")
             data = WMFMachineStatConnector.normalize_json(message)
@@ -270,6 +271,7 @@ class WMFMachineErrorConnector:
         ws.send(json.dumps({"function": "stopPushErrors"}))
 
     def on_open(self, ws):
+        print("opened")
         ws.send(json.dumps({"function": "startPushErrors"}))
         ws.send(json.dumps({"function": "startPushDispensingFinished"}))
 
