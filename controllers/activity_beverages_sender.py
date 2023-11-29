@@ -133,6 +133,7 @@ def check_machine_status(aleph_id, ip):
                 db_driver.create_downtime(aleph_id, datetime.datetime.now(), 0)
     logging.info(f'last_stat_record: {r}')
     logging.info(f'downtime_last_record: {d}')
+    return status
 
     #db_driver.close()
 
@@ -167,7 +168,7 @@ print(devices)
 
 result = []
 for device in devices:
-    check_machine_status(device[1], device[2])
+    print(check_machine_status(device[1], device[2]))
     send_ip_address(device[1], device[2])
     beverages_send_worker(device[1], device[2])
     controller_data_statistics_sender(device[1], device[2])
