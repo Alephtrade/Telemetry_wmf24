@@ -95,3 +95,5 @@ def utc_calc(latitude, longitude):
         machine_time = time_format(time)
 
     return machine_time
+
+print(test())

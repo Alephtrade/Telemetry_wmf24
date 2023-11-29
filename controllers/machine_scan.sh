@@ -1,0 +1,1 @@
+python3 /var/www/Telemetry_wmf24/controllers/machine_installation.py
