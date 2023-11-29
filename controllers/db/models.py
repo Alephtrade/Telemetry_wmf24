@@ -202,15 +202,15 @@ class WMFSQLDriver:
         cur.close()
         return True
 
-    def get_error_last_stat_record(self, error_code):
+    def get_error_last_stat_record(self, error_code, aleph_id):
         cur = self.connection.cursor()
         stmt = '''
             SELECT id, end_time FROM error_code_stats
-            WHERE error_code = ?
+            WHERE error_code = ? AND aleph_id = ?
             ORDER BY id DESC 
             LIMIT 1
         '''
-        cur.execute(stmt, (error_code,))
+        cur.execute(stmt, (error_code, aleph_id,))
         res = cur.fetchone()
         cur.close()
         return res
@@ -607,10 +607,10 @@ class WMFSQLDriver:
         self.connection.commit()
         cur.close()
 
-    def create_downtime(self, date_start, status):
+    def create_downtime(self, aleph_id, date_start, status):
         cur = self.connection.cursor()
-        stmt = 'INSERT INTO downtimes (date_start, status) VALUES (?, ?)'
-        cur.execute(stmt, (date_start, status))
+        stmt = 'INSERT INTO downtimes (date_start, status) VALUES (?, ?, ?)'
+        cur.execute(stmt, (aleph_id, date_start, status))
         self.connection.commit()
         cur.close()
 

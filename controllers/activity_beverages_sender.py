@@ -15,12 +15,7 @@ from controllers.api.beverages import methods
 from controllers.wmf.models import WMFMachineStatConnector
 
 
-WMF_URL = settings.WMF_DATA_URL
-WS_URL = settings.WS_URL
-DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
-db_conn = WMFSQLDriver()
-
-def beverages_send_worker():
+def beverages_send_worker(aleph_id, ip):
     initialize_logger('beverages_send_worker.py.log')
     k = []
     time_to_send = None
@@ -49,16 +44,10 @@ def beverages_send_worker():
     return True
 
 
-def controller_data_statistics_sender():
+def controller_data_statistics_sender(aleph_id, ip):
     initialize_logger('controller_data_statistics_sender.py.log')
     now_of_hour = str(datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp())))
     data_for_request = []
-    try:
-        with open('/root/wmf_1100_1500_5000_router/part_number.txt') as f:
-            part_number = f.read()
-    except Exception:
-        wm_conn = WMFMachineStatConnector()
-        part_number = wm_conn.get_part_number()
     data_main_stat = db_conn.get_data_statistics_to_send()
     if data_main_stat is not None:
         for item in data_main_stat:
@@ -72,7 +61,7 @@ def controller_data_statistics_sender():
                 data_for_request.append({"time_to_send": item[6]})
                 data_for_request.append({"time_fact_send": item[7]})
                 data_for_request.append({"is_sent": item[8]})
-                data_for_request.append({"code": part_number})
+                data_for_request.append({"aleph_id": aleph_id})
                 url = "https://wmf24.ru/api/machineactivity"
                 headers = {
                     'Content-Type': 'application/json'
@@ -87,31 +76,17 @@ def controller_data_statistics_sender():
     logging.info(f'nothing to send')
     return True
 
-def send_ip_address():
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.connect(("8.8.8.8", 80))
-    ip_address = s.getsockname()[0]
-    s.close()
+def send_ip_address(aleph_id, ip):
     data = {}
-
-    try:
-        with open('/root/wmf_1100_1500_5000_router/ip_address.json') as f:
-            data = json.load(f)
-    except FileNotFoundError:
-        wm_conn = WMFMachineStatConnector()
-        part_number = wm_conn.get_part_number()
-        data = wm_conn.get_wmf_machine_info()
-        data['part_number'] = str(wm_conn.part_number)
-        with open('/root/wmf_1100_1500_5000_router/ip_address.json', 'w') as f:
-            json.dump(data, f)
-    if data and ip_address.startswith('10.8.'):
-        data['ip_internal'] = ip_address
-        requests.post('https://wmf24.ru/api/address', json=data)
+    data['aleph_id'] = aleph_id
+    data["ip"] = ip
+    requests.post('https://wmf24.ru/api/address', json=data)
     return data
 
-def check_machine_status():
+def check_machine_status(aleph_id, ip):
     initialize_logger('check_machine_status.log')
     db_driver = WMFSQLDriver()
+    WS_URL = f'ws://{ip}:25000/'
 
     status = None
     try:
@@ -124,14 +99,14 @@ def check_machine_status():
 
     logging.info(f'status is: {status}')
     last_id, end_time = None, None
-    r = db_driver.get_error_last_stat_record('-1')
+    r = db_driver.get_error_last_stat_record('-1', aleph_id)
     #k = db_driver.get_error_last_stat_record('62')
     if r is not None:
         last_id, end_time = r
     else:
         end_time = time()
         last_id = 0
-    render_errors_closing(last_id, end_time, status)
+    render_errors_closing(aleph_id, ip, last_id, end_time, status)
 
     #if k is not None:
      #   render_errors_closing(k, status)
@@ -155,13 +130,14 @@ def check_machine_status():
             logging.info(f'd_date_end: {d_status}')
             logging.info(f'd_date_end: {d_date_end}')
             if d_status != "0":
-                db_driver.create_downtime(datetime.datetime.now(), 0)
+                db_driver.create_downtime(aleph_id, datetime.datetime.now(), 0)
     logging.info(f'last_stat_record: {r}')
     logging.info(f'downtime_last_record: {d}')
 
     #db_driver.close()
 
-def render_errors_closing(last_id, end_time, status):
+def render_errors_closing(aleph_id, ip, last_id, end_time, status):
+    WS_URL = f'ws://{ip}:25000/'
     db_driver = WMFSQLDriver()
     if status == 0 and (end_time is None):
         logging.info(f'status is 0 and end_time is none, downtime is active')
@@ -180,11 +156,16 @@ def render_errors_closing(last_id, end_time, status):
             ws.send(request)
             received_data = ws.recv()
             if (WMFMachineStatConnector.normalize_json(received_data).get('returnvalue')) == 0:
-                db_driver.close_error_code(item[2])
+                db_driver.close_error_code(aleph_id, item[2])
 
 
+db_conn = WMFSQLDriver()
+devices = db_conn.get_devices()
+print(devices)
 
-check_machine_status()
-send_ip_address()
-beverages_send_worker()
-controller_data_statistics_sender()
+result = []
+for device in devices:
+    check_machine_status(device[1], device[2])
+    send_ip_address(device[1], device[2])
+    beverages_send_worker(device[1], device[2])
+    controller_data_statistics_sender(device[1], device[2])
