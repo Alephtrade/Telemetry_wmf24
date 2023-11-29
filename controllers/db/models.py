@@ -17,8 +17,8 @@ class WMFSQLDriver:
 
     def create_device(self, device_aleph_id, device_utc, device_ip, device_model, device_status):
         cur = self.connection.cursor()
-        stmt = 'INSERT INTO devices (aleph_id, utc, address, type, status) VALUES (?, ?, ?, ?, ?)'
-        cur.execute(stmt, (device_aleph_id, device_utc, device_ip, device_model, device_status,))
+        stmt = 'INSERT INTO devices (aleph_id, utc, address, type, status) VALUES (?, ?, ?, ?, ?) ON CONFLICT(aleph_id) DO UPDATE SET aleph_id = ?, utc = ?, address = ?, type = ?, status = ?;'
+        cur.execute(stmt, (device_aleph_id, device_utc, device_ip, device_model, device_status,device_aleph_id, device_utc, device_ip, device_model, device_status,))
         self.connection.commit()
         cur.close()
 
