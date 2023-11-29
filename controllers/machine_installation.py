@@ -28,7 +28,7 @@ def test():
             latitude = 37.61556
             longitude = 55.75222
 
-            db_conn.create_device(uuid.uuid4(), utc_calc(latitude, longitude), machine_response["ip"], machine_response["ProductName"], str(1))
+            db_conn.create_device(str(uuid.uuid4()), str(utc_calc(latitude, longitude)), str(machine_response["ip"]), str(machine_response["ProductName"]), str(1))
             machine.append({require_info(host)})
             #ips.append(require(host))
     return machine
