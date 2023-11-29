@@ -37,7 +37,7 @@ def beverages_send_worker(aleph_id, ip):
                 k.append(item_info)
             next_time = datetime.strptime(time_to_send, '%Y-%m-%d %H:%M:%S')
             if datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp())) > next_time:
-                methods.Send_Statistics(json.dumps(k), record_id)
+                #methods.Send_Statistics(json.dumps(k), record_id)
                 logging.info(f'Send_Statistics db id - {record_id}')
             else:
                 logging.info(f'wrong time to_sent - {next_time}')
