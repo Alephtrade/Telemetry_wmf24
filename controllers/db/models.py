@@ -614,11 +614,12 @@ class WMFSQLDriver:
         self.connection.commit()
         cur.close()
 
-    def get_last_downtime(self):
+    def get_last_downtime(self, aleph_id):
         cur = self.connection.cursor()
-        stmt = ''' 
+        stmt = f''' 
             SELECT id, date_start, date_end, status 
             FROM downtimes
+            WHERE aleph_id = "{aleph_id}"
             ORDER BY id DESC 
             LIMIT 1
         '''

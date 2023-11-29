@@ -115,7 +115,7 @@ def check_machine_status(aleph_id, ip):
     d_date_start = None
     d_date_end = None
     d_status = None
-    d = db_driver.get_last_downtime()
+    d = db_driver.get_last_downtime(aleph_id)
     if d:
         d_id, d_date_start, d_date_end, d_status = d
         if status == 1:
@@ -143,7 +143,9 @@ def render_errors_closing(aleph_id, ip, last_id, end_time, status):
         logging.info(f'status is 0 and end_time is none, downtime is active')
     elif status == 0 and (end_time is not None):
         logging.info(f'status is 0 and end_time is {end_time}, calling create_error_record(-1)')
-        db_driver.create_error_record('-1', 'Кофемашина недоступна')
+        print(status)
+        print(end_time)
+        db_driver.create_error_record(aleph_id, '-1', 'Кофемашина недоступна')
     elif status == 1:
         logging.info(f'status is 1 and last_id is {last_id}, calling close_error_code_by_id({last_id})')
         if last_id != 0:
