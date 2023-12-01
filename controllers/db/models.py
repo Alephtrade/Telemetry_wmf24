@@ -701,4 +701,4 @@ class WMFSQLDriver:
 
 if __name__ == '__main__':
     db_conn = WMFSQLDriver(db_path='../wmf.db')
-    print(db_conn.get_device_field_by_aleph_id())
+    #print(db_conn.get_device_field_by_aleph_id())

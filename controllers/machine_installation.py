@@ -36,7 +36,9 @@ def test():
             longitude = 55.75222
             finder = db_conn.find_device_by_aleph_id(aleph_id)
             if not finder:
+                #db_conn.connection.cursor().close()
                 db_conn.create_device(str(aleph_id), str(utc_calc(latitude, longitude)), str(machine_response["ip"]), str(machine_response["ProductName"]), str(1))
+                db_conn.connection.cursor().close()
             else:
                 db_conn.update_device_info(str(aleph_id), str(utc_calc(latitude, longitude)), str(machine_response["ip"]), str(machine_response["ProductName"]), str(1))
             machine.append(machine_response)
