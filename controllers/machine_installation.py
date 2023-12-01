@@ -13,14 +13,13 @@ import logging
 from controllers.db.models import WMFSQLDriver
 import uuid
 
-db_conn = WMFSQLDriver()
-
 
 def test():
     nm = nmap.PortScanner()
     hosts = nm.scan(hosts='10.8.0.0/24', arguments='-sn')
     machine = []
     for host in hosts["scan"]:
+        db_conn = WMFSQLDriver()
         if host != "10.8.0.1":
             data_for_request = {}
             machine_response = require_info(host)
@@ -32,7 +31,7 @@ def test():
                 'Content-Type': 'application/json'
             }
             response = requests.request("POST", url, headers=headers, data=json.dumps(data_for_request))
-            aleph_id = "4 floor"
+            aleph_id = machine_response["MachineName"]
             latitude = 37.61556
             longitude = 55.75222
             finder = db_conn.find_device_by_aleph_id(aleph_id)
@@ -41,6 +40,7 @@ def test():
             else:
                 db_conn.update_device_info(str(aleph_id), str(utc_calc(latitude, longitude)), str(machine_response["ip"]), str(machine_response["ProductName"]), str(1))
             machine.append(machine_response)
+            db_conn.close()
             #ips.append(require(host))
     return machine
 
