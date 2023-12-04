@@ -18,11 +18,12 @@ db_conn = WMFSQLDriver()
 
 
 def worker(tl_ident, aleph_id, ip):
+    return tl_ident.is_alive()
     WMF_URL = settings.WMF_DATA_URL
     print(ip)
     initialize_logger('error_collector.log')
     tl_ident.start()
-    return tl_ident.is_alive()
+     #tl_ident.is_alive()
 
 
 def on_exit(tl_ident, wmf_conn):
