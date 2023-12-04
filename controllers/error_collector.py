@@ -24,7 +24,7 @@ def worker(aleph_id, ip):
     db_conn = WMFSQLDriver()
     wmf_conn = WMFMachineErrorConnector(aleph_id, ip)
     t = Thread(target=wmf_conn.run_websocket, args=()).start()
-    print(any([th for th in threading.enumerate()]))
+    print(threading.active_count( ))
 
 
     def on_exit():
