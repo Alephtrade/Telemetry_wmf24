@@ -76,9 +76,10 @@ db_conn = WMFSQLDriver()
 devices = db_conn.get_devices()
 print(devices)
 result = []
-for t in threads:
-    if t.isAlive():
-        print(True)
 for device in devices:
-    result = worker(device[1], device[2])
+    for t in threads:
+        if t.isAlive():
+            print(True)
+        else:
+            result = worker(device[1], device[2])
 
