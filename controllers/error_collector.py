@@ -14,6 +14,7 @@ from controllers.settings import prod as settings
 from controllers.db.models import WMFSQLDriver
 
 threads = []
+
 def worker(aleph_id, ip):
     WMF_URL = settings.WMF_DATA_URL
     tl = Timeloop()
@@ -23,6 +24,7 @@ def worker(aleph_id, ip):
     wmf_conn = WMFMachineErrorConnector(aleph_id, ip)
     t = Thread(target=wmf_conn.run_websocket, args=()).start()
     threads.append(t)
+    print(threads)
 
 
     def on_exit():
