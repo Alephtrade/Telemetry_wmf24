@@ -23,7 +23,7 @@ def worker(tl_ident, aleph_id, ip):
     print(ip)
     initialize_logger('error_collector.log')
     wmf_conn = WMFMachineErrorConnector(aleph_id, ip)
-    Thread(target=wmf_conn.run_websocket, args=()).setName(aleph_id).start()
+    Thread(target=wmf_conn.run_websocket, args=()).start()
 
 
     def on_exit():
@@ -69,6 +69,7 @@ def worker(tl_ident, aleph_id, ip):
 
     tl_ident.start()
     logging.info('error_collector.py started and running...')
+    return tl_ident
     return "error_collector.py started and running..."
     atexit.register(on_exit)
 
@@ -79,5 +80,5 @@ result = []
 for device in devices:
     dev_tl = Timeloop()
     result = worker(dev_tl, device[1], device[2])
-    print(threading.enumerate())
+    print(result.is_alive())
 
