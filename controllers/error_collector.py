@@ -19,7 +19,7 @@ db_conn = WMFSQLDriver()
 
 
 def worker(tl_ident, aleph_id, ip):
-    return tl_ident.get_ident()
+    return tl_ident.getName()
     if tl_ident.is_alive():
         return "ALREADY_EXISTS"
     WMF_URL = settings.WMF_DATA_URL
@@ -81,6 +81,8 @@ devices = db_conn.get_devices()
 result = []
 for device in devices:
     wmf_conn = WMFMachineErrorConnector(device[1], device[2])
-    tl_ident = threading.Thread(target=wmf_conn.run_websocket)
+    if threading.Thread(target=wmf_conn.run_websocket, name=device[1]).is_alive():
+        print("ALIVE")
+    tl_ident = threading.Thread(target=wmf_conn.run_websocket, name=device[1])
     result = worker(tl_ident, device[1], device[2])
     print(result)
