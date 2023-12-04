@@ -89,3 +89,6 @@ for device in devices:
     tl_ident = threading.Thread(target=wmf_conn.run_websocket, name=device[1])
     result = worker(tl_ident, device[1], device[2])
     print(result)
+    print(threading.active_count())
+    print(threading.enumerate())
+
