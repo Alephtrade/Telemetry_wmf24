@@ -23,7 +23,7 @@ def worker(tl_ident, aleph_id, ip):
     print(ip)
     initialize_logger('error_collector.log')
     wmf_conn = WMFMachineErrorConnector(aleph_id, ip)
-    Thread(target=wmf_conn.run_websocket, args=()).start()
+    Thread(target=wmf_conn.run_websocket, args=()).setName(aleph_id).start()
 
 
     def on_exit():
@@ -67,7 +67,6 @@ def worker(tl_ident, aleph_id, ip):
         except Exception as ex:
             logging.error(f'error_collector send_errors: ERROR={ex}, stacktrace: {print_exception()}')
 
-    tl_ident.setName(aleph_id)
     tl_ident.start()
     logging.info('error_collector.py started and running...')
     return "error_collector.py started and running..."
