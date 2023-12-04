@@ -24,16 +24,14 @@ def worker(tl_ident, aleph_id, ip):
     print(ip)
     initialize_logger('error_collector.log')
     tl_ident.start()
-    return tl_ident.is_alive()
 
-
-def on_exit(tl_ident, wmf_conn):
-    try:
-        wmf_conn.close()
-        tl_ident.stop()
-    except Exception as ex:
-        logging.error(f'error_collector on_exit: ERROR={ex}')
-        logging.error(print_exception())
+    def on_exit(tl_ident, wmf_conn):
+        try:
+            wmf_conn.close()
+            tl_ident.stop()
+        except Exception as ex:
+            logging.error(f'error_collector on_exit: ERROR={ex}')
+            logging.error(print_exception())
 
 
     @tl_ident.job(interval=timedelta(seconds=settings.ERROR_COLLECTOR_INTERVAL_SECONDS))
