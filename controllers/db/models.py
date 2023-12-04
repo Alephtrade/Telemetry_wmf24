@@ -156,7 +156,7 @@ class WMFSQLDriver:
             current_date = datetime.now()
             start_time = current_date.strftime('%Y-%m-%d %H:%M:%S')
         print(start_time)
-        start_time_formated = int(datetime.strptime(start_time[1], '%Y-%m-%d %H:%M:%S').timestamp())
+        start_time_formated = int(datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S').timestamp())
         duration = str((int((datetime.now() + timedelta(hours=3)).timestamp()) - start_time_formated))
         cur = self.connection.cursor()
         end_time = get_curr_time_str()
