@@ -15,11 +15,10 @@ from controllers.settings import prod as settings
 from controllers.db.models import WMFSQLDriver
 
 threads = {}
-tl = Timeloop()
 db_conn = WMFSQLDriver()
 
 
-def worker(aleph_id, ip):
+def worker(tl_ident, aleph_id, ip):
     WMF_URL = settings.WMF_DATA_URL
     print(ip)
     initialize_logger('error_collector.log')
@@ -30,13 +29,13 @@ def worker(aleph_id, ip):
     def on_exit():
         try:
             wmf_conn.close()
-            tl.stop()
+            tl_ident.stop()
         except Exception as ex:
             logging.error(f'error_collector on_exit: ERROR={ex}')
             logging.error(print_exception())
 
 
-    @tl.job(interval=timedelta(seconds=settings.ERROR_COLLECTOR_INTERVAL_SECONDS))
+    @tl_ident.job(interval=timedelta(seconds=settings.ERROR_COLLECTOR_INTERVAL_SECONDS))
     def send_errors():
         try:
             logging.info("error_collector send_errors: CALL")
@@ -68,7 +67,7 @@ def worker(aleph_id, ip):
         except Exception as ex:
             logging.error(f'error_collector send_errors: ERROR={ex}, stacktrace: {print_exception()}')
 
-    tl.start()
+    tl_ident.start()
     logging.info('error_collector.py started and running...')
     return "error_collector.py started and running..."
     atexit.register(on_exit)
@@ -78,6 +77,7 @@ db_conn = WMFSQLDriver()
 devices = db_conn.get_devices()
 result = []
 for device in devices:
-    result = worker(device[1], device[2])
+    device[1] = Timeloop()
+    result = worker(device[1], device[1], device[2])
     #print(Thread.getName(threads[device[1]]))
 
