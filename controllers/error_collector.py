@@ -2,7 +2,7 @@ import atexit
 import json
 import requests
 import logging
-from threading import Thread
+from threading import Thread, threading
 from datetime import timedelta
 from timeloop import Timeloop
 import sys
@@ -23,8 +23,7 @@ def worker(aleph_id, ip):
     db_conn = WMFSQLDriver()
     wmf_conn = WMFMachineErrorConnector(aleph_id, ip)
     t = Thread(target=wmf_conn.run_websocket, args=()).start()
-    threads[aleph_id] = tl
-    print(threads)
+    print(any([th for th in threading.enumerate()]))
 
 
     def on_exit():
