@@ -78,6 +78,7 @@ devices = db_conn.get_devices()
 result = []
 for device in devices:
     dev_tl = Timeloop()
+    dev_tl.setName(device[1])
     result = worker(dev_tl, device[1], device[2])
     print(threading.enumerate())
 
