@@ -2,7 +2,8 @@ import atexit
 import json
 import requests
 import logging
-from threading import Thread, threading
+import threading
+from threading import Thread
 from datetime import timedelta
 from timeloop import Timeloop
 import sys
