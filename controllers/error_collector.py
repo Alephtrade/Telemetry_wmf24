@@ -78,7 +78,7 @@ print(devices)
 result = []
 for device in devices:
     for t in threads:
-        if t.isAlive():
+        if t is not None and t.isAlive():
             print(True)
         else:
             result = worker(device[1], device[2])
