@@ -14,7 +14,6 @@ from controllers.settings import prod as settings
 from controllers.db.models import WMFSQLDriver
 
 threads = []
-
 def worker(aleph_id, ip):
     WMF_URL = settings.WMF_DATA_URL
     tl = Timeloop()
@@ -77,9 +76,6 @@ devices = db_conn.get_devices()
 print(devices)
 result = []
 for device in devices:
-    if len(threads) >= 2:
-        if t is not None and t.isAlive():
-            print(True)
-    else:
-        result = worker(device[1], device[2])
+    result = worker(device[1], device[2])
+    print(threads)
 
