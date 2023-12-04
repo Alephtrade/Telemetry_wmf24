@@ -67,7 +67,7 @@ def worker(aleph_id, ip):
         except Exception as ex:
             logging.error(f'error_collector send_errors: ERROR={ex}, stacktrace: {print_exception()}')
 
-    threads[aleph_id] = aleph_id.start()
+    aleph_id.start()
     logging.info('error_collector.py started and running...')
     return "error_collector.py started and running..."
     atexit.register(on_exit)
@@ -78,5 +78,5 @@ devices = db_conn.get_devices()
 result = []
 for device in devices:
     result = worker(device[1], device[2])
-    print(Thread.getName(threads[device[1]]))
+    #print(Thread.getName(threads[device[1]]))
 
