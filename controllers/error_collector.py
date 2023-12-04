@@ -36,7 +36,7 @@ def worker(aleph_id, ip):
             logging.error(print_exception())
 
 
-    @tl.job(interval=timedelta(seconds=settings.ERROR_COLLECTOR_INTERVAL_SECONDS))
+    @aleph_id.job(interval=timedelta(seconds=settings.ERROR_COLLECTOR_INTERVAL_SECONDS))
     def send_errors():
         try:
             logging.info("error_collector send_errors: CALL")
