@@ -19,6 +19,7 @@ db_conn = WMFSQLDriver()
 
 
 def worker(tl_ident, aleph_id, ip):
+    return tl_ident.get_ident()
     if tl_ident.is_alive():
         return "ALREADY_EXISTS"
     WMF_URL = settings.WMF_DATA_URL
