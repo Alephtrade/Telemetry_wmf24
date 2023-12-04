@@ -23,7 +23,7 @@ def worker(aleph_id, ip):
     db_conn = WMFSQLDriver()
     wmf_conn = WMFMachineErrorConnector(aleph_id, ip)
     t = Thread(target=wmf_conn.run_websocket, args=()).start()
-    threads[aleph_id] = t
+    threads[aleph_id] = tl
     print(threads)
 
 
