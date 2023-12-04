@@ -77,7 +77,7 @@ db_conn = WMFSQLDriver()
 devices = db_conn.get_devices()
 result = []
 for device in devices:
-    device[1] = Timeloop()
-    result = worker(device[1], device[1], device[2])
+    dev_tl = Timeloop()
+    result = worker(dev_tl, device[1], device[2])
     #print(Thread.getName(threads[device[1]]))
 
