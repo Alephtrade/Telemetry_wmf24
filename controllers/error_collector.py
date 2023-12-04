@@ -13,7 +13,7 @@ from controllers.wmf.models import WMFMachineErrorConnector
 from controllers.settings import prod as settings
 from controllers.db.models import WMFSQLDriver
 
-threads = []
+threads = {}
 
 def worker(aleph_id, ip):
     WMF_URL = settings.WMF_DATA_URL
@@ -23,7 +23,7 @@ def worker(aleph_id, ip):
     db_conn = WMFSQLDriver()
     wmf_conn = WMFMachineErrorConnector(aleph_id, ip)
     t = Thread(target=wmf_conn.run_websocket, args=()).start()
-    threads.append(t)
+    threads[aleph_id] = t
     print(threads)
 
 
