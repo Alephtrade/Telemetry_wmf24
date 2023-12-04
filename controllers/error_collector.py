@@ -2,7 +2,6 @@ import atexit
 import json
 import requests
 import logging
-import threading
 from threading import Thread
 from datetime import timedelta
 from timeloop import Timeloop
@@ -79,5 +78,5 @@ result = []
 for device in devices:
     dev_tl = Timeloop()
     result = worker(dev_tl, device[1], device[2])
-    print(result.is_alive())
+    print(result)
 
