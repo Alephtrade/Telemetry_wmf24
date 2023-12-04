@@ -2,7 +2,7 @@ import atexit
 import json
 import requests
 import logging
-from threading import Thread
+import threading
 from datetime import timedelta
 from timeloop import Timeloop
 import sys
@@ -22,7 +22,7 @@ def worker(tl_ident, aleph_id, ip):
     print(ip)
     initialize_logger('error_collector.log')
     wmf_conn = WMFMachineErrorConnector(aleph_id, ip)
-    return Thread(target=wmf_conn.run_websocket, args=(), daemon=True, name=aleph_id).start()
+    return threading.Thread(target=wmf_conn.run_websocket, args=(), daemon=True, name=aleph_id).start()
 
 
 def on_exit(tl_ident, wmf_conn):

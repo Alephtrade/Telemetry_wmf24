@@ -1,3 +1,5 @@
+import threading
+
 import requests
 import websocket
 import json
@@ -295,6 +297,7 @@ class WMFMachineErrorConnector:
             logging.error(f"WMFMachineConnector init: error={ex}, stacktrace: {print_exception()}")
 
     def run_websocket(self):
+        return threading.get_native_id()
         websocket.enableTrace(False)
         self.ws.run_forever()
 
