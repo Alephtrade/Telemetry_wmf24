@@ -18,19 +18,19 @@ threads = {}
 
 def worker(aleph_id, ip):
     WMF_URL = settings.WMF_DATA_URL
-    tl = Timeloop()
+    aleph_id = Timeloop()
     print(ip)
     initialize_logger('error_collector.log')
     db_conn = WMFSQLDriver()
     wmf_conn = WMFMachineErrorConnector(aleph_id, ip)
-    t = Thread(target=wmf_conn.run_websocket, args=()).start()
+    Thread(target=wmf_conn.run_websocket, args=()).start()
     print(threading.active_count( ))
 
 
     def on_exit():
         try:
             wmf_conn.close()
-            tl.stop()
+            aleph_id.stop()
         except Exception as ex:
             logging.error(f'error_collector on_exit: ERROR={ex}')
             logging.error(print_exception())
@@ -68,7 +68,7 @@ def worker(aleph_id, ip):
         except Exception as ex:
             logging.error(f'error_collector send_errors: ERROR={ex}, stacktrace: {print_exception()}')
 
-    tl.start()
+    aleph_id.start()
     logging.info('error_collector.py started and running...')
     return "error_collector.py started and running..."
     atexit.register(on_exit)
