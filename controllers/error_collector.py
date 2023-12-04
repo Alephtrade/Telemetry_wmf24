@@ -14,6 +14,8 @@ from controllers.wmf.models import WMFMachineErrorConnector
 from controllers.settings import prod as settings
 from controllers.db.models import WMFSQLDriver
 
+threads = {}
+
 def worker(aleph_id, ip):
     WMF_URL = settings.WMF_DATA_URL
     aleph_id = Timeloop()
@@ -21,7 +23,7 @@ def worker(aleph_id, ip):
     initialize_logger('error_collector.log')
     db_conn = WMFSQLDriver()
     wmf_conn = WMFMachineErrorConnector(aleph_id, ip)
-    Thread(target=wmf_conn.run_websocket, args=()).start()
+    threads[aleph_id] = Thread(target=wmf_conn.run_websocket, args=()).start()
 
 
     def on_exit():
@@ -76,5 +78,5 @@ devices = db_conn.get_devices()
 result = []
 for device in devices:
     result = worker(device[1], device[2])
-    print(Thread.getName(device[1]))
+    print(Thread.getName(threads[device[1]]))
 
