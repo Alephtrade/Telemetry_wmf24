@@ -79,5 +79,5 @@ result = []
 for device in devices:
     dev_tl = Timeloop()
     result = worker(dev_tl, device[1], device[2])
-    #print(Thread.getName(threads[device[1]]))
+    print(dev_tl.enumerate())
 
