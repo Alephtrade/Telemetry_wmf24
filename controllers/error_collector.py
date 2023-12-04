@@ -24,7 +24,6 @@ def worker(aleph_id, ip):
     db_conn = WMFSQLDriver()
     wmf_conn = WMFMachineErrorConnector(aleph_id, ip)
     Thread(target=wmf_conn.run_websocket, args=()).start()
-    print(threading.active_count( ))
 
 
     def on_exit():
@@ -73,11 +72,12 @@ def worker(aleph_id, ip):
     return "error_collector.py started and running..."
     atexit.register(on_exit)
 
+
 db_conn = WMFSQLDriver()
 devices = db_conn.get_devices()
 print(devices)
 result = []
 for device in devices:
     result = worker(device[1], device[2])
-    print(threads)
+    print(threading.active_count( ))
 
