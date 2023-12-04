@@ -77,7 +77,7 @@ devices = db_conn.get_devices()
 print(devices)
 result = []
 for device in devices:
-    if len(threads) > 2:
+    if len(threads) >= 2:
         if t is not None and t.isAlive():
             print(True)
     else:
