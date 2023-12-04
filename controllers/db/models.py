@@ -152,11 +152,11 @@ class WMFSQLDriver:
     def close_error_code(self, aleph_id, error_code):
         start_time = self.get_error_prev_record(aleph_id, error_code)
         print(start_time)
-        if start_time is None:
+        if start_time[1] is None:
             current_date = datetime.now()
-            start_time = current_date.strftime('%Y-%m-%d %H:%M:%S')
+            start_time[1] = current_date.strftime('%Y-%m-%d %H:%M:%S')
         print(start_time)
-        start_time_formated = int(datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S').timestamp())
+        start_time_formated = int(datetime.strptime(start_time[1], '%Y-%m-%d %H:%M:%S').timestamp())
         duration = str((int((datetime.now() + timedelta(hours=3)).timestamp()) - start_time_formated))
         cur = self.connection.cursor()
         end_time = get_curr_time_str()
