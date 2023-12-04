@@ -22,7 +22,7 @@ def worker(tl_ident, aleph_id, ip):
     print(ip)
     initialize_logger('error_collector.log')
     wmf_conn = WMFMachineErrorConnector(aleph_id, ip)
-    Thread(target=wmf_conn.run_websocket, args=()).start()
+    return Thread(target=wmf_conn.run_websocket, args=(), daemon=True, name=aleph_id).start()
 
 
 def on_exit(tl_ident, wmf_conn):
