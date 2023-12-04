@@ -67,6 +67,7 @@ def worker(tl_ident, aleph_id, ip):
         except Exception as ex:
             logging.error(f'error_collector send_errors: ERROR={ex}, stacktrace: {print_exception()}')
 
+    tl_ident.setName(aleph_id)
     tl_ident.start()
     logging.info('error_collector.py started and running...')
     return "error_collector.py started and running..."
@@ -78,7 +79,6 @@ devices = db_conn.get_devices()
 result = []
 for device in devices:
     dev_tl = Timeloop()
-    dev_tl.setName(device[1])
     result = worker(dev_tl, device[1], device[2])
     print(threading.enumerate())
 
