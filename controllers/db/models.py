@@ -150,7 +150,7 @@ class WMFSQLDriver:
     #    cur.execute(stmt, (last_id,))
     #    self.connection.commit()
     #    cur.close()
-    K031920 - 19157
+
     def create_error_record(self, aleph_id, error_code, error_text='Неизвестная ошибка'):
         cur = self.connection.cursor()
         stmt = 'INSERT INTO error_code_stats (aleph_id, error_code, error_date, start_time, error_text, duration_time) VALUES (?, ?, ?, ?, ?, 0)'
