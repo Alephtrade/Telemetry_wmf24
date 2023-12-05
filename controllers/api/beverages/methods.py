@@ -46,8 +46,9 @@ def Take_Create_Beverage_Statistics(last_send, device):
             received_data = received_data.replace(']', '', 1)
             received_data = received_data + ', {"device" : ' + str(device[1]) + '}]'
             logging.info(f"beveragestatistics: Received {received_data}")
-            print(str(received_data))
-            received = ast.literal_eval()
+            received_data = str(received_data)
+            received = ast.literal_eval(received_data)
+            print(received)
             for item in received:
                 for k, item2 in item.items():
                     if k.startswith("device_code"):
