@@ -171,23 +171,11 @@ def are_need_to_create(device):
     if last_send is None:
         now = datetime.fromtimestamp(int((datetime.now()).timestamp()))
         get = methods.Take_Create_Beverage_Statistics(now, device)
-        if get is None:
-            get = methods.Take_Create_Beverage_Statistics(now, device)
-            if get is None:
-                get = methods.Take_Create_Beverage_Statistics(now, device)
-                if get is None:
-                    get = methods.Take_Create_Beverage_Statistics(now, device)
         logging.info(f"beveragestatistics: Sending {get}")
         logging.info(f" last_send unknown")
         logging.info(f"{get}")
     else:
         get = methods.Take_Create_Beverage_Statistics(last_send[3], device)
-        if get is None:
-            get = methods.Take_Create_Beverage_Statistics(last_send[3], device)
-            if get is None:
-                get = methods.Take_Create_Beverage_Statistics(last_send[3], device)
-                if get is None:
-                    get = methods.Take_Create_Beverage_Statistics(last_send[3], device)
         logging.info(f"beveragestatistics: Sending {get}")
         logging.info(f"{get}")
     print(get)
