@@ -43,13 +43,12 @@ def Take_Create_Beverage_Statistics(last_send, device):
         received_data = ws.recv()
         logging.info(f"{received_data}")
         if received_data is not None or received_data != []:
-            received_data_str = ""
             received_data = received_data.replace(']', '', 1)
             received_data = received_data + ', {"device" : ' + str(device[1]) + '}]'
             logging.info(f"beveragestatistics: Received {received_data}")
-            [str(element) for element in received_data]
+            string_list = [str(element) for element in received_data]
             delimiter = ", "
-            result_string = delimiter.join(received_data_str)
+            result_string = delimiter.join(string_list)
             print(result_string)
             received = ast.literal_eval(result_string)
             print(received)
