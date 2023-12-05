@@ -42,6 +42,9 @@ def Take_Create_Beverage_Statistics(last_send, device):
         ws.send(request)
         received_data = ws.recv()
         logging.info(f"{received_data}")
+        print(received_data)
+        print(str(received_data))
+
         if received_data is not None or received_data != []:
             received_data = received_data.replace(']', '', 1)
             received_data = received_data + ', {"device" : ' + str(device[1]) + '}]'
