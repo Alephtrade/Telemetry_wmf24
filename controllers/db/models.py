@@ -150,7 +150,7 @@ class WMFSQLDriver:
     #    cur.execute(stmt, (last_id,))
     #    self.connection.commit()
     #    cur.close()
-
+    K031920 - 19157
     def create_error_record(self, aleph_id, error_code, error_text='Неизвестная ошибка'):
         cur = self.connection.cursor()
         stmt = 'INSERT INTO error_code_stats (aleph_id, error_code, error_date, start_time, error_text, duration_time) VALUES (?, ?, ?, ?, ?, 0)'
@@ -381,7 +381,7 @@ class WMFSQLDriver:
         return res
 
     def save_data_statistics(self, aleph_id, operator, value_column):
-        time_now = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp() // (60 * 60) * 60 * 60))
+        time_now = datetime.fromtimestamp(int((datetime.now()).timestamp() // (60 * 60) * 60 * 60))
         cur = self.connection.cursor()
         record_time = get_curr_time_str()
         stmt = f''' 
