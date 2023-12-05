@@ -44,7 +44,7 @@ def Take_Create_Beverage_Statistics(last_send, device):
         logging.info(f"{received_data}")
         if received_data is not None or received_data != []:
             received_data = received_data.replace(']', '', 1)
-            received_data = received_data + ', {"device" : ' + device[1] + '}]'
+            received_data = received_data + ', {"device" : ' + '"' + device[1] + '"' + '}]'
             logging.info(f"beveragestatistics: Received {received_data}")
             received = ast.literal_eval(received_data)
             for item in received:
