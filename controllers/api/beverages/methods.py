@@ -5,7 +5,6 @@ import ast
 from datetime import datetime, timedelta
 import sys
 import requests
-
 sys.path.append("../../")
 from controllers.db.models import WMFSQLDriver
 from controllers.core.utils import initialize_logger, get_beverages_send_time

@@ -9,9 +9,7 @@ import sys
 sys.path.append('./')
 sys.path.append('/var/www/Telemetry_wmf24/')
 from logging.handlers import TimedRotatingFileHandler
-from controllers.db.models import WMFSQLDriver
 
-db_conn = WMFSQLDriver()
 
 def initialize_logger(filename='default.log'):
     os.makedirs(name='logs', exist_ok=True)
@@ -70,6 +68,8 @@ def get_next_date_formed(interval_minutes):
     return datetime.fromtimestamp(a)
 
 def get_beverages_send_time(last_send_time):
+    from controllers.db.models import WMFSQLDriver
+    db_conn = WMFSQLDriver()
     initialize_logger('get_beverages_send_time.log')
     minutes_to_go = db_conn.get_exchange()
     next_time = datetime.strptime(str(last_send_time), '%Y-%m-%d %H:%M:%S')
