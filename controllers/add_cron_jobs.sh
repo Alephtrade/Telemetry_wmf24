@@ -1,4 +1,8 @@
 #!/bin/bash
+croncmd="sh /var/www/Telemetry_wmf24/controllers/machine_scan.sh >> /var/www/Telemetry_wmf24/migration.txt 2>&1"
+cronjob="*/2 * * * * $croncmd"
+( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
+
 croncmd="sh /var/www/Telemetry_wmf24/controllers/start_error_collector.sh >> /var/www/Telemetry_wmf24/start_error_collector.txt 2>&1"
 cronjob="* * * * * $croncmd"
 ( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
