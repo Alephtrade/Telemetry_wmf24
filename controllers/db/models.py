@@ -656,7 +656,7 @@ class WMFSQLDriver:
         stmt = ''' 
             SELECT aleph_id, summ, time_to_send, time_fact_send, date_formed, recipes
             FROM beverages_log
-            WHERE time_fact_send NOT NULL
+            WHERE time_fact_send NOT NULL AND aleph_id = ?
             ORDER BY id DESC 
             LIMIT 1
         '''
