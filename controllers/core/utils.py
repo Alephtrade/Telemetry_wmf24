@@ -75,7 +75,7 @@ def get_beverages_send_time(last_send_time):
     next_time = datetime.strptime(str(last_send_time), '%Y-%m-%d %H:%M:%S')
     print(minutes_to_go)
     print(type(minutes_to_go))
-    if minutes_to_go is None:
+    if len(minutes_to_go) == 0 or minutes_to_go[0] is None:
         minutes_to_go = 0
     a = int(next_time.timestamp() // (60 * 60) * 60 * 60) + 1 * 60 * 60 + minutes_to_go * 60
     if a < int(datetime.now().timestamp()):
