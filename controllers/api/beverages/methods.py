@@ -41,13 +41,12 @@ def Take_Create_Beverage_Statistics(last_send, device):
         request = json.dumps({'function': 'getBeverageStatistics'})
         ws.send(request)
         received_data = ws.recv()
-        received = ast.literal_eval(received_data)
-        return received
         logging.info(f"{received_data}")
         if received_data is not None or received_data != []:
             received_data = received_data.replace(']', '', 1)
-            received_data = received_data + ', {"device" : ' + str(device[1]) + '}]'
+            received_data = received_data + ', {"device" : ' + device[1] + '}]'
             logging.info(f"beveragestatistics: Received {received_data}")
+            received = ast.literal_eval(received_data)
             for item in received:
                 for k, item2 in item.items():
                     if (k.startswith("device_code")):
