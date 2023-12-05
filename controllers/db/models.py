@@ -220,14 +220,14 @@ class WMFSQLDriver:
         cur.close()
         return res
 
-    def get_error_empty_record(self):
+    def get_error_empty_record(self, aleph_id):
         cur = self.connection.cursor()
         stmt = '''
             SELECT id, end_time, error_code FROM error_code_stats
-            WHERE end_time is Null
+            WHERE end_time is Null AND aleph_id = ?
             ORDER BY id DESC 
         '''
-        cur.execute(stmt)
+        cur.execute(stmt, (aleph_id,))
         res = cur.fetchall()
         cur.close()
         return res
