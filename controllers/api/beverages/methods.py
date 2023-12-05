@@ -24,12 +24,10 @@ def Take_Create_Beverage_Statistics(last_send, device):
     summ = 0
     device_code = ""
     recipes = []
-    #date_to_send = get_beverages_send_time(last_send)
-    #
-    date_to_send = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp() // (60 * 60) * 60 * 60))
-
-    #
-    date_formed = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp()))
+    date_to_send = get_beverages_send_time(last_send)
+    next_time = datetime.strptime(str(date_to_send), '%Y-%m-%d %H:%M:%S')
+    #date_to_send = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp() // (60 * 60) * 60 * 60))
+    date_formed = datetime.fromtimestamp(int(datetime.now().timestamp()))
     try:
         WS_IP = f'ws://{device[2]}:25000/'
         ws = websocket.create_connection(WS_IP, timeout=5)
@@ -46,13 +44,8 @@ def Take_Create_Beverage_Statistics(last_send, device):
         received_data = ws.recv()
         logging.info(f"{received_data}")
         if received_data is not None or received_data != []:
-            try:
-                with open('/root/wmf_1100_1500_5000_router/part_number.txt') as f:
-                    part_number = f.read()
-            except Exception:
-                part_number = wm_conn.get_part_number()
             received_data = received_data.replace(']', '', 1)
-            received_data = received_data + ', {"device_code" : ' + str(part_number) + '}]'
+            received_data = received_data + ', {"device" : ' + str(device[1]) + '}]'
             logging.info(f"beveragestatistics: Received {received_data}")
             received = ast.literal_eval(received_data)
             for item in received:
@@ -90,7 +83,7 @@ def Send_Statistics(data_info, id_record):
     }
     response = requests.request("POST", url, headers=headers, data=data_info)
     json_res = response.json()
-    now = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp()))
+    now = datetime.fromtimestamp(int((datetime.now()).timestamp()))
     if(json_res["id"]):
         update_record = db_conn.update_beverages_log(id_record, now)
         logging.info(f"update {update_record}")

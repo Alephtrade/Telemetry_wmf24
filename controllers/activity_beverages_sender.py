@@ -36,8 +36,8 @@ def beverages_send_worker(aleph_id, ip):
             for item_info in data_info:
                 k.append(item_info)
             next_time = datetime.strptime(time_to_send, '%Y-%m-%d %H:%M:%S')
-            if datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp())) > next_time:
-                #methods.Send_Statistics(json.dumps(k), record_id)
+            if datetime.fromtimestamp(int(datetime.now().timestamp())) > next_time:
+                methods.Send_Statistics(json.dumps(k), record_id)
                 logging.info(f'Send_Statistics db id - {record_id}')
             else:
                 logging.info(f'wrong time to_sent - {next_time}')
@@ -46,12 +46,12 @@ def beverages_send_worker(aleph_id, ip):
 
 def controller_data_statistics_sender(aleph_id, ip):
     initialize_logger('controller_data_statistics_sender.py.log')
-    now_of_hour = str(datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp())))
+    now_of_hour = str(datetime.fromtimestamp(int(datetime.now().timestamp())))
     data_for_request = []
     data_main_stat = db_conn.get_data_statistics_to_send(aleph_id)
     if data_main_stat is not None:
         for item in data_main_stat:
-            if datetime.strptime(item[6], '%Y-%m-%d %H:%M:%S') < datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp())):
+            if datetime.strptime(item[6], '%Y-%m-%d %H:%M:%S') < datetime.fromtimestamp(int(datetime.now().timestamp())):
                 data_for_request.append({"time_worked": item[0]})
                 data_for_request.append({"wmf_error_count": item[1]})
                 data_for_request.append({"wmf_error_time": item[2]})
@@ -61,7 +61,7 @@ def controller_data_statistics_sender(aleph_id, ip):
                 data_for_request.append({"time_to_send": item[6]})
                 data_for_request.append({"time_fact_send": item[7]})
                 data_for_request.append({"is_sent": item[8]})
-                data_for_request.append({"aleph_id": aleph_id})
+                data_for_request.append({"device": aleph_id})
                 url = "https://wmf24.ru/api/machineactivity"
                 headers = {
                     'Content-Type': 'application/json'
@@ -96,11 +96,9 @@ def check_machine_status(aleph_id, ip):
             status = 1
     except Exception:
         status = 0
-
     logging.info(f'status is: {status}')
     last_id, end_time = None, None
     r = db_driver.get_error_last_stat_record('-1', aleph_id)
-    #k = db_driver.get_error_last_stat_record('62')
     if r is not None:
         last_id, end_time = r
     else:

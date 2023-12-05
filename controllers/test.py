@@ -14,7 +14,7 @@ sys.path.append("../../")
 from controllers.db.models import WMFSQLDriver
 from controllers.settings import prod as settings
 from controllers.wmf.models import WMFMachineStatConnector, WMFMachineErrorConnector
-from controllers.core.utils import initialize_logger, print_exception, get_env_mode, get_part_number_local, get_beverages_send_time, timedelta_int
+from controllers.core.utils import initialize_logger, print_exception, get_beverages_send_time, timedelta_int
 #
 #
 #WMF_URL = settings.WMF_DATA_URL

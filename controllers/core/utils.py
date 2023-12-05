@@ -5,8 +5,13 @@ import sys
 import logging
 import linecache
 from datetime import datetime, timedelta
+import sys
+sys.path.append('./')
+sys.path.append('/var/www/Telemetry_wmf24/')
 from logging.handlers import TimedRotatingFileHandler
+from controllers.db.models import WMFSQLDriver
 
+db_conn = WMFSQLDriver()
 
 def initialize_logger(filename='default.log'):
     os.makedirs(name='logs', exist_ok=True)
@@ -37,7 +42,7 @@ def timedelta_str(delta):
         return '{h} часов {m} минут {s} секунд'.format(**d)
 
 def timedelta_int(delta):
-    result = delta.days * 86400 + delta.seconds
+    result = delta.days * 1 + delta.seconds
     return result
 
 
@@ -51,28 +56,12 @@ def print_exception():
     return 'EXCEPTION IN ({}, LINE {} "{}"): {}'.format(filename, lineno, line.strip(), exc_obj)
 
 
-def get_env_mode():
-    try:
-        with open('config.env') as f:
-            return json.loads(f.read())['ENV_MODE']
-    except Exception as e:
-        return 'prod'
-
-
 def get_curr_time():
-    return datetime.now() + timedelta(hours=3)
+    return datetime.now()
 
 
 def get_curr_time_str():
     return get_curr_time().strftime('%Y-%m-%d %H:%M:%S')
-
-
-def get_part_number_local():
-    try:
-        with open('/root/wmf_1100_1500_5000_router/part_number.txt') as f:
-            return f.read()
-    except Exception:
-        return ''
 
 
 def get_next_date_formed(interval_minutes):
@@ -82,24 +71,12 @@ def get_next_date_formed(interval_minutes):
 
 def get_beverages_send_time(last_send_time):
     initialize_logger('get_beverages_send_time.log')
-    code = get_part_number_local()
-    url = f'https://wmf24.ru/api/get-coffee-machine-info/{code}'
-    payload = {}
-    headers = {
-        'Content-Type': 'application/json'
-    }
-    #print(url)
-    response = requests.request("GET", url, headers=headers, data=payload)
-    #print(response)
-    body_response = json.loads(response.text)
-    #print(body_response)
+    minutes_to_go = db_conn.get_exchange()
     next_time = datetime.strptime(str(last_send_time), '%Y-%m-%d %H:%M:%S')
-    if body_response['interval_beverages'] is None:
-        body_response['interval_beverages'] = 1
-    if body_response['interval_beverages_min'] is None:
-        body_response['interval_beverages_min'] = 0
-    a = int(next_time.timestamp() // (60 * 60) * 60 * 60) + body_response['interval_beverages'] * 60 * 60 + body_response['interval_beverages_min'] * 60
+    if minutes_to_go is None:
+        minutes_to_go = 0
+    a = int(next_time.timestamp() // (60 * 60) * 60 * 60) + 1 * 60 * 60 + minutes_to_go * 60
     if a < int(datetime.now().timestamp()):
-        a = int(int(datetime.now().timestamp()) // (60 * 60) * 60 * 60) + body_response['interval_beverages'] * 60 * 60 + body_response['interval_beverages_min'] * 60
+        a = int(int(datetime.now().timestamp()) // (60 * 60) * 60 * 60) + 1 * 60 * 60 + minutes_to_go * 60
     logging.info(f"created next time is:{a}")
     return datetime.fromtimestamp(a)

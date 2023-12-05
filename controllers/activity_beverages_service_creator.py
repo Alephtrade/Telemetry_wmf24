@@ -9,7 +9,7 @@ sys.path.append('./')
 sys.path.append('/var/www/Telemetry_wmf24/')
 from controllers.db.models import WMFSQLDriver
 from controllers.settings import prod as settings
-from controllers.core.utils import timedelta_int, get_beverages_send_time, initialize_logger, get_part_number_local
+from controllers.core.utils import timedelta_int, initialize_logger
 from controllers.api.beverages import methods
 
 WMF_URL = settings.WMF_DATA_URL
@@ -19,7 +19,7 @@ db_conn = WMFSQLDriver()
 
 def get_main_clean_stat(device):
     initialize_logger('controller_cleaning_statistic_creator.py.log')
-    time_now = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp() // (60 * 60) * 60 * 60))
+    time_now = datetime.fromtimestamp(int(datetime.now().timestamp() // (60 * 60) * 60 * 60))
     prev_hour = time_now - timedelta(hours=1)
     #get_last_data_statistics = db_conn.get_last_data_statistics()
     #if get_last_data_statistics is not None and len(get_last_data_statistics) > 0:
@@ -142,14 +142,13 @@ def get_service_statistics(device):
             ws.send(request)
             received_data = ws.recv()
             logging.info(f"servicestatistics: Received {received_data}")
-            part_number = get_part_number_local()
-            logging.info(f"COFFEE_MACHINE: Received {part_number}")
+            logging.info(f"COFFEE_MACHINE: Received {device[1]}")
             text_file = open("response.txt", "a")
             text_file.write(received_data)
             ts = time.time()
             int_ts = int(ts)
             received_data = received_data.replace(']', '', 1)
-            received_data = received_data + ', {"device_code" : ' + str(part_number) + '}, {"timestamp_create" : ' + str(int_ts) + '}]'
+            received_data = received_data + ', {"device" : ' + str(device[1]) + '}, {"timestamp_create" : ' + str(int_ts) + '}]'
 
             url = "https://wmf24.ru/api/servicestatistics"
             headers = {
@@ -159,7 +158,7 @@ def get_service_statistics(device):
             response = requests.request("POST", url, headers=headers, data=received_data)
             print(response.text)
             logging.info(f"servicestatistics: GET response: {response.text}")
-            db_conn.save_status_service_statistics(actual[0], "date_fact_send", str(datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp()))))
+            db_conn.save_status_service_statistics(actual[0], "date_fact_send", str(datetime.fromtimestamp(int((datetime.now()).timestamp()))))
             db_conn.save_status_service_statistics(actual[0], "is_sent", "1")
             ws.close()
             return True
@@ -169,9 +168,8 @@ def are_need_to_create(device):
     logging.info(f"beveragestatistics: Received Create start")
     last_send = db_conn.get_last_beverages_log(device[1])
     logging.info(f"{last_send}")
-    iter = 0
     if last_send is None:
-        now = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp()))
+        now = datetime.fromtimestamp(int((datetime.now()).timestamp()))
         get = methods.Take_Create_Beverage_Statistics(now, device)
         if get is None:
             get = methods.Take_Create_Beverage_Statistics(now, device)

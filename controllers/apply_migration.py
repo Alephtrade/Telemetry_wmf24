@@ -201,5 +201,21 @@ add_table_column(table_name='devices', column_name='address', column_type='text'
 add_table_column(table_name='devices', column_name='type', column_type='text')
 add_table_column(table_name='devices', column_name='status', column_type='text')
 
+if not does_object_exist('table', 'exchange_php'):
+    stmt = '''
+        create table exchange_php
+        (
+            id          integer
+                constraint devices_pk
+                    primary key,
+            minutes text
+        )
+    '''
+    cur.execute(stmt)
+    conn.commit()
+
+add_table_column(table_name='exchange_php', column_name='id', column_type='text')
+add_table_column(table_name='exchange_php', column_name='minutes', column_type='text')
+
 cur.close()
 conn.close()

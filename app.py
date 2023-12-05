@@ -5,7 +5,6 @@ from flask import Flask, request
 from controllers.test import worker
 from flask import jsonify
 from controllers.db.models import WMFSQLDriver
-from controllers.wmf.ssh_send_com import send_wmf_request
 import sys
 from controllers.machine_installation import test
 

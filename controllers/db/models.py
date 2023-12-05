@@ -79,9 +79,34 @@ class WMFSQLDriver:
     def get_devices(self):
         cur = self.connection.cursor()
         stmt = ''' 
-            SELECT id, aleph_id, address
+            SELECT id, aleph_id, address, utc
             FROM devices
             ORDER BY id ASC 
+        '''
+        cur.execute(stmt)
+        res = cur.fetchall()
+        logging.info(f'WMFSQLDriver get_devices: {res}')
+        cur.close()
+        return res
+
+    def update_exchange_time(self, hours):
+        cur = self.connection.cursor()
+        stmt = ''' 
+            UPDATE exchange_php 
+            SET minutes = ?
+            WHERE id = 1
+        '''
+        cur.execute(stmt, (hours,))
+        self.connection.commit()
+        cur.close()
+        return True
+
+    def get_exchange(self):
+        cur = self.connection.cursor()
+        stmt = ''' 
+            SELECT minutes
+            FROM exchange_php
+            WHERE id = 1
         '''
         cur.execute(stmt)
         res = cur.fetchall()

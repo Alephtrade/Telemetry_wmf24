@@ -17,7 +17,6 @@ DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
 db_conn = WMFSQLDriver()
 
 def controller_manager(device, operator, alias):
-    now_of_hour = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp() // (60 * 60) * 60 * 60))
     if operator is not None:
         print(operator)
         if operator['durationInSeconds'] and operator['durationInSeconds'] is not None and int(operator['durationInSeconds']) != -1:
@@ -26,7 +25,7 @@ def controller_manager(device, operator, alias):
                 prev_cleaning_duration = "0"
             else:
                 prev_cleaning_duration = prev_cleaning[1]
-            logging.info(f'PartNumber: {wm_conn.part_number}, prev_cleaning_duration: {prev_cleaning_duration}')
+            logging.info(f'aleph_id: {device[1]}, prev_cleaning_duration: {prev_cleaning_duration}')
             logging.info(f'prev {prev_cleaning_duration} - {alias}')
             logging.info(f'durationInSeconds {operator["durationInSeconds"]}')
             if str(prev_cleaning_duration) != str(operator['durationInSeconds']):
@@ -36,8 +35,6 @@ def controller_manager(device, operator, alias):
                 logging.info(f'new time {datetime.now()}')
                 type_last_cleaning_datetime = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp() - operator['durationInSeconds']))
                 return db_conn.create_clean_or_rins(device[1], alias, type_last_cleaning_datetime, operator['durationInSeconds'], (datetime.now() + timedelta(hours=3)).strftime('%Y-%m-%d %H:%M:%S'))
-                send = sender_report(device)
-                logging.info(f'{send}')
             else:
                 logging.info(f'{prev_cleaning_duration} = {operator["durationInSeconds"]}')
         else:
@@ -49,29 +46,24 @@ def controller_manager(device, operator, alias):
 
 def sender_report(device):
     data = db_conn.get_clean_or_rins_to_send(device[1])
-    try:
-        with open('/root/wmf_1100_1500_5000_router/part_number.txt') as f:
-            part_number = f.read()
-    except Exception:
-        part_number = wm_conn.get_part_number()
-
-    date_formated = []
+    date_formatted = []
     if data is not None:
         for item in data:
-            date_formated.append({"cleaning_alias": item[1]})
-            date_formated.append({"type_last_cleaning_datetime": item[2]})
-            date_formated.append({"type_cleaning_duration": item[3]})
-            date_formated.append({"date_formed": item[4]})
-            date_formated.append({"code": part_number})
+            date_formatted.append({"cleaning_alias": item[1]})
+            date_formatted.append({"type_last_cleaning_datetime": item[2]})
+            date_formatted.append({"type_cleaning_duration": item[3]})
+            date_formatted.append({"date_formed": item[4]})
+            date_formatted.append({"device": device[1]})
             url = "https://wmf24.ru/api/datastat"
             headers = {
                 'Content-Type': 'application/json'
             }
-            #response = requests.request("POST", url, headers=headers, data=json.dumps(date_formated))
+            #response = requests.request("POST", url, headers=headers, data=json.dumps(date_formatted))
             #logging.info(f"WMFMachineStatConnector: GET response: {response.text}")
             db_conn.save_status_clean_or_rins(item[0], "is_sent", "2")
     else:
         logging.info(f'{data} is none')
+
 
 devices = db_conn.get_devices()
 for device in devices:
@@ -105,4 +97,4 @@ for device in devices:
         controller_manager(device, wm_conn.get_ffc_filter_replacement_state(), "ffc_filter")
 
     wm_conn.close()
-    sender_report()
+    sender_report(device)
