@@ -57,7 +57,7 @@ def on_exit():
             try:
                 logging.info("error_collector send_errors: CALL")
                 errors, request = '', ''
-                unset_errors = db_conn.get_unsent_records()
+                unset_errors = db_conn.get_unsent_records(device[1])
                 if unset_errors:
                     for record in unset_errors:
                         # request = f'{WMF_URL}?code={try_to_get_part_number}&error_id={record[1]}&date_start={record[2]}&date_end={record[3]}&duration={record[5]}&status={wmf_conn.get_status()}'
@@ -69,7 +69,7 @@ def on_exit():
                             db_conn.set_report_pre_sent(record[0])
                         # logging.info(f'error_collector send_errors: <= {response} {content}')
                 else:
-                    unset_errors = db_conn.get_unsent_records_with_end_time()
+                    unset_errors = db_conn.get_unsent_records_with_end_time(device[1])
                     if unset_errors:
                         for record in unset_errors:
                             # request = f'{WMF_URL}?code={try_to_get_part_number}&error_id={record[1]}&date_start={record[2]}&date_end={record[3]}&duration={record[5]}&status={wmf_conn.get_status()}'

@@ -19,7 +19,7 @@ def beverages_send_worker(aleph_id, ip):
     initialize_logger('beverages_send_worker.py.log')
     k = []
     time_to_send = None
-    receive_data = db_conn.get_not_sended_beverages_log()
+    receive_data = db_conn.get_not_sended_beverages_log(aleph_id)
     if(receive_data == []):
         logging.info(f'NO DATA')
     else:
@@ -48,7 +48,7 @@ def controller_data_statistics_sender(aleph_id, ip):
     initialize_logger('controller_data_statistics_sender.py.log')
     now_of_hour = str(datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp())))
     data_for_request = []
-    data_main_stat = db_conn.get_data_statistics_to_send()
+    data_main_stat = db_conn.get_data_statistics_to_send(aleph_id)
     if data_main_stat is not None:
         for item in data_main_stat:
             if datetime.strptime(item[6], '%Y-%m-%d %H:%M:%S') < datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp())):
@@ -107,32 +107,6 @@ def check_machine_status(aleph_id, ip):
         end_time = time()
         last_id = 0
     render_errors_closing(aleph_id, ip, last_id, end_time, status)
-
-    #if k is not None:
-     #   render_errors_closing(k, status)
-
-    d_id = None
-    d_date_start = None
-    d_date_end = None
-    d_status = None
-    d = db_driver.get_last_downtime(aleph_id)
-    if d:
-        d_id, d_date_start, d_date_end, d_status = d
-        if status == 1:
-            logging.info(f'status == 1')
-            logging.info(f'd_date_end: {d}')
-            logging.info(f'd_date_end: {d_date_end}')
-            if d_date_end == "" or d_date_end is None:
-                logging.info(f'update')
-                db_driver.update_downtime(d_id, datetime.datetime.now(), 1)
-        elif status == 0:
-            logging.info(f'status == 0')
-            logging.info(f'd_date_end: {d_status}')
-            logging.info(f'd_date_end: {d_date_end}')
-            if d_status != "0":
-                db_driver.create_downtime(aleph_id, datetime.datetime.now(), 0)
-    logging.info(f'last_stat_record: {r}')
-    logging.info(f'downtime_last_record: {d}')
     return status
 
     #db_driver.close()
@@ -150,7 +124,7 @@ def render_errors_closing(aleph_id, ip, last_id, end_time, status):
     elif status == 1:
         logging.info(f'status is 1 and last_id is {last_id}, calling close_error_code_by_id({last_id})')
         if last_id != 0:
-            db_driver.close_error_code_by_id(last_id)
+            db_driver.close_error_code_by_id(aleph_id, last_id)
         unclosed = db_driver.get_error_empty_record(aleph_id)
         for item in unclosed:  # 0 - id 1 - end_time 2 - code
             ws = websocket.create_connection(WS_URL)

@@ -36,7 +36,7 @@ def controller_manager(device, operator, alias):
                 logging.info(f'new time {datetime.now()}')
                 type_last_cleaning_datetime = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp() - operator['durationInSeconds']))
                 return db_conn.create_clean_or_rins(device[1], alias, type_last_cleaning_datetime, operator['durationInSeconds'], (datetime.now() + timedelta(hours=3)).strftime('%Y-%m-%d %H:%M:%S'))
-                send = sender_report()
+                send = sender_report(device)
                 logging.info(f'{send}')
             else:
                 logging.info(f'{prev_cleaning_duration} = {operator["durationInSeconds"]}')
@@ -47,8 +47,8 @@ def controller_manager(device, operator, alias):
 
 
 
-def sender_report():
-    data = db_conn.get_clean_or_rins_to_send()
+def sender_report(device):
+    data = db_conn.get_clean_or_rins_to_send(device[1])
     try:
         with open('/root/wmf_1100_1500_5000_router/part_number.txt') as f:
             part_number = f.read()

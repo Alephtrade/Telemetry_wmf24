@@ -167,7 +167,7 @@ def get_service_statistics(device):
 def are_need_to_create(device):
     initialize_logger('beveragestatistics.log')
     logging.info(f"beveragestatistics: Received Create start")
-    last_send = db_conn.get_last_beverages_log()
+    last_send = db_conn.get_last_beverages_log(device[1])
     logging.info(f"{last_send}")
     iter = 0
     if last_send is None:

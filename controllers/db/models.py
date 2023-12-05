@@ -89,42 +89,42 @@ class WMFSQLDriver:
         cur.close()
         return res
 
-    def clean_error_stats(self, error_date):
-        cur = self.connection.cursor()
-        stmt = '''
-            SELECT id 
-            FROM error_code_stats 
-            WHERE error_date = ? 
-            ORDER BY id DESC 
-            LIMIT 1
-        '''
-        cur.execute(stmt, (error_date,))
-        res = cur.fetchone()
-        if not res:
-            return
-        last_id = res[0]
-        stmt = 'DELETE FROM error_code_stats WHERE id <= ?'
-        cur.execute(stmt, (last_id,))
-        self.connection.commit()
-        cur.close()
+    #def clean_error_stats(self, error_date):
+    #    cur = self.connection.cursor()
+    #    stmt = '''
+    #        SELECT id
+    #        FROM error_code_stats
+    #        WHERE error_date = ?
+    #        ORDER BY id DESC
+    #        LIMIT 1
+    #    '''
+    #    cur.execute(stmt, (error_date,))
+    #    res = cur.fetchone()
+    #    if not res:
+    #        return
+    #    last_id = res[0]
+    #    stmt = 'DELETE FROM error_code_stats WHERE id <= ?'
+    #    cur.execute(stmt, (last_id,))
+    #    self.connection.commit()
+    #    cur.close()
 
-    def clean_tg_reports(self, records_to_keep):
-        cur = self.connection.cursor()
-        stmt = '''
-            SELECT id 
-            FROM tg_reports 
-            ORDER BY id DESC 
-            LIMIT 1
-        '''
-        cur.execute(stmt)
-        res = cur.fetchone()
-        if not res:
-            return
-        last_id = res[0] - records_to_keep
-        stmt = 'DELETE FROM tg_reports WHERE id <= ?'
-        cur.execute(stmt, (last_id,))
-        self.connection.commit()
-        cur.close()
+    #def clean_tg_reports(self, records_to_keep):
+    #    cur = self.connection.cursor()
+    #    stmt = '''
+    #        SELECT id
+    #        FROM tg_reports
+    #        ORDER BY id DESC
+    #        LIMIT 1
+    #    '''
+    #    cur.execute(stmt)
+    #    res = cur.fetchone()
+    #    if not res:
+    #        return
+    #    last_id = res[0] - records_to_keep
+    #    stmt = 'DELETE FROM tg_reports WHERE id <= ?'
+    #    cur.execute(stmt, (last_id,))
+    #    self.connection.commit()
+    #    cur.close()
 
     def create_error_record(self, aleph_id, error_code, error_text='Неизвестная ошибка'):
         cur = self.connection.cursor()
@@ -188,7 +188,7 @@ class WMFSQLDriver:
         cur.close()
         return res
 
-    def close_error_code_by_id(self, last_id):
+    def close_error_code_by_id(self, aleph_id, last_id):
         that_error_record = self.get_error_by_id(last_id)
         print(last_id)
         print(that_error_record)
@@ -200,9 +200,9 @@ class WMFSQLDriver:
         stmt = ''' 
             UPDATE error_code_stats 
             SET end_time = ?, duration_time = ?
-            WHERE id = ?
+            WHERE id = ? AND aleph_id = ?
         '''
-        cur.execute(stmt, (end_time, duration, last_id))
+        cur.execute(stmt, (end_time, duration, last_id, aleph_id))
         self.connection.commit()
         cur.close()
         return True
@@ -232,41 +232,41 @@ class WMFSQLDriver:
         cur.close()
         return res
 
-    def get_error_last_record(self):
-        cur = self.connection.cursor()
-        stmt = '''
-            SELECT error_code, end_time FROM error_code_stats
-            ORDER BY id DESC 
-            LIMIT 1
-        '''
-        cur.execute(stmt)
-        res = cur.fetchone()
-        cur.close()
-        return res
+    #def get_error_last_record(self):
+    #    cur = self.connection.cursor()
+    #    stmt = '''
+    #        SELECT error_code, end_time FROM error_code_stats
+    #        ORDER BY id DESC
+    #        LIMIT 1
+    #    '''
+    #    cur.execute(stmt)
+    #    res = cur.fetchone()
+    #    cur.close()
+    #    return res
 
-    def get_last_record(self):
-        cur = self.connection.cursor()
-        stmt = ''' 
-            SELECT beverages_count, cleaning_duration, cleaning_datetime, cleaning_type FROM last_record WHERE id = 1
-        '''
-        cur.execute(stmt)
-        res = cur.fetchone()
-        cur.close()
-        logging.info(f'WMFSQLDriver get_last_record: {res}')
-        return res
+    #def get_last_record(self):
+    #    cur = self.connection.cursor()
+    #    stmt = '''
+    #        SELECT beverages_count, cleaning_duration, cleaning_datetime, cleaning_type FROM last_record WHERE id = 1
+    #    '''
+    #    cur.execute(stmt)
+    #    res = cur.fetchone()
+    #    cur.close()
+    #    logging.info(f'WMFSQLDriver get_last_record: {res}')
+    #    return res
 
-    def save_last_record(self, key, value):
-        cur = self.connection.cursor()
-        record_time = get_curr_time_str()
-        stmt = f''' 
-            UPDATE last_record 
-            SET {key} = ?, cleaning_datetime = ?
-            WHERE id = 1
-        '''
-        logging.info(f'WMFSQLDriver save_last_record: key = {key}, value = {value}')
-        cur.execute(stmt, (value, record_time))
-        self.connection.commit()
-        cur.close()
+    #def save_last_record(self, key, value):
+    #    cur = self.connection.cursor()
+    #    record_time = get_curr_time_str()
+    #    stmt = f'''
+    #        UPDATE last_record
+    #        SET {key} = ?, cleaning_datetime = ?
+    #        WHERE id = 1
+    #    '''
+    #    logging.info(f'WMFSQLDriver save_last_record: key = {key}, value = {value}')
+    #    cur.execute(stmt, (value, record_time))
+    #    self.connection.commit()
+    #    cur.close()
 
     def get_last_clean_or_rins(self, aleph_id, column_namee, alias):
         cur = self.connection.cursor()
@@ -309,7 +309,7 @@ class WMFSQLDriver:
         self.connection.commit()
         cur.close()
 
-    def get_clean_or_rins_to_send(self):
+    def get_clean_or_rins_to_send(self, aleph_id):
         cur = self.connection.cursor()
         stmt = ''' 
             SELECT id,
@@ -318,10 +318,10 @@ class WMFSQLDriver:
             type_cleaning_duration, 
             date_formed
             FROM cleaning_statistic
-            WHERE is_sent = 0
+            WHERE is_sent = 0 AND aleph_id = ?
             ORDER BY date_formed DESC 
         '''
-        cur.execute(stmt)
+        cur.execute(stmt, (aleph_id,))
         res = cur.fetchall()
         logging.info(f'WMFSQLDriver get_data_statistics_to_send: {res}')
         cur.close()
@@ -388,7 +388,7 @@ class WMFSQLDriver:
         self.connection.commit()
         cur.close()
 
-    def get_last_data_statistics(self):
+    def get_last_data_statistics(self, aleph_id):
         cur = self.connection.cursor()
         stmt = ''' 
             SELECT time_fact_send
@@ -397,13 +397,13 @@ class WMFSQLDriver:
             ORDER BY id DESC 
             LIMIT 1
         '''
-        cur.execute(stmt)
+        cur.execute(stmt, (aleph_id,))
         res = cur.fetchone()
         logging.info(f'WMFSQLDriver get_last_data_statistics: {res}')
         cur.close()
         return res
 
-    def get_data_statistics_to_send(self):
+    def get_data_statistics_to_send(self, aleph_id):
         cur = self.connection.cursor()
         stmt = ''' 
             SELECT time_worked, 
@@ -415,12 +415,13 @@ class WMFSQLDriver:
             time_to_send, 
             time_fact_send,
             is_sent,
-            id
+            id,
+            aleph_id
             FROM data_statistics
-            WHERE time_fact_send is NULL AND is_sent == 0
+            WHERE time_fact_send is NULL AND is_sent == 0 AND aleph_id = ?
             ORDER BY id DESC 
         '''
-        cur.execute(stmt)
+        cur.execute(stmt, (aleph_id,))
         res = cur.fetchall()
         logging.info(f'WMFSQLDriver get_data_statistics_to_send: {res}')
         cur.close()
@@ -479,25 +480,24 @@ class WMFSQLDriver:
         self.connection.commit()
         cur.close()
 
-
-    def get_unsent_records(self):
+    def get_unsent_records(self, aleph_id):
         cur = self.connection.cursor()
         stmt = ''' 
             SELECT id, error_code, start_time, end_time, error_text, duration_time 
-            FROM error_code_stats WHERE report_sent = 0
+            FROM error_code_stats WHERE report_sent = 0 AND aleph_id = ?
         '''
-        cur.execute(stmt)
+        cur.execute(stmt, (aleph_id,))
         res = cur.fetchall()
         cur.close()
         return res
 
-    def get_unsent_records_with_end_time(self):
+    def get_unsent_records_with_end_time(self, aleph_id):
         cur = self.connection.cursor()
         stmt = ''' 
             SELECT id, error_code, start_time, end_time, error_text, duration_time 
-            FROM error_code_stats WHERE report_sent = 2 AND end_time is not Null
+            FROM error_code_stats WHERE report_sent = 2 AND end_time is not Null AND aleph_id = ?
         '''
-        cur.execute(stmt)
+        cur.execute(stmt, (aleph_id,))
         res = cur.fetchall()
         cur.close()
         return res
@@ -557,95 +557,62 @@ class WMFSQLDriver:
         self.connection.commit()
         cur.close()
 
-    def get_last_tg_report(self):
-        cur = self.connection.cursor()
-        stmt = ''' 
-            SELECT id, date_formed, date_sent, body 
-            FROM tg_reports
-            ORDER BY id DESC 
-            LIMIT 1
-        '''
-        cur.execute(stmt)
-        res = cur.fetchone()
-        cur.close()
-        logging.info(f'WMFSQLDriver get_last_tg_report: {res}')
-        return res
-
-    def get_last_two_tg_reports(self):
-        cur = self.connection.cursor()
-        stmt = ''' 
-            SELECT id, date_formed, date_sent, body 
-            FROM tg_reports
-            ORDER BY id DESC 
-            LIMIT 2
-        '''
-        cur.execute(stmt)
-        res = cur.fetchall()
-        cur.close()
-        logging.info(f'WMFSQLDriver get_last_two_tg_reports: {res}')
-        return res
-
-    def create_tg_report(self, date_formed, body):
-        cur = self.connection.cursor()
-        stmt = 'INSERT INTO tg_reports (date_formed, body) VALUES (?, ?)'
-        cur.execute(stmt, (date_formed, body))
-        self.connection.commit()
-        cur.close()
-
-    def set_tg_report_body(self, tg_id, date_formed, body):
-        cur = self.connection.cursor()
-        stmt = ''' 
-            UPDATE tg_reports 
-            SET body = ?, date_formed = ?
-            WHERE id = ?
-        '''
-        cur.execute(stmt, (body, date_formed, tg_id))
-        self.connection.commit()
-        cur.close()
-
-    def set_tg_report_sent(self, tg_id, date_sent):
-        cur = self.connection.cursor()
-        stmt = ''' 
-            UPDATE tg_reports 
-            SET date_sent = ?
-            WHERE id = ?
-        '''
-        cur.execute(stmt, (date_sent, tg_id))
-        self.connection.commit()
-        cur.close()
-
-    def create_downtime(self, aleph_id, date_start, status):
-        cur = self.connection.cursor()
-        stmt = 'INSERT INTO downtimes (date_start, status) VALUES (?, ?, ?)'
-        cur.execute(stmt, (aleph_id, date_start, status))
-        self.connection.commit()
-        cur.close()
-
-    def get_last_downtime(self, aleph_id):
-        cur = self.connection.cursor()
-        stmt = f''' 
-            SELECT id, date_start, date_end, status 
-            FROM downtimes
-            WHERE aleph_id = "{aleph_id}"
-            ORDER BY id DESC 
-            LIMIT 1
-        '''
-        cur.execute(stmt)
-        res = cur.fetchone()
-        logging.info(f'WMFSQLDriver get_last_downtime: {res}')
-        cur.close()
-        return res
-
-    def update_downtime(self, id, date_end, status):
-        cur = self.connection.cursor()
-        stmt = ''' 
-            UPDATE downtimes 
-            SET date_end = ?, status = ?
-            WHERE id = ?
-        '''
-        cur.execute(stmt, (date_end, status, id))
-        self.connection.commit()
-        cur.close()
+    #def get_last_tg_report(self):
+    #    cur = self.connection.cursor()
+    #    stmt = '''
+    #        SELECT id, date_formed, date_sent, body
+    #        FROM tg_reports
+    #        ORDER BY id DESC
+    #        LIMIT 1
+    #    '''
+    #    cur.execute(stmt)
+    #    res = cur.fetchone()
+    #    cur.close()
+    #    logging.info(f'WMFSQLDriver get_last_tg_report: {res}')
+    #    return res
+#
+    #def get_last_two_tg_reports(self):
+    #    cur = self.connection.cursor()
+    #    stmt = '''
+    #        SELECT id, date_formed, date_sent, body
+    #        FROM tg_reports
+    #        ORDER BY id DESC
+    #        LIMIT 2
+    #    '''
+    #    cur.execute(stmt)
+    #    res = cur.fetchall()
+    #    cur.close()
+    #    logging.info(f'WMFSQLDriver get_last_two_tg_reports: {res}')
+    #    return res
+#
+    #def create_tg_report(self, date_formed, body):
+    #    cur = self.connection.cursor()
+    #    stmt = 'INSERT INTO tg_reports (date_formed, body) VALUES (?, ?)'
+    #    cur.execute(stmt, (date_formed, body))
+    #    self.connection.commit()
+    #    cur.close()
+#
+    #def set_tg_report_body(self, tg_id, date_formed, body):
+    #    cur = self.connection.cursor()
+    #    stmt = '''
+    #        UPDATE tg_reports
+    #        SET body = ?, date_formed = ?
+    #        WHERE id = ?
+    #    '''
+    #    cur.execute(stmt, (body, date_formed, tg_id))
+    #    self.connection.commit()
+    #    cur.close()
+#
+    #def set_tg_report_sent(self, tg_id, date_sent):
+    #    cur = self.connection.cursor()
+    #    stmt = '''
+    #        UPDATE tg_reports
+    #        SET date_sent = ?
+    #        WHERE id = ?
+    #    '''
+    #    cur.execute(stmt, (date_sent, tg_id))
+    #    self.connection.commit()
+    #    cur.close()
 
     def create_beverages_log(self, aleph_id, summ, time_to_send, date_formed, recipes):
         cur = self.connection.cursor()
@@ -659,7 +626,7 @@ class WMFSQLDriver:
         cur.close()
         return True
 
-    def get_last_beverages_log(self):
+    def get_last_beverages_log(self, aleph_id):
         cur = self.connection.cursor()
         stmt = ''' 
             SELECT aleph_id, summ, time_to_send, time_fact_send, date_formed, recipes
@@ -668,20 +635,20 @@ class WMFSQLDriver:
             ORDER BY id DESC 
             LIMIT 1
         '''
-        cur.execute(stmt)
+        cur.execute(stmt, (aleph_id,))
         res = cur.fetchone()
         logging.info(f'WMFSQLDriver get_last_beverages_log: {res}')
         cur.close()
         return res
 
-    def get_not_sended_beverages_log(self):
+    def get_not_sended_beverages_log(self, aleph_id):
         cur = self.connection.cursor()
         stmt = ''' 
             SELECT aleph_id, summ, time_to_send, time_fact_send, date_formed, recipes, id
             FROM beverages_log
-            WHERE time_fact_send is NULL
+            WHERE time_fact_send is NULL AND aleph_id = ?
         '''
-        cur.execute(stmt)
+        cur.execute(stmt, (aleph_id,))
         res = cur.fetchall()
         logging.info(f'WMFSQLDriver get_last_beverages_log: {res}')
         cur.close()

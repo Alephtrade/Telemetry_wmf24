@@ -28,25 +28,25 @@ def add_table_column(table_name, column_name, column_type):
 conn = sqlite3.connect(settings.DB_PATH, check_same_thread=False)
 cur = conn.cursor()
 
-if not does_object_exist('table', 'last_record'):
-    stmt = '''
-        create table last_record
-        (
-            id          integer
-                constraint last_record_pk
-                    primary key,
-            cleaning_type text,
-            beverages_count integer default 0,
-            cleaning_duration real default 0,
-            cleaning_datetime text
-        )
-    '''
-    cur.execute(stmt)
-    conn.commit()
-
-add_table_column(table_name='last_record', column_name='beverages_count', column_type='integer default 0')
-add_table_column(table_name='last_record', column_name='cleaning_duration', column_type='real default 0')
-add_table_column(table_name='last_record', column_name='cleaning_datetime', column_type='text')
+#if not does_object_exist('table', 'last_record'):
+#    stmt = '''
+#        create table last_record
+#        (
+#            id          integer
+#                constraint last_record_pk
+#                    primary key,
+#            cleaning_type text,
+#            beverages_count integer default 0,
+#            cleaning_duration real default 0,
+#            cleaning_datetime text
+#        )
+#    '''
+#    cur.execute(stmt)
+#    conn.commit()
+#
+#add_table_column(table_name='last_record', column_name='beverages_count', column_type='integer default 0')
+#add_table_column(table_name='last_record', column_name='cleaning_duration', column_type='real default 0')
+#add_table_column(table_name='last_record', column_name='cleaning_datetime', column_type='text')
 
 if not does_object_exist('table', 'error_code_stats'):
     stmt = '''
@@ -71,27 +71,6 @@ if not does_object_exist('table', 'error_code_stats'):
 add_table_column(table_name='error_code_stats', column_name='aleph_id', column_type='text')
 add_table_column(table_name='error_code_stats', column_name='error_text', column_type='text')
 add_table_column(table_name='error_code_stats', column_name='duration_time', column_type='text')
-
-if not does_object_exist('table', 'downtimes'):
-    stmt = '''
-        create table downtimes
-        (
-            id          integer
-                constraint downtimes_pk
-                    primary key,
-            aleph_id text,
-            date_start text,
-            date_end   text,
-            status        text
-        )
-    '''
-    cur.execute(stmt)
-    conn.commit()
-
-add_table_column(table_name='downtimes', column_name='aleph_id', column_type='text')
-add_table_column(table_name='downtimes', column_name='date_start', column_type='text')
-add_table_column(table_name='downtimes', column_name='date_end', column_type='text')
-add_table_column(table_name='downtimes', column_name='status', column_type='text')
 
 if not does_object_exist('table', 'service_statistics'):
     stmt = '''
