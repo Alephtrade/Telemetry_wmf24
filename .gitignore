@@ -4,6 +4,8 @@ instance/*
 .webassets-cache
 .env
 *.log
+*.idea
+.idea/*
 controllers/
 __pycache__/
 *.py[cod]
