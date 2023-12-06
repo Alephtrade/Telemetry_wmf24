@@ -89,14 +89,12 @@ class WMFSQLDriver:
         cur.close()
         return res
 
-    def update_exchange_time(self, hours):
+    def update_exchange_time(self, minutes):
         cur = self.connection.cursor()
-        stmt = ''' 
-            UPDATE exchange_php 
-            SET minutes = ?
-            WHERE id = 1
-        '''
-        cur.execute(stmt, (hours,))
+        stmt = 'DELETE FROM exchange_php WHERE id > 0 '
+        cur.execute(stmt)
+        stmt = 'INSERT INTO exchange_php (minutes) VALUES (?)'
+        cur.execute(stmt, (minutes,))
         self.connection.commit()
         cur.close()
         return True
@@ -113,6 +111,8 @@ class WMFSQLDriver:
         logging.info(f'WMFSQLDriver get_devices: {res}')
         cur.close()
         return res
+
+
 
     #def clean_error_stats(self, error_date):
     #    cur = self.connection.cursor()
