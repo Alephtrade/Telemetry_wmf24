@@ -2,3 +2,4 @@ config.env
 logs/*.log*
 .idea/*.idea
 ./controllers/wmf.db
+controllers/wmf.db
