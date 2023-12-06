@@ -209,16 +209,18 @@ if not does_object_exist('table', 'exchange_php'):
         create table exchange_php
         (
             id          integer
-                constraint devices_pk
+                constraint exchange_php_pk
                     primary key,
-            minutes text
+            minutes text,
+            server_key text
+
         )
     '''
     cur.execute(stmt)
     conn.commit()
 
 add_table_column(table_name='exchange_php', column_name='id', column_type='text')
-add_table_column(table_name='exchange_php', column_name='minutes', column_type='text')
+add_table_column(table_name='exchange_php', column_name='server_key', column_type='text')
 
 cur.close()
 conn.close()
