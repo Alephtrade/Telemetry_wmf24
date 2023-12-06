@@ -38,7 +38,7 @@ def get_main_clean_stat(device):
     disconnect_time = timedelta()
     wmf_error_count = 0
     disconnect_count = 0
-    for rec_id, error_code, start_time, end_time, error_text in unsent_records:
+    for rec_id, error_code, start_time, end_time in unsent_records:
         # print(start_time)
         if (type(start_time) is not datetime):
             start_time = datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
@@ -50,7 +50,7 @@ def get_main_clean_stat(device):
             end_time = time_now
         if end_time < date_end_prev_error:
             end_time = date_end_prev_error
-        for disconnect_rec_id, disconnect_error_code, disconnect_start_time, disconnect_end_time, disconnect_error_text in unsent_disconnect_records:
+        for disconnect_rec_id, disconnect_error_code, disconnect_start_time, disconnect_end_time in unsent_disconnect_records:
             # print(start_time)
             if (type(disconnect_start_time) is not datetime):
                 disconnect_start_time = datetime.strptime(disconnect_start_time, '%Y-%m-%d %H:%M:%S')

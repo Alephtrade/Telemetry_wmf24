@@ -61,7 +61,6 @@ if not does_object_exist('table', 'error_code_stats'):
             start_time   text,
             end_time   text,
             report_sent   text,
-            error_text   text,
             duration_time   text
         )
     '''
@@ -69,7 +68,11 @@ if not does_object_exist('table', 'error_code_stats'):
     conn.commit()
 
 add_table_column(table_name='error_code_stats', column_name='aleph_id', column_type='text')
-add_table_column(table_name='error_code_stats', column_name='error_text', column_type='text')
+add_table_column(table_name='error_code_stats', column_name='error_code', column_type='text')
+add_table_column(table_name='error_code_stats', column_name='error_date', column_type='text')
+add_table_column(table_name='error_code_stats', column_name='start_time', column_type='text')
+add_table_column(table_name='error_code_stats', column_name='end_time', column_type='text')
+add_table_column(table_name='error_code_stats', column_name='report_sent', column_type='text')
 add_table_column(table_name='error_code_stats', column_name='duration_time', column_type='text')
 
 if not does_object_exist('table', 'service_statistics'):

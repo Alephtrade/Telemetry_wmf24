@@ -227,15 +227,13 @@ class WMFMachineErrorConnector:
             if data.get("function") == 'startPushErrors':
                 info = data.get("Info")
                 error_code = data.get("ErrorCode")
-                error_text = self.ERROR_DESCRIPTION_DICT.get(error_code) or data.get("Error Text")
                 if info == "new Error":
                     self.current_errors.add(data.get("ErrorCode"))
                     #last_error_id = db_conn.get_error_last_record()
                     #if last_error_id != [] and last_error_id is not None:
                     #    if last_error_id[0] != "62" and last_error_id[0] != "-1" or last_error_id[1] is not None:
-                    self.db_driver.create_error_record(self.aleph_id, error_code, error_text)
+                    self.db_driver.create_error_record(self.aleph_id, error_code)
                     #else:
-                    #    self.db_driver.create_error_record(error_code, error_text)
                 elif info == "gone Error":
                     self.db_driver.close_error_code(self.aleph_id, error_code)
                     if error_code in self.current_errors:

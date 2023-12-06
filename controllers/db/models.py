@@ -151,13 +151,13 @@ class WMFSQLDriver:
     #    self.connection.commit()
     #    cur.close()
 
-    def create_error_record(self, aleph_id, error_code, error_text='Неизвестная ошибка'):
+    def create_error_record(self, aleph_id, error_code):
         cur = self.connection.cursor()
-        stmt = 'INSERT INTO error_code_stats (aleph_id, error_code, error_date, start_time, error_text, duration_time) VALUES (?, ?, ?, ?, ?, 0)'
+        stmt = 'INSERT INTO error_code_stats (aleph_id, error_code, error_date, start_time, duration_time) VALUES (?, ?, ?, ?, 0)'
         current_date = datetime.now() + timedelta(hours=3)
         error_date = current_date.strftime('%Y-%m-%d')
         start_time = current_date.strftime('%Y-%m-%d %H:%M:%S')
-        cur.execute(stmt, (aleph_id, error_code, error_date, start_time, error_text,))
+        cur.execute(stmt, (aleph_id, error_code, error_date, start_time,))
         self.connection.commit()
         cur.close()
 
@@ -508,7 +508,7 @@ class WMFSQLDriver:
     def get_unsent_records(self, aleph_id):
         cur = self.connection.cursor()
         stmt = ''' 
-            SELECT id, error_code, start_time, end_time, error_text, duration_time 
+            SELECT id, error_code, start_time, end_time, duration_time 
             FROM error_code_stats WHERE report_sent = 0 AND aleph_id = ?
         '''
         cur.execute(stmt, (aleph_id,))
@@ -519,7 +519,7 @@ class WMFSQLDriver:
     def get_unsent_records_with_end_time(self, aleph_id):
         cur = self.connection.cursor()
         stmt = ''' 
-            SELECT id, error_code, start_time, end_time, error_text, duration_time 
+            SELECT id, error_code, start_time, end_time, duration_time 
             FROM error_code_stats WHERE report_sent = 2 AND end_time is not Null AND aleph_id = ?
         '''
         cur.execute(stmt, (aleph_id,))
@@ -530,7 +530,7 @@ class WMFSQLDriver:
     def get_error_records(self, prev_hour, now_hour, aleph_id):
         cur = self.connection.cursor()
         stmt = f''' 
-            SELECT id, error_code, start_time, end_time, error_text 
+            SELECT id, error_code, start_time, end_time 
             FROM error_code_stats 
             WHERE ((end_time > "{prev_hour}" AND end_time <= "{now_hour}")
             OR (start_time >= "{prev_hour}" AND start_time < "{now_hour}")
@@ -547,7 +547,7 @@ class WMFSQLDriver:
     def get_all_error_records_by_code(self, aleph_id, prev_hour, now_hour, code):
         cur = self.connection.cursor()
         stmt = f''' 
-            SELECT id, error_code, start_time, end_time, error_text 
+            SELECT id, error_code, start_time, end_time 
             FROM error_code_stats 
             WHERE ((end_time > "{prev_hour}" AND end_time <= "{now_hour}")
             OR (start_time >= "{prev_hour}" AND start_time < "{now_hour}")
