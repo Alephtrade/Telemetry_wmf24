@@ -1,0 +1,7 @@
+2023-09-18 14:46:02.718 [INFO] [MainThread] status is: 1
+2023-09-18 14:46:02.725 [INFO] [MainThread] status is 1 and last_id is 7, calling close_error_code_by_id(7)
+2023-09-18 14:46:14.888 [INFO] [MainThread] status is: 1
+2023-09-18 14:46:14.896 [INFO] [MainThread] status is 1 and last_id is 7, calling close_error_code_by_id(7)
+2023-09-18 14:46:14.933 [INFO] [MainThread] WMFSQLDriver get_last_downtime: None
+2023-09-18 14:46:14.934 [INFO] [MainThread] last_stat_record: (7, '2023-09-18 12:31:00')
+2023-09-18 14:46:14.935 [INFO] [MainThread] downtime_last_record: None

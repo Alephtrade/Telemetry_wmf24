@@ -1,0 +1,50 @@
+2023-09-19 08:44:03.335 [INFO] [MainThread] WMFSQLDriver get_last_data_statistics: None
+2023-09-19 08:48:07.000 [INFO] [MainThread] WMFSQLDriver get_last_data_statistics: None
+2023-09-19 08:48:31.690 [INFO] [MainThread] WMFSQLDriver get_last_data_statistics: None
+2023-09-19 08:49:36.973 [INFO] [MainThread] WMFSQLDriver get_last_data_statistics: None
+2023-09-19 08:49:58.910 [INFO] [MainThread] WMFSQLDriver get_last_data_statistics: None
+2023-09-19 08:50:43.425 [INFO] [MainThread] WMFSQLDriver get_last_data_statistics: None
+2023-09-19 08:52:29.298 [INFO] [MainThread] WMFSQLDriver get_last_data_statistics: None
+2023-09-19 08:52:39.401 [INFO] [MainThread] WMFSQLDriver get_last_data_statistics: None
+2023-09-19 08:52:51.328 [INFO] [MainThread] WMFSQLDriver get_last_data_statistics: None
+2023-09-19 08:52:51.485 [INFO] [MainThread] created next time is:1695114000
+2023-09-19 08:54:01.308 [INFO] [MainThread] WMFSQLDriver get_last_data_statistics: None
+2023-09-19 08:54:01.447 [INFO] [MainThread] created next time is:1695114000
+2023-09-19 08:54:01.473 [INFO] [MainThread] WMFSQLDriver save_last_record: key = time_worked, value = 3600
+2023-09-19 08:54:01.495 [INFO] [MainThread] WMFSQLDriver save_last_record: key = wmf_error_count, value = 0
+2023-09-19 08:54:01.517 [INFO] [MainThread] WMFSQLDriver save_last_record: key = wmf_error_time, value = 0
+2023-09-19 08:54:01.540 [INFO] [MainThread] WMFSQLDriver save_last_record: key = stoppage_count, value = 0
+2023-09-19 08:54:01.564 [INFO] [MainThread] WMFSQLDriver save_last_record: key = stoppage_time, value = 0
+2023-09-19 08:54:01.587 [INFO] [MainThread] time_worked 3600, wmf_error_count 0, wmf_error_time 0, stoppage_count 0, stoppage_time: 0
+2023-09-19 08:54:20.579 [INFO] [MainThread] WMFSQLDriver get_last_data_statistics: None
+2023-09-19 08:54:20.716 [INFO] [MainThread] created next time is:1695103200
+2023-09-19 08:54:20.745 [INFO] [MainThread] WMFSQLDriver save_last_record: key = time_worked, value = 3420
+2023-09-19 08:54:20.768 [INFO] [MainThread] WMFSQLDriver save_last_record: key = wmf_error_count, value = 1
+2023-09-19 08:54:20.792 [INFO] [MainThread] WMFSQLDriver save_last_record: key = wmf_error_time, value = 180
+2023-09-19 08:54:20.816 [INFO] [MainThread] WMFSQLDriver save_last_record: key = stoppage_count, value = 0
+2023-09-19 08:54:20.821 [INFO] [MainThread] WMFSQLDriver save_last_record: key = stoppage_time, value = 0
+2023-09-19 08:54:20.826 [INFO] [MainThread] time_worked 3420, wmf_error_count 1, wmf_error_time 180, stoppage_count 0, stoppage_time: 0
+2023-09-19 08:55:16.569 [INFO] [MainThread] WMFSQLDriver get_last_data_statistics: None
+2023-09-19 08:55:16.711 [INFO] [MainThread] created next time is:1695103200
+2023-09-19 08:55:16.741 [INFO] [MainThread] WMFSQLDriver save_last_record: key = time_worked, value = 3420
+2023-09-19 08:55:16.746 [INFO] [MainThread] WMFSQLDriver save_last_record: key = wmf_error_count, value = 1
+2023-09-19 08:55:16.751 [INFO] [MainThread] WMFSQLDriver save_last_record: key = wmf_error_time, value = 180
+2023-09-19 08:55:16.755 [INFO] [MainThread] WMFSQLDriver save_last_record: key = stoppage_count, value = 0
+2023-09-19 08:55:16.760 [INFO] [MainThread] WMFSQLDriver save_last_record: key = stoppage_time, value = 0
+2023-09-19 08:55:16.764 [INFO] [MainThread] time_worked 3420, wmf_error_count 1, wmf_error_time 180, stoppage_count 0, stoppage_time: 0
+2023-09-19 08:55:31.385 [INFO] [MainThread] WMFSQLDriver get_last_data_statistics: None
+2023-09-19 08:55:31.584 [INFO] [MainThread] created next time is:1695103200
+2023-09-19 08:55:31.614 [INFO] [MainThread] WMFSQLDriver save_last_record: key = time_worked, value = 3420
+2023-09-19 08:55:31.619 [INFO] [MainThread] WMFSQLDriver save_last_record: key = wmf_error_count, value = 1
+2023-09-19 08:55:31.624 [INFO] [MainThread] WMFSQLDriver save_last_record: key = wmf_error_time, value = 180
+2023-09-19 08:55:31.630 [INFO] [MainThread] WMFSQLDriver save_last_record: key = stoppage_count, value = 0
+2023-09-19 08:55:31.636 [INFO] [MainThread] WMFSQLDriver save_last_record: key = stoppage_time, value = 0
+2023-09-19 08:55:31.642 [INFO] [MainThread] time_worked 3420, wmf_error_count 1, wmf_error_time 180, stoppage_count 0, stoppage_time: 0
+2023-09-19 08:55:56.089 [INFO] [MainThread] WMFSQLDriver get_last_data_statistics: None
+2023-09-19 08:55:56.322 [INFO] [MainThread] created next time is:1695103200
+2023-09-19 08:55:56.348 [INFO] [MainThread] WMFSQLDriver save_last_record: key = time_worked, value = 720
+2023-09-19 08:55:56.369 [INFO] [MainThread] WMFSQLDriver save_last_record: key = wmf_error_count, value = 1
+2023-09-19 08:55:56.374 [INFO] [MainThread] WMFSQLDriver save_last_record: key = wmf_error_time, value = 0
+2023-09-19 08:55:56.395 [INFO] [MainThread] WMFSQLDriver save_last_record: key = stoppage_count, value = 1
+2023-09-19 08:55:56.415 [INFO] [MainThread] WMFSQLDriver save_last_record: key = stoppage_time, value = 2880
+2023-09-19 08:55:56.435 [INFO] [MainThread] time_worked 720, wmf_error_count 1, wmf_error_time 0, stoppage_count 1, stoppage_time: 2880

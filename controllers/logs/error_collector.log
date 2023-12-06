@@ -1,0 +1,40 @@
+2023-09-18 14:20:06.642 [INFO] [MainThread] Starting Timeloop..
+2023-09-18 14:20:06.644 [INFO] [MainThread] Registered job <function send_errors at 0x7f5f1fdb1630>
+2023-09-18 14:20:06.645 [INFO] [MainThread] Timeloop now started. Jobs will run based on the interval set
+2023-09-18 14:20:06.646 [INFO] [MainThread] error_collector.py started and running...
+2023-09-18 14:20:11.644 [INFO] [Thread-2] error_collector send_errors: CALL
+2023-09-18 14:20:11.654 [ERROR] [Thread-2] error_collector send_errors: ERROR=no such column: duration_time, stacktrace: EXCEPTION IN (/mnt/c/Users/ddudarev/Desktop/Telemetry_wmf24/error_collector.py, LINE 40 "unset_errors = db_conn.get_unsent_records()"): no such column: duration_time
+2023-09-18 14:20:16.655 [INFO] [Thread-2] error_collector send_errors: CALL
+2023-09-18 14:20:16.659 [ERROR] [Thread-2] error_collector send_errors: ERROR=no such column: duration_time, stacktrace: EXCEPTION IN (/mnt/c/Users/ddudarev/Desktop/Telemetry_wmf24/error_collector.py, LINE 40 "unset_errors = db_conn.get_unsent_records()"): no such column: duration_time
+2023-09-18 14:20:21.660 [INFO] [Thread-2] error_collector send_errors: CALL
+2023-09-18 14:20:21.664 [ERROR] [Thread-2] error_collector send_errors: ERROR=no such column: duration_time, stacktrace: EXCEPTION IN (/mnt/c/Users/ddudarev/Desktop/Telemetry_wmf24/error_collector.py, LINE 40 "unset_errors = db_conn.get_unsent_records()"): no such column: duration_time
+2023-09-18 14:20:26.665 [INFO] [Thread-2] error_collector send_errors: CALL
+2023-09-18 14:20:26.669 [ERROR] [Thread-2] error_collector send_errors: ERROR=no such column: duration_time, stacktrace: EXCEPTION IN (/mnt/c/Users/ddudarev/Desktop/Telemetry_wmf24/error_collector.py, LINE 40 "unset_errors = db_conn.get_unsent_records()"): no such column: duration_time
+2023-09-18 14:20:31.670 [INFO] [Thread-2] error_collector send_errors: CALL
+2023-09-18 14:20:31.674 [ERROR] [Thread-2] error_collector send_errors: ERROR=no such column: duration_time, stacktrace: EXCEPTION IN (/mnt/c/Users/ddudarev/Desktop/Telemetry_wmf24/error_collector.py, LINE 40 "unset_errors = db_conn.get_unsent_records()"): no such column: duration_time
+2023-09-18 14:20:36.675 [INFO] [Thread-2] error_collector send_errors: CALL
+2023-09-18 14:20:36.679 [ERROR] [Thread-2] error_collector send_errors: ERROR=no such column: duration_time, stacktrace: EXCEPTION IN (/mnt/c/Users/ddudarev/Desktop/Telemetry_wmf24/error_collector.py, LINE 40 "unset_errors = db_conn.get_unsent_records()"): no such column: duration_time
+2023-09-18 14:20:41.680 [INFO] [Thread-2] error_collector send_errors: CALL
+2023-09-18 14:20:41.684 [ERROR] [Thread-2] error_collector send_errors: ERROR=no such column: duration_time, stacktrace: EXCEPTION IN (/mnt/c/Users/ddudarev/Desktop/Telemetry_wmf24/error_collector.py, LINE 40 "unset_errors = db_conn.get_unsent_records()"): no such column: duration_time
+2023-09-18 14:20:46.685 [INFO] [Thread-2] error_collector send_errors: CALL
+2023-09-18 14:20:46.689 [ERROR] [Thread-2] error_collector send_errors: ERROR=no such column: duration_time, stacktrace: EXCEPTION IN (/mnt/c/Users/ddudarev/Desktop/Telemetry_wmf24/error_collector.py, LINE 40 "unset_errors = db_conn.get_unsent_records()"): no such column: duration_time
+2023-09-18 14:20:51.690 [INFO] [Thread-2] error_collector send_errors: CALL
+2023-09-18 14:20:51.693 [ERROR] [Thread-2] error_collector send_errors: ERROR=no such column: duration_time, stacktrace: EXCEPTION IN (/mnt/c/Users/ddudarev/Desktop/Telemetry_wmf24/error_collector.py, LINE 40 "unset_errors = db_conn.get_unsent_records()"): no such column: duration_time
+2023-09-18 14:20:56.695 [INFO] [Thread-2] error_collector send_errors: CALL
+2023-09-18 14:20:56.698 [ERROR] [Thread-2] error_collector send_errors: ERROR=no such column: duration_time, stacktrace: EXCEPTION IN (/mnt/c/Users/ddudarev/Desktop/Telemetry_wmf24/error_collector.py, LINE 40 "unset_errors = db_conn.get_unsent_records()"): no such column: duration_time
+2023-09-18 14:21:01.699 [INFO] [Thread-2] error_collector send_errors: CALL
+2023-09-18 14:21:01.703 [ERROR] [Thread-2] error_collector send_errors: ERROR=no such column: duration_time, stacktrace: EXCEPTION IN (/mnt/c/Users/ddudarev/Desktop/Telemetry_wmf24/error_collector.py, LINE 40 "unset_errors = db_conn.get_unsent_records()"): no such column: duration_time
+2023-09-18 14:21:06.704 [INFO] [Thread-2] error_collector send_errors: CALL
+2023-09-18 14:21:06.708 [ERROR] [Thread-2] error_collector send_errors: ERROR=no such column: duration_time, stacktrace: EXCEPTION IN (/mnt/c/Users/ddudarev/Desktop/Telemetry_wmf24/error_collector.py, LINE 40 "unset_errors = db_conn.get_unsent_records()"): no such column: duration_time
+2023-09-18 14:21:11.709 [INFO] [Thread-2] error_collector send_errors: CALL
+2023-09-18 14:21:11.713 [ERROR] [Thread-2] error_collector send_errors: ERROR=no such column: duration_time, stacktrace: EXCEPTION IN (/mnt/c/Users/ddudarev/Desktop/Telemetry_wmf24/error_collector.py, LINE 40 "unset_errors = db_conn.get_unsent_records()"): no such column: duration_time
+2023-09-18 14:21:16.714 [INFO] [Thread-2] error_collector send_errors: CALL
+2023-09-18 14:21:16.718 [ERROR] [Thread-2] error_collector send_errors: ERROR=no such column: duration_time, stacktrace: EXCEPTION IN (/mnt/c/Users/ddudarev/Desktop/Telemetry_wmf24/error_collector.py, LINE 40 "unset_errors = db_conn.get_unsent_records()"): no such column: duration_time
+2023-09-18 14:21:21.719 [INFO] [Thread-2] error_collector send_errors: CALL
+2023-09-18 14:21:21.723 [ERROR] [Thread-2] error_collector send_errors: ERROR=no such column: duration_time, stacktrace: EXCEPTION IN (/mnt/c/Users/ddudarev/Desktop/Telemetry_wmf24/error_collector.py, LINE 40 "unset_errors = db_conn.get_unsent_records()"): no such column: duration_time
+2023-09-18 14:21:26.724 [INFO] [Thread-2] error_collector send_errors: CALL
+2023-09-18 14:21:26.728 [ERROR] [Thread-2] error_collector send_errors: ERROR=no such column: duration_time, stacktrace: EXCEPTION IN (/mnt/c/Users/ddudarev/Desktop/Telemetry_wmf24/error_collector.py, LINE 40 "unset_errors = db_conn.get_unsent_records()"): no such column: duration_time
+2023-09-18 14:21:31.729 [INFO] [Thread-2] error_collector send_errors: CALL
+2023-09-18 14:21:31.733 [ERROR] [Thread-2] error_collector send_errors: ERROR=no such column: duration_time, stacktrace: EXCEPTION IN (/mnt/c/Users/ddudarev/Desktop/Telemetry_wmf24/error_collector.py, LINE 40 "unset_errors = db_conn.get_unsent_records()"): no such column: duration_time
+2023-09-18 14:21:34.562 [INFO] [MainThread] Stopping job <function send_errors at 0x7f5f1fdb1630>
+2023-09-18 14:21:34.563 [INFO] [MainThread] Timeloop exited.
