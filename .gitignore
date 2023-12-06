@@ -5,4 +5,4 @@ instance/*
 .env
 *.log
 wmf.db
-
+controllers/logs/beveragestatistics.log
