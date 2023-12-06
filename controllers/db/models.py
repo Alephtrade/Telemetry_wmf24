@@ -151,15 +151,29 @@ class WMFSQLDriver:
     #    self.connection.commit()
     #    cur.close()
 
+
     def create_error_record(self, aleph_id, error_code):
         cur = self.connection.cursor()
         stmt = 'INSERT INTO error_code_stats (aleph_id, error_code, error_date, start_time, duration_time) VALUES (?, ?, ?, ?, 0)'
-        current_date = datetime.now() + timedelta(hours=3)
+        current_date = datetime.now()
         error_date = current_date.strftime('%Y-%m-%d')
         start_time = current_date.strftime('%Y-%m-%d %H:%M:%S')
         cur.execute(stmt, (aleph_id, error_code, error_date, start_time,))
         self.connection.commit()
         cur.close()
+
+    def get_time_to_send_interval(self):
+        cur = self.connection.cursor()
+        stmt = '''
+            SELECT minutes FROM exchange_php
+            ORDER BY id DESC 
+            LIMIT 1
+        '''
+        cur.execute(stmt)
+        res = cur.fetchone()
+        cur.close()
+        return res
+
 
     def get_error_prev_record(self, aleph_id, error_code):
         cur = self.connection.cursor()
@@ -182,7 +196,7 @@ class WMFSQLDriver:
             start_time[1] = current_date.strftime('%Y-%m-%d %H:%M:%S')
         print(start_time)
         start_time_formated = int(datetime.strptime(start_time[1], '%Y-%m-%d %H:%M:%S').timestamp())
-        duration = str((int((datetime.now() + timedelta(hours=3)).timestamp()) - start_time_formated))
+        duration = str((int(datetime.now().timestamp()) - start_time_formated))
         cur = self.connection.cursor()
         end_time = get_curr_time_str()
         stmt = ''' 
@@ -219,7 +233,7 @@ class WMFSQLDriver:
         print(that_error_record)
         d_id, start_time, error_code = that_error_record
         start_time_formated = int(datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S').timestamp())
-        duration = str((int((datetime.now() + timedelta(hours=3)).timestamp()) - start_time_formated))
+        duration = str((int(datetime.now().timestamp()) - start_time_formated))
         cur = self.connection.cursor()
         end_time = get_curr_time_str()
         stmt = ''' 
@@ -309,7 +323,7 @@ class WMFSQLDriver:
         return res
 
     def save_clean_or_rins(self, aleph_id, alias, operator, value_column):
-        time_now = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp() // (60 * 60) * 60 * 60))
+        time_now = datetime.fromtimestamp(int(datetime.now().timestamp() // (60 * 60) * 60 * 60))
         cur = self.connection.cursor()
         stmt = f''' 
             UPDATE cleaning_statistic 
@@ -322,7 +336,7 @@ class WMFSQLDriver:
         cur.close()
 
     def save_status_clean_or_rins(self, id_record, operator, value_status):
-        time_now = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp() // (60 * 60) * 60 * 60))
+        time_now = datetime.fromtimestamp(int(datetime.now().timestamp() // (60 * 60) * 60 * 60))
         cur = self.connection.cursor()
         stmt = f''' 
             UPDATE cleaning_statistic 

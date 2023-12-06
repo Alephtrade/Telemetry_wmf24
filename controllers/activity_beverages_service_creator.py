@@ -9,7 +9,7 @@ sys.path.append('./')
 sys.path.append('/var/www/Telemetry_wmf24/')
 from controllers.db.models import WMFSQLDriver
 from controllers.settings import prod as settings
-from controllers.core.utils import timedelta_int, initialize_logger
+from controllers.core.utils import timedelta_int, initialize_logger, get_beverages_send_time
 from controllers.api.beverages import methods
 
 WMF_URL = settings.WMF_DATA_URL
@@ -26,7 +26,7 @@ def get_main_clean_stat(device):
     #    date_to_send = get_beverages_send_time(get_last_data_statistics[0])
     #else:
     #date_to_send = get_beverages_send_time(time_now)
-    date_to_send = time_now
+    date_to_send = get_beverages_send_time(time_now)
     print(date_to_send)
     db_conn.create_data_statistics(device[1], time_now, date_to_send)
     unsent_records = db_conn.get_error_records(prev_hour, time_now, device[1])
