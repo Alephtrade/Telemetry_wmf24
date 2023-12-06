@@ -1,5 +1,4 @@
 config.env
 logs/*.log*
-wmf_backup.db
-controllers/wmf.db
-.idea
+.idea/*.idea
+./controllers/wmf.db
