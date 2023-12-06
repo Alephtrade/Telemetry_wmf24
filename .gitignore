@@ -3,6 +3,6 @@ instance/*
 !instance/.gitignore
 .webassets-cache
 .env
-controllers/logs/*.log
-controllers/wmf.db
+*.log
+wmf.db
 
