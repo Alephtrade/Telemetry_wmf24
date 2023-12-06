@@ -18,12 +18,6 @@ from controllers.db.models import WMFSQLDriver
 threads = {}
 
 def worker(tl_ident, aleph_id, ip):
-    try:
-        tl_ident.getName()
-    except Exception as ex:
-        logging.error(print_exception())
-    if tl_ident.is_alive():
-        return "ALREADY_EXISTS"
     WMF_URL = settings.WMF_DATA_URL
     print(ip)
     initialize_logger('error_collector.log')
