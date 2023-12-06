@@ -15,6 +15,14 @@ class WMFSQLDriver:
     def close(self):
         self.connection.close()
 
+    def get_encrpt_key(self):
+        cur = self.connection.cursor()
+        stmt = f'''SELECT server_key FROM exchange_php LIMIT 1'''
+        cur.execute(stmt)
+        res = cur.fetchone()
+        cur.close()
+        return res
+
     def find_device_by_aleph_id(self, aleph_id):
         cur = self.connection.cursor()
         stmt = f'''SELECT * FROM devices WHERE aleph_id = "{aleph_id}"'''

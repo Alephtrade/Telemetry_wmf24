@@ -15,8 +15,10 @@ def asker():
     h_name = socket.gethostname()
     server_ip = socket.gethostbyname(h_name)
     data_for_request["ip"] = server_ip
+    db_conn.get_encrpt_key()
     headers = {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Server_key': db_conn.get_encrpt_key()
     }
     response = requests.request("POST", url, headers=headers, data=data_for_request)
     json_res = response.json()

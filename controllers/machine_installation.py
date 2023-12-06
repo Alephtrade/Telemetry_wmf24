@@ -28,7 +28,8 @@ def test():
             data_for_request["ip"] = machine_response["ip"]
             url = "https://wmf24.ru/api/machine_check"
             headers = {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Server_key': db_conn.get_encrpt_key()
             }
             response = requests.request("POST", url, headers=headers, data=json.dumps(data_for_request))
             aleph_id = machine_response["MachineName"]
