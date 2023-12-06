@@ -1,6 +1,7 @@
 import sqlite3
 import sys
 sys.path.append('./')
+sys.path.append('/var/www/Telemetry_wmf24/')
 from controllers.settings import prod as settings
 
 
