@@ -1,5 +1,8 @@
-config.env
-logs/*.log*
-.idea/*.idea
-!/controllers/wmf.db
-!/controllers/logs/*
+### Flask template
+instance/*
+!instance/.gitignore
+.webassets-cache
+.env
+controllers/logs/*.log
+controllers/wmf.db
+
