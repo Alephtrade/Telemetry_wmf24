@@ -62,7 +62,7 @@ def controller_data_statistics_sender(aleph_id, ip):
                 data_for_request.append({"time_fact_send": item[7]})
                 data_for_request.append({"is_sent": item[8]})
                 data_for_request.append({"device": aleph_id})
-                url = "https://wmf24.ru/api/machineactivity"
+                url = "https://backend.wmf24.ru/api/machineactivity"
                 headers = {
                     'Content-Type': 'application/json',
                     'Serverkey': db_conn.get_encrpt_key()
@@ -81,7 +81,7 @@ def send_ip_address(aleph_id, ip):
     data = {}
     data['aleph_id'] = aleph_id
     data["ip"] = ip
-    requests.post('https://wmf24.ru/api/address', json=data)
+    requests.post('https://backend.wmf24.ru/api/address', json=data)
     return data
 
 def check_machine_status(aleph_id, ip):

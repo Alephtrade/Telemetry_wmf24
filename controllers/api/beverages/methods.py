@@ -76,7 +76,7 @@ def Take_Create_Beverage_Statistics(last_send, device):
 def Send_Statistics(data_info, id_record):
     initialize_logger('beverages_send_worker.py.log')
     logging.info(f"beveragestatistics: GET request: {data_info}")
-    url = "https://wmf24.ru/api/beveragestatistics"
+    url = "https://backend.wmf24.ru/api/beveragestatistics"
     headers = {
         'Content-Type': 'application/json',
         'Serverkey': db_conn.get_encrpt_key()

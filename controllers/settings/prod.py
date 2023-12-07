@@ -2,8 +2,8 @@ import requests
 
 WS_IP = '192.168.1.2'
 WS_PORT = 25000
-WMF_BASE_URL = 'https://wmf24.ru'
-WMF_DATA_URL = "https://wmf24.ru/api/errorhook"
+WMF_BASE_URL = 'https://backend.wmf24.ru'
+WMF_DATA_URL = "https://backend.wmf24.ru/api/errorhook"
 WS_URL = f'ws://{WS_IP}:{WS_PORT}/'
 DB_PATH = '/var/www/Telemetry_wmf24/controllers/wmf.db'
 ERROR_COLLECTOR_INTERVAL_SECONDS = 5

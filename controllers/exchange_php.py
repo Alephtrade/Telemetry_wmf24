@@ -10,7 +10,7 @@ db_conn = WMFSQLDriver()
 
 
 def asker():
-    url = "https://wmf24.ru/api/vpn_server_send_interval"
+    url = "https://backend.wmf24.ru/api/vpn_server_send_interval"
     data_for_request = {}
     h_name = socket.gethostname()
     server_ip = socket.gethostbyname(h_name)

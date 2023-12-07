@@ -54,7 +54,7 @@ def sender_report(device):
             date_formatted.append({"type_cleaning_duration": item[3]})
             date_formatted.append({"date_formed": item[4]})
             date_formatted.append({"device": device[1]})
-            url = "https://wmf24.ru/api/datastat"
+            url = "https://backend.wmf24.ru/api/datastat"
             headers = {
                 'Content-Type': 'application/json',
                 'Serverkey': db_conn.get_encrpt_key()
