@@ -33,6 +33,7 @@ def test():
             }
             response = requests.request("POST", url, headers=headers, data=json.dumps(data_for_request))
             if response.status_code == 200:
+                response = response.json()
                 aleph_id = response["aleph_id"]
                 latitude = response["latitude"]
                 longitude = response["longitude"]
