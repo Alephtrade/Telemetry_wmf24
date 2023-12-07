@@ -32,9 +32,9 @@ def test():
                 'Server_key': db_conn.get_encrpt_key()
             }
             response = requests.request("POST", url, headers=headers, data=json.dumps(data_for_request))
-            aleph_id = machine_response["MachineName"]
-            latitude = 37.61556
-            longitude = 55.75222
+            aleph_id = response["aleph_id"]
+            latitude = response["latitude"]
+            longitude = response["longitude"]
             finder = db_conn.find_device_by_aleph_id(aleph_id)
             if not finder:
                 #db_conn.connection.cursor().close()
