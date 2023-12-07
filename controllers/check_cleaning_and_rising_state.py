@@ -57,7 +57,7 @@ def sender_report(device):
             url = "https://wmf24.ru/api/datastat"
             headers = {
                 'Content-Type': 'application/json',
-                'Server_key': db_conn.get_encrpt_key()
+                'Serverkey': db_conn.get_encrpt_key()
             }
             #response = requests.request("POST", url, headers=headers, data=json.dumps(date_formatted))
             #logging.info(f"WMFMachineStatConnector: GET response: {response.text}")

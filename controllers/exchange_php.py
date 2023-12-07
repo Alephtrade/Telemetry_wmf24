@@ -18,7 +18,7 @@ def asker():
     db_conn.get_encrpt_key()
     headers = {
         'Content-Type': 'application/json',
-        'Server_key': db_conn.get_encrpt_key()
+        'Serverkey': db_conn.get_encrpt_key()
     }
     response = requests.request("POST", url, headers=headers, data=data_for_request)
     json_res = response.json()

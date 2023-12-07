@@ -29,7 +29,7 @@ def test():
             url = "http://backend.wmf24.ru/api/machine_check"
             headers = {
                 'Content-Type': 'application/json',
-                'Server_key': db_conn.get_encrpt_key()[0]
+                'Serverkey': db_conn.get_encrpt_key()[0]
             }
             response = requests.request("POST", url, headers=headers, data=json.dumps(data_for_request))
             if response.status_code == 200:

@@ -65,7 +65,7 @@ def controller_data_statistics_sender(aleph_id, ip):
                 url = "https://wmf24.ru/api/machineactivity"
                 headers = {
                     'Content-Type': 'application/json',
-                    'Server_key': db_conn.get_encrpt_key()
+                    'Serverkey': db_conn.get_encrpt_key()
                 }
                 response = requests.request("POST", url, headers=headers, data=json.dumps(data_for_request))
                 logging.info(f"WMFMachineStatConnector: GET response: {response.text}")
