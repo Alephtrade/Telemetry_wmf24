@@ -26,12 +26,12 @@ def test():
             data_for_request["serial_number"] = machine_response["MachineName"]
             data_for_request["model"] = machine_response["ProductName"]
             data_for_request["ip"] = machine_response["ip"]
-            url = "https://wmf24.ru/api/machine_check"
+            url = "http://backend.wmf24.ru/api/machine_check"
             headers = {
                 'Content-Type': 'application/json',
-                'Server_key': db_conn.get_encrpt_key()
+                'Server_key': db_conn.get_encrpt_key()[0]
             }
-            response = requests.request("POST", url, headers=headers, data=json.dumps(data_for_request))
+            response = (requests.request("POST", url, headers=headers, data=json.dumps(data_for_request))).json()
             aleph_id = response["aleph_id"]
             latitude = response["latitude"]
             longitude = response["longitude"]
