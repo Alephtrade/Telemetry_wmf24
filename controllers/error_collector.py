@@ -39,13 +39,13 @@ for device in devices:
     print(threading.enumerate())
 
 
-def on_exit():
-    try:
-        wmf_conn.close()
-        tl_ident.stop()
-    except Exception as ex:
-        logging.error(f'error_collector on_exit: ERROR={ex}')
-        logging.error(print_exception())
+    def on_exit():
+        try:
+            wmf_conn.close()
+            tl_ident.stop()
+        except Exception as ex:
+            logging.error(f'error_collector on_exit: ERROR={ex}')
+            logging.error(print_exception())
 
         @tl_ident.job(interval=timedelta(seconds=settings.ERROR_COLLECTOR_INTERVAL_SECONDS))
         def send_errors():
