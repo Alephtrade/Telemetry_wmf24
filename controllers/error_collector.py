@@ -30,9 +30,8 @@ devices = db_conn.get_devices()
 result = []
 for device in devices:
     wmf_conn = WMFMachineErrorConnector(device[1], device[2])
-    if threading.Thread(target=wmf_conn.run_websocket, name=device[1]).is_alive():
-        print("ALIVE")
-    tl_ident = threading.Thread(target=wmf_conn.run_websocket, name=device[1])
+    tl_ident = Timeloop()
+    threading.Thread(target=wmf_conn.run_websocket, name=device[1])
     result = worker(tl_ident, device[1], device[2])
     print(result)
     print(threading.active_count())
@@ -81,6 +80,8 @@ for device in devices:
                     logging.info(f'error_collector send_errors: nothing to send')
         except Exception as ex:
             logging.error(f'error_collector send_errors: ERROR={ex}, stacktrace: {print_exception()}')
+
+
     tl_ident.start()
     logging.info('error_collector.py started and running...')
     atexit.register(on_exit)
