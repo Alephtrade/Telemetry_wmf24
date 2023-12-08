@@ -82,7 +82,7 @@ def on_exit():
             except Exception as ex:
                 logging.error(f'error_collector send_errors: ERROR={ex}, stacktrace: {print_exception()}')
 
-        # tl.start()
+        tl_ident.start()
         logging.info('error_collector.py started and running...')
         atexit.register(on_exit)
         return tl_ident.is_alive()
