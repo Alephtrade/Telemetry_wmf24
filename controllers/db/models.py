@@ -162,7 +162,7 @@ class WMFSQLDriver:
 
     def create_error_record(self, aleph_id, error_code):
         cur = self.connection.cursor()
-        stmt = 'INSERT INTO error_code_stats (aleph_id, error_code, error_date, start_time, report_send, duration_time) VALUES (?, ?, ?, ?, 0, 0)'
+        stmt = 'INSERT INTO error_code_stats (aleph_id, error_code, error_date, start_time, report_sent, duration_time) VALUES (?, ?, ?, ?, 0, 0)'
         current_date = datetime.now()
         error_date = current_date.strftime('%Y-%m-%d')
         start_time = current_date.strftime('%Y-%m-%d %H:%M:%S')
