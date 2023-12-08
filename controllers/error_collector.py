@@ -47,42 +47,42 @@ for device in devices:
             logging.error(f'error_collector on_exit: ERROR={ex}')
             logging.error(print_exception())
 
-        @tl_ident.job(interval=timedelta(seconds=settings.ERROR_COLLECTOR_INTERVAL_SECONDS))
-        def send_errors():
-            try:
-                logging.info("error_collector send_errors: CALL")
-                errors, request = '', ''
-                unset_errors = db_conn.get_unsent_records(device[1])
+    @tl_ident.job(interval=timedelta(seconds=settings.ERROR_COLLECTOR_INTERVAL_SECONDS))
+    def send_errors():
+        try:
+            logging.info("error_collector send_errors: CALL")
+            errors, request = '', ''
+            unset_errors = db_conn.get_unsent_records(device[1])
+            if unset_errors:
+                for record in unset_errors:
+                    request = f'{WMF_URL}?device={device[1]}&error_id={record[1]}&date_start={record[2]}&date_end={record[3]}&duration={record[5]}&status={wmf_conn.get_status()}'
+                    print(request)
+                    response = requests.post(request)
+                    content = response.content.decode('utf-8')
+                    if record[3] is not None:
+                        db_conn.set_report_sent(record[0])
+                    else:
+                        db_conn.set_report_pre_sent(record[0])
+                    logging.info(f'error_collector send_errors: <= {response} {content}')
+            else:
+                unset_errors = db_conn.get_unsent_records_with_end_time(device[1])
                 if unset_errors:
                     for record in unset_errors:
                         request = f'{WMF_URL}?device={device[1]}&error_id={record[1]}&date_start={record[2]}&date_end={record[3]}&duration={record[5]}&status={wmf_conn.get_status()}'
                         print(request)
                         response = requests.post(request)
                         content = response.content.decode('utf-8')
-                        if record[3] is not None:
-                            db_conn.set_report_sent(record[0])
-                        else:
-                            db_conn.set_report_pre_sent(record[0])
+                        db_conn.set_report_sent(record[0])
                         logging.info(f'error_collector send_errors: <= {response} {content}')
                 else:
-                    unset_errors = db_conn.get_unsent_records_with_end_time(device[1])
-                    if unset_errors:
-                        for record in unset_errors:
-                            request = f'{WMF_URL}?device={device[1]}&error_id={record[1]}&date_start={record[2]}&date_end={record[3]}&duration={record[5]}&status={wmf_conn.get_status()}'
-                            print(request)
-                            response = requests.post(request)
-                            content = response.content.decode('utf-8')
-                            db_conn.set_report_sent(record[0])
-                            logging.info(f'error_collector send_errors: <= {response} {content}')
-                    else:
-                        request = f'{WMF_URL}?device={device[1]}&error_id=0&status={wmf_conn.get_status()}'
-                        print(request)
-                        response = requests.post(request)
-                        logging.info(f'error_collector send_errors: nothing to send')
-            except Exception as ex:
-                logging.error(f'error_collector send_errors: ERROR={ex}, stacktrace: {print_exception()}')
+                    request = f'{WMF_URL}?device={device[1]}&error_id=0&status={wmf_conn.get_status()}'
+                    print(request)
+                    response = requests.post(request)
+                    logging.info(f'error_collector send_errors: nothing to send')
+        except Exception as ex:
+            logging.error(f'error_collector send_errors: ERROR={ex}, stacktrace: {print_exception()}')
+    tl_ident.start()
+    logging.info('error_collector.py started and running...')
+    atexit.register(on_exit)
 
-        tl_ident.start()
-        logging.info('error_collector.py started and running...')
-        atexit.register(on_exit)
-        return tl_ident.is_alive()
+
