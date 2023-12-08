@@ -52,6 +52,7 @@ for device in devices:
             logging.info("error_collector send_errors: CALL")
             errors, request = '', ''
             unset_errors = db_conn.get_unsent_records(device[1])
+            print(unset_errors)
             if unset_errors:
                 for record in unset_errors:
                     request = f'{WMF_URL}?device={device[1]}&error_id={record[1]}&date_start={record[2]}&date_end={record[3]}&duration={record[5]}&status={wmf_conn.get_status()}'
