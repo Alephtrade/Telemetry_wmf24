@@ -55,6 +55,7 @@ for device in devices:
             if unset_errors:
                 for record in unset_errors:
                     request = f'{WMF_URL}?device={device[1]}&error_id={record[1]}&date_start={record[2]}&date_end={record[3]}&duration={record[5]}&status={wmf_conn.get_status()}'
+                    print("errorrrrrrrrrrrrrrrrrrrrr")
                     print(request)
                     response = requests.post(request)
                     content = response.content.decode('utf-8')
