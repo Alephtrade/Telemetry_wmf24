@@ -21,18 +21,18 @@ WMF_URL = settings.WMF_DATA_URL
 def worker(tl_ident, aleph_id, ip):
     print(ip)
     initialize_logger('error_collector.log')
-    tl_ident.start()
     #return tl_ident.is_alive()
 
 
 db_conn = WMFSQLDriver()
 devices = db_conn.get_devices()
 result = []
+
 for device in devices:
     wmf_conn = WMFMachineErrorConnector(device[1], device[2])
     tl_ident = Timeloop()
-    threading.Thread(target=wmf_conn.run_websocket, name=device[1])
-    result = worker(tl_ident, device[1], device[2])
+    threading.Thread(target=wmf_conn.run_websocket, name=device[1]).start()
+    worker(tl_ident, device[1], device[2])
     print(result)
     print(threading.active_count())
     print(threading.enumerate())
