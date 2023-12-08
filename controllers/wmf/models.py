@@ -51,7 +51,7 @@ class WMFMachineErrorConnector:
         logging.info(f"WMFMachineConnector on_error: {error}")
 
     def on_close(self, ws, close_status_code, close_msg):
-        requests.post(f'{self.WMF_URL}?device={self.aleph_id}&&error_id=0&status=0')
+        requests.post(f'{self.WMF_URL}?device={self.aleph_id}&error_id=0&status=0')
         logging.info(f"WMFMachineConnector on_close: close_status_code = {close_status_code}, close_msg = {close_msg} ")
         ws.send(json.dumps({"function": "stopPushErrors"}))
 

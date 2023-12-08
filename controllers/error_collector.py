@@ -9,7 +9,6 @@ import sys
 
 sys.path.append('./')
 sys.path.append('/var/www/Telemetry_wmf24/')
-from controllers.settings import prod as settings
 from controllers.core.utils import initialize_logger, print_exception
 from controllers.wmf.models import WMFMachineErrorConnector
 from controllers.settings import prod as settings
