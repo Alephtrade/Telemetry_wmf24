@@ -56,6 +56,7 @@ def on_exit():
                 if unset_errors:
                     for record in unset_errors:
                         request = f'{WMF_URL}?device={device[1]}&error_id={record[1]}&date_start={record[2]}&date_end={record[3]}&duration={record[5]}&status={wmf_conn.get_status()}'
+                        print(request)
                         response = requests.post(request)
                         content = response.content.decode('utf-8')
                         if record[3] is not None:
@@ -68,12 +69,14 @@ def on_exit():
                     if unset_errors:
                         for record in unset_errors:
                             request = f'{WMF_URL}?device={device[1]}&error_id={record[1]}&date_start={record[2]}&date_end={record[3]}&duration={record[5]}&status={wmf_conn.get_status()}'
+                            print(request)
                             response = requests.post(request)
                             content = response.content.decode('utf-8')
                             db_conn.set_report_sent(record[0])
                             logging.info(f'error_collector send_errors: <= {response} {content}')
                     else:
                         request = f'{WMF_URL}?device={device[1]}&error_id=0&status={wmf_conn.get_status()}'
+                        print(request)
                         response = requests.post(request)
                         logging.info(f'error_collector send_errors: nothing to send')
             except Exception as ex:
