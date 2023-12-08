@@ -22,7 +22,7 @@ def worker(tl_ident, aleph_id, ip):
     print(ip)
     initialize_logger('error_collector.log')
     tl_ident.start()
-    return tl_ident.is_alive()
+    #return tl_ident.is_alive()
 
 
 db_conn = WMFSQLDriver()
