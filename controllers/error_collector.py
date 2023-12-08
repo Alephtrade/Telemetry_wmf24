@@ -56,7 +56,7 @@ for device in devices:
             if unset_errors:
                 for record in unset_errors:
                     print(record)
-                    request = f'{WMF_URL}?device={device[1]}&error_id={record[1]}&date_start={record[2]}&date_end={record[3]}&duration={record[5]}&status={wmf_conn.get_status()}'
+                    request = f'{WMF_URL}?device={device[1]}&error_id={record[1]}&date_start={record[2]}&date_end={record[3]}&duration={record[4]}&status={wmf_conn.get_status()}'
                     print("errorrrrrrrrrrrrrrrrrrrrr")
                     print(request)
                     response = requests.post(request)
@@ -70,7 +70,7 @@ for device in devices:
                 unset_errors = db_conn.get_unsent_records_with_end_time(device[1])
                 if unset_errors:
                     for record in unset_errors:
-                        request = f'{WMF_URL}?device={device[1]}&error_id={record[1]}&date_start={record[2]}&date_end={record[3]}&duration={record[5]}&status={wmf_conn.get_status()}'
+                        request = f'{WMF_URL}?device={device[1]}&error_id={record[1]}&date_start={record[2]}&date_end={record[3]}&duration={record[4]}&status={wmf_conn.get_status()}'
                         print("72")
                         print(request)
                         response = requests.post(request)
