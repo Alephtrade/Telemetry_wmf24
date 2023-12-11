@@ -45,6 +45,7 @@ def get_service_statistics(device):
         record = db_conn.create_service_record(device[1], date_today)
         logging.info(f"COFFEE_MACHINE: created record service_stat {record}")
         actual = db_conn.get_last_service_statistics(device[1], date_today)
+        return actual
     else:
         if actual[2] == "0":
             #print("form")
