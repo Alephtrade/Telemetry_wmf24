@@ -150,6 +150,7 @@ def get_service_statistics(device):
             received_data = received_data.replace(']', '', 1)
             received_data = received_data + ', {"device" : ' + str(device[1]) + '}, {"timestamp_create" : ' + str(int_ts) + '}]'
 
+            return received_data
             url = "https://backend.wmf24.ru/api/servicestatistics"
             headers = {
                 'Content-Type': 'application/json',
