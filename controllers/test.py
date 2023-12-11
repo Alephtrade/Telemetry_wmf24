@@ -59,7 +59,7 @@ def get_service_statistics(device):
     url = "https://backend.wmf24.ru/api/servicestatistics"
     headers = {
         'Content-Type': 'application/json',
-        'Serverkey': '"' + db_conn.get_encrpt_key()[0] + '"'
+        'Serverkey': str('"' + db_conn.get_encrpt_key()[0] + '"')
     }
     print(received_data)
     response = requests.request("POST", url, headers=headers, data=received_data)
