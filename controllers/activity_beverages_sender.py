@@ -94,7 +94,8 @@ def send_ip_address(aleph_id, ip):
         'Content-Type': 'application/json',
         'Serverkey': db_conn.get_encrpt_key()[0]
     }
-    requests.request("POST", url, headers=headers,json=data)
+    requests.request("POST", url, headers=headers, json=data)
+    print(ip)
     return data
 
 def check_machine_status(aleph_id, ip):
