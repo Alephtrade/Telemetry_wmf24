@@ -78,4 +78,4 @@ def get_service_statistics(device):
 
 devices = db_conn.get_devices()
 for device in devices:
-    print(get_service_statistics())
+    print(get_service_statistics(device))
