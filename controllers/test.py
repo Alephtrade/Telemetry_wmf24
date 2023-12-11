@@ -8,7 +8,7 @@ import socket
 import sys
 sys.path.append('./')
 sys.path.append('/var/www/Telemetry_wmf24/')
-from datetime import timedelta, datetime
+from datetime import timedelta, datetime, date
 from controllers.api.beverages import methods
 from timezonefinder import TimezoneFinder
 from datetime import datetime, timezone
