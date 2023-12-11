@@ -450,9 +450,9 @@ class WMFSQLDriver:
         cur.close()
         return res
 
-    def get_data_statistics_to_send(self, aleph_id):
+    def get_data_statistics_to_send(self, aleph_ids):
         cur = self.connection.cursor()
-        stmt = ''' 
+        stmt = f''' 
             SELECT time_worked, 
             wmf_error_count, 
             wmf_error_time, 
@@ -465,10 +465,10 @@ class WMFSQLDriver:
             id,
             aleph_id
             FROM data_statistics
-            WHERE time_fact_send is NULL AND is_sent == 0 AND aleph_id = ?
+            WHERE time_fact_send is NULL AND is_sent == 0 AND aleph_id = "{aleph_ids}"
             ORDER BY id DESC 
         '''
-        cur.execute(stmt, (aleph_id,))
+        cur.execute(stmt)
         res = cur.fetchall()
         logging.info(f'WMFSQLDriver get_data_statistics_to_send: {res}')
         cur.close()
