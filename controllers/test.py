@@ -26,51 +26,30 @@ from controllers.core.utils import initialize_logger, print_exception, get_bever
 #WS_URL = settings.WS_URL
 #DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
 db_conn = WMFSQLDriver()
-def get_service_statistics(device):
-    initialize_logger('getServiceStatistics.log')
-    date_today = date.today()
-    logging.info(f"COFFEE_MACHINE: today date in service_stat {date_today}")
-
-    #print(date_today)
-    try:
-        WS_IP = f'ws://{device[2]}:25000/'
-        ws = websocket.create_connection(WS_IP, timeout=5)
-    except Exception:
-        ws = None
-        logging.info(f"error {ws}")
-        return False
-    actual = db_conn.get_last_service_statistics(device[1], date_today)
-    logging.info(f"COFFEE_MACHINE: last service_stat record {actual}")
-    #print(actual)
-            #print("form")
-    request = json.dumps({'function': 'getServiceStatistics'})
-    logging.info(f"COFFEE_MACHINE: Sending {request}")
-    ws.send(request)
-    received_data = ws.recv()
-    logging.info(f"servicestatistics: Received {received_data}")
-    logging.info(f"COFFEE_MACHINE: Received {device[1]}")
-    text_file = open("response.txt", "a")
-    text_file.write(received_data)
-    ts = time.time()
-    int_ts = int(ts)
-    received_data = received_data.replace(']', '', 1)
-    received_data = received_data + ', {"device" : "' + str(device[1]) + '"}, {"timestamp_create" : ' + str(int_ts) + '}]'
-    print(received_data)
-    url = "https://backend.wmf24.ru/api/servicestatistics"
-    headers = {
-        'Content-Type': 'application/json',
-        'Serverkey': db_conn.get_encrpt_key()[0]
-    }
-    print(received_data)
-    response = requests.request("POST", url, headers=headers, data=received_data)
-    logging.info(f"servicestatistics: GET response: {response.text}")
-    db_conn.save_status_service_statistics(actual[0], "date_fact_send", str(datetime.fromtimestamp(int((datetime.now()).timestamp()))))
-    db_conn.save_status_service_statistics(actual[0], "is_sent", "1")
-    ws.close()
-    print(response.text)
-    return response
+def sender_report(device):
+    data = db_conn.get_clean_or_rins_to_send(device[1])
+    date_formatted = []
+    if data is not None:
+        for item in data:
+            date_formatted.append({"cleaning_alias": item[1]})
+            date_formatted.append({"type_last_cleaning_datetime": item[2]})
+            date_formatted.append({"type_cleaning_duration": item[3]})
+            date_formatted.append({"date_formed": item[4]})
+            date_formatted.append({"device": device[1]})
+            url = "https://backend.wmf24.ru/api/datastat"
+            headers = {
+                'Content-Type': 'application/json',
+                'Serverkey': db_conn.get_encrpt_key()[0]
+            }
+            print(json.dumps(date_formatted))
+            response = requests.request("POST", url, headers=headers, data=json.dumps(date_formatted))
+            print(response.text)
+            logging.info(f"WMFMachineStatConnector: GET response: {response.text}")
+            db_conn.save_status_clean_or_rins(item[0], "is_sent", "2")
+    else:
+        logging.info(f'{data} is none')
 
 
 devices = db_conn.get_devices()
 for device in devices:
-    print(get_service_statistics(device))
+    print(sender_report(device))
