@@ -59,8 +59,8 @@ def sender_report(device):
                 'Content-Type': 'application/json',
                 'Serverkey': db_conn.get_encrpt_key()
             }
-            #response = requests.request("POST", url, headers=headers, data=json.dumps(date_formatted))
-            #logging.info(f"WMFMachineStatConnector: GET response: {response.text}")
+            response = requests.request("POST", url, headers=headers, data=json.dumps(date_formatted))
+            logging.info(f"WMFMachineStatConnector: GET response: {response.text}")
             db_conn.save_status_clean_or_rins(item[0], "is_sent", "2")
     else:
         logging.info(f'{data} is none')
