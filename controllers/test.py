@@ -75,4 +75,7 @@ def get_service_statistics(device):
             ws.close()
             return True
 
-print(get_service_statistics())
+
+devices = db_conn.get_devices()
+for device in devices:
+    print(get_service_statistics())
