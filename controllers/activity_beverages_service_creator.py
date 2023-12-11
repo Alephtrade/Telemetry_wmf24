@@ -112,13 +112,13 @@ def get_main_clean_stat(device):
         })
     return True
 
-    
+
 def get_service_statistics(device):
     initialize_logger('getServiceStatistics.log')
     date_today = date.today()
     logging.info(f"COFFEE_MACHINE: today date in service_stat {date_today}")
 
-    #print(date_today)
+    # print(date_today)
     try:
         WS_IP = f'ws://{device[2]}:25000/'
         ws = websocket.create_connection(WS_IP, timeout=5)
@@ -128,7 +128,7 @@ def get_service_statistics(device):
         return False
     actual = db_conn.get_last_service_statistics(device[1], date_today)
     logging.info(f"COFFEE_MACHINE: last service_stat record {actual}")
-    #print(actual)
+    # print(actual)
     if actual is None:
         #print("create")
         record = db_conn.create_service_record(device[1], date_today)
@@ -136,7 +136,7 @@ def get_service_statistics(device):
         actual = db_conn.get_last_service_statistics(device[1], date_today)
     else:
         if actual[2] == "0":
-            #print("form")
+    # print("form")
             request = json.dumps({'function': 'getServiceStatistics'})
             logging.info(f"COFFEE_MACHINE: Sending {request}")
             ws.send(request)
@@ -148,21 +148,23 @@ def get_service_statistics(device):
             ts = time.time()
             int_ts = int(ts)
             received_data = received_data.replace(']', '', 1)
-            received_data = received_data + ', {"device" : ' + str(device[1]) + '}, {"timestamp_create" : ' + str(int_ts) + '}]'
-
+            received_data = received_data + ', {"device" : "' + str(device[1]) + '"}, {"timestamp_create" : ' + str(
+                int_ts) + '}]'
             print(received_data)
             url = "https://backend.wmf24.ru/api/servicestatistics"
             headers = {
                 'Content-Type': 'application/json',
-                'Serverkey': db_conn.get_encrpt_key()
+                'Serverkey': db_conn.get_encrpt_key()[0]
             }
             print(received_data)
             response = requests.request("POST", url, headers=headers, data=received_data)
             logging.info(f"servicestatistics: GET response: {response.text}")
-            db_conn.save_status_service_statistics(actual[0], "date_fact_send", str(datetime.fromtimestamp(int((datetime.now()).timestamp()))))
+            db_conn.save_status_service_statistics(actual[0], "date_fact_send",
+                                                   str(datetime.fromtimestamp(int((datetime.now()).timestamp()))))
             db_conn.save_status_service_statistics(actual[0], "is_sent", "1")
             ws.close()
-            return True
+            print(response.text)
+            return response
 
 def are_need_to_create(device):
     initialize_logger('beveragestatistics.log')
@@ -185,7 +187,7 @@ def are_need_to_create(device):
 
 devices = db_conn.get_devices()
 for device in devices:
-    #print(device[2])
-    #print(are_need_to_create(device))
+    print(device[2])
+    print(are_need_to_create(device))
     print(get_service_statistics(device))
-   # print(get_main_clean_stat(device))
+    print(get_main_clean_stat(device))
