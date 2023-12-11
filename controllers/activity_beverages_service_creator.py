@@ -157,7 +157,7 @@ def get_service_statistics(device):
             }
             print(received_data)
             response = requests.request("POST", url, headers=headers, data=received_data)
-            return response
+            return response.json()
             logging.info(f"servicestatistics: GET response: {response.text}")
             db_conn.save_status_service_statistics(actual[0], "date_fact_send", str(datetime.fromtimestamp(int((datetime.now()).timestamp()))))
             db_conn.save_status_service_statistics(actual[0], "is_sent", "1")
