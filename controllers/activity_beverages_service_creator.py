@@ -153,10 +153,11 @@ def get_service_statistics(device):
             url = "https://backend.wmf24.ru/api/servicestatistics"
             headers = {
                 'Content-Type': 'application/json',
-                'Serverkey': '"' + db_conn.get_encrpt_key() + '"'
+                'Serverkey': db_conn.get_encrpt_key()
             }
             response = requests.request("POST", url, headers=headers, data=received_data)
             print(response)
+            return response
             logging.info(f"servicestatistics: GET response: {response.text}")
             db_conn.save_status_service_statistics(actual[0], "date_fact_send", str(datetime.fromtimestamp(int((datetime.now()).timestamp()))))
             db_conn.save_status_service_statistics(actual[0], "is_sent", "1")
