@@ -54,7 +54,7 @@ def get_service_statistics(device):
     ts = time.time()
     int_ts = int(ts)
     received_data = received_data.replace(']', '', 1)
-    received_data = received_data + ', {"device" : ' + str(device[1]) + '}, {"timestamp_create" : ' + str(int_ts) + '}]
+    received_data = received_data + ', {"device" : ' + str(device[1]) + '}, {"timestamp_create" : ' + str(int_ts) + '}]'
     print(received_data)
     url = "https://backend.wmf24.ru/api/servicestatistics"
     headers = {
