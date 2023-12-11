@@ -155,7 +155,7 @@ def get_service_statistics(device):
                 'Content-Type': 'application/json',
                 'Serverkey': db_conn.get_encrpt_key()
             }
-            print(received_data)
+            return print(received_data)
             response = requests.request("POST", url, headers=headers, data=received_data)
             print(response.text)
             logging.info(f"servicestatistics: GET response: {response.text}")
