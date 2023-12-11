@@ -69,8 +69,9 @@ def controller_data_statistics_sender(aleph_id, ip):
                     'Content-Type': 'application/json',
                     'Serverkey': db_conn.get_encrpt_key()[0]
                 }
-                print()
+                print(json.dumps(data_for_request))
                 response = requests.request("POST", url, headers=headers, data=json.dumps(data_for_request))
+                print(response.text)
                 logging.info(f"WMFMachineStatConnector: GET response: {response.text}")
                 print(item[9])
                 db_conn.save_status_data_statistics(item[9], "is_sent", "1")
