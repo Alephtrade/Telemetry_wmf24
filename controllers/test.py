@@ -30,6 +30,7 @@ def controller_data_statistics_sender(aleph_id):
     initialize_logger('controller_data_statistics_sender.py.log')
     now_of_hour = str(datetime.fromtimestamp(int(datetime.now().timestamp())))
     data_for_request = []
+    print(aleph_id)
     data_main_stat = db_conn.get_data_statistics_to_send(aleph_id)
     print(data_main_stat)
     if data_main_stat is not None:
