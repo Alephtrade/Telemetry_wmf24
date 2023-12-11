@@ -22,7 +22,7 @@ def asker():
     }
     response = requests.request("POST", url, headers=headers, data=data_for_request)
     json_res = response.json()
-    db_conn.update_exchange_time(json_res['minutes'])
+    db_conn.update_exchange_time(json_res['send_info_minutes_interval'])
 
 
 asker()

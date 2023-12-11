@@ -81,7 +81,7 @@ def send_ip_address(aleph_id, ip):
     data = {}
     data['aleph_id'] = aleph_id
     data["ip"] = ip
-    requests.post('https://backend.wmf24.ru/api/address', json=data)
+    requests.post('https://backend.wmf24.ru/api/machine_ip_address', json=data)
     return data
 
 def check_machine_status(aleph_id, ip):
