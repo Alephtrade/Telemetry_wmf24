@@ -87,11 +87,23 @@ class WMFSQLDriver:
     def get_devices(self):
         cur = self.connection.cursor()
         stmt = ''' 
-            SELECT id, aleph_id, address, utc
+            SELECT id, aleph_id, address, utc, last_connection
             FROM devices
             ORDER BY id ASC 
         '''
         cur.execute(stmt)
+        res = cur.fetchall()
+        logging.info(f'WMFSQLDriver get_devices: {res}')
+        cur.close()
+        return res
+
+    def delete_device(self, id):
+        cur = self.connection.cursor()
+        stmt = ''' 
+            DELETE FROM devices
+            WHERE id = ?
+        '''
+        cur.execute(stmt, id)
         res = cur.fetchall()
         logging.info(f'WMFSQLDriver get_devices: {res}')
         cur.close()
