@@ -32,7 +32,9 @@ def controller_data_statistics_sender(aleph_id):
     data_for_request = []
     data_main_stat = db_conn.get_data_statistics_to_send(aleph_id)
     if data_main_stat is not None:
+        print(data_main_stat)
         for item in data_main_stat:
+            print(item)
             if datetime.strptime(item[6], '%Y-%m-%d %H:%M:%S') < datetime.fromtimestamp(int(datetime.now().timestamp())):
                 data_for_request.append({"time_worked": item[0]})
                 data_for_request.append({"wmf_error_count": item[1]})
@@ -49,8 +51,10 @@ def controller_data_statistics_sender(aleph_id):
                     'Content-Type': 'application/json',
                     'Serverkey': db_conn.get_encrpt_key()[0]
                 }
+                print(json.dumps(data_for_request))
                 response = requests.request("POST", url, headers=headers, data=json.dumps(data_for_request))
                 logging.info(f"WMFMachineStatConnector: GET response: {response.text}")
+                print(response.text)
                 print(item[9])
                 db_conn.save_status_data_statistics(item[9], "is_sent", "1")
                 db_conn.save_status_data_statistics(item[9], "time_fact_send", now_of_hour)
