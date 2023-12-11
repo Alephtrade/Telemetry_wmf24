@@ -192,7 +192,8 @@ if not does_object_exist('table', 'devices'):
             utc   text,
             address        text,
             type   text,
-            status text
+            status text,
+            last_connection text
         )
     '''
     cur.execute(stmt)
@@ -204,6 +205,7 @@ add_table_column(table_name='devices', column_name='utc', column_type='text')
 add_table_column(table_name='devices', column_name='address', column_type='text')
 add_table_column(table_name='devices', column_name='type', column_type='text')
 add_table_column(table_name='devices', column_name='status', column_type='text')
+add_table_column(table_name='devices', column_name='last_connection', column_type='text')
 
 if not does_object_exist('table', 'exchange_php'):
     stmt = '''
