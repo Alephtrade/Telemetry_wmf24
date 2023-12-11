@@ -75,7 +75,7 @@ def get_beverages_send_time(last_send_time):
     next_time = datetime.strptime(str(last_send_time), '%Y-%m-%d %H:%M:%S')
     print(minutes_to_go)
     print(type(minutes_to_go))
-    INTERVAL = db_conn.get_time_to_send_interval()
+    INTERVAL = db_conn.get_time_to_send_interval()[0]
     if len(minutes_to_go) == 0 or minutes_to_go[0] is None:
         minutes_to_go = 0
     else:
