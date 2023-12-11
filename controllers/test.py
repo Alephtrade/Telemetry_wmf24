@@ -5,6 +5,9 @@ import requests
 import json
 import ast
 import socket
+import sys
+sys.path.append('./')
+sys.path.append('/var/www/Telemetry_wmf24/')
 from datetime import timedelta, datetime
 from controllers.api.beverages import methods
 from timezonefinder import TimezoneFinder
