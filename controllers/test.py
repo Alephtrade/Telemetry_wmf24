@@ -67,7 +67,8 @@ def get_service_statistics(device):
     db_conn.save_status_service_statistics(actual[0], "date_fact_send", str(datetime.fromtimestamp(int((datetime.now()).timestamp()))))
     db_conn.save_status_service_statistics(actual[0], "is_sent", "1")
     ws.close()
-    return True
+    print(response.text)
+    return response
 
 
 devices = db_conn.get_devices()
