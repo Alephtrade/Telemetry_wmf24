@@ -51,6 +51,7 @@ def controller_data_statistics_sender(aleph_id, ip):
     data_for_request = []
     data_main_stat = db_conn.get_data_statistics_to_send(aleph_id)
     if data_main_stat is not None:
+        print(data_main_stat)
         for item in data_main_stat:
             if datetime.strptime(item[6], '%Y-%m-%d %H:%M:%S') < datetime.fromtimestamp(int(datetime.now().timestamp())):
                 data_for_request.append({"time_worked": item[0]})
