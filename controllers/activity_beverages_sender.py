@@ -54,6 +54,8 @@ def controller_data_statistics_sender(aleph_id, ip):
         print(data_main_stat)
         for item in data_main_stat:
             print(item)
+            print(datetime.strptime(item[6], '%Y-%m-%d %H:%M:%S'))
+            print(datetime.fromtimestamp(int(datetime.now().timestamp())))
             if datetime.strptime(item[6], '%Y-%m-%d %H:%M:%S') < datetime.fromtimestamp(int(datetime.now().timestamp())):
                 print("YES")
                 data_for_request.append({"time_worked": item[0]})
