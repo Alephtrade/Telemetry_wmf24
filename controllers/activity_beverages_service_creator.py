@@ -156,7 +156,7 @@ def get_service_statistics(device):
                 'Serverkey': str(db_conn.get_encrpt_key())
             }
             response = requests.request("POST", url, headers=headers, data=received_data)
-            print(response.text)
+            return print(response.text)
             logging.info(f"servicestatistics: GET response: {response.text}")
             db_conn.save_status_service_statistics(actual[0], "date_fact_send", str(datetime.fromtimestamp(int((datetime.now()).timestamp()))))
             db_conn.save_status_service_statistics(actual[0], "is_sent", "1")
