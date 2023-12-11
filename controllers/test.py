@@ -26,30 +26,40 @@ from controllers.core.utils import initialize_logger, print_exception, get_bever
 #WS_URL = settings.WS_URL
 #DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
 db_conn = WMFSQLDriver()
-def sender_report(device):
-    data = db_conn.get_clean_or_rins_to_send(device[1])
-    date_formatted = []
-    if data is not None:
-        for item in data:
-            date_formatted.append({"cleaning_alias": item[1]})
-            date_formatted.append({"type_last_cleaning_datetime": item[2]})
-            date_formatted.append({"type_cleaning_duration": item[3]})
-            date_formatted.append({"date_formed": item[4]})
-            date_formatted.append({"device": device[1]})
-            url = "https://backend.wmf24.ru/api/datastat"
-            headers = {
-                'Content-Type': 'application/json',
-                'Serverkey': db_conn.get_encrpt_key()[0]
-            }
-            print(json.dumps(date_formatted))
-            response = requests.request("POST", url, headers=headers, data=json.dumps(date_formatted))
-            print(response.text)
-            logging.info(f"WMFMachineStatConnector: GET response: {response.text}")
-            db_conn.save_status_clean_or_rins(item[0], "is_sent", "2")
-    else:
-        logging.info(f'{data} is none')
+def controller_data_statistics_sender(aleph_id, ip):
+    initialize_logger('controller_data_statistics_sender.py.log')
+    now_of_hour = str(datetime.fromtimestamp(int(datetime.now().timestamp())))
+    data_for_request = []
+    data_main_stat = db_conn.get_data_statistics_to_send(aleph_id)
+    if data_main_stat is not None:
+        for item in data_main_stat:
+            if datetime.strptime(item[6], '%Y-%m-%d %H:%M:%S') < datetime.fromtimestamp(int(datetime.now().timestamp())):
+                data_for_request.append({"time_worked": item[0]})
+                data_for_request.append({"wmf_error_count": item[1]})
+                data_for_request.append({"wmf_error_time": item[2]})
+                data_for_request.append({"stoppage_count": item[3]})
+                data_for_request.append({"stoppage_time": item[4]})
+                data_for_request.append({"date_formed": item[5]})
+                data_for_request.append({"time_to_send": item[6]})
+                data_for_request.append({"time_fact_send": item[7]})
+                data_for_request.append({"is_sent": item[8]})
+                data_for_request.append({"device": aleph_id})
+                url = "https://backend.wmf24.ru/api/machineactivity"
+                headers = {
+                    'Content-Type': 'application/json',
+                    'Serverkey': db_conn.get_encrpt_key()[0]
+                }
+                response = requests.request("POST", url, headers=headers, data=json.dumps(data_for_request))
+                logging.info(f"WMFMachineStatConnector: GET response: {response.text}")
+                print(item[9])
+                db_conn.save_status_data_statistics(item[9], "is_sent", "1")
+                db_conn.save_status_data_statistics(item[9], "time_fact_send", now_of_hour)
+                logging.info(f'{datetime.now()} {response.text}')
+            logging.info(f'Done')
+    logging.info(f'nothing to send')
+    return True
 
 
 devices = db_conn.get_devices()
 for device in devices:
-    print(sender_report(device))
+    print(controller_data_statistics_sender(device))
