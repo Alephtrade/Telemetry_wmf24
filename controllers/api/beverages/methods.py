@@ -79,7 +79,7 @@ def Send_Statistics(data_info, id_record):
     url = "https://backend.wmf24.ru/api/beveragestatistics"
     headers = {
         'Content-Type': 'application/json',
-        'Serverkey': db_conn.get_encrpt_key()
+        'Serverkey': db_conn.get_encrpt_key()[0]
     }
     response = requests.request("POST", url, headers=headers, data=data_info)
     json_res = response.json()
