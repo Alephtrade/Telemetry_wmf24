@@ -40,7 +40,7 @@ def get_service_statistics(device):
     actual = db_conn.get_last_service_statistics(device[1], date_today)
     logging.info(f"COFFEE_MACHINE: last service_stat record {actual}")
     #print(actual)
-    if actual is None:
+    if actual is not None:
         #print("create")
         record = db_conn.create_service_record(device[1], date_today)
         logging.info(f"COFFEE_MACHINE: created record service_stat {record}")
