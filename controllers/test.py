@@ -31,6 +31,7 @@ def controller_data_statistics_sender(aleph_id):
     now_of_hour = str(datetime.fromtimestamp(int(datetime.now().timestamp())))
     data_for_request = []
     data_main_stat = db_conn.get_data_statistics_to_send(aleph_id)
+    print(data_main_stat)
     if data_main_stat is not None:
         print(data_main_stat)
         for item in data_main_stat:
