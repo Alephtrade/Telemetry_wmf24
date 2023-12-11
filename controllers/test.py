@@ -62,4 +62,4 @@ def controller_data_statistics_sender(aleph_id):
 
 devices = db_conn.get_devices()
 for device in devices:
-    print(controller_data_statistics_sender(device))
+    print(controller_data_statistics_sender(device[0]))
