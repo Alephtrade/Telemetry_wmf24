@@ -44,12 +44,13 @@ def get_service_statistics(device):
     # print(actual)
     if actual is None:
         #print("create")
-        record = db_conn.create_service_record(device[1], date_today)
-        logging.info(f"COFFEE_MACHINE: created record service_stat {record}")
+
         actual = db_conn.get_last_service_statistics(device[1], date_today)
     else:
         if actual[2] == "0":
     # print("form")
+            record = db_conn.create_service_record(device[1], date_today)
+            logging.info(f"COFFEE_MACHINE: created record service_stat {record}")
             request = json.dumps({'function': 'getServiceStatistics'})
             logging.info(f"COFFEE_MACHINE: Sending {request}")
             ws.send(request)
