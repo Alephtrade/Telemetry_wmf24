@@ -21,94 +21,55 @@ from controllers.core.utils import initialize_logger, print_exception, get_bever
 #WS_URL = settings.WS_URL
 #DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
 db_conn = WMFSQLDriver()
-#wmf_conn = WMFMachineErrorConnector()
-#wmf2_conn = WMFMachineStatConnector()
+def get_service_statistics(device):
+    initialize_logger('getServiceStatistics.log')
+    date_today = date.today()
+    logging.info(f"COFFEE_MACHINE: today date in service_stat {date_today}")
 
-#def worker():
-#    time_now = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp() // (60 * 60) * 60 * 60))
-#    prev_hour = time_now - timedelta(hours=1)
-#    unsent_records = db_conn.get_error_records(prev_hour, time_now)
-#    unsent_disconnect_records = db_conn.get_all_error_records_by_code(prev_hour, time_now, "-1")
-#    #return print(unsent_disconnect_records)
-#    print(unsent_records)
-#    date_end_prev_error = prev_hour
-#    wmf_error_time = 0
-#    per_error_time = timedelta()
-#    total_disconnect_time = 0
-#    disconnect_time = timedelta()
-#    for rec_id, error_code, start_time, end_time, error_text in unsent_records:
-#        #print(start_time)
-#        if(type(start_time) is not datetime):
-#            start_time = datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
-#        if (type(end_time) is not datetime):
-#            end_time = datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S')
-#        if start_time < date_end_prev_error:
-#            start_time = date_end_prev_error
-#        if end_time is None or end_time > time_now:
-#            end_time = time_now
-#        if end_time < date_end_prev_error:
-#            end_time = date_end_prev_error
-#        for disconnect_rec_id, disconnect_error_code, disconnect_start_time, disconnect_end_time, disconnect_error_text in unsent_disconnect_records:
-#            # print(start_time)
-#            if (type(disconnect_start_time) is not datetime):
-#                disconnect_start_time = datetime.strptime(disconnect_start_time, '%Y-%m-%d %H:%M:%S')
-#            if (type(disconnect_end_time) is not datetime and disconnect_end_time is not None):
-#                disconnect_end_time = datetime.strptime(disconnect_end_time, '%Y-%m-%d %H:%M:%S')
-#            if disconnect_start_time < start_time: # 3.4.1
-#                disconnect_start_time = prev_hour
-#            if disconnect_end_time is None or disconnect_end_time > time_now: # 3.4.2
-#                disconnect_end_time = time_now
-#            if start_time < disconnect_start_time and end_time > disconnect_end_time: # 3.4.3
-#                start_time = disconnect_end_time - (disconnect_start_time - start_time)
-#            else:
-#                if start_time >= disconnect_start_time and start_time < disconnect_end_time: # 3.4.3.1
-#                    start_time = disconnect_end_time
-#                if end_time > disconnect_start_time and end_time < disconnect_end_time: # 3.4.3.2
-#                    end_time = disconnect_start_time
-#            if disconnect_start_time < time_now:
-#                disconnect_start_time = prev_hour
-#            if disconnect_end_time is None or disconnect_end_time > time_now:
-#                disconnect_end_time = time_now
-#            disconnect_time = disconnect_end_time - disconnect_start_time
-#            disconnect_time = timedelta_int(disconnect_time)
-#            if disconnect_time < 0:
-#                disconnect_time = 0
-#            total_disconnect_time += disconnect_time
-#        per_error_time = end_time - start_time
-#        per_error_time = timedelta_int(per_error_time)
-#        if per_error_time < 0:
-#            per_error_time = 0
-#        wmf_error_time += per_error_time
-#        date_end_prev_error = end_time
+    #print(date_today)
+    try:
+        WS_IP = f'ws://{device[2]}:25000/'
+        ws = websocket.create_connection(WS_IP, timeout=5)
+    except Exception:
+        ws = None
+        logging.info(f"error {ws}")
+        return False
+    actual = db_conn.get_last_service_statistics(device[1], date_today)
+    logging.info(f"COFFEE_MACHINE: last service_stat record {actual}")
+    #print(actual)
+    if actual is None:
+        #print("create")
+        record = db_conn.create_service_record(device[1], date_today)
+        logging.info(f"COFFEE_MACHINE: created record service_stat {record}")
+        actual = db_conn.get_last_service_statistics(device[1], date_today)
+    else:
+        if actual[2] == "0":
+            #print("form")
+            request = json.dumps({'function': 'getServiceStatistics'})
+            logging.info(f"COFFEE_MACHINE: Sending {request}")
+            ws.send(request)
+            received_data = ws.recv()
+            logging.info(f"servicestatistics: Received {received_data}")
+            logging.info(f"COFFEE_MACHINE: Received {device[1]}")
+            text_file = open("response.txt", "a")
+            text_file.write(received_data)
+            ts = time.time()
+            int_ts = int(ts)
+            received_data = received_data.replace(']', '', 1)
+            received_data = received_data + ', {"device" : ' + str(device[1]) + '}, {"timestamp_create" : ' + str(int_ts) + '}]'
 
+            print(received_data)
+            url = "https://backend.wmf24.ru/api/servicestatistics"
+            headers = {
+                'Content-Type': 'application/json',
+                'Serverkey': db_conn.get_encrpt_key()
+            }
+            print(received_data)
+            response = requests.request("POST", url, headers=headers, data=received_data)
+            logging.info(f"servicestatistics: GET response: {response.text}")
+            db_conn.save_status_service_statistics(actual[0], "date_fact_send", str(datetime.fromtimestamp(int((datetime.now()).timestamp()))))
+            db_conn.save_status_service_statistics(actual[0], "is_sent", "1")
+            ws.close()
+            return True
 
-#    print({
-#        "wmf_error_time": wmf_error_time,
-#        "disconnect_time": disconnect_time
-#    })
-
-def worker():
-    #ws = websocket.create_connection(WS_URL, timeout=5)
-    #request = json.dumps({'function': 'deleteRecipe'})
-    #ws.send(request)
-    #received_data = ws.recv()
-    #print(received_data)
-    obj = TimezoneFinder()
-    latitude = 100.7522
-    longitude = 13.6156
-    result = obj.timezone_at(lng=latitude, lat=longitude)
-
-    #return result
-    d = []
-    dt_to_convert = datetime.utcnow().replace(tzinfo=timezone.utc)
-    #d.append(datetime.now(pytz.timezone(result)).strftime("%m/%d/%Y, %H:%M:%S %z"))
-    #d.append(dt_to_convert)
-    tz = datetime.strptime(datetime.now(pytz.timezone(result)).strftime("%z"), '%z').tzinfo
-    #d.append(dt_to_convert.astimezone(tz))
-    #tz = datetime.strptime('+0600', '%z').tzinfo
-    #d.append(dt_to_convert.astimezone().strftime("%m/%d/%Y, %H:%M:%S %z"))
-    new_date = str(dt_to_convert.astimezone(tz))
-    return str(tz)
-    return new_date
-
-#worker()
+print(get_service_statistics())
