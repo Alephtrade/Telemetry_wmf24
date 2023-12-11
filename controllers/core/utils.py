@@ -80,6 +80,7 @@ def get_beverages_send_time(last_send_time):
         minutes_to_go = 0
     else:
         minutes_to_go = minutes_to_go[0]
+    print(minutes_to_go[0])
     a = int(next_time.timestamp() // (60 * 60) * 60 * 60) + int(INTERVAL) * 60 * 60 + minutes_to_go * 60
     if a < int(datetime.now().timestamp()):
         a = int(int(datetime.now().timestamp()) // (60 * 60) * 60 * 60) + int(INTERVAL) * 60 * 60 + minutes_to_go * 60
