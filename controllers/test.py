@@ -42,41 +42,32 @@ def get_service_statistics(device):
     actual = db_conn.get_last_service_statistics(device[1], date_today)
     logging.info(f"COFFEE_MACHINE: last service_stat record {actual}")
     #print(actual)
-    if actual is not None:
-        #print("create")
-        record = db_conn.create_service_record(device[1], date_today)
-        logging.info(f"COFFEE_MACHINE: created record service_stat {record}")
-        actual = db_conn.get_last_service_statistics(device[1], date_today)
-        return actual
-    else:
-        if actual[2] == "0":
             #print("form")
-            request = json.dumps({'function': 'getServiceStatistics'})
-            logging.info(f"COFFEE_MACHINE: Sending {request}")
-            ws.send(request)
-            received_data = ws.recv()
-            logging.info(f"servicestatistics: Received {received_data}")
-            logging.info(f"COFFEE_MACHINE: Received {device[1]}")
-            text_file = open("response.txt", "a")
-            text_file.write(received_data)
-            ts = time.time()
-            int_ts = int(ts)
-            received_data = received_data.replace(']', '', 1)
-            received_data = received_data + ', {"device" : ' + str(device[1]) + '}, {"timestamp_create" : ' + str(int_ts) + '}]'
-
-            print(received_data)
-            url = "https://backend.wmf24.ru/api/servicestatistics"
-            headers = {
-                'Content-Type': 'application/json',
-                'Serverkey': db_conn.get_encrpt_key()
-            }
-            print(received_data)
-            response = requests.request("POST", url, headers=headers, data=received_data)
-            logging.info(f"servicestatistics: GET response: {response.text}")
-            db_conn.save_status_service_statistics(actual[0], "date_fact_send", str(datetime.fromtimestamp(int((datetime.now()).timestamp()))))
-            db_conn.save_status_service_statistics(actual[0], "is_sent", "1")
-            ws.close()
-            return True
+    request = json.dumps({'function': 'getServiceStatistics'})
+    logging.info(f"COFFEE_MACHINE: Sending {request}")
+    ws.send(request)
+    received_data = ws.recv()
+    logging.info(f"servicestatistics: Received {received_data}")
+    logging.info(f"COFFEE_MACHINE: Received {device[1]}")
+    text_file = open("response.txt", "a")
+    text_file.write(received_data)
+    ts = time.time()
+    int_ts = int(ts)
+    received_data = received_data.replace(']', '', 1)
+    received_data = received_data + ', {"device" : ' + str(device[1]) + '}, {"timestamp_create" : ' + str(int_ts) + '}]
+    print(received_data)
+    url = "https://backend.wmf24.ru/api/servicestatistics"
+    headers = {
+        'Content-Type': 'application/json',
+        'Serverkey': db_conn.get_encrpt_key()
+    }
+    print(received_data)
+    response = requests.request("POST", url, headers=headers, data=received_data)
+    logging.info(f"servicestatistics: GET response: {response.text}")
+    db_conn.save_status_service_statistics(actual[0], "date_fact_send", str(datetime.fromtimestamp(int((datetime.now()).timestamp()))))
+    db_conn.save_status_service_statistics(actual[0], "is_sent", "1")
+    ws.close()
+    return True
 
 
 devices = db_conn.get_devices()
