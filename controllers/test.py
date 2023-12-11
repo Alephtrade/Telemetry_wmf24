@@ -26,7 +26,7 @@ from controllers.core.utils import initialize_logger, print_exception, get_bever
 #WS_URL = settings.WS_URL
 #DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
 db_conn = WMFSQLDriver()
-def controller_data_statistics_sender(aleph_id, ip):
+def controller_data_statistics_sender(aleph_id):
     initialize_logger('controller_data_statistics_sender.py.log')
     now_of_hour = str(datetime.fromtimestamp(int(datetime.now().timestamp())))
     data_for_request = []
