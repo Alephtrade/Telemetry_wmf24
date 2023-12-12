@@ -223,7 +223,39 @@ if not does_object_exist('table', 'exchange_php'):
     conn.commit()
 
 add_table_column(table_name='exchange_php', column_name='id', column_type='text')
+add_table_column(table_name='exchange_php', column_name='minutes', column_type='text')
 add_table_column(table_name='exchange_php', column_name='server_key', column_type='text')
+
+if not does_object_exist('table', 'recipes'):
+    stmt = '''
+        create table recipes
+        (
+            id          integer
+                constraint recipes_pk
+                    primary key,
+            aleph_id text,
+            cup_size text,
+            coffee text,
+            water text,
+            milk text,
+            powder text,
+            foam text
+
+        )
+    '''
+    cur.execute(stmt)
+    conn.commit()
+
+add_table_column(table_name='recipes', column_name='id', column_type='text')
+add_table_column(table_name='devices', column_name='aleph_id', column_type='text')
+add_table_column(table_name='recipes', column_name='cup_size', column_type='text')
+add_table_column(table_name='recipes', column_name='coffee', column_type='text')
+add_table_column(table_name='recipes', column_name='water', column_type='text')
+add_table_column(table_name='recipes', column_name='milk', column_type='text')
+add_table_column(table_name='recipes', column_name='powder', column_type='text')
+add_table_column(table_name='recipes', column_name='foam', column_type='text')
+
+
 
 cur.close()
 conn.close()

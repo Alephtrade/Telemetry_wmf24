@@ -26,7 +26,7 @@ def Take_Create_Beverage_Statistics(last_send, device):
     date_to_send = get_beverages_send_time(last_send)
     next_time = datetime.strptime(str(date_to_send), '%Y-%m-%d %H:%M:%S')
     #date_to_send = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp() // (60 * 60) * 60 * 60))
-    date_formed = datetime.fromtimestamp(int(datetime.now().timestamp()))
+    date_formed = datetime.fromtimestamp(int(datetime.now().timestamp() // (60 * 60) * 60 * 60) - 1)
     try:
         WS_IP = f'ws://{device[2]}:25000/'
         ws = websocket.create_connection(WS_IP, timeout=5)
