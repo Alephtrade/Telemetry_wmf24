@@ -255,6 +255,48 @@ add_table_column(table_name='recipes', column_name='milk', column_type='text')
 add_table_column(table_name='recipes', column_name='powder', column_type='text')
 add_table_column(table_name='recipes', column_name='foam', column_type='text')
 
+if not does_object_exist('table', 'pours'):
+    stmt = '''
+        create table pours
+        (
+            id          integer
+                constraint pours_pk
+                    primary key,
+            aleph_id text,
+            recipe_id text,
+            recipe_name text,
+            s text,
+            m text,
+            l text,            
+            water text,
+            coffee text,
+            milk text,
+            powder text,
+            foam text,
+            date_formed text,
+            is_sent text
+
+        )
+    '''
+    cur.execute(stmt)
+    conn.commit()
+
+add_table_column(table_name='pours', column_name='id', column_type='text')
+add_table_column(table_name='pours', column_name='aleph_id', column_type='text')
+add_table_column(table_name='pours', column_name='recipe_id', column_type='text')
+add_table_column(table_name='pours', column_name='recipe_name', column_type='text')
+add_table_column(table_name='pours', column_name='s', column_type='text')
+add_table_column(table_name='pours', column_name='m', column_type='text')
+add_table_column(table_name='pours', column_name='l', column_type='text')
+add_table_column(table_name='pours', column_name='water', column_type='text')
+add_table_column(table_name='pours', column_name='coffee', column_type='text')
+add_table_column(table_name='pours', column_name='milk', column_type='text')
+add_table_column(table_name='pours', column_name='powder', column_type='text')
+add_table_column(table_name='pours', column_name='foam', column_type='text')
+add_table_column(table_name='pours', column_name='date_formed', column_type='text')
+add_table_column(table_name='pours', column_name='is_sent', column_type='text')
+
+
 
 
 cur.close()
