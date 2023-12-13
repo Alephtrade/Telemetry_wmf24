@@ -26,7 +26,7 @@ def test():
             data_for_request["serial_number"] = machine_response["MachineName"]
             data_for_request["model"] = machine_response["ProductName"]
             data_for_request["ip"] = machine_response["ip"]
-            url = "https://backend.wmf24.ru/api/machine_check"
+            url = "https://backend.wmf24.ru/api/machine_ip_address"
             headers = {
                 'Content-Type': 'application/json',
                 'Serverkey': db_conn.get_encrpt_key()[0]
@@ -56,6 +56,7 @@ def require_info(ip):
     except Exception:
         ws = None
     request = json.dumps({'function': 'getMachineInfo'})
+    print()
     print(request)
     print("------------------------------")
     logging.info(f"WMFMachineStatConnector: Sending {request}")
