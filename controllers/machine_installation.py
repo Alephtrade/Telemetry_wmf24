@@ -27,6 +27,7 @@ def test():
             data_for_request["model"] = machine_response["ProductName"]
             data_for_request["ip"] = machine_response["ip"]
             url = "https://backend.wmf24.ru/api/machine_ip_address"
+
             headers = {
                 'Content-Type': 'application/json',
                 'Serverkey': db_conn.get_encrpt_key()[0]
