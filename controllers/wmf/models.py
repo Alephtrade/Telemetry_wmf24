@@ -1,3 +1,5 @@
+import time
+
 import requests
 import websocket
 import json
@@ -35,14 +37,22 @@ class WMFMachineErrorConnector:
                     #if last_error_id != [] and last_error_id is not None:
                     #    if last_error_id[0] != "62" and last_error_id[0] != "-1" or last_error_id[1] is not None:
                     self.db_driver.create_error_record(self.aleph_id, error_code)
+                    time.sleep(1)
                     #else:
                 elif info == "gone Error":
                     self.db_driver.close_error_code(self.aleph_id, error_code)
                     if error_code in self.current_errors:
                         self.current_errors.remove(error_code)
             if data.get("function") == 'startPushDispensingFinished':
-                info = data
-                logging.info(f"WMFMachineConnector: message={data}")
+                recipe_number = data.get("RecipeNumber")
+                cup_size = data.get("CupSize")
+                if cup_size == "CUP_SIZE_Regular":
+                    cup_size = "M"
+                if cup_size == "CUP_SIZE_Small":
+                    cup_size = "S"
+                if cup_size == "CUP_SIZE_Large":
+                    cup_size = "L"
+                ws.send(json.dumps({"function": "getRecipeComposition", "RecipeNumber": recipe_number}))
             # self.db_driver.save_last_record('current_errors', json.dumps(list(self.current_errors)))
         except Exception as ex:
             logging.error(f"WMFMachineConnector handle_error: error={ex}, stacktrace: {print_exception()}")
@@ -59,7 +69,6 @@ class WMFMachineErrorConnector:
         print("opened")
         ws.send(json.dumps({"function": "startPushErrors"}))
         ws.send(json.dumps({"function": "startPushDispensingFinished"}))
-        ws.send(json.dumps({"function": "startPushDispensingStarted"}))
 
     def on_exit(self, ws):
         ws.close()
