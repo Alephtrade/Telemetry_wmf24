@@ -155,7 +155,7 @@ print(devices)
 
 result = []
 for device in devices:
-    print(check_machine_status(device[1], device[2]))
     send_ip_address(device[1], device[2])
+    print(check_machine_status(device[1], device[2]))
     beverages_send_worker(device[1], device[2])
     controller_data_statistics_sender(device[1], device[2])
