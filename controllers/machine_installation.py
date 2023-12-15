@@ -26,7 +26,7 @@ def test():
             data_for_request["serial_number"] = machine_response["MachineName"]
             data_for_request["model"] = machine_response["ProductName"]
             data_for_request["ip"] = machine_response["ip"]
-            url = "https://backend.wmf24.ru/api/machine_ip_address"
+            url = "https://backend.wmf24.ru/api/machine_check"
 
             headers = {
                 'Content-Type': 'application/json',
