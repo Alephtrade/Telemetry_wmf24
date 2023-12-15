@@ -188,6 +188,7 @@ if not does_object_exist('table', 'devices'):
             id          integer
                 constraint devices_pk
                     primary key,
+            serial_code text,
             aleph_id text,
             utc   text,
             address        text,
@@ -200,6 +201,7 @@ if not does_object_exist('table', 'devices'):
     conn.commit()
 
 add_table_column(table_name='devices', column_name='id', column_type='text')
+add_table_column(table_name='devices', column_name='serial_code', column_type='text')
 add_table_column(table_name='devices', column_name='aleph_id', column_type='text')
 add_table_column(table_name='devices', column_name='utc', column_type='text')
 add_table_column(table_name='devices', column_name='address', column_type='text')
