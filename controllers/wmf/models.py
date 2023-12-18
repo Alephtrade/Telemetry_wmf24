@@ -78,20 +78,20 @@ class WMFMachineErrorConnector:
     def __new__(cls, *args, **kwargs):
         cls.current_errors = set()
         cls.previous_errors = set()
+        cls.ws = websocket.WebSocketApp(cls.WS_URL,
+                                         on_open=cls.on_open,
+                                         on_message=cls.on_message,
+                                         on_error=cls.on_error,
+                                         on_close=cls.on_close)
         obj = super().__new__(cls)
         return obj
 
     def __init__(self, aleph_id, ip):
         try:
-
             self.aleph_id = aleph_id
             self.db_driver = WMFSQLDriver()
             self.WS_URL = f'ws://{ip}:{settings.WS_PORT}/'
-            self.ws = websocket.WebSocketApp(self.WS_URL,
-                                             on_open=self.on_open,
-                                             on_message=self.on_message,
-                                             on_error=self.on_error,
-                                             on_close=self.on_close)
+
         except Exception as ex:
             logging.error(f"WMFMachineConnector init: error={ex}, stacktrace: {print_exception()}")
 
