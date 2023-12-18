@@ -1,4 +1,6 @@
 import time
+from datetime import timedelta
+
 import requests
 import websocket
 import json
@@ -6,11 +8,17 @@ import logging
 from controllers.core.utils import print_exception
 from controllers.db.models import WMFSQLDriver
 from controllers.settings import prod as settings
+import threading
+from timeloop import Timeloop
+import atexit
+
 db_conn = WMFSQLDriver()
+
 
 class WMFMachineErrorConnector:
     WMF_URL = settings.WMF_DATA_URL
     DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
+    tl_ident = Timeloop()
 
     def get_status(self):
         try:
@@ -75,6 +83,13 @@ class WMFMachineErrorConnector:
     def on_exit(self, ws):
         ws.close()
 
+    def on_exit_tl(self):
+        try:
+            self.close()
+            self.tl_ident.stop()
+        except Exception as ex:
+            logging.error(f'error_collector on_exit: ERROR={ex}')
+            logging.error(print_exception())
 
     def __init__(self, aleph_id, ip):
         try:
@@ -90,10 +105,54 @@ class WMFMachineErrorConnector:
                                              on_close=self.on_close)
         except Exception as ex:
             logging.error(f"WMFMachineConnector init: error={ex}, stacktrace: {print_exception()}")
+        threading.Thread(target=self.run_websocket, name=aleph_id).start()
+
+        @self.tl_ident.job(interval=timedelta(seconds=settings.ERROR_COLLECTOR_INTERVAL_SECONDS))
+        def send_errors(self, WMF_URL):
+            try:
+                logging.info("error_collector send_errors: CALL")
+                errors, request = '', ''
+                unset_errors = db_conn.get_unsent_records(self.aleph_id)
+                print(unset_errors)
+                if unset_errors:
+                    for record in unset_errors:
+                        print(record)
+                        request = f'{WMF_URL}?device={self.aleph_id}&error_id={record[1]}&date_start={record[2]}&date_end={record[3]}&duration={record[4]}&status={self.get_status()}'
+                        print("errorrrrrrrrrrrrrrrrrrrrr")
+                        print(request)
+                        response = requests.post(request)
+                        content = response.content.decode('utf-8')
+                        if record[3] is not None:
+                            db_conn.set_report_sent(record[0])
+                        else:
+                            db_conn.set_report_pre_sent(record[0])
+                        logging.info(f'error_collector send_errors: <= {response} {content}')
+                else:
+                    unset_errors = db_conn.get_unsent_records_with_end_time(self.aleph_id)
+                    if unset_errors:
+                        for record in unset_errors:
+                            request = f'{WMF_URL}?device={self.aleph_id}&error_id={record[1]}&date_start={record[2]}&date_end={record[3]}&duration={record[4]}&status={self.get_status()}'
+                            print("72")
+                            print(request)
+                            response = requests.post(request)
+                            content = response.content.decode('utf-8')
+                            db_conn.set_report_sent(record[0])
+                            logging.info(f'error_collector send_errors: <= {response} {content}')
+                    else:
+                        request = f'{WMF_URL}?device={self.aleph_id}&error_id=0&status={self.get_status()}'
+                        print("79")
+                        print(request)
+                        response = requests.post(request)
+                        logging.info(f'error_collector send_errors: nothing to send')
+            except Exception as ex:
+                logging.error(f'error_collector send_errors: ERROR={ex}, stacktrace: {print_exception()}')
 
     def run_websocket(self):
         websocket.enableTrace(False)
         self.ws.run_forever()
+        self.tl_ident.start()
+        logging.info('error_collector.py started and running...')
+        atexit.register(self.on_exit_tl(self.tl_ident))
 
     def close(self):
         self.ws.close()
