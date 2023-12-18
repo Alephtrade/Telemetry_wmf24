@@ -1,5 +1,4 @@
 import time
-
 import requests
 import websocket
 import json
@@ -67,7 +66,7 @@ class WMFMachineErrorConnector:
 
     def on_open(self, ws):
         print("opened")
-        print(self.aleph_id)
+        #print(self.aleph_id)
         ws.send(json.dumps({"function": "startPushErrors"}))
         ws.send(json.dumps({"function": "startPushDispensingFinished"}))
 
