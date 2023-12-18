@@ -68,7 +68,7 @@ class WMFMachineErrorConnector:
         print("opened")
         #print(self.aleph_id)
         ws.send(json.dumps({"function": "startPushErrors"}))
-        ws.send(json.dumps({"function": "startPushDispensingFinished"}))
+        #ws.send(json.dumps({"function": "startPushDispensingFinished"}))
 
     def on_exit(self, ws):
         ws.close()
