@@ -79,33 +79,7 @@ class WMFMachineErrorConnector:
         #print(self.aleph_id)
         ws.send(json.dumps({"function": "startPushErrors"}))
         #ws.send(json.dumps({"function": "startPushDispensingFinished"}))
-
-    def on_exit(self, ws):
-        ws.close()
-
-    def on_exit_tl(self):
-        try:
-            self.close()
-            self.tl_ident.stop()
-        except Exception as ex:
-            logging.error(f'error_collector on_exit: ERROR={ex}')
-            logging.error(print_exception())
-
-    def __init__(self, aleph_id, ip):
-        try:
-            self.current_errors = set()
-            self.previous_errors = set()
-            self.aleph_id = aleph_id
-            self.db_driver = WMFSQLDriver()
-            self.WS_URL = f'ws://{ip}:{settings.WS_PORT}/'
-            self.ws = websocket.WebSocketApp(self.WS_URL,
-                                             on_open=self.on_open,
-                                             on_message=self.on_message,
-                                             on_error=self.on_error,
-                                             on_close=self.on_close)
-        except Exception as ex:
-            logging.error(f"WMFMachineConnector init: error={ex}, stacktrace: {print_exception()}")
-        threading.Thread(target=self.run_websocket, name=aleph_id).start()
+        threading.Thread(target=self.run_websocket, name=self.aleph_id).start()
 
         @self.tl_ident.job(interval=timedelta(seconds=settings.ERROR_COLLECTOR_INTERVAL_SECONDS))
         def send_errors(self, WMF_URL):
@@ -147,12 +121,38 @@ class WMFMachineErrorConnector:
             except Exception as ex:
                 logging.error(f'error_collector send_errors: ERROR={ex}, stacktrace: {print_exception()}')
 
+    def on_exit(self, ws):
+        ws.close()
+
+    def on_exit_tl(self):
+        try:
+            self.close()
+            self.tl_ident.stop()
+        except Exception as ex:
+            logging.error(f'error_collector on_exit: ERROR={ex}')
+            logging.error(print_exception())
+
+    def __init__(self, aleph_id, ip):
+        try:
+            self.current_errors = set()
+            self.previous_errors = set()
+            self.aleph_id = aleph_id
+            self.db_driver = WMFSQLDriver()
+            self.WS_URL = f'ws://{ip}:{settings.WS_PORT}/'
+            self.ws = websocket.WebSocketApp(self.WS_URL,
+                                             on_open=self.on_open,
+                                             on_message=self.on_message,
+                                             on_error=self.on_error,
+                                             on_close=self.on_close)
+        except Exception as ex:
+            logging.error(f"WMFMachineConnector init: error={ex}, stacktrace: {print_exception()}")
+
     def run_websocket(self):
         websocket.enableTrace(False)
         self.ws.run_forever()
         self.tl_ident.start()
         logging.info('error_collector.py started and running...')
-        atexit.register(self.on_exit_tl(self.tl_ident))
+        atexit.register(self.on_exit_tl())
 
     def close(self):
         self.ws.close()
