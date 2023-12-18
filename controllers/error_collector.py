@@ -36,7 +36,6 @@ def worker(ip):
             logging.error(print_exception())
 
     @tl_ident.job(interval=timedelta(seconds=settings.ERROR_COLLECTOR_INTERVAL_SECONDS))
-    @tl_ident2.job(interval=timedelta(seconds=settings.ERROR_COLLECTOR_INTERVAL_SECONDS))
     def send_errors():
         try:
             logging.info("error_collector send_errors: CALL")
