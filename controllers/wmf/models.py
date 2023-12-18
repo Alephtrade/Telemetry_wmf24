@@ -25,7 +25,7 @@ class WMFMachineErrorConnector:
     def on_message(self, ws, message):
         print(message)
         print(ws)
-        print(ws.aleph_id)
+        print(self.aleph_id)
         try:
             logging.info(f"WMFMachineConnector: message={json.loads(message.encode('utf-8'))}")
             data = WMFMachineStatConnector.normalize_json(message)
