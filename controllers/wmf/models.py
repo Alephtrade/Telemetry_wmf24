@@ -67,18 +67,23 @@ class WMFMachineErrorConnector:
 
     def on_open(self, ws):
         print("opened")
+        print(self.aleph_id)
         ws.send(json.dumps({"function": "startPushErrors"}))
         ws.send(json.dumps({"function": "startPushDispensingFinished"}))
 
     def on_exit(self, ws):
         ws.close()
 
+    def __new__(cls, *args, **kwargs):
+        cls.current_errors = set()
+        cls.previous_errors = set()
+        obj = super().__new__(cls)
+        return obj
+
     def __init__(self, aleph_id, ip):
         try:
             self.aleph_id = aleph_id
             self.db_driver = WMFSQLDriver()
-            self.current_errors = set()
-            self.previous_errors = set()
             self.WS_URL = f'ws://{ip}:{settings.WS_PORT}/'
             self.ws = websocket.WebSocketApp(self.WS_URL,
                                              on_open=self.on_open,
@@ -89,7 +94,7 @@ class WMFMachineErrorConnector:
             logging.error(f"WMFMachineConnector init: error={ex}, stacktrace: {print_exception()}")
 
     def run_websocket(self):
-        websocket.enableTrace(False)
+        websocket.enableTrace(True)
         self.ws.run_forever()
 
     def close(self):
