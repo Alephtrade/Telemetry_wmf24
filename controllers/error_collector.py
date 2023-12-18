@@ -19,7 +19,6 @@ db_conn = WMFSQLDriver()
 devices = db_conn.get_devices()
 WMF_URL = settings.WMF_DATA_URL
 tl_ident = Timeloop()
-tl_ident2 = Timeloop()
 
 
 def worker(ip):
