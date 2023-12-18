@@ -64,8 +64,9 @@ class WMFMachineErrorConnector:
         logging.info(f"WMFMachineConnector on_close: close_status_code = {close_status_code}, close_msg = {close_msg} ")
         ws.send(json.dumps({"function": "stopPushErrors"}))
 
-    def on_open(self, ws):
+    def on_open(self, ws, aleph_id):
         print("opened")
+        print(aleph_id)
         #print(self.aleph_id)
         ws.send(json.dumps({"function": "startPushErrors"}))
         #ws.send(json.dumps({"function": "startPushDispensingFinished"}))

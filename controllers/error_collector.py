@@ -15,6 +15,9 @@ from controllers.settings import prod as settings
 from controllers.db.models import WMFSQLDriver
 
 threads = {}
+db_conn = WMFSQLDriver()
+devices = db_conn.get_devices()
+result = []
 WMF_URL = settings.WMF_DATA_URL
 tl_ident = Timeloop()
 
@@ -77,14 +80,9 @@ def worker(ip):
     atexit.register(on_exit)
 
 
-db_conn = WMFSQLDriver()
-devices = db_conn.get_devices()
-result = []
-
 for device in devices:
     wmf_conn = WMFMachineErrorConnector(device[1], device[2])
     threading.Thread(target=wmf_conn.run_websocket, name=device[1]).start()
-    threading.Lock()
     worker(device[2])
     print(result)
     print(threading.active_count())
