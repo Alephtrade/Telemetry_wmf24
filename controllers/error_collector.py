@@ -73,16 +73,16 @@ def worker(ip):
                     logging.info(f'error_collector send_errors: nothing to send')
         except Exception as ex:
             logging.error(f'error_collector send_errors: ERROR={ex}, stacktrace: {print_exception()}')
-    tl_ident.setDeamon(True)
+
     tl_ident.start()
     logging.info('error_collector.py started and running...')
     atexit.register(on_exit)
 
 
 for device in devices:
+    worker(device[2])
     wmf_conn = WMFMachineErrorConnector(device[1], device[2])
     threading.Thread(target=wmf_conn.run_websocket, name=device[1]).start()
-    worker(device[2])
     print(threading.active_count())
     print(threading.enumerate())
 
