@@ -16,11 +16,11 @@ from controllers.db.models import WMFSQLDriver
 
 threads = {}
 WMF_URL = settings.WMF_DATA_URL
+tl_ident = Timeloop()
 
 
 def worker(ip):
     print(ip)
-    tl_ident = Timeloop()
     initialize_logger('error_collector.log')
     #return tl_ident.is_alive()
 
