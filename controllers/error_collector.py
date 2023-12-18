@@ -20,20 +20,23 @@ devices = db_conn.get_devices()
 WMF_URL = settings.WMF_DATA_URL
 
 
+
+
 def worker(ip):
     print(ip)
+    threads["tl_ident"+ip] = Timeloop()
     initialize_logger('error_collector.log')
     #return tl_ident.is_alive()
 
     def on_exit():
         try:
             wmf_conn.close()
-            tl_ident.stop()
+            threads["tl_ident"+ip].stop()
         except Exception as ex:
             logging.error(f'error_collector on_exit: ERROR={ex}')
             logging.error(print_exception())
 
-    @tl_ident.job(interval=timedelta(seconds=settings.ERROR_COLLECTOR_INTERVAL_SECONDS))
+    @threads["tl_ident"+ip].job(interval=timedelta(seconds=settings.ERROR_COLLECTOR_INTERVAL_SECONDS))
     def send_errors():
         try:
             logging.info("error_collector send_errors: CALL")
@@ -73,13 +76,12 @@ def worker(ip):
         except Exception as ex:
             logging.error(f'error_collector send_errors: ERROR={ex}, stacktrace: {print_exception()}')
 
-    tl_ident.start()
+    threads["tl_ident"+ip].start()
     logging.info('error_collector.py started and running...')
     atexit.register(on_exit)
 
 
 for device in devices:
-    tl_ident = Timeloop()
     wmf_conn = WMFMachineErrorConnector(device[1], device[2])
     threading.Thread(target=wmf_conn.run_websocket, name=device[1]).start()
     worker(device[2])
