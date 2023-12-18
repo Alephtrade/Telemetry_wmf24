@@ -93,7 +93,7 @@ class WMFMachineErrorConnector:
             logging.error(f"WMFMachineConnector init: error={ex}, stacktrace: {print_exception()}")
 
     def run_websocket(self):
-        websocket.enableTrace(True)
+        websocket.enableTrace(False)
         self.ws.run_forever()
 
     def close(self):
