@@ -12,12 +12,6 @@ class WMFMachineErrorConnector:
     WMF_URL = settings.WMF_DATA_URL
     DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
 
-    def __new__(cls, *args, **kwargs):
-        cls.current_errors = set()
-        cls.previous_errors = set()
-        obj = super().__new__(cls)
-        return obj
-
     def get_status(self):
         try:
             ws = websocket.create_connection(self.WS_URL, timeout=settings.WEBSOCKET_CONNECT_TIMEOUT)
@@ -84,6 +78,8 @@ class WMFMachineErrorConnector:
 
     def __init__(self, aleph_id, ip):
         try:
+            self.current_errors = set()
+            self.previous_errors = set()
             self.aleph_id = aleph_id
             self.db_driver = WMFSQLDriver()
             self.WS_URL = f'ws://{ip}:{settings.WS_PORT}/'
