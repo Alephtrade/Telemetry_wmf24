@@ -80,9 +80,9 @@ def worker(ip):
 
 
 for device in devices:
-    worker(device[2])
     wmf_conn = WMFMachineErrorConnector(device[1], device[2])
     threading.Thread(target=wmf_conn.run_websocket, name=device[1]).start()
+    worker(device[2])
     print(threading.active_count())
     print(threading.enumerate())
 
