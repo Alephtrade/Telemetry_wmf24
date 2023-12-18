@@ -17,7 +17,6 @@ from controllers.db.models import WMFSQLDriver
 threads = {}
 db_conn = WMFSQLDriver()
 devices = db_conn.get_devices()
-result = []
 WMF_URL = settings.WMF_DATA_URL
 tl_ident = Timeloop()
 
@@ -74,7 +73,7 @@ def worker(ip):
                     logging.info(f'error_collector send_errors: nothing to send')
         except Exception as ex:
             logging.error(f'error_collector send_errors: ERROR={ex}, stacktrace: {print_exception()}')
-
+    tl_ident.setDeamon(True)
     tl_ident.start()
     logging.info('error_collector.py started and running...')
     atexit.register(on_exit)
@@ -84,7 +83,6 @@ for device in devices:
     wmf_conn = WMFMachineErrorConnector(device[1], device[2])
     threading.Thread(target=wmf_conn.run_websocket, name=device[1]).start()
     worker(device[2])
-    print(result)
     print(threading.active_count())
     print(threading.enumerate())
 
