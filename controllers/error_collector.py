@@ -27,10 +27,10 @@ def worker(tl_ident, aleph_id, ip):
 db_conn = WMFSQLDriver()
 devices = db_conn.get_devices()
 result = []
+tl_ident = Timeloop()
 
 for device in devices:
     wmf_conn = WMFMachineErrorConnector(device[1], device[2])
-    tl_ident = Timeloop()
     threading.Thread(target=wmf_conn.run_websocket, name=device[1]).start()
     worker(tl_ident, device[1], device[2])
     print(result)
