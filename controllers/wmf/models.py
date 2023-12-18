@@ -80,6 +80,7 @@ class WMFMachineErrorConnector:
         try:
             self.aleph_id = aleph_id
             alp = self.aleph_id
+            self.alp = []
             self.alp.current_errors = set()
             self.alp.previous_errors = set()
             self.db_driver = WMFSQLDriver()
