@@ -12,6 +12,11 @@ class WMFMachineErrorConnector:
     WMF_URL = settings.WMF_DATA_URL
     DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
 
+    def __new__(cls, *args, **kwargs):
+        cls.current_errors = set()
+        cls.previous_errors = set()
+        obj = super().__new__(cls)
+        return obj
 
     def get_status(self):
         try:
@@ -76,11 +81,6 @@ class WMFMachineErrorConnector:
     def on_exit(self, ws):
         ws.close()
 
-    def __new__(cls, *args, **kwargs):
-        cls.current_errors = set()
-        cls.previous_errors = set()
-        obj = super().__new__(cls)
-        return obj
 
     def __init__(self, aleph_id, ip):
         try:
