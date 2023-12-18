@@ -19,6 +19,7 @@ db_conn = WMFSQLDriver()
 devices = db_conn.get_devices()
 WMF_URL = settings.WMF_DATA_URL
 tl_ident = Timeloop()
+tl_ident2 = Timeloop()
 
 
 def worker(ip):
@@ -35,6 +36,7 @@ def worker(ip):
             logging.error(print_exception())
 
     @tl_ident.job(interval=timedelta(seconds=settings.ERROR_COLLECTOR_INTERVAL_SECONDS))
+    @tl_ident2.job(interval=timedelta(seconds=settings.ERROR_COLLECTOR_INTERVAL_SECONDS))
     def send_errors():
         try:
             logging.info("error_collector send_errors: CALL")
