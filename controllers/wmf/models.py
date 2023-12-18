@@ -79,7 +79,7 @@ class WMFMachineErrorConnector:
     def __init__(self, aleph_id, ip):
         try:
             self.aleph_id = aleph_id
-            self.alp = []
+            self.alp = {}
             self.alp.current_errors = set()
             self.alp.previous_errors = set()
             self.db_driver = WMFSQLDriver()
