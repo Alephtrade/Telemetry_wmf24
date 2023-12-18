@@ -32,7 +32,7 @@ class WMFMachineErrorConnector:
                 info = data.get("Info")
                 error_code = data.get("ErrorCode")
                 if info == "new Error":
-                    self.current_errors.add(data.get("ErrorCode"))
+                    self.alp.current_errors.add(data.get("ErrorCode"))
                     #last_error_id = db_conn.get_error_last_record()
                     #if last_error_id != [] and last_error_id is not None:
                     #    if last_error_id[0] != "62" and last_error_id[0] != "-1" or last_error_id[1] is not None:
@@ -41,8 +41,8 @@ class WMFMachineErrorConnector:
                     #else:
                 elif info == "gone Error":
                     self.db_driver.close_error_code(self.aleph_id, error_code)
-                    if error_code in self.current_errors:
-                        self.current_errors.remove(error_code)
+                    if error_code in self.alp.current_errors:
+                        self.alp.current_errors.remove(error_code)
             if data.get("function") == 'startPushDispensingFinished':
                 recipe_number = data.get("RecipeNumber")
                 cup_size = data.get("CupSize")
@@ -78,9 +78,10 @@ class WMFMachineErrorConnector:
 
     def __init__(self, aleph_id, ip):
         try:
-            self.current_errors = set()
-            self.previous_errors = set()
             self.aleph_id = aleph_id
+            alp = self.aleph_id
+            self.alp.current_errors = set()
+            self.alp.previous_errors = set()
             self.db_driver = WMFSQLDriver()
             self.WS_URL = f'ws://{ip}:{settings.WS_PORT}/'
             self.ws = websocket.WebSocketApp(self.WS_URL,
