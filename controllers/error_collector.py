@@ -24,19 +24,19 @@ WMF_URL = settings.WMF_DATA_URL
 
 def worker(ip):
     print(ip)
-    threads["tl_ident"+ip] = Timeloop()
+    tl_ident = Timeloop()
     initialize_logger('error_collector.log')
     #return tl_ident.is_alive()
 
     def on_exit():
         try:
             wmf_conn.close()
-            threads["tl_ident"+ip].stop()
+            tl_ident.stop()
         except Exception as ex:
             logging.error(f'error_collector on_exit: ERROR={ex}')
             logging.error(print_exception())
 
-    @(threads["tl_ident"+ip]).job(interval=timedelta(seconds=settings.ERROR_COLLECTOR_INTERVAL_SECONDS))
+    @tl_ident.job(interval=timedelta(seconds=settings.ERROR_COLLECTOR_INTERVAL_SECONDS))
     def send_errors():
         try:
             logging.info("error_collector send_errors: CALL")
@@ -76,7 +76,7 @@ def worker(ip):
         except Exception as ex:
             logging.error(f'error_collector send_errors: ERROR={ex}, stacktrace: {print_exception()}')
 
-    threads["tl_ident"+ip].start()
+    tl_ident.start()
     logging.info('error_collector.py started and running...')
     atexit.register(on_exit)
 
