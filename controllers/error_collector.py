@@ -18,13 +18,11 @@ threads = {}
 db_conn = WMFSQLDriver()
 devices = db_conn.get_devices()
 WMF_URL = settings.WMF_DATA_URL
-
-
+tl_ident = Timeloop()
 
 
 def worker(ip):
     print(ip)
-    tl_ident = Timeloop()
     initialize_logger('error_collector.log')
     #return tl_ident.is_alive()
 
