@@ -53,6 +53,18 @@ class WMFSQLDriver:
         cur.close()
         return True
 
+    def update_device_ping_time(self, aleph_id, status, time):
+        cur = self.connection.cursor()
+        stmt = ''' 
+            UPDATE devices 
+            SET status = ?, last_connection = ?
+            WHERE aleph_id = ?
+        '''
+        cur.execute(stmt, (status, time, aleph_id))
+        self.connection.commit()
+        cur.close()
+        return True
+
     def get_device_field_by_aleph_id(self, aleph_id, field_name):
         cur = self.connection.cursor()
         stmt = f'''

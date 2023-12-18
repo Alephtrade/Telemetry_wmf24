@@ -120,6 +120,7 @@ def check_machine_status(aleph_id, ip):
         end_time = time()
         last_id = 0
     render_errors_closing(aleph_id, ip, last_id, end_time, status)
+    db_driver.update_device_ping_time(aleph_id, status, datetime.fromtimestamp(int(datetime.now().timestamp())))
     return status
 
     #db_driver.close()
