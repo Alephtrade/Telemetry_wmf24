@@ -14,7 +14,13 @@ from controllers.db.models import WMFSQLDriver
 from controllers.settings import prod as settings
 
 db_conn = WMFSQLDriver()
-
+columns = {
+    "water": {"count": 0, "weight": 0},
+    "coffe": {"count": 0, "weight": 0},
+    "milk": {"count": 0, "weight": 0},
+    "powder": {"count": 0, "weight": 0},
+    "foam": {"count": 0, "weight": 0},
+}
 devices = db_conn.get_devices()
 for device in devices:
     WS_URL = f'ws://{device[2]}:{settings.WS_PORT}/'
@@ -33,5 +39,5 @@ for device in devices:
         for i in var:
             formatted[i] = var[i]
     for vat in formatted["Parts"]:
-        print(vat)
+        print(vat["Type"])
     #print(formatted)
