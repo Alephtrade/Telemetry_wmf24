@@ -42,7 +42,7 @@ for device in devices:
         print(vat["Type"])
         print(formatted)
         if vat["Type"] == "coffee":
-            columns["coffe"]["count"] += 1
+            columns["coffee"]["count"] += 1
         if vat["Type"] == "coldmilk" or vat["Type"] == "milk":
             columns["milk"]["count"] += 1
         if vat["Type"] == "milkfoam" or vat["Type"] == "coldfoam":
