@@ -6,6 +6,7 @@ import logging
 from controllers.core.utils import print_exception
 from controllers.db.models import WMFSQLDriver
 from controllers.settings import prod as settings
+from collections import deque
 db_conn = WMFSQLDriver()
 
 class WMFMachineErrorConnector:
@@ -52,10 +53,14 @@ class WMFMachineErrorConnector:
                 if cup_size == "CUP_SIZE_Large":
                     cup_size = "L"
                 recipe_db = self.db_driver.find_machines_recipe_by_id(self.aleph_id, recipe_number)
-                get_recipe = ws.send(json.dumps({"function": "getRecipeComposition", "RecipeNumber": recipe_number})).recv()
+                ws.send(json.dumps({"function": "getRecipeComposition", "RecipeNumber": recipe_number}))
+                received_data = ws.recv()
+                received_data2 = deque(json.loads(received_data))
+                formatted = {}
+                for var in list(received_data2):
+                    for i in var:
+                        formatted[i] = var[i]
                 if recipe_db and recipe_db is not None:
-
-
 
             # self.db_driver.save_last_record('current_errors', json.dumps(list(self.current_errors)))
         except Exception as ex:

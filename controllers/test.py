@@ -17,7 +17,7 @@ db_conn = WMFSQLDriver()
 
 devices = db_conn.get_devices()
 for device in devices:
-    WS_URL = f'ws://{devices[2]}:{settings.WS_PORT}/'
+    WS_URL = f'ws://{device[2]}:{settings.WS_PORT}/'
     ws = websocket.create_connection(WS_URL, timeout=5)
     request = json.dumps({"function": "getRecipeComposition", "RecipeNumber": 27})
     print()
@@ -32,5 +32,6 @@ for device in devices:
     for var in list(received_data2):
         for i in var:
             formatted[i] = var[i]
-    formatted["ip"] = ip
-    return formatted
+    for vat in formatted["Parts"]:
+        print(vat)
+    #print(formatted)
