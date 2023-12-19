@@ -16,7 +16,7 @@ from controllers.settings import prod as settings
 db_conn = WMFSQLDriver()
 columns = {
     "water": {"count": 0, "weight": 0},
-    "coffe": {"count": 0, "weight": 0},
+    "coffee": {"count": 0, "weight": 0},
     "milk": {"count": 0, "weight": 0},
     "powder": {"count": 0, "weight": 0},
     "foam": {"count": 0, "weight": 0},
@@ -41,12 +41,15 @@ for device in devices:
         print(device[2])
         print(vat["Type"])
         print(formatted)
+        if vat["Type"] == "coffee":
+            columns["coffe"]["count"] += 1
         if vat["Type"] == "coldmilk" or vat["Type"] == "milk":
-            print("milk")
-        if vat["Type"] == "milkfoam " or vat["Type"] == "coldfoam":
+            columns["milk"]["count"] += 1
+        if vat["Type"] == "milkfoam" or vat["Type"] == "coldfoam":
             print("foam")
-        if vat["Type"] == "hotwater " or vat["Type"] == "water":
+            columns["foam"]["count"] += 1
+        if vat["Type"] == "hotwater" or vat["Type"] == "water":
             print("water")
-        if vat["Type"] == "coldmilk" or vat["Type"] == "milk":
-            print("milk")
+            columns["water"]["count"] += 1
+
     #print(formatted)
