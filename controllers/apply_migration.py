@@ -237,7 +237,6 @@ if not does_object_exist('table', 'recipes'):
                     primary key,
             aleph_id text,
             recipe_id text,
-            cup_size text,
             coffee text,
             water text,
             milk text,
@@ -252,7 +251,6 @@ if not does_object_exist('table', 'recipes'):
 add_table_column(table_name='recipes', column_name='id', column_type='text')
 add_table_column(table_name='recipes', column_name='aleph_id', column_type='text')
 add_table_column(table_name='recipes', column_name='recipe_id', column_type='text')
-add_table_column(table_name='recipes', column_name='cup_size', column_type='text')
 add_table_column(table_name='recipes', column_name='coffee', column_type='text')
 add_table_column(table_name='recipes', column_name='water', column_type='text')
 add_table_column(table_name='recipes', column_name='milk', column_type='text')
@@ -269,9 +267,7 @@ if not does_object_exist('table', 'pours'):
             aleph_id text,
             recipe_id text,
             recipe_name text,
-            s text,
-            m text,
-            l text,            
+            cup_size text,            
             water text,
             coffee text,
             milk text,
@@ -289,9 +285,7 @@ add_table_column(table_name='pours', column_name='id', column_type='text')
 add_table_column(table_name='pours', column_name='aleph_id', column_type='text')
 add_table_column(table_name='pours', column_name='recipe_id', column_type='text')
 add_table_column(table_name='pours', column_name='recipe_name', column_type='text')
-add_table_column(table_name='pours', column_name='s', column_type='text')
-add_table_column(table_name='pours', column_name='m', column_type='text')
-add_table_column(table_name='pours', column_name='l', column_type='text')
+add_table_column(table_name='pours', column_name='cup_size', column_type='text')
 add_table_column(table_name='pours', column_name='water', column_type='text')
 add_table_column(table_name='pours', column_name='coffee', column_type='text')
 add_table_column(table_name='pours', column_name='milk', column_type='text')
