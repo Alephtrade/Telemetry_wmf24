@@ -26,7 +26,6 @@ for device in devices:
     WS_URL = f'ws://{device[2]}:{settings.WS_PORT}/'
     ws = websocket.create_connection(WS_URL, timeout=5)
     request = json.dumps({"function": "getRecipeComposition", "RecipeNumber": 27})
-    print()
     print(request)
     print("------------------------------")
     logging.info(f"WMFMachineStatConnector: Sending {request}")
@@ -42,4 +41,12 @@ for device in devices:
         print(device[2])
         print(vat["Type"])
         print(formatted)
+        if vat["Type"] == "coldmilk" or vat["Type"] == "milk":
+            print("milk")
+        if vat["Type"] == "milkfoam " or vat["Type"] == "coldfoam":
+            print("foam")
+        if vat["Type"] == "hotwater " or vat["Type"] == "water":
+            print("water")
+        if vat["Type"] == "coldmilk" or vat["Type"] == "milk":
+            print("milk")
     #print(formatted)
