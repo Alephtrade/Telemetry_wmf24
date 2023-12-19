@@ -39,5 +39,7 @@ for device in devices:
         for i in var:
             formatted[i] = var[i]
     for vat in formatted["Parts"]:
+        print(device[2])
         print(vat["Type"])
+        print(formatted)
     #print(formatted)
