@@ -61,6 +61,7 @@ class WMFMachineErrorConnector:
                     for i in var:
                         formatted[i] = var[i]
                 if recipe_db and recipe_db is not None:
+                    print(1)
 
             # self.db_driver.save_last_record('current_errors', json.dumps(list(self.current_errors)))
         except Exception as ex:
