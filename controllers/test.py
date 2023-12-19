@@ -14,15 +14,16 @@ from controllers.db.models import WMFSQLDriver
 from controllers.settings import prod as settings
 
 db_conn = WMFSQLDriver()
-columns = {
-    "water": {"count": 0, "weight": 0},
-    "coffee": {"count": 0, "weight": 0},
-    "milk": {"count": 0, "weight": 0},
-    "powder": {"count": 0, "weight": 0},
-    "foam": {"count": 0, "weight": 0},
-}
+
 devices = db_conn.get_devices()
 for device in devices:
+    columns = {
+        "water": {"count": 0, "weight": 0},
+        "coffee": {"count": 0, "weight": 0},
+        "milk": {"count": 0, "weight": 0},
+        "powder": {"count": 0, "weight": 0},
+        "foam": {"count": 0, "weight": 0},
+    }
     WS_URL = f'ws://{device[2]}:{settings.WS_PORT}/'
     ws = websocket.create_connection(WS_URL, timeout=5)
     request = json.dumps({"function": "getRecipeComposition", "RecipeNumber": 88})
