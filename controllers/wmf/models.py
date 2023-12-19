@@ -37,7 +37,6 @@ class WMFMachineErrorConnector:
                     #if last_error_id != [] and last_error_id is not None:
                     #    if last_error_id[0] != "62" and last_error_id[0] != "-1" or last_error_id[1] is not None:
                     self.db_driver.create_error_record(self.aleph_id, error_code)
-                    time.sleep(1)
                     #else:
                 elif info == "gone Error":
                     self.db_driver.close_error_code(self.aleph_id, error_code)

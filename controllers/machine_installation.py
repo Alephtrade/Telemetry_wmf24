@@ -45,6 +45,7 @@ def test():
                     db_conn.connection.cursor().close()
                 else:
                     db_conn.update_device_info(str(aleph_id), str(utc_calc(latitude, longitude)), str(machine_response["ip"]), str(machine_response["ProductName"]), str(1))
+                    db_conn.update_device_ping_time(str(aleph_id), 1, datetime.fromtimestamp(int(datetime.now().timestamp())))
                 machine.append(machine_response)
                 db_conn.close()
                 #ips.append(require(host))
