@@ -41,14 +41,16 @@ for device in devices:
     for vat in formatted["Parts"]:
         print(formatted["Parts"])
         if vat["Type"] == "coffee":
+            columns["coffee"]["weight"] = columns["coffee"]["weight"] + vat['QtyPowder']
             columns["coffee"]["count"] = columns["coffee"]["count"] + 1
         if vat["Type"] == "coldmilk" or vat["Type"] == "milk":
+            columns["milk"]["weight"] = columns["milk"]["weight"] + vat['QtyMilk']
             columns["milk"]["count"] = columns["milk"]["count"] + 1
         if vat["Type"] == "milkfoam" or vat["Type"] == "coldfoam":
-            print("foam")
+            columns["foam"]["weight"] = columns["foam"]["weight"] + vat['QtyFoam']
             columns["foam"]["count"] = columns["foam"]["count"] + 1
         if vat["Type"] == "hotwater" or vat["Type"] == "water":
-            print("water")
+            columns["water"]["weight"] = columns["water"]["weight"] + vat['QtyWater']
             columns["water"]["count"] = columns["water"]["count"] + 1
     print(columns)
 
