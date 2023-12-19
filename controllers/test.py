@@ -39,6 +39,7 @@ for device in devices:
         for i in var:
             formatted[i] = var[i]
     for vat in formatted["Parts"]:
+        print(vat)
         if vat["Type"] == "coffee":
             columns["coffee"]["count"] = columns["coffee"]["count"] + 1
         if vat["Type"] == "coldmilk" or vat["Type"] == "milk":
