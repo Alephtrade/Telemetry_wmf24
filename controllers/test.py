@@ -40,15 +40,15 @@ for device in devices:
             formatted[i] = var[i]
     for vat in formatted["Parts"]:
         if vat["Type"] == "coffee":
-            columns["coffee"]["count"] += 1
+            columns["coffee"]["count"] = columns["coffee"]["count"] + 1
         if vat["Type"] == "coldmilk" or vat["Type"] == "milk":
-            columns["milk"]["count"] += 1
+            columns["milk"]["count"] = columns["milk"]["count"] + 1
         if vat["Type"] == "milkfoam" or vat["Type"] == "coldfoam":
             print("foam")
-            columns["foam"]["count"] += 1
+            columns["foam"]["count"] = columns["foam"]["count"] + 1
         if vat["Type"] == "hotwater" or vat["Type"] == "water":
             print("water")
-            columns["water"]["count"] += 1
+            columns["water"]["count"] = columns["water"]["count"] + 1
         print(columns)
 
     #print(formatted)
