@@ -53,5 +53,6 @@ for device in devices:
             columns["water"]["weight"] = columns["water"]["weight"] + vat['QtyWater']
             columns["water"]["count"] = columns["water"]["count"] + 1
     print(columns)
+    print(formatted["Name"])
 
     #print(formatted)
