@@ -25,7 +25,7 @@ devices = db_conn.get_devices()
 for device in devices:
     WS_URL = f'ws://{device[2]}:{settings.WS_PORT}/'
     ws = websocket.create_connection(WS_URL, timeout=5)
-    request = json.dumps({"function": "getRecipeComposition", "RecipeNumber": 27})
+    request = json.dumps({"function": "getRecipeComposition", "RecipeNumber": 88})
     print(request)
     print("------------------------------")
     logging.info(f"WMFMachineStatConnector: Sending {request}")
