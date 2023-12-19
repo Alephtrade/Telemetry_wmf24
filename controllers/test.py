@@ -51,5 +51,6 @@ for device in devices:
         if vat["Type"] == "hotwater" or vat["Type"] == "water":
             print("water")
             columns["water"]["count"] += 1
+        print(columns)
 
     #print(formatted)
