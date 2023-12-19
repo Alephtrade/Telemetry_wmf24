@@ -15,6 +15,19 @@ class WMFSQLDriver:
     def close(self):
         self.connection.close()
 
+    def find_machines_recipe_by_id(self, aleph_id, recipe_id):
+        cur = self.connection.cursor()
+        stmt = f'''
+                    SELECT id, aleph_id, recipe_id, cup_size, coffee, water, milk, powder, foam FROM recipes
+                    WHERE recipe_id = "{recipe_id}" AND aleph_id = "{aleph_id}"
+                    ORDER BY id DESC 
+                    LIMIT 1
+                '''
+        cur.execute(stmt)
+        res = cur.fetchone()
+        cur.close()
+        return res
+
     def get_encrpt_key(self):
         cur = self.connection.cursor()
         stmt = f'''SELECT server_key FROM exchange_php LIMIT 1'''

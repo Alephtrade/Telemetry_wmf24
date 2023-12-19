@@ -51,7 +51,12 @@ class WMFMachineErrorConnector:
                     cup_size = "S"
                 if cup_size == "CUP_SIZE_Large":
                     cup_size = "L"
-                ws.send(json.dumps({"function": "getRecipeComposition", "RecipeNumber": recipe_number}))
+                recipe_db = self.db_driver.find_machines_recipe_by_id(self.aleph_id, recipe_number)
+                get_recipe = ws.send(json.dumps({"function": "getRecipeComposition", "RecipeNumber": recipe_number})).recv()
+                if recipe_db and recipe_db is not None:
+
+
+
             # self.db_driver.save_last_record('current_errors', json.dumps(list(self.current_errors)))
         except Exception as ex:
             logging.error(f"WMFMachineConnector handle_error: error={ex}, stacktrace: {print_exception()}")

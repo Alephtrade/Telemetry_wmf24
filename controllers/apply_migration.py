@@ -236,6 +236,7 @@ if not does_object_exist('table', 'recipes'):
                 constraint recipes_pk
                     primary key,
             aleph_id text,
+            recipe_id text,
             cup_size text,
             coffee text,
             water text,
@@ -250,6 +251,7 @@ if not does_object_exist('table', 'recipes'):
 
 add_table_column(table_name='recipes', column_name='id', column_type='text')
 add_table_column(table_name='recipes', column_name='aleph_id', column_type='text')
+add_table_column(table_name='recipes', column_name='recipe_id', column_type='text')
 add_table_column(table_name='recipes', column_name='cup_size', column_type='text')
 add_table_column(table_name='recipes', column_name='coffee', column_type='text')
 add_table_column(table_name='recipes', column_name='water', column_type='text')
