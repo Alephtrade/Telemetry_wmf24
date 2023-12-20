@@ -74,14 +74,19 @@ class WMFMachineErrorConnector:
                     "foam": {"count": 0, "weight": 0}, #foam
                 }
                 if data.get("QtyWater") != 0:
+                #    columns["water"]["count"] = 1
                     columns["water"]["weight"] = data.get('QtyWater')
                 if data.get('QtyGrinder1') != 0 or data.get("QtyGrinder2") != 0 or data.get("QtyGrinder3") != 0 or data.get("QtyGrinder4") != 0:
+                #    columns["coffee"]["count"] = 1
                     columns["coffee"]["weight"] = data.get('QtyGrinder1') + data.get('QtyGrinder2') + data.get('QtyGrinder3') + data.get('QtyGrinder4')
                 if data.get('QtyMilk1') != 0 or data.get('QtyMilk2') != 0:
+                #    columns["milk"]["count"] = 1
                     columns["milk"]["weight"] = data.get('QtyMilk1') + data.get("QtyMilk2")
                 if data.get('QtyPowder1') != 0 or data.get('QtyPowder2') != 0:
+                #    columns["powder"]["count"] = 1
                     columns["powder"]["weight"] = data.get('QtyPowder1') + data.get('QtyPowder2')
                 if data.get('QtyFoam1') != 0 or data.get('QtyFoam2') != 0:
+                #    columns["foam"]["count"] = 1
                     columns["foam"]["weight"] = data.get('QtyFoam1') + data.get('QtyFoam2')
                 print(0000000000000000000000)
                 print(columns)
@@ -95,7 +100,6 @@ class WMFMachineErrorConnector:
                 for vat in formatted["Parts"]:
                     print(formatted["Parts"])
                     if vat["Type"] == "coffee":
-                        columns["coffee"]["weight"] = int(columns["coffee"]["weight"] + vat['QtyPowder']) # округлить значение
                         columns["coffee"]["count"] = columns["coffee"]["count"] + 1
                     if vat["Type"] == "coldmilk" or vat["Type"] == "milk":
                         columns["milk"]["weight"] = int(columns["milk"]["weight"] + vat['QtyMilk'])
@@ -106,6 +110,10 @@ class WMFMachineErrorConnector:
                     if vat["Type"] == "hotwater" or vat["Type"] == "water":
                         columns["water"]["weight"] = int(columns["water"]["weight"] + vat['QtyWater'])
                         columns["water"]["count"] = columns["water"]["count"] + 1
+                columns["coffee"]["weight"] = int(columns["coffee"]["weight"] * columns["coffee"]["count"])
+                columns["milk"]["weight"] = int(columns["coffee"]["weight"] * columns["milk"]["count"])  # округлить значение
+                columns["foam"]["weight"] = int(columns["coffee"]["weight"] * columns["foam"]["count"])  # округлить значение
+                columns["water"]["weight"] = int(columns["coffee"]["weight"] * columns["water"]["count"])  # округлить значение                # округлить значение
                 print(22222222222222222222222222)
                 print(columns)
             # self.db_driver.save_last_record('current_errors', json.dumps(list(self.current_errors)))
