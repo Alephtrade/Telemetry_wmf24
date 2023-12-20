@@ -85,9 +85,18 @@ def worker(ip):
 for device in devices:
     try:
         ws = websocket.create_connection(f'ws://{device[2]}:25000/', timeout=5)
-        print({device[1] + "DONE"})
+        status = 1
     except Exception:
-        print({device[1] + "FALSE"})
+        status = 0
+    data = {}
+    data['aleph_id'] = device[1]
+    data["status"] = device[2]
+    url = "https://backend.wmf24.ru/api/km_status"
+    headers = {
+        'Content-Type': 'application/json',
+        'Serverkey': db_conn.get_encrpt_key()[0]
+    }
+    requests.request("POST", url, headers=headers, json=data)
     #wmf_conn = WMFMachineErrorConnector(device[1], device[2])
     #threading.Thread(target=wmf_conn.run_websocket, name=device[1]).start()
     #worker(device[2])
