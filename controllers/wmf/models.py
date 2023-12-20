@@ -115,9 +115,9 @@ class WMFMachineErrorConnector:
                 print(columns["water"]["weight"])
                 print(columns["water"]["count"])
                 columns["coffee"]["weight"] = int(columns["coffee"]["weight"] * columns["coffee"]["count"])
-                columns["milk"]["weight"] = int(columns["coffee"]["weight"] * columns["milk"]["count"])  # округлить значение
-                columns["foam"]["weight"] = int(columns["coffee"]["weight"] * columns["foam"]["count"])  # округлить значение
-                columns["water"]["weight"] = int(columns["coffee"]["weight"] * columns["water"]["count"])  # округлить значение                # округлить значение
+                columns["milk"]["weight"] = int(columns["milk"]["weight"] * columns["milk"]["count"])  # округлить значение
+                columns["foam"]["weight"] = int(columns["foam"]["weight"] * columns["foam"]["count"])  # округлить значение
+                columns["water"]["weight"] = int(columns["water"]["weight"] * columns["water"]["count"])  # округлить значение                # округлить значение
                 print(22222222222222222222222222)
                 print(columns)
             # self.db_driver.save_last_record('current_errors', json.dumps(list(self.current_errors)))
