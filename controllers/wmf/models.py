@@ -102,13 +102,13 @@ class WMFMachineErrorConnector:
                     if vat["Type"] == "coffee":
                         columns["coffee"]["count"] = columns["coffee"]["count"] + 1
                     if vat["Type"] == "coldmilk" or vat["Type"] == "milk":
-                        columns["milk"]["weight"] = int(columns["milk"]["weight"] + vat['QtyMilk'])
+                        #columns["milk"]["weight"] = int(columns["milk"]["weight"] + vat['QtyMilk'])
                         columns["milk"]["count"] = columns["milk"]["count"] + 1
                     if vat["Type"] == "milkfoam" or vat["Type"] == "coldfoam":
-                        columns["foam"]["weight"] = int(columns["foam"]["weight"] + vat['QtyFoam'])
+                        #columns["foam"]["weight"] = int(columns["foam"]["weight"] + vat['QtyFoam'])
                         columns["foam"]["count"] = columns["foam"]["count"] + 1
                     if vat["Type"] == "hotwater" or vat["Type"] == "water":
-                        columns["water"]["weight"] = int(columns["water"]["weight"] + vat['QtyWater'])
+                        #columns["water"]["weight"] = int(columns["water"]["weight"] + vat['QtyWater'])
                         columns["water"]["count"] = columns["water"]["count"] + 1
                 columns["coffee"]["weight"] = int(columns["coffee"]["weight"] * columns["coffee"]["count"])
                 columns["milk"]["weight"] = int(columns["coffee"]["weight"] * columns["milk"]["count"])  # округлить значение
