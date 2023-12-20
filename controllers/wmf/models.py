@@ -61,10 +61,6 @@ class WMFMachineErrorConnector:
                 received_data2 = recipes.getRecipeComposition(self.ip, recipe_number)
                 #received_data2 = deque(json.loads(received_data))
                 print("received_data")
-                formatted = {}
-                for var in list(received_data2):
-                    for i in var:
-                        formatted[i] = var[i]
                 if recipe_db and recipe_db is not None:
                     columns = {
                         0: {"count": 0, "weight": 0}, #water
@@ -93,12 +89,8 @@ class WMFMachineErrorConnector:
                     received = ws.send(request)
                     logging.info(f"WMFMachineStatConnector: Received {received}")
                     receiveddata2 = deque(json.loads(received))
-                    formatted = {}
-                    for var in list(receiveddata2):
-                        for i in var:
-                            formatted[i] = var[i]
-                    for vat in formatted["Parts"]:
-                        print(formatted["Parts"])
+                    for vat in receiveddata2["Parts"]:
+                        print(receiveddata2["Parts"])
                         if vat["Type"] == "coffee":
                             columns["coffee"]["weight"] = columns["coffee"]["weight"] + vat['QtyPowder'] # округлить значение
                             columns["coffee"]["count"] = columns["coffee"]["count"] + 1
