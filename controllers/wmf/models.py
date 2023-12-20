@@ -61,6 +61,7 @@ class WMFMachineErrorConnector:
                 received_data2 = recipes.getRecipeComposition(self.ip, recipe_number)
                 #received_data2 = deque(json.loads(received_data))
                 print("received_data")
+                print(received_data2)
                 print(received_data2['QtyWater'])
                 if recipe_db and recipe_db is not None:
                     columns = {
