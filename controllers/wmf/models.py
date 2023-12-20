@@ -44,7 +44,7 @@ class WMFMachineErrorConnector:
                     self.db_driver.close_error_code(self.aleph_id, error_code)
                     if error_code in self.current_errors:
                         self.current_errors.remove(error_code)
-            if data.get("function") == 'startPushDispensingFinished' or data.get("function") == 'getRecipeComposition':
+            if data.get("function") == 'startPushDispensingFinished':
                 print("start")
                 print(data.get("RecipeNumber"))
                 recipe_number = data.get("RecipeNumber")
