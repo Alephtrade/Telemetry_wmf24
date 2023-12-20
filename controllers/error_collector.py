@@ -96,7 +96,8 @@ for device in devices:
         'Content-Type': 'application/json',
         'Serverkey': db_conn.get_encrpt_key()[0]
     }
-    requests.request("POST", url, headers=headers, json=data)
+    response = requests.request("POST", url, headers=headers, json=data)
+    print(response.json())
     #wmf_conn = WMFMachineErrorConnector(device[1], device[2])
     #threading.Thread(target=wmf_conn.run_websocket, name=device[1]).start()
     #worker(device[2])
