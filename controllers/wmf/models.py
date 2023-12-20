@@ -55,7 +55,10 @@ class WMFMachineErrorConnector:
                 recipe_db = self.db_driver.find_machines_recipe_by_id(self.aleph_id, recipe_number)
                 print("Recipe")
                 received_data = ws.send(json.dumps({"function": "getRecipeComposition", "RecipeNumber": recipe_number}))
-                received_data2 = deque(json.loads(received_data))
+                #received_data2 = deque(json.loads(received_data))
+                received_data2 = received_data
+                print(received_data)
+                print("received_data")
                 formatted = {}
                 for var in list(received_data2):
                     for i in var:
