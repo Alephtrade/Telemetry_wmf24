@@ -61,8 +61,52 @@ class WMFMachineErrorConnector:
                     for i in var:
                         formatted[i] = var[i]
                 if recipe_db and recipe_db is not None:
-                    print(1)
-
+                    columns = {
+                        "water": {"count": 0, "weight": 0},
+                        "coffee": {"count": 0, "weight": 0},
+                        "milk": {"count": 0, "weight": 0},
+                        "powder": {"count": 0, "weight": 0},
+                        "foam": {"count": 0, "weight": 0},
+                    }
+                    if(received_data2['QtyWater'] != 0):
+                        columns["water"]["count"] = 1
+                        columns["water"]["weight"] = received_data2['QtyWater']
+                    if(received_data2['QtyGrinder1'] != 0 and received_data2["QtyGrinder2"] != 0 and received_data2["QtyGrinder3"] != 0 and received_data2["QtyGrinder4"] != 0):
+                        columns["coffee"]["count"] = 1
+                        columns["coffee"]["weight"] = received_data2['QtyGrinder1'] + received_data2['QtyGrinder2'] + received_data2['QtyGrinder3'] + received_data2['QtyGrinder4']
+                    if (received_data2['QtyMilk1'] != 0 and received_data2['QtyMilk2'] != 0):
+                        columns["milk"]["count"] = 1
+                        columns["milk"]["weight"] = received_data2['QtyMilk1'] + received_data2["QtyMilk2"]
+                    if (received_data2['QtyPowder1'] != 0 and received_data2['QtyPowder2'] != 0):
+                        columns["powder"]["count"] = 1
+                        columns["powder"]["weight"] = received_data2['QtyPowder1'] + received_data2['QtyPowder2']
+                    if (received_data2['QtyFoam1'] != 0 and received_data2['QtyFoam2'] != 0):
+                        columns["foam"]["count"] = 1
+                        columns["foam"]["weight"] = received_data2['QtyFoam1'] + received_data2['QtyFoam2']
+                    request = json.dumps({"function": "getRecipeComposition", "RecipeNumber": recipe_db})
+                    ws.send(request)
+                    received = ws.recv()
+                    logging.info(f"WMFMachineStatConnector: Received {received}")
+                    receiveddata2 = deque(json.loads(received))
+                    formatted = {}
+                    for var in list(receiveddata2):
+                        for i in var:
+                            formatted[i] = var[i]
+                    for vat in formatted["Parts"]:
+                        print(formatted["Parts"])
+                        if vat["Type"] == "coffee":
+                            columns["coffee"]["weight"] = columns["coffee"]["weight"] + vat['QtyPowder'] # округлить значение
+                            columns["coffee"]["count"] = columns["coffee"]["count"] + 1
+                        if vat["Type"] == "coldmilk" or vat["Type"] == "milk":
+                            columns["milk"]["weight"] = columns["milk"]["weight"] + vat['QtyMilk']
+                            columns["milk"]["count"] = columns["milk"]["count"] + 1
+                        if vat["Type"] == "milkfoam" or vat["Type"] == "coldfoam":
+                            columns["foam"]["weight"] = columns["foam"]["weight"] + vat['QtyFoam']
+                            columns["foam"]["count"] = columns["foam"]["count"] + 1
+                        if vat["Type"] == "hotwater" or vat["Type"] == "water":
+                            columns["water"]["weight"] = columns["water"]["weight"] + vat['QtyWater']
+                            columns["water"]["count"] = columns["water"]["count"] + 1
+                    print(columns)
             # self.db_driver.save_last_record('current_errors', json.dumps(list(self.current_errors)))
         except Exception as ex:
             logging.error(f"WMFMachineConnector handle_error: error={ex}, stacktrace: {print_exception()}")
