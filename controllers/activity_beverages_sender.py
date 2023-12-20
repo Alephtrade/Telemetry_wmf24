@@ -134,7 +134,7 @@ def render_errors_closing(aleph_id, ip, last_id, end_time, status):
         logging.info(f'status is 0 and end_time is {end_time}, calling create_error_record(-1)')
         print(status)
         print(end_time)
-        db_driver.create_error_record(aleph_id, '-1', 'Кофемашина недоступна')
+        db_driver.create_error_record(aleph_id, '-1')
     elif status == 1:
         logging.info(f'status is 1 and last_id is {last_id}, calling close_error_code_by_id({last_id})')
         if last_id != 0:
