@@ -84,7 +84,8 @@ class WMFMachineErrorConnector:
                         columns["foam"]["count"] = 1
                         columns["foam"]["weight"] = received_data2['QtyFoam1'] + received_data2['QtyFoam2']
                     request = json.dumps({"function": "getRecipeComposition", "RecipeNumber": recipe_db})
-                    ws.send(request)
+                    print('composition sended')
+                    print(ws.send(request))
                     received = ws.recv()
                     logging.info(f"WMFMachineStatConnector: Received {received}")
                     receiveddata2 = deque(json.loads(received))
