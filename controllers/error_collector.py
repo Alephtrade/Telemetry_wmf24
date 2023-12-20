@@ -90,7 +90,7 @@ for device in devices:
         status = 0
     data = {}
     data['aleph_id'] = device[1]
-    data["status"] = device[2]
+    data["status"] = status
     url = "https://backend.wmf24.ru/api/km_status"
     headers = {
         'Content-Type': 'application/json',
