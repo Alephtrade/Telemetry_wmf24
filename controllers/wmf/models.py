@@ -62,7 +62,10 @@ class WMFMachineErrorConnector:
                 #received_data2 = deque(json.loads(received_data))
                 print("received_data")
                 print(type(received_data2))
-                print(list(deque(json.loads(received_data2))))
+                formatted = {}
+                for var in list(deque(json.loads(received_data2))):
+                    for i in var:
+                        formatted[i] = var[i]
                 if recipe_db and recipe_db is not None:
                     columns = {
                         0: {"count": 0, "weight": 0}, #water
@@ -86,6 +89,7 @@ class WMFMachineErrorConnector:
                     if (received_data2['QtyFoam1'] != 0 and received_data2['QtyFoam2'] != 0):
                         columns[4]["count"] = 1
                         columns[4]["weight"] = received_data2['QtyFoam1'] + received_data2['QtyFoam2']
+                    print(columns)
                     receiveddata2 = recipes.getRecipeComposition(self.ip, recipe_number)
                     print('composition sended')
                     receiveddata2 = deque(json.loads(receiveddata2))
