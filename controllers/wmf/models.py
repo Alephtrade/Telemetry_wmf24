@@ -112,6 +112,8 @@ class WMFMachineErrorConnector:
                     if vat["Type"] == "hotwater" or vat["Type"] == "water":
                         #columns["water"]["weight"] = int(columns["water"]["weight"] + vat['QtyWater'])
                         columns["water"]["count"] = columns["water"]["count"] + 1
+                print(columns["water"]["weight"])
+                print(columns["water"]["count"])
                 columns["coffee"]["weight"] = int(columns["coffee"]["weight"] * columns["coffee"]["count"])
                 columns["milk"]["weight"] = int(columns["coffee"]["weight"] * columns["milk"]["count"])  # округлить значение
                 columns["foam"]["weight"] = int(columns["coffee"]["weight"] * columns["foam"]["count"])  # округлить значение
