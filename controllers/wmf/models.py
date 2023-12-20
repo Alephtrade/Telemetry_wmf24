@@ -58,7 +58,7 @@ class WMFMachineErrorConnector:
                 recipe_db = self.db_driver.find_machines_recipe_by_id(self.aleph_id, recipe_number)
                 print("Recipe")
                 print(recipe_number)
-                received_data2 = recipes.getRecipeComposition(self.aleph_id, recipe_number)
+                received_data2 = recipes.getRecipeComposition(self.ip, recipe_number)
                 #received_data2 = deque(json.loads(received_data))
                 print("received_data")
                 formatted = {}
@@ -144,6 +144,7 @@ class WMFMachineErrorConnector:
         try:
 
             self.aleph_id = aleph_id
+            self.ip = ip
             self.db_driver = WMFSQLDriver()
             self.WS_URL = f'ws://{ip}:{settings.WS_PORT}/'
             self.ws = websocket.WebSocketApp(self.WS_URL,
