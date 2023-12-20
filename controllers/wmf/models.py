@@ -74,19 +74,14 @@ class WMFMachineErrorConnector:
                     "foam": {"count": 0, "weight": 0}, #foam
                 }
                 if data.get("QtyWater") != 0:
-                    columns["water"]["count"] = 1
                     columns["water"]["weight"] = data.get('QtyWater')
                 if data.get('QtyGrinder1') != 0 or data.get("QtyGrinder2") != 0 or data.get("QtyGrinder3") != 0 or data.get("QtyGrinder4") != 0:
-                    columns["coffee"]["count"] = 1
                     columns["coffee"]["weight"] = data.get('QtyGrinder1') + data.get('QtyGrinder2') + data.get('QtyGrinder3') + data.get('QtyGrinder4')
                 if data.get('QtyMilk1') != 0 or data.get('QtyMilk2') != 0:
-                    columns["milk"]["count"] = 1
                     columns["milk"]["weight"] = data.get('QtyMilk1') + data.get("QtyMilk2")
                 if data.get('QtyPowder1') != 0 or data.get('QtyPowder2') != 0:
-                    columns["powder"]["count"] = 1
                     columns["powder"]["weight"] = data.get('QtyPowder1') + data.get('QtyPowder2')
                 if data.get('QtyFoam1') != 0 or data.get('QtyFoam2') != 0:
-                    columns["foam"]["count"] = 1
                     columns["foam"]["weight"] = data.get('QtyFoam1') + data.get('QtyFoam2')
                 print(0000000000000000000000)
                 print(columns)
