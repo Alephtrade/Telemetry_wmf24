@@ -6,6 +6,7 @@ import threading
 from datetime import timedelta
 from timeloop import Timeloop
 import sys
+import websocket
 
 sys.path.append('./')
 sys.path.append('/var/www/Telemetry_wmf24/')
@@ -82,8 +83,12 @@ def worker(ip):
 
 
 for device in devices:
+    try:
+        ws = websocket.create_connection(f'ws://{device[2]}:25000/', timeout=5)
+        print("DONE")
+    except Exception:
+        print("FALSE")
     wmf_conn = WMFMachineErrorConnector(device[1], device[2])
-    print(wmf_conn.ws.connected)
     threading.Thread(target=wmf_conn.run_websocket, name=device[1]).start()
     worker(device[2])
     print(threading.active_count())
