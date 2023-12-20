@@ -89,6 +89,7 @@ class WMFMachineErrorConnector:
                 #    columns["foam"]["count"] = 1
                     columns["foam"]["weight"] = data.get('QtyFoam1') + data.get('QtyFoam2')
                 print(0000000000000000000000)
+                print(columns["water"]["weight"])
                 print(columns)
                 receiveddata2 = recipes.getRecipeComposition(self.ip, recipe_number)
                 print('composition sended')
