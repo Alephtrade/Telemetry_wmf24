@@ -129,13 +129,8 @@ class WMFMachineErrorConnector:
         print("opened")
         print(self.aleph_id)
         #print(self.aleph_id)
-        #ws.send(json.dumps({"function": "startPushErrors"}))
-        #ws.send(json.dumps({"function": "startPushDispensingFinished"}))
-        print("section")
-        rev = ws.send(json.dumps({"function": "getRecipeComposition", "RecipeNumber": 1}))
-        print(rev)
-        print(rev[0])
-        print("section")
+        ws.send(json.dumps({"function": "startPushErrors"}))
+        ws.send(json.dumps({"function": "startPushDispensingFinished"}))
 
     def on_exit(self, ws):
         ws.close()
