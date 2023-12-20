@@ -76,16 +76,16 @@ class WMFMachineErrorConnector:
                 if data.get("QtyWater") != 0:
                     columns[0]["count"] = 1
                     columns[0]["weight"] = data.get('QtyWater')
-                if data.get('QtyGrinder1') != 0 and data.get("QtyGrinder2") != 0 and data.get("QtyGrinder3") != 0 and data.get("QtyGrinder4") != 0:
+                if data.get('QtyGrinder1') != 0 or data.get("QtyGrinder2") != 0 or data.get("QtyGrinder3") != 0 or data.get("QtyGrinder4") != 0:
                     columns[1]["count"] = 1
                     columns[1]["weight"] = data.get('QtyGrinder1') + data.get('QtyGrinder2') + data.get('QtyGrinder3') + data.get('QtyGrinder4')
-                if data.get('QtyMilk1') != 0 and data.get('QtyMilk2') != 0:
+                if data.get('QtyMilk1') != 0 or data.get('QtyMilk2') != 0:
                     columns[2]["count"] = 1
                     columns[2]["weight"] = data.get('QtyMilk1') + data.get("QtyMilk2")
-                if data.get('QtyPowder1') != 0 and data.get('QtyPowder2') != 0:
+                if data.get('QtyPowder1') != 0 or data.get('QtyPowder2') != 0:
                     columns[3]["count"] = 1
                     columns[3]["weight"] = data.get('QtyPowder1') + data.get('QtyPowder2')
-                if data.get('QtyFoam1') != 0 and data.get('QtyFoam2') != 0:
+                if data.get('QtyFoam1') != 0 or data.get('QtyFoam2') != 0:
                     columns[4]["count"] = 1
                     columns[4]["weight"] = data.get('QtyFoam1') + data.get('QtyFoam2')
                 print(columns)
