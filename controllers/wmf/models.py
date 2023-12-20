@@ -67,27 +67,27 @@ class WMFMachineErrorConnector:
                         formatted[i] = var[i]
                 if recipe_db and recipe_db is not None:
                     columns = {
-                        "water": {"count": 0, "weight": 0},
-                        "coffee": {"count": 0, "weight": 0},
-                        "milk": {"count": 0, "weight": 0},
-                        "powder": {"count": 0, "weight": 0},
-                        "foam": {"count": 0, "weight": 0},
+                        0: {"count": 0, "weight": 0}, #water
+                        1: {"count": 0, "weight": 0}, #coffee
+                        2: {"count": 0, "weight": 0}, #milk
+                        3: {"count": 0, "weight": 0}, #powder
+                        4: {"count": 0, "weight": 0}, #foam
                     }
                     if(received_data2['QtyWater'] != 0):
-                        columns["water"]["count"] = 1
-                        columns["water"]["weight"] = received_data2['QtyWater']
+                        columns[0]["count"] = 1
+                        columns[0]["weight"] = received_data2['QtyWater']
                     if(received_data2['QtyGrinder1'] != 0 and received_data2["QtyGrinder2"] != 0 and received_data2["QtyGrinder3"] != 0 and received_data2["QtyGrinder4"] != 0):
-                        columns["coffee"]["count"] = 1
-                        columns["coffee"]["weight"] = received_data2['QtyGrinder1'] + received_data2['QtyGrinder2'] + received_data2['QtyGrinder3'] + received_data2['QtyGrinder4']
+                        columns[1]["count"] = 1
+                        columns[1]["weight"] = received_data2['QtyGrinder1'] + received_data2['QtyGrinder2'] + received_data2['QtyGrinder3'] + received_data2['QtyGrinder4']
                     if (received_data2['QtyMilk1'] != 0 and received_data2['QtyMilk2'] != 0):
-                        columns["milk"]["count"] = 1
-                        columns["milk"]["weight"] = received_data2['QtyMilk1'] + received_data2["QtyMilk2"]
+                        columns[2]["count"] = 1
+                        columns[2]["weight"] = received_data2['QtyMilk1'] + received_data2["QtyMilk2"]
                     if (received_data2['QtyPowder1'] != 0 and received_data2['QtyPowder2'] != 0):
-                        columns["powder"]["count"] = 1
-                        columns["powder"]["weight"] = received_data2['QtyPowder1'] + received_data2['QtyPowder2']
+                        columns[3]["count"] = 1
+                        columns[3]["weight"] = received_data2['QtyPowder1'] + received_data2['QtyPowder2']
                     if (received_data2['QtyFoam1'] != 0 and received_data2['QtyFoam2'] != 0):
-                        columns["foam"]["count"] = 1
-                        columns["foam"]["weight"] = received_data2['QtyFoam1'] + received_data2['QtyFoam2']
+                        columns[4]["count"] = 1
+                        columns[4]["weight"] = received_data2['QtyFoam1'] + received_data2['QtyFoam2']
                     request = json.dumps({"function": "getRecipeComposition", "RecipeNumber": recipe_db})
                     print('composition sended')
                     received = ws.send(request)
