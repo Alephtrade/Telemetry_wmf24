@@ -54,8 +54,7 @@ class WMFMachineErrorConnector:
                     cup_size = "L"
                 recipe_db = self.db_driver.find_machines_recipe_by_id(self.aleph_id, recipe_number)
                 print("Recipe")
-                print(ws.send(json.dumps({"function": "getRecipeComposition", "RecipeNumber": recipe_number})))
-                received_data = ws.recv()
+                received_data = ws.send(json.dumps({"function": "getRecipeComposition", "RecipeNumber": recipe_number}))
                 received_data2 = deque(json.loads(received_data))
                 formatted = {}
                 for var in list(received_data2):
@@ -86,8 +85,7 @@ class WMFMachineErrorConnector:
                         columns["foam"]["weight"] = received_data2['QtyFoam1'] + received_data2['QtyFoam2']
                     request = json.dumps({"function": "getRecipeComposition", "RecipeNumber": recipe_db})
                     print('composition sended')
-                    print(ws.send(request))
-                    received = ws.recv()
+                    received = ws.send(request)
                     logging.info(f"WMFMachineStatConnector: Received {received}")
                     receiveddata2 = deque(json.loads(received))
                     formatted = {}
