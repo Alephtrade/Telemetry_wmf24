@@ -62,7 +62,7 @@ class WMFMachineErrorConnector:
                 #received_data2 = deque(json.loads(received_data))
                 print("received_data")
                 print(type(received_data2))
-                print(deque(json.loads(received_data2)))
+                print(list(deque(json.loads(received_data2))))
                 if recipe_db and recipe_db is not None:
                     columns = {
                         0: {"count": 0, "weight": 0}, #water
