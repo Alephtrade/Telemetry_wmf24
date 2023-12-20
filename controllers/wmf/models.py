@@ -53,7 +53,8 @@ class WMFMachineErrorConnector:
                 if cup_size == "CUP_SIZE_Large":
                     cup_size = "L"
                 recipe_db = self.db_driver.find_machines_recipe_by_id(self.aleph_id, recipe_number)
-                ws.send(json.dumps({"function": "getRecipeComposition", "RecipeNumber": recipe_number}))
+                print("Recipe")
+                print(ws.send(json.dumps({"function": "getRecipeComposition", "RecipeNumber": recipe_number})))
                 received_data = ws.recv()
                 received_data2 = deque(json.loads(received_data))
                 formatted = {}
