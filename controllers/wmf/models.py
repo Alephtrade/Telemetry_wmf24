@@ -6,7 +6,7 @@ import logging
 from controllers.core.utils import print_exception
 from controllers.db.models import WMFSQLDriver
 from controllers.settings import prod as settings
-from controllers.api.beverages import recipes
+from controllers.api.beverages import recipes as recipes
 from collections import deque
 db_conn = WMFSQLDriver()
 
