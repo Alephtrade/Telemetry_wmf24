@@ -67,15 +67,15 @@ class WMFMachineErrorConnector:
                         formatted[i] = var[i]
                 #if recipe_db and recipe_db is not None:
                 columns = {
-                    0: {"count": 0, "weight": 0}, #water
+                    "water": {"count": 0, "weight": 0}, #water
                     1: {"count": 0, "weight": 0}, #coffee
                     2: {"count": 0, "weight": 0}, #milk
                     3: {"count": 0, "weight": 0}, #powder
                     4: {"count": 0, "weight": 0}, #foam
                 }
                 if data.get("QtyWater") != 0:
-                    columns[0]["count"] = 1
-                    columns[0]["weight"] = data.get('QtyWater')
+                    columns["water"]["count"] = 1
+                    columns["water"]["weight"] = data.get('QtyWater')
                 if data.get('QtyGrinder1') != 0 or data.get("QtyGrinder2") != 0 or data.get("QtyGrinder3") != 0 or data.get("QtyGrinder4") != 0:
                     columns[1]["count"] = 1
                     columns[1]["weight"] = data.get('QtyGrinder1') + data.get('QtyGrinder2') + data.get('QtyGrinder3') + data.get('QtyGrinder4')
