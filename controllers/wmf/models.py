@@ -44,7 +44,7 @@ class WMFMachineErrorConnector:
                     self.db_driver.close_error_code(self.aleph_id, error_code)
                     if error_code in self.current_errors:
                         self.current_errors.remove(error_code)
-            if data.get("function") == 'startPushDispensingFinished':
+            if data.get("function") == 'startPushDispensingFinished' or data.get("function") == 'getRecipeComposition':
                 print("start")
                 print(data.get("RecipeNumber"))
                 recipe_number = data.get("RecipeNumber")
@@ -61,6 +61,7 @@ class WMFMachineErrorConnector:
                 received_data2 = recipes.getRecipeComposition(self.ip, recipe_number)
                 #received_data2 = deque(json.loads(received_data))
                 print("received_data")
+                print(received_data2['QtyWater'])
                 if recipe_db and recipe_db is not None:
                     columns = {
                         0: {"count": 0, "weight": 0}, #water
@@ -84,13 +85,15 @@ class WMFMachineErrorConnector:
                     if (received_data2['QtyFoam1'] != 0 and received_data2['QtyFoam2'] != 0):
                         columns[4]["count"] = 1
                         columns[4]["weight"] = received_data2['QtyFoam1'] + received_data2['QtyFoam2']
-                    request = json.dumps({"function": "getRecipeComposition", "RecipeNumber": recipe_db})
+                    receiveddata2 = recipes.getRecipeComposition(self.ip, recipe_number)
                     print('composition sended')
-                    received = ws.send(request)
-                    logging.info(f"WMFMachineStatConnector: Received {received}")
-                    receiveddata2 = deque(json.loads(received))
-                    for vat in receiveddata2["Parts"]:
-                        print(receiveddata2["Parts"])
+                    receiveddata2 = deque(json.loads(receiveddata2))
+                    formatted = {}
+                    for var in list(receiveddata2):
+                        for i in var:
+                            formatted[i] = var[i]
+                    for vat in formatted["Parts"]:
+                        print(formatted["Parts"])
                         if vat["Type"] == "coffee":
                             columns["coffee"]["weight"] = columns["coffee"]["weight"] + vat['QtyPowder'] # округлить значение
                             columns["coffee"]["count"] = columns["coffee"]["count"] + 1
