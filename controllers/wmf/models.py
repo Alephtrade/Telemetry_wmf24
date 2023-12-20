@@ -45,7 +45,7 @@ class WMFMachineErrorConnector:
                         self.current_errors.remove(error_code)
             if data.get("function") == 'startPushDispensingFinished':
                 print("start")
-                print(data.get())
+                print(data.get("RecipeNumber"))
                 recipe_number = data.get("RecipeNumber")
                 cup_size = data.get("CupSize")
                 if cup_size == "CUP_SIZE_Regular":
