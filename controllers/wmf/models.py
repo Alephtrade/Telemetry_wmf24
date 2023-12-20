@@ -68,26 +68,27 @@ class WMFMachineErrorConnector:
                 #if recipe_db and recipe_db is not None:
                 columns = {
                     "water": {"count": 0, "weight": 0}, #water
-                    1: {"count": 0, "weight": 0}, #coffee
-                    2: {"count": 0, "weight": 0}, #milk
-                    3: {"count": 0, "weight": 0}, #powder
-                    4: {"count": 0, "weight": 0}, #foam
+                    "coffee": {"count": 0, "weight": 0}, #coffee
+                    "milk": {"count": 0, "weight": 0}, #milk
+                    "powder": {"count": 0, "weight": 0}, #powder
+                    "foam": {"count": 0, "weight": 0}, #foam
                 }
                 if data.get("QtyWater") != 0:
                     columns["water"]["count"] = 1
                     columns["water"]["weight"] = data.get('QtyWater')
                 if data.get('QtyGrinder1') != 0 or data.get("QtyGrinder2") != 0 or data.get("QtyGrinder3") != 0 or data.get("QtyGrinder4") != 0:
-                    columns[1]["count"] = 1
-                    columns[1]["weight"] = data.get('QtyGrinder1') + data.get('QtyGrinder2') + data.get('QtyGrinder3') + data.get('QtyGrinder4')
+                    columns["coffee"]["count"] = 1
+                    columns["coffee"]["weight"] = data.get('QtyGrinder1') + data.get('QtyGrinder2') + data.get('QtyGrinder3') + data.get('QtyGrinder4')
                 if data.get('QtyMilk1') != 0 or data.get('QtyMilk2') != 0:
-                    columns[2]["count"] = 1
-                    columns[2]["weight"] = data.get('QtyMilk1') + data.get("QtyMilk2")
+                    columns["milk"]["count"] = 1
+                    columns["milk"]["weight"] = data.get('QtyMilk1') + data.get("QtyMilk2")
                 if data.get('QtyPowder1') != 0 or data.get('QtyPowder2') != 0:
-                    columns[3]["count"] = 1
-                    columns[3]["weight"] = data.get('QtyPowder1') + data.get('QtyPowder2')
+                    columns["powder"]["count"] = 1
+                    columns["powder"]["weight"] = data.get('QtyPowder1') + data.get('QtyPowder2')
                 if data.get('QtyFoam1') != 0 or data.get('QtyFoam2') != 0:
-                    columns[4]["count"] = 1
-                    columns[4]["weight"] = data.get('QtyFoam1') + data.get('QtyFoam2')
+                    columns["foam"]["count"] = 1
+                    columns["foam"]["weight"] = data.get('QtyFoam1') + data.get('QtyFoam2')
+                print(0000000000000000000000)
                 print(columns)
                 receiveddata2 = recipes.getRecipeComposition(self.ip, recipe_number)
                 print('composition sended')
@@ -110,6 +111,7 @@ class WMFMachineErrorConnector:
                     if vat["Type"] == "hotwater" or vat["Type"] == "water":
                         columns["water"]["weight"] = columns["water"]["weight"] + vat['QtyWater']
                         columns["water"]["count"] = columns["water"]["count"] + 1
+                print(22222222222222222222222222)
                 print(columns)
             # self.db_driver.save_last_record('current_errors', json.dumps(list(self.current_errors)))
         except Exception as ex:
