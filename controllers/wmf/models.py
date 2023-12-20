@@ -61,7 +61,6 @@ class WMFMachineErrorConnector:
                 received_data2 = recipes.getRecipeComposition(self.ip, recipe_number)
                 #received_data2 = deque(json.loads(received_data))
                 print("received_data")
-                print(type(received_data2))
                 formatted = {}
                 for var in list(deque(json.loads(received_data2))):
                     for i in var:
@@ -74,21 +73,21 @@ class WMFMachineErrorConnector:
                     3: {"count": 0, "weight": 0}, #powder
                     4: {"count": 0, "weight": 0}, #foam
                 }
-                if(received_data2['QtyWater'] != 0):
+                if data.get("QtyWater") != 0:
                     columns[0]["count"] = 1
-                    columns[0]["weight"] = received_data2['QtyWater']
-                if(received_data2['QtyGrinder1'] != 0 and received_data2["QtyGrinder2"] != 0 and received_data2["QtyGrinder3"] != 0 and received_data2["QtyGrinder4"] != 0):
+                    columns[0]["weight"] = data.get('QtyWater')
+                if data.get('QtyGrinder1') != 0 and data.get("QtyGrinder2") != 0 and data.get("QtyGrinder3") != 0 and data.get("QtyGrinder4") != 0:
                     columns[1]["count"] = 1
-                    columns[1]["weight"] = received_data2['QtyGrinder1'] + received_data2['QtyGrinder2'] + received_data2['QtyGrinder3'] + received_data2['QtyGrinder4']
-                if (received_data2['QtyMilk1'] != 0 and received_data2['QtyMilk2'] != 0):
+                    columns[1]["weight"] = data.get('QtyGrinder1') + data.get('QtyGrinder2') + data.get('QtyGrinder3') + data.get('QtyGrinder4')
+                if data.get('QtyMilk1') != 0 and data.get('QtyMilk2') != 0:
                     columns[2]["count"] = 1
-                    columns[2]["weight"] = received_data2['QtyMilk1'] + received_data2["QtyMilk2"]
-                if (received_data2['QtyPowder1'] != 0 and received_data2['QtyPowder2'] != 0):
+                    columns[2]["weight"] = data.get('QtyMilk1') + data.get("QtyMilk2")
+                if data.get('QtyPowder1') != 0 and data.get('QtyPowder2') != 0:
                     columns[3]["count"] = 1
-                    columns[3]["weight"] = received_data2['QtyPowder1'] + received_data2['QtyPowder2']
-                if (received_data2['QtyFoam1'] != 0 and received_data2['QtyFoam2'] != 0):
+                    columns[3]["weight"] = data.get('QtyPowder1') + data.get('QtyPowder2')
+                if data.get('QtyFoam1') != 0 and data.get('QtyFoam2') != 0:
                     columns[4]["count"] = 1
-                    columns[4]["weight"] = received_data2['QtyFoam1'] + received_data2['QtyFoam2']
+                    columns[4]["weight"] = data.get('QtyFoam1') + data.get('QtyFoam2')
                 print(columns)
                 receiveddata2 = recipes.getRecipeComposition(self.ip, recipe_number)
                 print('composition sended')
