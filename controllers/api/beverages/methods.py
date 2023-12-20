@@ -90,3 +90,11 @@ def Send_Statistics(data_info, id_record):
     else:
         logging.info(f"error unknown id record")
     return response.json()
+
+def getRecipeComposition(device_ip, recipe_number):
+    WS_IP = f'ws://{device_ip}:25000/'
+    ws = websocket.create_connection(WS_IP, timeout=5)
+    request = (json.dumps({"function": "getRecipeComposition", "RecipeNumber": recipe_number}))
+    ws.send(request)
+    received_data = ws.recv()
+    return received_data

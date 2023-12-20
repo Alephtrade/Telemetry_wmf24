@@ -6,6 +6,7 @@ import logging
 from controllers.core.utils import print_exception
 from controllers.db.models import WMFSQLDriver
 from controllers.settings import prod as settings
+import controllers.api.beverages as bev
 from collections import deque
 db_conn = WMFSQLDriver()
 
@@ -57,10 +58,8 @@ class WMFMachineErrorConnector:
                 recipe_db = self.db_driver.find_machines_recipe_by_id(self.aleph_id, recipe_number)
                 print("Recipe")
                 print(recipe_number)
-                received_data = ws.send(json.dumps({"function": "getRecipeComposition", "RecipeNumber": recipe_number}))
+                received_data2 = bev.getRecipeComposition(self.aleph_id, recipe_number)
                 #received_data2 = deque(json.loads(received_data))
-                received_data2 = received_data
-                print(received_data)
                 print("received_data")
                 formatted = {}
                 for var in list(received_data2):
