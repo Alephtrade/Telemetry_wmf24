@@ -88,6 +88,8 @@ def controller_data_statistics_sender(aleph_id, ip):
 def send_ip_address(aleph_id, ip):
     data = {}
     if ip is not None:
+        print(ip)
+        print(aleph_id)
         data['aleph_id'] = aleph_id
         data["ip"] = ip
         url = "https://backend.wmf24.ru/api/machine_ip_address"
