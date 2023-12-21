@@ -98,9 +98,9 @@ for device in devices:
     }
     response = requests.request("POST", url, headers=headers, json=data)
     print(response.json())
-    #wmf_conn = WMFMachineErrorConnector(device[1], device[2])
-    #threading.Thread(target=wmf_conn.run_websocket, name=device[1]).start()
-    #worker(device[2])
+    wmf_conn = WMFMachineErrorConnector(device[1], device[2])
+    threading.Thread(target=wmf_conn.run_websocket, name=device[1]).start()
+    worker(device[2])
     print(threading.active_count())
     print(threading.enumerate())
 
