@@ -27,8 +27,7 @@ def test():
             data_for_request["model"] = machine_response["ProductName"]
             data_for_request["ip"] = machine_response["ip"]
             print(machine_response)
-            print(machine_response["MachineName"])
-            if machine_response:
+            if machine_response and machine_response["ip"] is not None:
                 url = "https://backend.wmf24.ru/api/machine_check"
 
                 headers = {
