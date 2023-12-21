@@ -100,6 +100,8 @@ def send_ip_address(aleph_id, ip):
         requests.request("POST", url, headers=headers, json=data)
         print(ip)
         return data
+    else:
+        return False
 
 def check_machine_status(aleph_id, ip):
     initialize_logger('check_machine_status.log')
