@@ -55,6 +55,7 @@ class WMFSQLDriver:
         cur.close()
 
     def update_device_info(self, aleph_id, utc, address, type, status):
+        print(address)
         cur = self.connection.cursor()
         stmt = ''' 
             UPDATE devices 
