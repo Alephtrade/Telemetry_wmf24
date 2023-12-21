@@ -278,6 +278,7 @@ class WMFSQLDriver:
         stmt = ''' 
             UPDATE devices 
             SET address = ""
+            WHERE address is NOT NULL
         '''
         cur.execute(stmt)
         self.connection.commit()
