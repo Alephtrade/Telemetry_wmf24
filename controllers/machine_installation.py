@@ -26,6 +26,7 @@ def test():
             data_for_request["serial_number"] = machine_response["MachineName"]
             data_for_request["model"] = machine_response["ProductName"]
             data_for_request["ip"] = machine_response["ip"]
+            print(machine_response["ip"])
             url = "https://backend.wmf24.ru/api/machine_check"
 
             headers = {
@@ -41,9 +42,13 @@ def test():
                 finder = db_conn.find_device_by_aleph_id(aleph_id)
                 if not finder:
                     #db_conn.connection.cursor().close()
+                    print(machine_response["NOT finder"])
+                    print(machine_response["ip"])
                     db_conn.create_device(str(aleph_id), str(utc_calc(latitude, longitude)), str(machine_response["ip"]), str(machine_response["ProductName"]), str(1))
                     db_conn.connection.cursor().close()
                 else:
+                    print(machine_response["finder"])
+                    print(machine_response["ip"])
                     db_conn.update_device_info(str(aleph_id), str(utc_calc(latitude, longitude)), str(machine_response["ip"]), str(machine_response["ProductName"]), str(1))
                     db_conn.update_device_ping_time(str(aleph_id), 1, datetime.fromtimestamp(int(datetime.now().timestamp())))
                 machine.append(machine_response)
