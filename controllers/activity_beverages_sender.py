@@ -87,16 +87,17 @@ def controller_data_statistics_sender(aleph_id, ip):
 
 def send_ip_address(aleph_id, ip):
     data = {}
-    data['aleph_id'] = aleph_id
-    data["ip"] = ip
-    url = "https://backend.wmf24.ru/api/machine_ip_address"
-    headers = {
-        'Content-Type': 'application/json',
-        'Serverkey': db_conn.get_encrpt_key()[0]
-    }
-    requests.request("POST", url, headers=headers, json=data)
-    print(ip)
-    return data
+    if data["ip"] is not None:
+        data['aleph_id'] = aleph_id
+        data["ip"] = ip
+        url = "https://backend.wmf24.ru/api/machine_ip_address"
+        headers = {
+            'Content-Type': 'application/json',
+            'Serverkey': db_conn.get_encrpt_key()[0]
+        }
+        requests.request("POST", url, headers=headers, json=data)
+        print(ip)
+        return data
 
 def check_machine_status(aleph_id, ip):
     initialize_logger('check_machine_status.log')
