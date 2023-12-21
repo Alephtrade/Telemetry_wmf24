@@ -272,6 +272,17 @@ class WMFSQLDriver:
         cur.close()
         return res
 
+    def reset_ips(self):
+        cur = self.connection.cursor()
+        stmt = ''' 
+            UPDATE devices 
+            SET address = ""
+        '''
+        cur.execute(stmt)
+        self.connection.commit()
+        cur.close()
+        return True
+
     def close_error_code_by_id(self, aleph_id, last_id):
         that_error_record = self.get_error_by_id(last_id)
         print(last_id)

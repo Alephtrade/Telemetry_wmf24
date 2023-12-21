@@ -112,3 +112,6 @@ def utc_calc(latitude, longitude):
     return machine_time
 
 print(test())
+db_conn = WMFSQLDriver()
+resetter = db_conn.reset_ips()
+
