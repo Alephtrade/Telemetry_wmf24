@@ -66,10 +66,9 @@ def updateDrinks():
                 if vat_recipes["Type"] == "hotwater" or vat_recipes["Type"] == "water":
                     columns["water"]["weight"] = int(columns["water"]["weight"] + vat_recipes['QtyWater'])
                     columns["water"]["count"] = columns["water"]["count"] + 1
-            available_recipe = db_conn.getRecipe(device[2], drink["RecipeNumber"])
+            available_recipe = db_conn.getRecipe(device[1], drink["RecipeNumber"])
             print(available_recipe)
-            print("av")
-            if available_recipe[0] is None:
+            if available_recipe is None:
                 db_conn.initRecipe(device[1], drink["RecipeNumber"], drink["Name"], columns["coffee"]["count"], columns["coffee"]["weight"],columns["water"]["count"],columns["water"]["weight"],columns["milk"]["count"],columns["milk"]["weight"],columns["powder"]["count"],columns["powder"]["weight"],columns["foam"]["count"],columns["foam"]["weight"])
             else:
                 if available_recipe[2] == drink["RecipeNumber"] and available_recipe[3] == drink["Name"] and available_recipe[4] == columns["coffee"]["count"] and available_recipe[5] == columns["coffee"]["weight"] and available_recipe[6] == columns["water"]["count"] and available_recipe[7] == columns["water"]["weight"] and available_recipe[8] == columns["milk"]["count"] and available_recipe[9] == columns["milk"]["weight"] and available_recipe[10] == columns["powder"]["count"] and available_recipe[11] == columns["powder"]["weight"] and available_recipe[12] == columns["foam"]["count"] and available_recipe[13] == columns["foam"]["weight"]:
