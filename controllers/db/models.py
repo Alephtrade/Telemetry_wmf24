@@ -15,6 +15,32 @@ class WMFSQLDriver:
     def close(self):
         self.connection.close()
 
+    def initRecipe(self):
+        cur = self.connection.cursor()
+        stmt = 'INSERT INTO devices (aleph_id, utc, address, type, status) VALUES (?, ?, ?, ?, ?)'
+        cur.execute(stmt, (device_aleph_id, device_utc, device_ip, device_model, device_status,))
+        self.connection.commit()
+        cur.close()
+    def updateRecipe(self):
+        print(address)
+        cur = self.connection.cursor()
+        stmt = ''' 
+            UPDATE devices 
+            SET utc = ?, address = ?, type = ?, status = ?
+            WHERE aleph_id = ?
+        '''
+        cur.execute(stmt, (utc, address, type, status, aleph_id))
+        self.connection.commit()
+        cur.close()
+        return stmt
+    def getRecipe(self):
+        cur = self.connection.cursor()
+        stmt = f'''SELECT server_key FROM exchange_php LIMIT 1'''
+        cur.execute(stmt)
+        res = cur.fetchone()
+        cur.close()
+        return res
+
     def find_machines_recipe_by_id(self, aleph_id, recipe_id):
         cur = self.connection.cursor()
         stmt = f'''
