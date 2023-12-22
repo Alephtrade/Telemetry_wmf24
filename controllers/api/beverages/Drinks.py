@@ -75,11 +75,6 @@ def updateDrinks():
                     return True
                 else:
                     edited = {}
-                    if str(available_recipe[3]) == str(drink["Name"]):
-                        print(available_recipe[3])
-                        print(drink["Name"])
-                        print(type(available_recipe[3]))
-                        print(type(drink["Name"]))
                     if available_recipe[3] != drink["Name"]:
                         edited[available_recipe[2]]["recipe_alias"] = {"been": available_recipe[3], "now": drink["Name"]}
                     if available_recipe[4] != columns["coffee"]["count"]:
