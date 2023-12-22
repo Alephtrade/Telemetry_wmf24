@@ -36,40 +36,69 @@ def updateDrinks():
                 formatted_drinks[i_drinks] = var_drinks[i_drinks]
         for drink in formatted_drinks["DrinkList"]:
             print(drink["Name"])
+            columns = {
+                "water": {"count": 0, "weight": 0},
+                "coffee": {"count": 0, "weight": 0},
+                "milk": {"count": 0, "weight": 0},
+                "powder": {"count": 0, "weight": 0},
+                "foam": {"count": 0, "weight": 0},
+            }
+            request_recipes = json.dumps({"function": "getRecipeComposition", "RecipeNumber": drink["RecipeNumber"]})
+            print(request_recipes)
+            ws.send(request_recipes)
+            received_recipes = ws.recv()
+            received_recipes_deque = deque(json.loads(received_recipes))
+            formatted_recipes = {}
+            for var_recipes in list(received_recipes_deque):
+                for i_recipes in var_recipes:
+                    formatted_recipes[i_recipes] = var_recipes[i_recipes]
+            for vat_recipes in formatted_recipes["Parts"]:
+                print(formatted_recipes["Parts"])
+                if vat_recipes["Type"] == "coffee":
+                    columns["coffee"]["weight"] = int(columns["coffee"]["weight"] + vat_recipes['QtyPowder'])
+                    columns["coffee"]["count"] = columns["coffee"]["count"] + 1
+                if vat_recipes["Type"] == "coldmilk" or vat_recipes["Type"] == "milk":
+                    columns["milk"]["weight"] = int(columns["milk"]["weight"] + vat_recipes['QtyMilk'])
+                    columns["milk"]["count"] = columns["milk"]["count"] + 1
+                if vat_recipes["Type"] == "milkfoam" or vat_recipes["Type"] == "coldfoam":
+                    columns["foam"]["weight"] = int(columns["foam"]["weight"] + vat_recipes['QtyFoam'])
+                    columns["foam"]["count"] = columns["foam"]["count"] + 1
+                if vat_recipes["Type"] == "hotwater" or vat_recipes["Type"] == "water":
+                    columns["water"]["weight"] = int(columns["water"]["weight"] + vat_recipes['QtyWater'])
+                    columns["water"]["count"] = columns["water"]["count"] + 1
             available_recipe = db_conn.getRecipe(device[2], drink["RecipeNumber"])
-            print(available_recipe)
             if available_recipe is None:
-                columns = {
-                    "water": {"count": 0, "weight": 0},
-                    "coffee": {"count": 0, "weight": 0},
-                    "milk": {"count": 0, "weight": 0},
-                    "powder": {"count": 0, "weight": 0},
-                    "foam": {"count": 0, "weight": 0},
-                }
-                request_recipes = json.dumps({"function": "getRecipeComposition", "RecipeNumber": drink["RecipeNumber"]})
-                print(request_recipes)
-                ws.send(request_recipes)
-                received_recipes = ws.recv()
-                received_recipes_deque = deque(json.loads(received_recipes))
-                formatted_recipes = {}
-                for var_recipes in list(received_recipes_deque):
-                    for i_recipes in var_recipes:
-                        formatted_recipes[i_recipes] = var_recipes[i_recipes]
-                for vat_recipes in formatted_recipes["Parts"]:
-                    print(formatted_recipes["Parts"])
-                    if vat_recipes["Type"] == "coffee":
-                        columns["coffee"]["weight"] = int(columns["coffee"]["weight"] + vat_recipes['QtyPowder'])
-                        columns["coffee"]["count"] = columns["coffee"]["count"] + 1
-                    if vat_recipes["Type"] == "coldmilk" or vat_recipes["Type"] == "milk":
-                        columns["milk"]["weight"] = int(columns["milk"]["weight"] + vat_recipes['QtyMilk'])
-                        columns["milk"]["count"] = columns["milk"]["count"] + 1
-                    if vat_recipes["Type"] == "milkfoam" or vat_recipes["Type"] == "coldfoam":
-                        columns["foam"]["weight"] = int(columns["foam"]["weight"] + vat_recipes['QtyFoam'])
-                        columns["foam"]["count"] = columns["foam"]["count"] + 1
-                    if vat_recipes["Type"] == "hotwater" or vat_recipes["Type"] == "water":
-                        columns["water"]["weight"] = int(columns["water"]["weight"] + vat_recipes['QtyWater'])
-                        columns["water"]["count"] = columns["water"]["count"] + 1
-            db_conn.initRecipe(device[1], drink["RecipeNumber"], drink["Name"], columns["coffee"]["count"], columns["coffee"]["weight"],columns["water"]["count"],columns["water"]["weight"],columns["milk"]["count"],columns["milk"]["weight"],columns["powder"]["count"],columns["powder"]["weight"],columns["foam"]["count"],columns["foam"]["weight"])
+                db_conn.initRecipe(device[1], drink["RecipeNumber"], drink["Name"], columns["coffee"]["count"], columns["coffee"]["weight"],columns["water"]["count"],columns["water"]["weight"],columns["milk"]["count"],columns["milk"]["weight"],columns["powder"]["count"],columns["powder"]["weight"],columns["foam"]["count"],columns["foam"]["weight"])
+            else:
+                if available_recipe[2] == drink["RecipeNumber"] and available_recipe[3] == drink["Name"] and available_recipe[4] == columns["coffee"]["count"] and available_recipe[5] == columns["coffee"]["weight"] and available_recipe[6] == columns["water"]["count"] and available_recipe[7] == columns["water"]["weight"] and available_recipe[8] == columns["milk"]["count"] and available_recipe[9] == columns["milk"]["weight"] and available_recipe[10] == columns["powder"]["count"] and available_recipe[11] == columns["powder"]["weight"] and available_recipe[12] == columns["foam"]["count"] and available_recipe[13] == columns["foam"]["weight"]:
+                    return True
+                else:
+                    edited = {}
+                    if available_recipe[2] == drink["RecipeNumber"]:
+                        edited["RecipeNumber"] = {"been": available_recipe[2], "now": drink["RecipeNumber"]}
+                    if available_recipe[3] == drink["Name"]:
+                        edited["RecipeNumber"] = {"been": available_recipe[3], "now": drink["Name"]}
+                    if available_recipe[4] == columns["coffee"]["count"]:
+                        edited["RecipeNumber"] = {"been": available_recipe[4], "now": columns["coffee"]["count"]}
+                    if available_recipe[5] == columns["coffee"]["weight"]:
+                        edited["RecipeNumber"] = {"been": available_recipe[5], "now": columns["coffee"]["weight"]}
+                    if available_recipe[6] == columns["water"]["count"]:
+                        edited["RecipeNumber"] = {"been": available_recipe[6], "now": columns["water"]["count"]}
+                    if available_recipe[7] == columns["water"]["weight"]:
+                        edited["RecipeNumber"] = {"been": available_recipe[7], "now": columns["water"]["weight"]}
+                    if available_recipe[8] == columns["milk"]["count"]:
+                        edited["RecipeNumber"] = {"been": available_recipe[8], "now": columns["milk"]["count"]}
+                    if available_recipe[9] == columns["milk"]["weight"]:
+                        edited["RecipeNumber"] = {"been": available_recipe[9], "now": columns["milk"]["weight"]}
+                    if available_recipe[10] == columns["powder"]["count"]:
+                        edited["RecipeNumber"] = {"been": available_recipe[10], "now": columns["powder"]["count"]}
+                    if available_recipe[11] == columns["powder"]["weight"]:
+                        edited["RecipeNumber"] = {"been": available_recipe[11], "now": columns["powder"]["weight"]}
+                    if available_recipe[12] == columns["foam"]["count"]:
+                        edited["RecipeNumber"] = {"been": available_recipe[12], "now": columns["foam"]["count"]}
+                    if available_recipe[13] == columns["foam"]["weight"]:
+                        edited["RecipeNumber"] = {"been": available_recipe[13], "now": columns["foam"]["weight"]}
+                    db_conn.updateRecipe(device[1], drink["RecipeNumber"], drink["Name"], columns["coffee"]["count"], columns["coffee"]["weight"],columns["water"]["count"],columns["water"]["weight"],columns["milk"]["count"],columns["milk"]["weight"],columns["powder"]["count"],columns["powder"]["weight"],columns["foam"]["count"],columns["foam"]["weight"])
         print(columns)
 
 

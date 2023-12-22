@@ -21,34 +21,20 @@ class WMFSQLDriver:
         cur.execute(stmt, (aleph_id, recipe_id, recipe_alias, coffee_count, coffee_weight, water_count, water_weight, milk_count, milk_weight, powder_count, powder_weight, foam_count, foam_weight,))
         self.connection.commit()
         cur.close()
-    def updateRecipe(self):
-        print(address)
+    def updateRecipe(self, aleph_id, recipe_id, recipe_alias, coffee_count, coffee_weight, water_count, water_weight, milk_count, milk_weight, powder_count, powder_weight, foam_count, foam_weight):
         cur = self.connection.cursor()
         stmt = ''' 
-            UPDATE devices 
-            SET utc = ?, address = ?, type = ?, status = ?
-            WHERE aleph_id = ?
+            UPDATE recipes 
+            SET recipe_alias = ?, coffee_count = ?, coffee_weight = ?, water_count = ?, water_weight = ?, milk_count = ?, milk_weight = ?, powder_count = ?, powder_weight = ?, foam_count = ?, foam_weight = ?
+            WHERE aleph_id = ? AND recipe_id = ?
         '''
-        cur.execute(stmt, (utc, address, type, status, aleph_id))
+        cur.execute(stmt, (recipe_id, recipe_alias, coffee_count, coffee_weight, water_count, water_weight, milk_count, milk_weight, powder_count, powder_weight, foam_count, foam_weight, aleph_id, recipe_id))
         self.connection.commit()
         cur.close()
         return stmt
     def getRecipe(self, aleph_id, recipe_id):
         cur = self.connection.cursor()
-        stmt = f'''SELECT id, recipe_id FROM recipes WHERE aleph_id = "{aleph_id}" AND recipe_id = "{recipe_id}" LIMIT 1'''
-        cur.execute(stmt)
-        res = cur.fetchone()
-        cur.close()
-        return res
-
-    def find_machines_recipe_by_id(self, aleph_id, recipe_id):
-        cur = self.connection.cursor()
-        stmt = f'''
-                    SELECT id, aleph_id, recipe_id, cup_size, coffee, water, milk, powder, foam FROM recipes
-                    WHERE recipe_id = "{recipe_id}" AND aleph_id = "{aleph_id}"
-                    ORDER BY id DESC 
-                    LIMIT 1
-                '''
+        stmt = f'''SELECT id, aleph_id, recipe_id, recipe_alias, coffee_count, coffee_weight, water_count, water_weight, milk_count, milk_weight, powder_count, powder_weight, foam_count, foam_weight FROM recipes WHERE aleph_id = "{aleph_id}" AND recipe_id = "{recipe_id}" LIMIT 1'''
         cur.execute(stmt)
         res = cur.fetchone()
         cur.close()
