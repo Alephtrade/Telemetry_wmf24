@@ -76,29 +76,29 @@ def updateDrinks():
                 else:
                     edited = {}
                     if available_recipe[2] == drink["RecipeNumber"]:
-                        edited["RecipeNumber"] = {"been": available_recipe[2], "now": drink["RecipeNumber"]}
+                        edited["recipe_id"] = {"been": available_recipe[2], "now": drink["RecipeNumber"]}
                     if available_recipe[3] == drink["Name"]:
-                        edited["RecipeNumber"] = {"been": available_recipe[3], "now": drink["Name"]}
+                        edited["recipe_alias"] = {"been": available_recipe[3], "now": drink["Name"]}
                     if available_recipe[4] == columns["coffee"]["count"]:
-                        edited["RecipeNumber"] = {"been": available_recipe[4], "now": columns["coffee"]["count"]}
+                        edited["coffee_count"] = {"been": available_recipe[4], "now": columns["coffee"]["count"]}
                     if available_recipe[5] == columns["coffee"]["weight"]:
-                        edited["RecipeNumber"] = {"been": available_recipe[5], "now": columns["coffee"]["weight"]}
+                        edited["coffee_weight"] = {"been": available_recipe[5], "now": columns["coffee"]["weight"]}
                     if available_recipe[6] == columns["water"]["count"]:
-                        edited["RecipeNumber"] = {"been": available_recipe[6], "now": columns["water"]["count"]}
+                        edited["water_count"] = {"been": available_recipe[6], "now": columns["water"]["count"]}
                     if available_recipe[7] == columns["water"]["weight"]:
-                        edited["RecipeNumber"] = {"been": available_recipe[7], "now": columns["water"]["weight"]}
+                        edited["water_weight"] = {"been": available_recipe[7], "now": columns["water"]["weight"]}
                     if available_recipe[8] == columns["milk"]["count"]:
-                        edited["RecipeNumber"] = {"been": available_recipe[8], "now": columns["milk"]["count"]}
+                        edited["milk_count"] = {"been": available_recipe[8], "now": columns["milk"]["count"]}
                     if available_recipe[9] == columns["milk"]["weight"]:
-                        edited["RecipeNumber"] = {"been": available_recipe[9], "now": columns["milk"]["weight"]}
+                        edited["milk_weight"] = {"been": available_recipe[9], "now": columns["milk"]["weight"]}
                     if available_recipe[10] == columns["powder"]["count"]:
-                        edited["RecipeNumber"] = {"been": available_recipe[10], "now": columns["powder"]["count"]}
+                        edited["powder_count"] = {"been": available_recipe[10], "now": columns["powder"]["count"]}
                     if available_recipe[11] == columns["powder"]["weight"]:
-                        edited["RecipeNumber"] = {"been": available_recipe[11], "now": columns["powder"]["weight"]}
+                        edited["powder_weight"] = {"been": available_recipe[11], "now": columns["powder"]["weight"]}
                     if available_recipe[12] == columns["foam"]["count"]:
-                        edited["RecipeNumber"] = {"been": available_recipe[12], "now": columns["foam"]["count"]}
+                        edited["foam_count"] = {"been": available_recipe[12], "now": columns["foam"]["count"]}
                     if available_recipe[13] == columns["foam"]["weight"]:
-                        edited["RecipeNumber"] = {"been": available_recipe[13], "now": columns["foam"]["weight"]}
+                        edited["foam_weight"] = {"been": available_recipe[13], "now": columns["foam"]["weight"]}
                     db_conn.updateRecipe(device[1], drink["RecipeNumber"], drink["Name"], columns["coffee"]["count"], columns["coffee"]["weight"],columns["water"]["count"],columns["water"]["weight"],columns["milk"]["count"],columns["milk"]["weight"],columns["powder"]["count"],columns["powder"]["weight"],columns["foam"]["count"],columns["foam"]["weight"])
                 print(edited)
         #print(columns)
