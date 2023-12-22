@@ -75,27 +75,27 @@ def updateDrinks():
                     return True
                 else:
                     edited = {available_recipe[2]: {}}
-                    if available_recipe[3] != drink["Name"]:
+                    if str(available_recipe[3]) != str(drink["Name"]):
                         edited[available_recipe[2]]["recipe_alias"] = {"been": available_recipe[3], "now": drink["Name"]}
-                    if available_recipe[4] != columns["coffee"]["count"]:
+                    if int(available_recipe[4]) != int(columns["coffee"]["count"]):
                         edited[available_recipe[2]]["coffee_count"] = {"been": available_recipe[4], "now": columns["coffee"]["count"]}
-                    if available_recipe[5] != columns["coffee"]["weight"]:
+                    if int(available_recipe[5]) != int(columns["coffee"]["weight"]):
                         edited[available_recipe[2]]["coffee_weight"] = {"been": available_recipe[5], "now": columns["coffee"]["weight"]}
-                    if available_recipe[6] != columns["water"]["count"]:
+                    if int(available_recipe[6]) != int(columns["water"]["count"]):
                         edited[available_recipe[2]]["water_count"] = {"been": available_recipe[6], "now": columns["water"]["count"]}
-                    if available_recipe[7] != columns["water"]["weight"]:
+                    if int(available_recipe[7]) != int(columns["water"]["weight"]):
                         edited[available_recipe[2]]["water_weight"] = {"been": available_recipe[7], "now": columns["water"]["weight"]}
-                    if available_recipe[8] != columns["milk"]["count"]:
+                    if int(available_recipe[8]) != int(columns["milk"]["count"]):
                         edited[available_recipe[2]]["milk_count"] = {"been": available_recipe[8], "now": columns["milk"]["count"]}
-                    if available_recipe[9] != columns["milk"]["weight"]:
+                    if int(available_recipe[9]) != int(columns["milk"]["weight"]):
                         edited[available_recipe[2]]["milk_weight"] = {"been": available_recipe[9], "now": columns["milk"]["weight"]}
-                    if available_recipe[10] != columns["powder"]["count"]:
+                    if int(available_recipe[10]) != int(columns["powder"]["count"]):
                         edited[available_recipe[2]]["powder_count"] = {"been": available_recipe[10], "now": columns["powder"]["count"]}
-                    if available_recipe[11] != columns["powder"]["weight"]:
+                    if int(available_recipe[11]) != int(columns["powder"]["weight"]):
                         edited[available_recipe[2]]["powder_weight"] = {"been": available_recipe[11], "now": columns["powder"]["weight"]}
-                    if available_recipe[12] != columns["foam"]["count"]:
+                    if int(available_recipe[12]) != int(columns["foam"]["count"]):
                         edited[available_recipe[2]]["foam_count"] = {"been": available_recipe[12], "now": columns["foam"]["count"]}
-                    if available_recipe[13] != columns["foam"]["weight"]:
+                    if int(available_recipe[13]) != int(columns["foam"]["weight"]):
                         edited[available_recipe[2]]["foam_weight"] = {"been": available_recipe[13], "now": columns["foam"]["weight"]}
                     db_conn.updateRecipe(device[1], drink["RecipeNumber"], drink["Name"], columns["coffee"]["count"], columns["coffee"]["weight"],columns["water"]["count"],columns["water"]["weight"],columns["milk"]["count"],columns["milk"]["weight"],columns["powder"]["count"],columns["powder"]["weight"],columns["foam"]["count"],columns["foam"]["weight"])
                     print(edited)
