@@ -34,7 +34,9 @@ class WMFSQLDriver:
         return stmt
     def getRecipe(self, aleph_id, recipe_id):
         cur = self.connection.cursor()
-        stmt = f'''SELECT id, aleph_id, recipe_id, recipe_alias, coffee_count, coffee_weight, water_count, water_weight, milk_count, milk_weight, powder_count, powder_weight, foam_count, foam_weight FROM recipes WHERE aleph_id = "{aleph_id}" AND recipe_id = "{recipe_id}" LIMIT 1'''
+        stmt = f'''SELECT id, aleph_id, recipe_id, recipe_alias, coffee_count, coffee_weight, water_count, water_weight, milk_count, milk_weight, powder_count, powder_weight, foam_count, foam_weight 
+         FROM recipes 
+         WHERE aleph_id = "{aleph_id}" AND recipe_id = "{recipe_id}" LIMIT 1'''
         cur.execute(stmt)
         res = cur.fetchone()
         cur.close()
