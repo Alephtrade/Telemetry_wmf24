@@ -76,7 +76,10 @@ def updateDrinks():
                 else:
                     edited = {}
                     if str(available_recipe[3]) == str(drink["Name"]):
-                        return "Дичь"
+                        print(available_recipe[3])
+                        print(drink["Name"])
+                        print(type(available_recipe[3]))
+                        print(type(drink["Name"]))
                     if available_recipe[2] == drink["RecipeNumber"]:
                         edited["recipe_id"] = {"been": available_recipe[2], "now": drink["RecipeNumber"]}
                     if str(available_recipe[3]) == str(drink["Name"]):
