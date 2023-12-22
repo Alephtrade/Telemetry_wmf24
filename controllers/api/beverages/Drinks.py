@@ -26,7 +26,7 @@ def updateDrinks():
         except Exception:
             return False
         request_drinks = json.dumps({"function": "getDrinkList"})
-        print(request_drinks)
+        #print(request_drinks)
         ws.send(request_drinks)
         received_drinks = ws.recv()
         received_drinks_deque = deque(json.loads(received_drinks))
@@ -44,7 +44,7 @@ def updateDrinks():
                 "foam": {"count": 0, "weight": 0},
             }
             request_recipes = json.dumps({"function": "getRecipeComposition", "RecipeNumber": drink["RecipeNumber"]})
-            print(request_recipes)
+           # print(request_recipes)
             ws.send(request_recipes)
             received_recipes = ws.recv()
             received_recipes_deque = deque(json.loads(received_recipes))
@@ -53,7 +53,7 @@ def updateDrinks():
                 for i_recipes in var_recipes:
                     formatted_recipes[i_recipes] = var_recipes[i_recipes]
             for vat_recipes in formatted_recipes["Parts"]:
-                print(formatted_recipes["Parts"])
+                #print(formatted_recipes["Parts"])
                 if vat_recipes["Type"] == "coffee":
                     columns["coffee"]["weight"] = int(columns["coffee"]["weight"] + vat_recipes['QtyPowder'])
                     columns["coffee"]["count"] = columns["coffee"]["count"] + 1
@@ -67,7 +67,7 @@ def updateDrinks():
                     columns["water"]["weight"] = int(columns["water"]["weight"] + vat_recipes['QtyWater'])
                     columns["water"]["count"] = columns["water"]["count"] + 1
             available_recipe = db_conn.getRecipe(device[1], drink["RecipeNumber"])
-            print(available_recipe)
+            #print(available_recipe)
             if available_recipe is None:
                 db_conn.initRecipe(device[1], drink["RecipeNumber"], drink["Name"], columns["coffee"]["count"], columns["coffee"]["weight"],columns["water"]["count"],columns["water"]["weight"],columns["milk"]["count"],columns["milk"]["weight"],columns["powder"]["count"],columns["powder"]["weight"],columns["foam"]["count"],columns["foam"]["weight"])
             else:
@@ -101,7 +101,7 @@ def updateDrinks():
                         edited["RecipeNumber"] = {"been": available_recipe[13], "now": columns["foam"]["weight"]}
                     db_conn.updateRecipe(device[1], drink["RecipeNumber"], drink["Name"], columns["coffee"]["count"], columns["coffee"]["weight"],columns["water"]["count"],columns["water"]["weight"],columns["milk"]["count"],columns["milk"]["weight"],columns["powder"]["count"],columns["powder"]["weight"],columns["foam"]["count"],columns["foam"]["weight"])
                 print(edited)
-        print(columns)
+        #print(columns)
 
 
 
