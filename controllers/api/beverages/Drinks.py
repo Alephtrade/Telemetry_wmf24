@@ -77,7 +77,7 @@ def updateDrinks():
                     edited = {}
                     if available_recipe[2] == drink["RecipeNumber"]:
                         edited["recipe_id"] = {"been": available_recipe[2], "now": drink["RecipeNumber"]}
-                    if available_recipe[3] == drink["Name"]:
+                    if str(available_recipe[3]) == str(drink["Name"]):
                         edited["recipe_alias"] = {"been": available_recipe[3], "now": drink["Name"]}
                     if available_recipe[4] == columns["coffee"]["count"]:
                         edited["coffee_count"] = {"been": available_recipe[4], "now": columns["coffee"]["count"]}
