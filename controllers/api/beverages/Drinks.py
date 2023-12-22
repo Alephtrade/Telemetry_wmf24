@@ -98,7 +98,7 @@ def updateDrinks():
                     if available_recipe[13] != columns["foam"]["weight"]:
                         edited[available_recipe[2]]["foam_weight"] = {"been": available_recipe[13], "now": columns["foam"]["weight"]}
                     db_conn.updateRecipe(device[1], drink["RecipeNumber"], drink["Name"], columns["coffee"]["count"], columns["coffee"]["weight"],columns["water"]["count"],columns["water"]["weight"],columns["milk"]["count"],columns["milk"]["weight"],columns["powder"]["count"],columns["powder"]["weight"],columns["foam"]["count"],columns["foam"]["weight"])
-                print(edited)
+                    print(edited)
         #print(columns)
 
 
