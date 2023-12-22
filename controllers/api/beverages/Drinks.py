@@ -67,7 +67,7 @@ def updateDrinks():
                     columns["water"]["weight"] = int(columns["water"]["weight"] + vat_recipes['QtyWater'])
                     columns["water"]["count"] = columns["water"]["count"] + 1
             available_recipe = db_conn.getRecipe(device[2], drink["RecipeNumber"])
-            if len(available_recipe) < 1:
+            if available_recipe[0] is None:
                 print(available_recipe)
                 db_conn.initRecipe(device[1], drink["RecipeNumber"], drink["Name"], columns["coffee"]["count"], columns["coffee"]["weight"],columns["water"]["count"],columns["water"]["weight"],columns["milk"]["count"],columns["milk"]["weight"],columns["powder"]["count"],columns["powder"]["weight"],columns["foam"]["count"],columns["foam"]["weight"])
             else:
