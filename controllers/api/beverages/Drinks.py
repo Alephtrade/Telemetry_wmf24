@@ -58,16 +58,16 @@ def updateDrinks():
                 for vat_recipes in formatted_recipes["Parts"]:
                     print(formatted_recipes["Parts"])
                     if vat_recipes["Type"] == "coffee":
-                        columns["coffee"]["weight"] = columns["coffee"]["weight"] + vat_recipes['QtyPowder']
+                        columns["coffee"]["weight"] = int(columns["coffee"]["weight"] + vat_recipes['QtyPowder'])
                         columns["coffee"]["count"] = columns["coffee"]["count"] + 1
                     if vat_recipes["Type"] == "coldmilk" or vat_recipes["Type"] == "milk":
-                        columns["milk"]["weight"] = columns["milk"]["weight"] + vat_recipes['QtyMilk']
+                        columns["milk"]["weight"] = int(columns["milk"]["weight"] + vat_recipes['QtyMilk'])
                         columns["milk"]["count"] = columns["milk"]["count"] + 1
                     if vat_recipes["Type"] == "milkfoam" or vat_recipes["Type"] == "coldfoam":
-                        columns["foam"]["weight"] = columns["foam"]["weight"] + vat_recipes['QtyFoam']
+                        columns["foam"]["weight"] = int(columns["foam"]["weight"] + vat_recipes['QtyFoam'])
                         columns["foam"]["count"] = columns["foam"]["count"] + 1
                     if vat_recipes["Type"] == "hotwater" or vat_recipes["Type"] == "water":
-                        columns["water"]["weight"] = columns["water"]["weight"] + vat_recipes['QtyWater']
+                        columns["water"]["weight"] = int(columns["water"]["weight"] + vat_recipes['QtyWater'])
                         columns["water"]["count"] = columns["water"]["count"] + 1
             db_conn.initRecipe(device[1], drink["RecipeNumber"], columns["coffee"]["count"], columns["coffee"]["weight"],columns["water"]["count"],columns["water"]["weight"],columns["milk"]["count"],columns["milk"]["weight"],columns["powder"]["count"],columns["powder"]["weight"],columns["foam"]["count"],columns["foam"]["weight"])
         print(columns)
