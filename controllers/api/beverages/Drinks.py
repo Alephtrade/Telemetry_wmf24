@@ -74,7 +74,7 @@ def updateDrinks():
                 if available_recipe[2] == drink["RecipeNumber"] and available_recipe[3] == drink["Name"] and available_recipe[4] == columns["coffee"]["count"] and available_recipe[5] == columns["coffee"]["weight"] and available_recipe[6] == columns["water"]["count"] and available_recipe[7] == columns["water"]["weight"] and available_recipe[8] == columns["milk"]["count"] and available_recipe[9] == columns["milk"]["weight"] and available_recipe[10] == columns["powder"]["count"] and available_recipe[11] == columns["powder"]["weight"] and available_recipe[12] == columns["foam"]["count"] and available_recipe[13] == columns["foam"]["weight"]:
                     return True
                 else:
-                    edited = {}
+                    edited = {available_recipe[2]: {}}
                     if str(available_recipe[3]) != str(drink["Name"]):
                         edited[available_recipe[2]]["recipe_alias"] = {"been": available_recipe[3], "now": drink["Name"]}
                     if int(available_recipe[4]) != int(columns["coffee"]["count"]):
