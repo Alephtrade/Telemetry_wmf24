@@ -69,7 +69,7 @@ def updateDrinks():
                     if vat_recipes["Type"] == "hotwater" or vat_recipes["Type"] == "water":
                         columns["water"]["weight"] = columns["water"]["weight"] + vat_recipes['QtyWater']
                         columns["water"]["count"] = columns["water"]["count"] + 1
-            db_conn.initRecipe(device[2], drink["RecipeNumber"], columns["coffee"]["count"], columns["coffee"]["weight"],columns["water"]["count"],columns["water"]["weight"],columns["milk"]["count"],columns["milk"]["weight"],columns["powder"]["count"],columns["powder"]["weight"],columns["foam"]["count"],columns["foam"]["weight"])
+            db_conn.initRecipe(device[1], drink["RecipeNumber"], columns["coffee"]["count"], columns["coffee"]["weight"],columns["water"]["count"],columns["water"]["weight"],columns["milk"]["count"],columns["milk"]["weight"],columns["powder"]["count"],columns["powder"]["weight"],columns["foam"]["count"],columns["foam"]["weight"])
         print(columns)
 
 
