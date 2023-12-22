@@ -28,7 +28,7 @@ class WMFSQLDriver:
             SET recipe_alias = ?, coffee_count = ?, coffee_weight = ?, water_count = ?, water_weight = ?, milk_count = ?, milk_weight = ?, powder_count = ?, powder_weight = ?, foam_count = ?, foam_weight = ?
             WHERE aleph_id = ? AND recipe_id = ?
         '''
-        cur.execute(stmt, (recipe_id, recipe_alias, coffee_count, coffee_weight, water_count, water_weight, milk_count, milk_weight, powder_count, powder_weight, foam_count, foam_weight, aleph_id, recipe_id))
+        cur.execute(stmt, (recipe_alias, coffee_count, coffee_weight, water_count, water_weight, milk_count, milk_weight, powder_count, powder_weight, foam_count, foam_weight, aleph_id, recipe_id))
         self.connection.commit()
         cur.close()
         return stmt
