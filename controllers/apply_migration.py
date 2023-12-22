@@ -237,12 +237,16 @@ if not does_object_exist('table', 'recipes'):
                     primary key,
             aleph_id text,
             recipe_id text,
-            coffee text,
-            water text,
-            milk text,
-            powder text,
-            foam text
-
+            coffee_count text,
+            coffee_weight text,
+            water_count text,
+            water_weight text,
+            milk_count text,
+            milk_weight text,
+            powder_count text,
+            powder_weight text,
+            foam_count text,
+            foam_weight text
         )
     '''
     cur.execute(stmt)
@@ -251,11 +255,17 @@ if not does_object_exist('table', 'recipes'):
 add_table_column(table_name='recipes', column_name='id', column_type='text')
 add_table_column(table_name='recipes', column_name='aleph_id', column_type='text')
 add_table_column(table_name='recipes', column_name='recipe_id', column_type='text')
-add_table_column(table_name='recipes', column_name='coffee', column_type='text')
-add_table_column(table_name='recipes', column_name='water', column_type='text')
-add_table_column(table_name='recipes', column_name='milk', column_type='text')
-add_table_column(table_name='recipes', column_name='powder', column_type='text')
-add_table_column(table_name='recipes', column_name='foam', column_type='text')
+add_table_column(table_name='recipes', column_name='coffee_count', column_type='text')
+add_table_column(table_name='recipes', column_name='coffee_weight', column_type='text')
+add_table_column(table_name='recipes', column_name='water_count', column_type='text')
+add_table_column(table_name='recipes', column_name='water_weight', column_type='text')
+add_table_column(table_name='recipes', column_name='milk_count', column_type='text')
+add_table_column(table_name='recipes', column_name='milk_weight', column_type='text')
+add_table_column(table_name='recipes', column_name='powder_count', column_type='text')
+add_table_column(table_name='recipes', column_name='powder_weight', column_type='text')
+add_table_column(table_name='recipes', column_name='foam_count', column_type='text')
+add_table_column(table_name='recipes', column_name='foam_weight', column_type='text')
+
 
 if not does_object_exist('table', 'pours'):
     stmt = '''

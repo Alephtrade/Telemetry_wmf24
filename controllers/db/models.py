@@ -15,10 +15,10 @@ class WMFSQLDriver:
     def close(self):
         self.connection.close()
 
-    def initRecipe(self):
+    def initRecipe(self, aleph_id, recipe_id, coffee_count, coffee_weight, water_count, water_weight, milk_count, milk_weight, powder_count, powder_weight, foam_count, foam_weight):
         cur = self.connection.cursor()
-        stmt = 'INSERT INTO devices (aleph_id, utc, address, type, status) VALUES (?, ?, ?, ?, ?)'
-        cur.execute(stmt, (device_aleph_id, device_utc, device_ip, device_model, device_status,))
+        stmt = 'INSERT INTO recipes (aleph_id, recipe_id, coffee_count, coffee_weight, water_count, water_weight, milk_count, milk_weight, powder_count, powder_weight, foam_count, foam_weight) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+        cur.execute(stmt, (aleph_id, recipe_id, coffee_count, coffee_weight, water_count, water_weight, milk_count, milk_weight, powder_count, powder_weight, foam_count, foam_weight,))
         self.connection.commit()
         cur.close()
     def updateRecipe(self):
