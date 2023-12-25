@@ -95,7 +95,7 @@ def updateDrinks(decice_ip):
                             edited["edited_parts"]["foam_count"] = {"been": available_recipe[13], "now": columns["foam"]["count"]}
                         if int(available_recipe[14]) != int(columns["foam"]["weight"]):
                             edited["edited_parts"]["foam_weight"] = {"been": available_recipe[14], "now": columns["foam"]["weight"]}
-                        db_conn.updateRecipe(device[1], drink["RecipeNumber"], drink["Name"], available_recipe[4], columns["coffee"]["count"], columns["coffee"]["weight"],columns["water"]["count"],columns["water"]["weight"],columns["milk"]["count"],columns["milk"]["weight"],columns["powder"]["count"],columns["powder"]["weight"],columns["foam"]["count"],columns["foam"]["weight"])
+                        db_conn.updateRecipe(device[1], drink["RecipeNumber"], drink["Name"], received_recipes, columns["coffee"]["count"], columns["coffee"]["weight"],columns["water"]["count"],columns["water"]["weight"],columns["milk"]["count"],columns["milk"]["weight"],columns["powder"]["count"],columns["powder"]["weight"],columns["foam"]["count"],columns["foam"]["weight"])
                         url = "https://backend.wmf24.ru/api/recipe_edited"
 
                         headers = {
