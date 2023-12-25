@@ -15,26 +15,26 @@ class WMFSQLDriver:
     def close(self):
         self.connection.close()
 
-    def initRecipe(self, aleph_id, recipe_id, recipe_alias, coffee_count, coffee_weight, water_count, water_weight, milk_count, milk_weight, powder_count, powder_weight, foam_count, foam_weight):
+    def initRecipe(self, aleph_id, recipe_id, recipe_alias, recipe_string, coffee_count, coffee_weight, water_count, water_weight, milk_count, milk_weight, powder_count, powder_weight, foam_count, foam_weight):
         cur = self.connection.cursor()
-        stmt = 'INSERT INTO recipes (aleph_id, recipe_id, recipe_alias, coffee_count, coffee_weight, water_count, water_weight, milk_count, milk_weight, powder_count, powder_weight, foam_count, foam_weight) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
-        cur.execute(stmt, (aleph_id, recipe_id, recipe_alias, coffee_count, coffee_weight, water_count, water_weight, milk_count, milk_weight, powder_count, powder_weight, foam_count, foam_weight,))
+        stmt = 'INSERT INTO recipes (aleph_id, recipe_id, recipe_alias, recipe_string, coffee_count, coffee_weight, water_count, water_weight, milk_count, milk_weight, powder_count, powder_weight, foam_count, foam_weight) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+        cur.execute(stmt, (aleph_id, recipe_id, recipe_alias, recipe_string, coffee_count, coffee_weight, water_count, water_weight, milk_count, milk_weight, powder_count, powder_weight, foam_count, foam_weight,))
         self.connection.commit()
         cur.close()
-    def updateRecipe(self, aleph_id, recipe_id, recipe_alias, coffee_count, coffee_weight, water_count, water_weight, milk_count, milk_weight, powder_count, powder_weight, foam_count, foam_weight):
+    def updateRecipe(self, aleph_id, recipe_id, recipe_alias, recipe_string, coffee_count, coffee_weight, water_count, water_weight, milk_count, milk_weight, powder_count, powder_weight, foam_count, foam_weight):
         cur = self.connection.cursor()
         stmt = ''' 
             UPDATE recipes 
-            SET recipe_alias = ?, coffee_count = ?, coffee_weight = ?, water_count = ?, water_weight = ?, milk_count = ?, milk_weight = ?, powder_count = ?, powder_weight = ?, foam_count = ?, foam_weight = ?
+            SET recipe_alias = ?, recipe_string = ?, coffee_count = ?, coffee_weight = ?, water_count = ?, water_weight = ?, milk_count = ?, milk_weight = ?, powder_count = ?, powder_weight = ?, foam_count = ?, foam_weight = ?
             WHERE aleph_id = ? AND recipe_id = ?
         '''
-        cur.execute(stmt, (recipe_alias, coffee_count, coffee_weight, water_count, water_weight, milk_count, milk_weight, powder_count, powder_weight, foam_count, foam_weight, aleph_id, recipe_id))
+        cur.execute(stmt, (recipe_alias, recipe_string, coffee_count, coffee_weight, water_count, water_weight, milk_count, milk_weight, powder_count, powder_weight, foam_count, foam_weight, aleph_id, recipe_id))
         self.connection.commit()
         cur.close()
         return stmt
     def getRecipe(self, aleph_id, recipe_id):
         cur = self.connection.cursor()
-        stmt = f'''SELECT id, aleph_id, recipe_id, recipe_alias, coffee_count, coffee_weight, water_count, water_weight, milk_count, milk_weight, powder_count, powder_weight, foam_count, foam_weight 
+        stmt = f'''SELECT id, aleph_id, recipe_id, recipe_alias, recipe_string, coffee_count, coffee_weight, water_count, water_weight, milk_count, milk_weight, powder_count, powder_weight, foam_count, foam_weight 
          FROM recipes 
          WHERE aleph_id = "{aleph_id}" AND recipe_id = "{recipe_id}" LIMIT 1'''
         cur.execute(stmt)
