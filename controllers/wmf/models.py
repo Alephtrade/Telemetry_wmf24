@@ -17,7 +17,7 @@ class WMFMachineErrorConnector:
 
     def get_status(self):
         try:
-            ws = websocket.create_connection(self.WS_URL, timeout=settings.WEBSOCKET_CONNECT_TIMEOUT)
+            ws = websocket.create_connection(f'ws://{self.ip}:25000/', timeout=5)
             if ws.connected:
                 ws.close()
                 return 1

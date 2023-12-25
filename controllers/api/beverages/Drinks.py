@@ -20,7 +20,7 @@ def updateDrinks(decice_ip):
             ws = websocket.create_connection(f'ws://{decice_ip}:25000/', timeout=5)
             status = 1
         except Exception:
-            return False
+            return 0
         request_drinks = json.dumps({"function": "getDrinkList"})
         #print(request_drinks)
         ws.send(request_drinks)
