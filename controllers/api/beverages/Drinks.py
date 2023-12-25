@@ -72,7 +72,6 @@ def updateDrinks(decice_ip):
                         db_conn.updateRecipe(device[1], drink["RecipeNumber"], drink["Name"], received_recipes, columns["coffee"]["count"], columns["coffee"]["weight"],columns["water"]["count"],columns["water"]["weight"],columns["milk"]["count"],columns["milk"]["weight"],columns["powder"]["count"],columns["powder"]["weight"],columns["foam"]["count"],columns["foam"]["weight"])
                         return True
                     else:
-                        edited = device[1]
                         edited = {"device": device[1], "recipe_id": available_recipe[2], "edited_parts": {}}
                         if str(available_recipe[3]) != str(drink["Name"]):
                             edited["edited_parts"]["recipe_alias"] = {"been": available_recipe[3], "now": drink["Name"]}
