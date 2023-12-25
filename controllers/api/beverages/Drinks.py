@@ -31,7 +31,7 @@ def updateDrinks(decice_ip):
             for i_drinks in var_drinks:
                 formatted_drinks[i_drinks] = var_drinks[i_drinks]
         for drink in formatted_drinks["DrinkList"]:
-            print(drink["Name"])
+            #print(drink["Name"])
             columns = {
                 "water": {"count": 0, "weight": 0},
                 "coffee": {"count": 0, "weight": 0},
@@ -95,7 +95,7 @@ def updateDrinks(decice_ip):
                         if int(available_recipe[14]) != int(columns["foam"]["weight"]):
                             edited[available_recipe[2]]["foam_weight"] = {"been": available_recipe[13], "now": columns["foam"]["weight"]}
                         db_conn.updateRecipe(device[1], drink["RecipeNumber"], drink["Name"], available_recipe[4], columns["coffee"]["count"], columns["coffee"]["weight"],columns["water"]["count"],columns["water"]["weight"],columns["milk"]["count"],columns["milk"]["weight"],columns["powder"]["count"],columns["powder"]["weight"],columns["foam"]["count"],columns["foam"]["weight"])
-                        print(edited)
+                        #print(edited)
         #print(columns)
 
 
