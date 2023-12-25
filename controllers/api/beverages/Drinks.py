@@ -18,10 +18,9 @@ from controllers.db.models import WMFSQLDriver
 db_conn = WMFSQLDriver()
 devices = db_conn.get_devices()
 
-def updateDrinks():
-    for device in devices:
+def updateDrinks(decice_ip):
         try:
-            ws = websocket.create_connection(f'ws://{device[2]}:25000/', timeout=5)
+            ws = websocket.create_connection(f'ws://{decice_ip}:25000/', timeout=5)
             status = 1
         except Exception:
             return False
@@ -103,5 +102,5 @@ def updateDrinks():
         #print(columns)
 
 
-
-updateDrinks()
+for device in devices:
+    updateDrinks(device[2])

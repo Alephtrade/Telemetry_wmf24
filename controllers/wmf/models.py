@@ -8,6 +8,7 @@ from controllers.db.models import WMFSQLDriver
 from controllers.settings import prod as settings
 from controllers.api.beverages import recipes as recipes
 from collections import deque
+from controllers.api.beverages import Drinks as DrinksManager
 db_conn = WMFSQLDriver()
 
 class WMFMachineErrorConnector:
@@ -58,69 +59,36 @@ class WMFMachineErrorConnector:
                 recipe_db = self.db_driver.find_machines_recipe_by_id(self.aleph_id, recipe_number)
                 print("Recipe")
                 print(recipe_number)
-                received_data2 = recipes.getRecipeComposition(self.ip, recipe_number)
-                #received_data2 = deque(json.loads(received_data))
-                print("received_data")
-                formatted = {}
-                for var in list(deque(json.loads(received_data2))):
-                    for i in var:
-                        formatted[i] = var[i]
-                #if recipe_db and recipe_db is not None:
-                columns = {
-                    "water": {"count": 0, "weight": 0}, #water
-                    "coffee": {"count": 0, "weight": 0}, #coffee
-                    "milk": {"count": 0, "weight": 0}, #milk
-                    "powder": {"count": 0, "weight": 0}, #powder
-                    "foam": {"count": 0, "weight": 0}, #foam
-                }
-                if data.get("QtyWater") != 0:
-                #    columns["water"]["count"] = 1
-                    columns["water"]["weight"] = data.get('QtyWater')
-                if data.get('QtyGrinder1') != 0 or data.get("QtyGrinder2") != 0 or data.get("QtyGrinder3") != 0 or data.get("QtyGrinder4") != 0:
-                #    columns["coffee"]["count"] = 1
-                    columns["coffee"]["weight"] = data.get('QtyGrinder1') + data.get('QtyGrinder2') + data.get('QtyGrinder3') + data.get('QtyGrinder4')
-                if data.get('QtyMilk1') != 0 or data.get('QtyMilk2') != 0:
-                #    columns["milk"]["count"] = 1
-                    columns["milk"]["weight"] = data.get('QtyMilk1') + data.get("QtyMilk2")
-                if data.get('QtyPowder1') != 0 or data.get('QtyPowder2') != 0:
-                #    columns["powder"]["count"] = 1
-                    columns["powder"]["weight"] = data.get('QtyPowder1') + data.get('QtyPowder2')
-                if data.get('QtyFoam1') != 0 or data.get('QtyFoam2') != 0:
-                #    columns["foam"]["count"] = 1
-                    columns["foam"]["weight"] = data.get('QtyFoam1') + data.get('QtyFoam2')
-                print(0000000000000000000000)
-                print(columns["water"]["weight"])
-                print(columns)
-                receiveddata2 = recipes.getRecipeComposition(self.ip, recipe_number)
-                print('composition sended')
-                receiveddata2 = deque(json.loads(receiveddata2))
-                formatted = {}
-                for var in list(receiveddata2):
-                    for i in var:
-                        formatted[i] = var[i]
-                for vat in formatted["Parts"]:
-                    print(columns["water"]["weight"])
-                    print(vat)
-                    if vat["Type"] == "coffee":
-                        columns["coffee"]["count"] = columns["coffee"]["count"] + 1
-                    if vat["Type"] == "coldmilk" or vat["Type"] == "milk":
-                        #columns["milk"]["weight"] = int(columns["milk"]["weight"] + vat['QtyMilk'])
-                        columns["milk"]["count"] = columns["milk"]["count"] + 1
-                    if vat["Type"] == "milkfoam" or vat["Type"] == "coldfoam":
-                        #columns["foam"]["weight"] = int(columns["foam"]["weight"] + vat['QtyFoam'])
-                        columns["foam"]["count"] = columns["foam"]["count"] + 1
-                    if vat["Type"] == "hotwater" or vat["Type"] == "water":
-                        #columns["water"]["weight"] = int(columns["water"]["weight"] + vat['QtyWater'])
-                        columns["water"]["count"] = columns["water"]["count"] + 1
-                print(columns["water"]["weight"])
-                print(columns["water"]["count"])
-                columns["coffee"]["weight"] = int(columns["coffee"]["weight"] * columns["coffee"]["count"])
-                columns["milk"]["weight"] = int(columns["milk"]["weight"] * columns["milk"]["count"])  # округлить значение
-                columns["foam"]["weight"] = int(columns["foam"]["weight"] * columns["foam"]["count"])  # округлить значение
-                columns["water"]["weight"] = int(columns["water"]["weight"] * columns["water"]["count"])  # округлить значение                # округлить значение
-                print(22222222222222222222222222)
-                print(columns)
-            # self.db_driver.save_last_record('current_errors', json.dumps(list(self.current_errors)))
+                available_recipe = db_conn.getRecipe(self.aleph_id, recipe_number)
+                if available_recipe is None or available_recipe:
+                    DrinksManager.updateDrinks(self.ip)
+                if available_recipe is not None and available_recipe:
+                    water = 0
+                    coffee = 0
+                    milk = 0
+                    powder = 0
+                    foam = 0
+                    if cup_size == "S":
+                        water = 0.5 * available_recipe[8]
+                        coffee = 0.5 * available_recipe[6]
+                        milk = 0.5 * available_recipe[10]
+                        powder = 0.5 * available_recipe[12]
+                        foam = 0.5 * available_recipe[14]
+                    elif cup_size == "L":
+                        water = 2 * available_recipe[8]
+                        coffee = 2 * available_recipe[6]
+                        milk = 2 * available_recipe[10]
+                        powder = 2 * available_recipe[12]
+                        foam = 2 * available_recipe[14]
+                    elif cup_size == "M":
+                        water = available_recipe[8]
+                        coffee = available_recipe[6]
+                        milk = available_recipe[10]
+                        powder = available_recipe[12]
+                        foam = available_recipe[14]
+                    db_conn.initPours(self.aleph_id, recipe_number, available_recipe[3], cup_size, water, coffee, milk, powder, foam)
+
+            # self.d    b_driver.save_last_record('current_errors', json.dumps(list(self.current_errors)))
         except Exception as ex:
             logging.error(f"WMFMachineConnector handle_error: error={ex}, stacktrace: {print_exception()}")
 

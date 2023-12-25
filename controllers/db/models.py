@@ -42,6 +42,33 @@ class WMFSQLDriver:
         cur.close()
         return res
 
+    def initPours(self, aleph_id, recipe_id, recipe_name, cup_size, water_weight, coffee, milk, powder, foam):
+        cur = self.connection.cursor()
+        stmt = 'INSERT INTO recipes (aleph_id, recipe_id, recipe_name, cup_size, water_weight, coffee, milk, powder, foam, date_formed, is_sent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
+        cur.execute(stmt, (aleph_id, recipe_id, recipe_name, cup_size, water_weight, coffee, milk, powder, foam, datetime.fromtimestamp(int((datetime.now()).timestamp())), 0))
+        self.connection.commit()
+        cur.close()
+    def updatePours(self, aleph_id, recipe_id, recipe_name, cup_size, water_weight, coffee, milk, powder, foam):
+        cur = self.connection.cursor()
+        stmt = ''' 
+            UPDATE recipes 
+            SET recipe_alias = ?, recipe_string = ?, coffee_count = ?, coffee_weight = ?, water_count = ?, water_weight = ?, milk_count = ?, milk_weight = ?, powder_count = ?, powder_weight = ?, foam_count = ?, foam_weight = ?
+            WHERE aleph_id = ? AND recipe_id = ?
+        '''
+        cur.execute(stmt, (recipe_alias, recipe_string, coffee_count, coffee_weight, water_count, water_weight, milk_count, milk_weight, powder_count, powder_weight, foam_count, foam_weight, aleph_id, recipe_id))
+        self.connection.commit()
+        cur.close()
+        return stmt
+    def getPours(self, aleph_id, recipe_id):
+        cur = self.connection.cursor()
+        stmt = f'''SELECT id, aleph_id, recipe_id, recipe_alias, recipe_string, coffee_count, coffee_weight, water_count, water_weight, milk_count, milk_weight, powder_count, powder_weight, foam_count, foam_weight 
+         FROM recipes 
+         WHERE aleph_id = "{aleph_id}" AND recipe_id = "{recipe_id}" LIMIT 1'''
+        cur.execute(stmt)
+        res = cur.fetchone()
+        cur.close()
+        return res
+
     def get_encrpt_key(self):
         cur = self.connection.cursor()
         stmt = f'''SELECT server_key FROM exchange_php LIMIT 1'''
