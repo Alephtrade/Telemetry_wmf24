@@ -36,6 +36,7 @@ class WMFMachineErrorConnector:
                 error_code = data.get("ErrorCode")
                 if info == "new Error":
                     self.current_errors.add(data.get("ErrorCode"))
+                    print("New Error")
                     #last_error_id = db_conn.get_error_last_record()
                     #if last_error_id != [] and last_error_id is not None:
                     #    if last_error_id[0] != "62" and last_error_id[0] != "-1" or last_error_id[1] is not None:
@@ -46,8 +47,8 @@ class WMFMachineErrorConnector:
                     if error_code in self.current_errors:
                         self.current_errors.remove(error_code)
             if data.get("function") == 'startPushDispensingFinished' or data.get("function") == 'getRecipeComposition':
-                print("start")
-                print(data.get("RecipeNumber"))
+                #print("start")
+                #print(data.get("RecipeNumber"))
                 recipe_number = data.get("RecipeNumber")
                 cup_size = data.get("CupSize")
                 if cup_size == "CUP_SIZE_Regular":
@@ -56,8 +57,8 @@ class WMFMachineErrorConnector:
                     cup_size = "S"
                 if cup_size == "CUP_SIZE_Large":
                     cup_size = "L"
-                print("Recipe")
-                print(recipe_number)
+                #print("Recipe")
+                #print(recipe_number)
                 available_recipe = db_conn.getRecipe(self.aleph_id, recipe_number)
                 if available_recipe is None or available_recipe:
                     DrinksManager.updateDrinks(self.ip)
