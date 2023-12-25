@@ -115,4 +115,5 @@ def updateDrinks(decice_ip):
 
 
 for device in devices:
+    print(device[1])
     updateDrinks(device[2])
