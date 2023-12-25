@@ -27,7 +27,7 @@ def updateDrinks(decice_ip):
         request_drinks = json.dumps({"function": "getDrinkList"})
         ws.send(request_drinks)
         received_drinks = ws.recv()
-        return print(received_drinks)
+        #return print(received_drinks)
         received_drinks_deque = deque(json.loads(received_drinks))
         formatted_drinks = {}
         for var_drinks in list(received_drinks_deque):
