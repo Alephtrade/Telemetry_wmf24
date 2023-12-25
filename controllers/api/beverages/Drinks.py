@@ -8,10 +8,13 @@ from collections import deque
 import ast
 import socket
 import sys
+from datetime import datetime, timedelta
 sys.path.append('./')
 sys.path.append('/var/www/Telemetry_wmf24/')
 from controllers.db.models import WMFSQLDriver
+from controllers.settings import prod as settings
 
+WMF_URL = settings.WMF_DATA_URL
 db_conn = WMFSQLDriver()
 devices = db_conn.get_devices()
 
@@ -103,8 +106,10 @@ def updateDrinks(decice_ip):
                             'Serverkey': db_conn.get_encrpt_key()[0]
                         }
                         response = requests.request("POST", url, headers=headers, data=json.dumps(edited))
-                        db_conn.create_error_record(device[1], '-2')
-                        db_conn.close_error_code(device[1], '-2')
+                        request = f'{WMF_URL}?device={device[1]}&error_id=AT11&date_start={datetime.fromtimestamp(int((datetime.now()).timestamp()))}&date_end={datetime.fromtimestamp(int((datetime.now()).timestamp()))}&duration=0&status={wmf_conn.get_status()}'
+                        requests.post(request)
+                        db_conn.create_error_record(device[1], 'AT11')
+                        db_conn.close_error_code(device[1], 'AT11')
                         print(edited)
         #print(columns)
 
