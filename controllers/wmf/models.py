@@ -71,11 +71,11 @@ class WMFMachineErrorConnector:
                     powder = 0
                     foam = 0
                     if cup_size == "S" or cup_size == "L":
-                        water = available_recipe[7] * available_recipe[8]
-                        coffee = available_recipe[5] * available_recipe[6]
-                        milk = available_recipe[9] * available_recipe[10]
-                        powder = available_recipe[11] * available_recipe[12]
-                        foam = available_recipe[13] * available_recipe[14]
+                        water = int(available_recipe[7]) * int(available_recipe[8])
+                        coffee = int(available_recipe[5]) * int(available_recipe[6])
+                        milk = int(available_recipe[9]) * int(available_recipe[10])
+                        powder = int(available_recipe[11]) * int(available_recipe[12])
+                        foam = int(available_recipe[13]) * int(available_recipe[14])
                     elif cup_size == "M":
                         water = available_recipe[8]
                         coffee = available_recipe[6]
