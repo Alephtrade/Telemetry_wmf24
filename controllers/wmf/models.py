@@ -47,7 +47,7 @@ class WMFMachineErrorConnector:
                     if error_code in self.current_errors:
                         self.current_errors.remove(error_code)
             if data.get("function") == 'startPushDispensingFinished' or data.get("function") == 'getRecipeComposition':
-                #print("start")
+                print(data)
                 print(data.get("RecipeNumber"))
                 recipe_number = data.get("RecipeNumber")
                 cup_size = data.get("CupSize")
