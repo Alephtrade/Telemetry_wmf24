@@ -86,6 +86,8 @@ class WMFMachineErrorConnector:
                         milk = available_recipe[10]
                         powder = available_recipe[12]
                         foam = available_recipe[14]
+                    print(self.aleph_id)
+                    print("self.aleph_id")
                     db_conn.initPours(self.aleph_id, recipe_number, available_recipe[3], cup_size, water, coffee, milk, powder, foam)
 
             # self.d    b_driver.save_last_record('current_errors', json.dumps(list(self.current_errors)))
