@@ -61,7 +61,9 @@ class WMFMachineErrorConnector:
                 #print(recipe_number)
                 available_recipe = db_conn.getRecipe(self.aleph_id, recipe_number)
                 if available_recipe is None or available_recipe:
-                    DrinksManager.updateDrinks(self.ip)
+                    print("UPDATER")
+                    print(self.ip)
+                    self.drink_list = DrinksManager.updateDrinks(self.ip)
                 if available_recipe is not None and available_recipe:
                     water = 0
                     coffee = 0
@@ -114,6 +116,7 @@ class WMFMachineErrorConnector:
 
     def __new__(cls, *args, **kwargs):
         cls.current_errors = set()
+        cls.drink_list = set()
         cls.previous_errors = set()
         obj = super().__new__(cls)
         return obj
