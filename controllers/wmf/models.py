@@ -56,7 +56,6 @@ class WMFMachineErrorConnector:
                     cup_size = "S"
                 if cup_size == "CUP_SIZE_Large":
                     cup_size = "L"
-                recipe_db = self.db_driver.find_machines_recipe_by_id(self.aleph_id, recipe_number)
                 print("Recipe")
                 print(recipe_number)
                 available_recipe = db_conn.getRecipe(self.aleph_id, recipe_number)
