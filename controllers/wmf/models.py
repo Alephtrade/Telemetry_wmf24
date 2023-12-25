@@ -63,7 +63,7 @@ class WMFMachineErrorConnector:
                 if available_recipe is None or available_recipe:
                     print("UPDATER")
                     print(self.ip)
-                    self.drink_list = DrinksManager.updateDrinks(self.ip)
+                    #self.drink_list = DrinksManager.updateDrinks(self.ip)
                 if available_recipe is not None and available_recipe:
                     water = 0
                     coffee = 0
