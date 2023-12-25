@@ -25,7 +25,7 @@ def updateDrinks(decice_ip):
         except Exception:
             return 0
         request_drinks = json.dumps({"function": "getDrinkList"})
-        #print(request_drinks)
+        return print(request_drinks)
         ws.send(request_drinks)
         received_drinks = ws.recv()
         received_drinks_deque = deque(json.loads(received_drinks))
