@@ -119,15 +119,15 @@ class WMFSQLDriver:
         cur.close()
         return stmt
 
-    def update_device_info_by_full_serial(self, full_serial, utc, address, type, status):
+    def update_device_info_by_full_serial(self, full_serial, address, type, status):
         print(address)
         cur = self.connection.cursor()
         stmt = ''' 
             UPDATE devices 
-            SET utc = ?, address = ?, type = ?, status = ?
+            SET address = ?, type = ?, status = ?
             WHERE full_serial = ?
         '''
-        cur.execute(stmt, (utc, address, type, status, full_serial))
+        cur.execute(stmt, (address, type, status, full_serial))
         self.connection.commit()
         cur.close()
         return stmt

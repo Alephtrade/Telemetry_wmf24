@@ -50,7 +50,7 @@ def test():
                 else:
                     print("finder")
                     #print(machine_response["ip"])
-                    db_conn.update_device_info_by_full_serial(str(data_for_request["full_serial"]), str(utc_calc(latitude, longitude)), str(machine_response["ip"]), str(machine_response["ProductName"]), str(1))
+                    db_conn.update_device_info_by_full_serial(str(data_for_request["full_serial"]), str(machine_response["ip"]), str(machine_response["ProductName"]), str(1))
                     db_conn.update_device_ping_time(str(data_for_request["full_serial"]), 1, datetime.fromtimestamp(int(datetime.now().timestamp())))
                 machine.append(machine_response)
                 db_conn.close()
