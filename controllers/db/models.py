@@ -88,10 +88,21 @@ class WMFSQLDriver:
         else:
             return False
 
-    def create_device(self, device_aleph_id, device_utc, device_ip, device_model, device_status):
+    def find_device_by_full_part_number(self, full_serial):
         cur = self.connection.cursor()
-        stmt = 'INSERT INTO devices (aleph_id, utc, address, type, status) VALUES (?, ?, ?, ?, ?)'
-        cur.execute(stmt, (device_aleph_id, device_utc, device_ip, device_model, device_status,))
+        stmt = f'''SELECT * FROM devices WHERE serial_code = "{full_serial}"'''
+        cur.execute(stmt)
+        res = cur.fetchone()
+        cur.close()
+        if res is not None:
+            return True
+        else:
+            return False
+
+    def create_device(self, device_aleph_id, device_utc, device_ip, device_model, device_status, full_serial):
+        cur = self.connection.cursor()
+        stmt = 'INSERT INTO devices (aleph_id, utc, address, type, status, serial_code) VALUES (?, ?, ?, ?, ?, ?)'
+        cur.execute(stmt, (device_aleph_id, device_utc, device_ip, device_model, device_status, full_serial,))
         self.connection.commit()
         cur.close()
 
@@ -108,6 +119,19 @@ class WMFSQLDriver:
         cur.close()
         return stmt
 
+    def update_device_info_by_full_serial(self, full_serial, utc, address, type, status):
+        print(address)
+        cur = self.connection.cursor()
+        stmt = ''' 
+            UPDATE devices 
+            SET utc = ?, address = ?, type = ?, status = ?
+            WHERE full_serial = ?
+        '''
+        cur.execute(stmt, (utc, address, type, status, full_serial))
+        self.connection.commit()
+        cur.close()
+        return stmt
+
     def update_device_ping_time(self, aleph_id, status, time):
         cur = self.connection.cursor()
         stmt = ''' 
@@ -116,6 +140,18 @@ class WMFSQLDriver:
             WHERE aleph_id = ?
         '''
         cur.execute(stmt, (status, time, aleph_id))
+        self.connection.commit()
+        cur.close()
+        return True
+
+    def update_device_ping_time_by_full_serial(self, full_serial, status, time):
+        cur = self.connection.cursor()
+        stmt = ''' 
+            UPDATE devices 
+            SET status = ?, last_connection = ?
+            WHERE full_serial = ?
+        '''
+        cur.execute(stmt, (status, time, full_serial))
         self.connection.commit()
         cur.close()
         return True

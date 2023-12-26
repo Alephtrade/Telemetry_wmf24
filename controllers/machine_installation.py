@@ -23,38 +23,38 @@ def test():
         if host != "10.8.0.1":
             data_for_request = {}
             machine_response = require_info(host)
+            data_for_request["full_serial"] = machine_response["PartNumber"]
             data_for_request["serial_number"] = machine_response["MachineName"]
             data_for_request["model"] = machine_response["ProductName"]
             data_for_request["ip"] = machine_response["ip"]
             print(machine_response)
             if machine_response and machine_response["ip"] is not None:
-                url = "https://backend.wmf24.ru/api/machine_check"
-
-                headers = {
-                    'Content-Type': 'application/json',
-                    'Serverkey': db_conn.get_encrpt_key()[0]
-                }
-                response = requests.request("POST", url, headers=headers, data=json.dumps(data_for_request))
-                if response.status_code == 200:
-                    response = response.json()
-                    aleph_id = response["aleph_id"]
-                    latitude = response["latitude"]
-                    longitude = response["longitude"]
-                    finder = db_conn.find_device_by_aleph_id(aleph_id)
-                    if not finder:
-                        #db_conn.connection.cursor().close()
-                        print("NOT finder")
-                        print(machine_response["ip"])
-                        db_conn.create_device(str(aleph_id), str(utc_calc(latitude, longitude)), str(machine_response["ip"]), str(machine_response["ProductName"]), str(1))
+                finder = db_conn.find_device_by_full_part_number(data_for_request["full_serial"])
+                if not finder:
+                    print("NOT finder")
+                    print(machine_response["ip"])
+                    url = "https://backend.wmf24.ru/api/machine_check"
+                    headers = {
+                        'Content-Type': 'application/json',
+                        'Serverkey': db_conn.get_encrpt_key()[0]
+                    }
+                    response = requests.request("POST", url, headers=headers, data=json.dumps(data_for_request))
+                    if response.status_code == 200:
+                        response = response.json()
+                        aleph_id = response["aleph_id"]
+                        latitude = response["latitude"]
+                        longitude = response["longitude"]
+                    #db_conn.connection.cursor().close()
+                        db_conn.create_device(str(aleph_id), str(utc_calc(latitude, longitude)), str(machine_response["ip"]), str(machine_response["ProductName"]), str(1), str(data_for_request["full_serial"]))
                         db_conn.connection.cursor().close()
-                    else:
-                        print("finder")
-                        #print(machine_response["ip"])
-                        db_conn.update_device_info(str(aleph_id), str(utc_calc(latitude, longitude)), str(machine_response["ip"]), str(machine_response["ProductName"]), str(1))
-                        db_conn.update_device_ping_time(str(aleph_id), 1, datetime.fromtimestamp(int(datetime.now().timestamp())))
-                    machine.append(machine_response)
-                    db_conn.close()
-                    #ips.append(require(host))
+                else:
+                    print("finder")
+                    #print(machine_response["ip"])
+                    db_conn.update_device_info_by_full_serial(str(data_for_request["full_serial"]), str(utc_calc(latitude, longitude)), str(machine_response["ip"]), str(machine_response["ProductName"]), str(1))
+                    db_conn.update_device_ping_time(str(data_for_request["full_serial"]), 1, datetime.fromtimestamp(int(datetime.now().timestamp())))
+                machine.append(machine_response)
+                db_conn.close()
+                #ips.append(require(host))
     return machine
 
 def require_info(ip):
