@@ -125,7 +125,7 @@ class WMFSQLDriver:
         stmt = ''' 
             UPDATE devices 
             SET address = ?, type = ?, status = ?
-            WHERE full_serial = ?
+            WHERE serial_code = ?
         '''
         cur.execute(stmt, (address, type, status, full_serial))
         self.connection.commit()
