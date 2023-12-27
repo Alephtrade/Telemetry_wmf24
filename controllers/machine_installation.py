@@ -21,6 +21,7 @@ def test():
     for host in hosts["scan"]:
         db_conn = WMFSQLDriver()
         if host != "10.8.0.1":
+            db_conn.reset_all_ips()
             data_for_request = {}
             machine_response = require_info(host)
             data_for_request["full_serial"] = machine_response["MachineName"]
