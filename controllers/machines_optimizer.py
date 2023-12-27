@@ -10,4 +10,6 @@ devices = db_conn.get_devices()
 for device in devices:
     if int(datetime.strptime(device[4], '%Y-%m-%d %H:%M:%S').timestamp()) + 2419200 < int(datetime.now().timestamp()):
         db_conn.delete_device(device[0])
+    if int(datetime.strptime(device[4], '%Y-%m-%d %H:%M:%S').timestamp()) + 43200 < int(datetime.now().timestamp()):
+        db_conn.reset_ips(device[0])
 

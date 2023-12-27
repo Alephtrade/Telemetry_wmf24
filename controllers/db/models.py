@@ -359,14 +359,14 @@ class WMFSQLDriver:
         cur.close()
         return res
 
-    def reset_ips(self):
+    def reset_ips(self, aleph_id):
         cur = self.connection.cursor()
         stmt = ''' 
             UPDATE devices 
             SET address = ""
-            WHERE address is NOT NULL
+            WHERE aleph_id = ?
         '''
-        cur.execute(stmt)
+        cur.execute(stmt, (aleph_id,))
         self.connection.commit()
         cur.close()
         return True
