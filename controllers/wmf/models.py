@@ -50,12 +50,16 @@ class WMFMachineErrorConnector:
             if data.get("function") == 'getErrorActive':
                 print('getErrorActive')
                 if data.get("ulErrorCode") != 0:
+                    print(data.get("ulErrorCode"))
                     actual_finder = db_conn.get_unclosed_error_by_code(data.get("ulErrorCode"), self.aleph_id)
+                    print(actual_finder)
                     if actual_finder is None:
                         db_conn.create_error_record(self.aleph_id, data.get("ulErrorCode"))
                         self.index_active_error += 1
+                        print("+1")
                 else:
                     self.last_error_code_in_index = -1
+                    print("-1")
             if data.get("function") == 'startPushErrors':
                 info = data.get("Info")
                 error_code = data.get("ErrorCode")
@@ -130,6 +134,7 @@ class WMFMachineErrorConnector:
         while self.last_error_code_in_index != -1:
             print('getErrorActive')
             print(self.index_active_error)
+            print(self.last_error_code_in_index)
             ws.send(json.dumps({"function": "getErrorActive", "a_iIndex": self.index_active_error}))
         ws.send(json.dumps({"function": "startPushErrors"}))
         ws.send(json.dumps({"function": "startPushDispensingFinished"}))
