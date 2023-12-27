@@ -132,9 +132,9 @@ def updateDrinks(decice_ip):
                         response = requests.request("POST", url, headers=headers, data=json.dumps(edited))
                         request = f'{WMF_URL}?device={device[1]}&error_id=AT11&date_start={datetime.fromtimestamp(int((datetime.now()).timestamp()))}&date_end={datetime.fromtimestamp(int((datetime.now()).timestamp()))}&duration=0&status=1'
                         requests.post(request)
-                        db_conn.create_error_record(device[1], 'AT11')
-                        db_conn.close_error_code(device[1], 'AT11')
-                        print(edited)
+                    db_conn.create_error_record(device[1], 'AT11')
+                    db_conn.close_error_code(device[1], 'AT11')
+                    print(edited)
         #print(columns)
 
 
