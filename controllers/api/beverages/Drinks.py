@@ -123,15 +123,14 @@ def updateDrinks(decice_ip):
                         if int(available_recipe[14]) != int(columns["foam"]["weight"]):
                             edited["edited_parts"]["foam_weight"] = {"been": available_recipe[14], "now": columns["foam"]["weight"]}
                         db_conn.updateRecipe(device[1], drink["RecipeNumber"], drink["Name"], received_recipes, columns["coffee"]["count"], columns["coffee"]["weight"],columns["water"]["count"],columns["water"]["weight"],columns["milk"]["count"],columns["milk"]["weight"],columns["powder"]["count"],columns["powder"]["weight"],columns["foam"]["count"],columns["foam"]["weight"])
-                        url = "https://backend.wmf24.ru/api/recipe_edited"
-
-                        headers = {
-                            'Content-Type': 'application/json',
-                            'Serverkey': db_conn.get_encrpt_key()[0]
-                        }
-                        response = requests.request("POST", url, headers=headers, data=json.dumps(edited))
-                        request = f'{WMF_URL}?device={device[1]}&error_id=AT11&date_start={datetime.fromtimestamp(int((datetime.now()).timestamp()))}&date_end={datetime.fromtimestamp(int((datetime.now()).timestamp()))}&duration=0&status=1'
-                        requests.post(request)
+                    url = "https://backend.wmf24.ru/api/recipe_edited"
+                    headers = {
+                        'Content-Type': 'application/json',
+                        'Serverkey': db_conn.get_encrpt_key()[0]
+                    }
+                    response = requests.request("POST", url, headers=headers, data=json.dumps(edited))
+                    request = f'{WMF_URL}?device={device[1]}&error_id=AT11&date_start={datetime.fromtimestamp(int((datetime.now()).timestamp()))}&date_end={datetime.fromtimestamp(int((datetime.now()).timestamp()))}&duration=0&status=1'
+                    requests.post(request)
                     db_conn.create_error_record(device[1], 'AT11')
                     db_conn.close_error_code(device[1], 'AT11')
                     print(edited)
