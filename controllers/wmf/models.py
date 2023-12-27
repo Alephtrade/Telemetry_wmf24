@@ -46,6 +46,7 @@ class WMFMachineErrorConnector:
         try:
             logging.info(f"WMFMachineConnector: message={json.loads(message.encode('utf-8'))}")
             data = WMFMachineStatConnector.normalize_json(message)
+            print(data.get("function"))
             if data.get("function") == 'getErrorActive':
                 print('getErrorActive')
                 print("ulErrorCode")
