@@ -406,17 +406,18 @@ class WMFSQLDriver:
         cur.close()
         return res
 
-    #def get_error_last_record(self):
-    #    cur = self.connection.cursor()
-    #    stmt = '''
-    #        SELECT error_code, end_time FROM error_code_stats
-    #        ORDER BY id DESC
-    #        LIMIT 1
-    #    '''
-    #    cur.execute(stmt)
-    #    res = cur.fetchone()
-    #    cur.close()
-    #    return res
+    def get_unclosed_error_by_code(self, error_code, aleph_id):
+        cur = self.connection.cursor()
+        stmt = '''
+            SELECT id, error_code FROM error_code_stats
+            WHERE error_code = ? AND aleph_id = ?
+            ORDER BY id DESC
+            LIMIT 1
+        '''
+        cur.execute(stmt, (error_code, aleph_id,))
+        res = cur.fetchone()
+        cur.close()
+        return res
 
     #def get_last_record(self):
     #    cur = self.connection.cursor()

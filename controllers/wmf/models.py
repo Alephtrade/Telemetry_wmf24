@@ -24,6 +24,25 @@ class WMFMachineErrorConnector:
         except Exception:
             return 0
 
+    def handler_of_active_errors(self, ws):
+        last_error_code_in_index = 0
+        error_index = 0
+        while(last_error_code_in_index != -1):
+            ws.send(json.dumps({"function": "getErrorActive", "a_iIndex": error_index}))
+            received_error = ws.recv()
+            # return print(received_drinks)
+            received_error_deque = deque(json.loads(received_error))
+            formatted_error = {}
+            for var_error in list(received_error_deque):
+                for i_error in var_error:
+                    formatted_error[i_error] = var_error[i_error]
+            if formatted_error["ulErrorCode"] != 0:
+                actual_finder = db_conn.get_unclosed_error_by_code(formatted_error["ulErrorCode"], self.aleph_id)
+                if actual_finder is None:
+                    db_conn.create_error_record(self.aleph_id, formatted_error["ulErrorCode"])
+            error_index += 1
+
+
     def on_message(self, ws, message):
         print(message)
         print(ws)
