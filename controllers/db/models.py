@@ -285,6 +285,15 @@ class WMFSQLDriver:
         self.connection.commit()
         cur.close()
 
+    def create_cleaning_error_record(self, aleph_id, error_code, start_time):
+        cur = self.connection.cursor()
+        stmt = 'INSERT INTO error_code_stats (aleph_id, error_code, error_date, start_time, report_sent, duration_time) VALUES (?, ?, ?, ?, 0, 0)'
+        current_date = datetime.now()
+        error_date = current_date.strftime('%Y-%m-%d')
+        cur.execute(stmt, (aleph_id, error_code, error_date, start_time,))
+        self.connection.commit()
+        cur.close()
+
     def get_time_to_send_interval(self):
         cur = self.connection.cursor()
         stmt = '''

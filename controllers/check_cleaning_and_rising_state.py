@@ -34,6 +34,8 @@ def controller_manager(device, operator, alias):
                 logging.info(f'save new duration {alias}')
                 logging.info(f'new time {datetime.now()}')
                 type_last_cleaning_datetime = datetime.fromtimestamp(int(datetime.now().timestamp() - operator['durationInSeconds']))
+                db_conn.create_cleaning_error_record(device[1], "AT01", type_last_cleaning_datetime)
+                db_conn.close_error_code(device[1], "AT01")
                 return db_conn.create_clean_or_rins(device[1], alias, type_last_cleaning_datetime, operator['durationInSeconds'], datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
             else:
                 logging.info(f'{prev_cleaning_duration} = {operator["durationInSeconds"]}')
