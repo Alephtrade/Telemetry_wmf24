@@ -49,6 +49,7 @@ class WMFMachineErrorConnector:
             data = WMFMachineStatConnector.normalize_json(message)
             if data.get("function") == 'getErrorActive':
                 print('getErrorActive')
+                print("ulErrorCode")
                 print(data.get("ulErrorCode"))
                 if data.get("ulErrorCode") != 0:
                     actual_finder = db_conn.get_unclosed_error_by_code(data.get("ulErrorCode"), self.aleph_id)
