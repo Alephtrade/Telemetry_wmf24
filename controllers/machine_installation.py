@@ -21,7 +21,6 @@ def test():
     for host in hosts["scan"]:
         db_conn = WMFSQLDriver()
         if host != "10.8.0.1":
-            db_conn.reset_all_ips()
             data_for_request = {}
             machine_response = require_info(host)
             data_for_request["full_serial"] = machine_response["MachineName"]
@@ -31,6 +30,7 @@ def test():
             print(machine_response)
             if machine_response and machine_response["ip"] is not None:
                 finder = db_conn.find_device_by_full_part_number(data_for_request["full_serial"])
+                #db_conn.reset_all_ips()
                 if not finder:
                     print("NOT finder")
                     print(machine_response["ip"])
