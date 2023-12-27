@@ -69,6 +69,30 @@ def updateDrinks(decice_ip):
             #print(available_recipe)
             if available_recipe is None:
                 db_conn.initRecipe(device[1], drink["RecipeNumber"], drink["Name"], received_recipes, columns["coffee"]["count"], columns["coffee"]["weight"],columns["water"]["count"],columns["water"]["weight"],columns["milk"]["count"],columns["milk"]["weight"],columns["powder"]["count"],columns["powder"]["weight"],columns["foam"]["count"],columns["foam"]["weight"])
+                data_to_send = {}
+                data_to_send["aleph_id"] = device[1]
+                data_to_send["recipe_id"] = drink["RecipeNumber"]
+                data_to_send["recipe_alias"] = drink["Name"]
+                data_to_send["coffee_count"] = columns["coffee"]["count"]
+                data_to_send["coffee_weight"] = columns["coffee"]["weight"]
+                data_to_send["water_count"] = columns["water"]["count"]
+                data_to_send["water_weight"] = columns["water"]["weight"]
+                data_to_send["milk_count"] = columns["milk"]["count"]
+                data_to_send["milk_weight"] = columns["milk"]["weight"]
+                data_to_send["powder_count"] = columns["powder"]["count"]
+                data_to_send["powder_weight"] = columns["powder"]["weight"]
+                data_to_send["foam_count"] = columns["foam"]["count"]
+                data_to_send["foam_weight"] = columns["foam"]["weight"]
+
+                url = "https://backend.wmf24.ru/api/new_recipe"
+
+                headers = {
+                    'Content-Type': 'application/json',
+                    'Serverkey': db_conn.get_encrpt_key()[0]
+                }
+                response = requests.request("POST", url, headers=headers, data=json.dumps(data_to_send))
+                request = f'{WMF_URL}?device={device[1]}&error_id=AT11&date_start={datetime.fromtimestamp(int((datetime.now()).timestamp()))}&date_end={datetime.fromtimestamp(int((datetime.now()).timestamp()))}&duration=0&status=1'
+                requests.post(request)
             else:
                 if received_recipes != available_recipe[4]:
                     if available_recipe[2] == drink["RecipeNumber"] and available_recipe[3] == drink["Name"] and available_recipe[5] == columns["coffee"]["count"] and available_recipe[6] == columns["coffee"]["weight"] and available_recipe[7] == columns["water"]["count"] and available_recipe[8] == columns["water"]["weight"] and available_recipe[9] == columns["milk"]["count"] and available_recipe[10] == columns["milk"]["weight"] and available_recipe[11] == columns["powder"]["count"] and available_recipe[12] == columns["powder"]["weight"] and available_recipe[13] == columns["foam"]["count"] and available_recipe[14] == columns["foam"]["weight"]:
@@ -106,7 +130,7 @@ def updateDrinks(decice_ip):
                             'Serverkey': db_conn.get_encrpt_key()[0]
                         }
                         response = requests.request("POST", url, headers=headers, data=json.dumps(edited))
-                        request = f'{WMF_URL}?device={device[1]}&error_id=AT11&date_start={datetime.fromtimestamp(int((datetime.now()).timestamp()))}&date_end={datetime.fromtimestamp(int((datetime.now()).timestamp()))}&duration=0&status={wmf_conn.get_status()}'
+                        request = f'{WMF_URL}?device={device[1]}&error_id=AT11&date_start={datetime.fromtimestamp(int((datetime.now()).timestamp()))}&date_end={datetime.fromtimestamp(int((datetime.now()).timestamp()))}&duration=0&status=1'
                         requests.post(request)
                         db_conn.create_error_record(device[1], 'AT11')
                         db_conn.close_error_code(device[1], 'AT11')
