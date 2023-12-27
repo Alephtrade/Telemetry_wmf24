@@ -25,7 +25,6 @@ class WMFMachineErrorConnector:
             return 0
 
     def handler_of_active_errors(self, ws):
-
             received_error = ws.recv()
             # return print(received_drinks)
             received_error_deque = deque(json.loads(received_error))
@@ -133,9 +132,9 @@ class WMFMachineErrorConnector:
         print(self.aleph_id)
         print(self.last_error_code_in_index)
         while self.last_error_code_in_index != -1:
-            print('getErrorActive')
-            print(self.index_active_error)
-            print(self.last_error_code_in_index)
+            #print('getErrorActive')
+            #print(self.index_active_error)
+            #print(self.last_error_code_in_index)
             ws.send(json.dumps({"function": "getErrorActive", "a_iIndex": self.index_active_error}))
         ws.send(json.dumps({"function": "startPushErrors"}))
         ws.send(json.dumps({"function": "startPushDispensingFinished"}))
@@ -152,7 +151,6 @@ class WMFMachineErrorConnector:
 
     def __init__(self, aleph_id, ip):
         try:
-
             self.aleph_id = aleph_id
             self.ip = ip
             self.index_active_error = 0
