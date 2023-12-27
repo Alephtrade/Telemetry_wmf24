@@ -39,7 +39,7 @@ def get_main_clean_stat(device):
     wmf_error_count = 0
     disconnect_count = 0
     for rec_id, error_code, start_time, end_time in unsent_records:
-        # print(start_time)
+        print(unsent_records)
         if (type(start_time) is not datetime):
             start_time = datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
         if (type(end_time) is not datetime):
