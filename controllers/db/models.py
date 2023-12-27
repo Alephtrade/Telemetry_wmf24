@@ -410,7 +410,7 @@ class WMFSQLDriver:
         cur = self.connection.cursor()
         stmt = '''
             SELECT id, error_code FROM error_code_stats
-            WHERE error_code = ? AND aleph_id = ?
+            WHERE error_code = ? AND aleph_id = ? AND end_time is Null
             ORDER BY id DESC
             LIMIT 1
         '''
