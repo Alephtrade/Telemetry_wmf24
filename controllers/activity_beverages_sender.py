@@ -142,7 +142,7 @@ def render_errors_closing(aleph_id, ip, last_id, end_time, status):
         db_driver.create_error_record(aleph_id, '-1')
     elif status == 1:
         logging.info(f'status is 1 and last_id is {last_id}, calling close_error_code_by_id({last_id})')
-        if last_id != 0:
+        if last_id != 0 and (end_time is None):
             db_driver.close_error_code_by_id(aleph_id, last_id)
         unclosed = db_driver.get_error_empty_record(aleph_id)
         for item in unclosed:  # 0 - id 1 - end_time 2 - code
