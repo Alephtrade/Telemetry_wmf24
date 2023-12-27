@@ -48,6 +48,7 @@ class WMFMachineErrorConnector:
             logging.info(f"WMFMachineConnector: message={json.loads(message.encode('utf-8'))}")
             data = WMFMachineStatConnector.normalize_json(message)
             if data.get("function") == 'getErrorActive':
+                print('getErrorActive')
                 if data.get("ulErrorCode") != 0:
                     actual_finder = db_conn.get_unclosed_error_by_code(data.get("ulErrorCode"), self.aleph_id)
                     if actual_finder is None:
@@ -126,9 +127,8 @@ class WMFMachineErrorConnector:
         print(self.aleph_id)
         self.handler_of_active_errors(ws)
         #print(self.aleph_id)
-        self.last_error_code_in_index = 0
-        self.index_active_error = 0
-        while(self.last_error_code_in_index != -1):
+        while self.last_error_code_in_index != -1:
+            'getErrorActive'
             ws.send(json.dumps({"function": "getErrorActive", "a_iIndex": self.index_active_error}))
             self.index_active_error += 1
         ws.send(json.dumps({"function": "startPushErrors"}))
