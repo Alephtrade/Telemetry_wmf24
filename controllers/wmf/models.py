@@ -127,7 +127,8 @@ class WMFMachineErrorConnector:
         print(self.aleph_id)
         print(self.last_error_code_in_index)
         while self.last_error_code_in_index != -1:
-            'getErrorActive'
+            print('getErrorActive')
+            print(index_active_error)
             ws.send(json.dumps({"function": "getErrorActive", "a_iIndex": self.index_active_error}))
             self.index_active_error += 1
         ws.send(json.dumps({"function": "startPushErrors"}))
