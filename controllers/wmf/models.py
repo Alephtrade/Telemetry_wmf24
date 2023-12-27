@@ -53,6 +53,7 @@ class WMFMachineErrorConnector:
                     actual_finder = db_conn.get_unclosed_error_by_code(data.get("ulErrorCode"), self.aleph_id)
                     if actual_finder is None:
                         db_conn.create_error_record(self.aleph_id, data.get("ulErrorCode"))
+                        self.index_active_error += 1
                 else:
                     self.last_error_code_in_index = -1
             if data.get("function") == 'startPushErrors':
@@ -130,7 +131,6 @@ class WMFMachineErrorConnector:
             print('getErrorActive')
             print(self.index_active_error)
             ws.send(json.dumps({"function": "getErrorActive", "a_iIndex": self.index_active_error}))
-            self.index_active_error += 1
         ws.send(json.dumps({"function": "startPushErrors"}))
         ws.send(json.dumps({"function": "startPushDispensingFinished"}))
 
