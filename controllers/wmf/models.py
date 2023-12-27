@@ -57,6 +57,7 @@ class WMFMachineErrorConnector:
                     if actual_finder is None:
                         db_conn.create_error_record(self.aleph_id, data.get("ulErrorCode"))
                         self.index_active_error += 1
+                        ws.send(json.dumps({"function": "getErrorActive", "a_iIndex": self.index_active_error}))
                         print("+1")
                 else:
                     self.last_error_code_in_index = -1
