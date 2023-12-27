@@ -125,8 +125,7 @@ class WMFMachineErrorConnector:
     def on_open(self, ws):
         print("opened")
         print(self.aleph_id)
-        self.handler_of_active_errors(ws)
-        #print(self.aleph_id)
+        print(self.last_error_code_in_index)
         while self.last_error_code_in_index != -1:
             'getErrorActive'
             ws.send(json.dumps({"function": "getErrorActive", "a_iIndex": self.index_active_error}))
