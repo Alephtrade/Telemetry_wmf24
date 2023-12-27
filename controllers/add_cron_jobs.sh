@@ -4,7 +4,7 @@ cronjob="*/2 * * * * $croncmd"
 ( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
 
 croncmd="sh /var/www/Telemetry_wmf24/controllers/start_error_collector.sh >> /var/www/Telemetry_wmf24/start_error_collector.txt 2>&1"
-cronjob="* * * * * $croncmd"
+cronjob="*/5 * * * * $croncmd"
 ( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
 
 croncmd="sh /var/www/Telemetry_wmf24/controllers/exchange_minutes.sh >> /var/www/Telemetry_wmf24/exchange_minutes.txt 2>&1"
