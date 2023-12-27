@@ -25,10 +25,7 @@ class WMFMachineErrorConnector:
             return 0
 
     def handler_of_active_errors(self, ws):
-        last_error_code_in_index = 0
-        error_index = 0
-        while(last_error_code_in_index != -1):
-            ws.send(json.dumps({"function": "getErrorActive", "a_iIndex": error_index}))
+
             received_error = ws.recv()
             # return print(received_drinks)
             received_error_deque = deque(json.loads(received_error))
@@ -40,7 +37,7 @@ class WMFMachineErrorConnector:
                 actual_finder = db_conn.get_unclosed_error_by_code(formatted_error["ulErrorCode"], self.aleph_id)
                 if actual_finder is None:
                     db_conn.create_error_record(self.aleph_id, formatted_error["ulErrorCode"])
-            error_index += 1
+
 
 
     def on_message(self, ws, message):
@@ -50,6 +47,13 @@ class WMFMachineErrorConnector:
         try:
             logging.info(f"WMFMachineConnector: message={json.loads(message.encode('utf-8'))}")
             data = WMFMachineStatConnector.normalize_json(message)
+            if data.get("function") == 'getErrorActive':
+                if data.get("ulErrorCode") != 0:
+                    actual_finder = db_conn.get_unclosed_error_by_code(data.get("ulErrorCode"), self.aleph_id)
+                    if actual_finder is None:
+                        db_conn.create_error_record(self.aleph_id, data.get("ulErrorCode"))
+                else:
+                    self.last_error_code_in_index = -1
             if data.get("function") == 'startPushErrors':
                 info = data.get("Info")
                 error_code = data.get("ErrorCode")
@@ -122,6 +126,11 @@ class WMFMachineErrorConnector:
         print(self.aleph_id)
         self.handler_of_active_errors(ws)
         #print(self.aleph_id)
+        self.last_error_code_in_index = 0
+        self.index_active_error = 0
+        while(self.last_error_code_in_index != -1):
+            ws.send(json.dumps({"function": "getErrorActive", "a_iIndex": self.index_active_error}))
+            self.index_active_error += 1
         ws.send(json.dumps({"function": "startPushErrors"}))
         ws.send(json.dumps({"function": "startPushDispensingFinished"}))
 
@@ -140,6 +149,8 @@ class WMFMachineErrorConnector:
 
             self.aleph_id = aleph_id
             self.ip = ip
+            self.index_active_error = 0
+            self.last_error_code_in_index = 0
             self.db_driver = WMFSQLDriver()
             self.WS_URL = f'ws://{ip}:{settings.WS_PORT}/'
             self.ws = websocket.WebSocketApp(self.WS_URL,
