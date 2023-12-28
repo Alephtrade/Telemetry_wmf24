@@ -19,6 +19,7 @@ WMF_URL = settings.WMF_DATA_URL
 
 
 def Take_Create_Beverage_Statistics(last_send, device):
+    print(device)
     initialize_logger('beveragestatistics.log')
     wm_conn = WMFMachineStatConnector(device[1], device[2])
     fake_data = False
