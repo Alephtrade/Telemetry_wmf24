@@ -23,6 +23,8 @@ def beverages_send_worker(aleph_id, ip):
     if(receive_data == []):
         logging.info(f'NO DATA')
     else:
+        print("loop")
+        print(receive_data)
         for item in receive_data:
             logging.info(f'loop')
             time_to_send = item[2]
