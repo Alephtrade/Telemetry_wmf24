@@ -156,7 +156,6 @@ def Take_Create_Beverage_Statistics(last_send, device):
                                     created["powder"] = pours_detected_in_base[0][7]
                                     created["foam"] = pours_detected_in_base[0][8]
                                     created["date_formed"] = time_now
-                            print("Должен был создаться с нужным кап сайзом")
                             request = f'{WMF_URL}?device={device[1]}&error_id=AT11&date_start={time_now}&date_end={time_now}&duration=0&status=1'
                             response = requests.post(request)
                             print(response)
