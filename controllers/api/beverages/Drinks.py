@@ -127,7 +127,7 @@ def updateDrinks(decice_ip):
                         print("SENDEREEERERERERERERERER")
                         print(drink["Name"])
                         print(edited)
-                        return print(edited)
+                        #return print(edited)
                         url = "https://backend.wmf24.ru/api/recipe_edited"
                         headers = {
                             'Content-Type': 'application/json',
@@ -138,7 +138,7 @@ def updateDrinks(decice_ip):
                         requests.post(request)
                         db_conn.create_error_record(device[1], 'AT11')
                         db_conn.close_error_code(device[1], 'AT11')
-                        print(edited)
+                        #print(edited)
         #print(columns)
 
 
