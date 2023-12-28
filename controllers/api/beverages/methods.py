@@ -121,26 +121,27 @@ def Take_Create_Beverage_Statistics(last_send, device):
                                         recipe_callback = db_conn.getRecipe(device[1], recipe_number)
                                         print(recipe_number)
                                         print(recipe_callback)
-                                        middle_recipe = {}
-                                        middle_recipe[0][3] = recipe_callback[3]
-                                        middle_recipe[0][4] = recipe_callback[8]
-                                        middle_recipe[0][5] = recipe_callback[6]
-                                        middle_recipe[0][6] = recipe_callback[10]
-                                        middle_recipe[0][7] = recipe_callback[12]
-                                        middle_recipe[0][8] = recipe_callback[14]
-                                    if middle_recipe is not None and len(middle_recipe) > 1:
-                                        db_conn.initPours(device[1], recipe_number, middle_recipe[0][3], recipe_size, middle_recipe[0][4], middle_recipe[0][5], middle_recipe[0][6], middle_recipe[0][7], middle_recipe[0][8])
-                                        print("Должен был создаться мидл")
-                                        created["aleph_id"] = device[1]
-                                        created["recipe_id"] = recipe_number
-                                        created["recipe_name"] = middle_recipe[0][3]
-                                        created["cup_size"] = recipe_size
-                                        created["water"] = middle_recipe[0][4]
-                                        created["coffee"] = middle_recipe[0][5]
-                                        created["milk"] = middle_recipe[0][6]
-                                        created["powder"] = middle_recipe[0][7]
-                                        created["foam"] = middle_recipe[0][8]
-                                        created["date_formed"] = time_now
+                                        if recipe_callback is not None:
+                                            middle_recipe = {}
+                                            middle_recipe[0][3] = recipe_callback[3]
+                                            middle_recipe[0][4] = recipe_callback[8]
+                                            middle_recipe[0][5] = recipe_callback[6]
+                                            middle_recipe[0][6] = recipe_callback[10]
+                                            middle_recipe[0][7] = recipe_callback[12]
+                                            middle_recipe[0][8] = recipe_callback[14]
+                                            if middle_recipe is not None and len(middle_recipe) > 1:
+                                                db_conn.initPours(device[1], recipe_number, middle_recipe[0][3], recipe_size, middle_recipe[0][4], middle_recipe[0][5], middle_recipe[0][6], middle_recipe[0][7], middle_recipe[0][8])
+                                                print("Должен был создаться мидл")
+                                                created["aleph_id"] = device[1]
+                                                created["recipe_id"] = recipe_number
+                                                created["recipe_name"] = middle_recipe[0][3]
+                                                created["cup_size"] = recipe_size
+                                                created["water"] = middle_recipe[0][4]
+                                                created["coffee"] = middle_recipe[0][5]
+                                                created["milk"] = middle_recipe[0][6]
+                                                created["powder"] = middle_recipe[0][7]
+                                                created["foam"] = middle_recipe[0][8]
+                                                created["date_formed"] = time_now
                                 else:
                                     db_conn.initPours(device[1], recipe_number, pours_detected_in_base[0][3], recipe_size, pours_detected_in_base[0][4], pours_detected_in_base[0][5], pours_detected_in_base[0][6], pours_detected_in_base[0][7], pours_detected_in_base[0][8])
                                     print("Должен был создаться с нужным кап сайзом")
