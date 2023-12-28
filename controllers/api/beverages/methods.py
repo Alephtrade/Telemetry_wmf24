@@ -131,7 +131,7 @@ def Take_Create_Beverage_Statistics(last_send, device):
                                     print("MIDDLE")
                                     print(middle_recipe[0][12])
                                     print(middle_recipe)
-                                    if middle_recipe[0][12] == 0:
+                                    if middle_recipe is not None:
                                         recipe_callback = db_conn.getRecipe(device[1], recipe_number)
                                         print(recipe_number)
                                         print("РЕЦЕПТ")
