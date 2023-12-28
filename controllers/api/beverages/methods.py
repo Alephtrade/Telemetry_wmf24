@@ -77,7 +77,9 @@ def Take_Create_Beverage_Statistics(last_send, device):
             if last_bev_records is not None:
                 last_bev_record = db_conn.get_last_beverages_log_by_id(int(last_bev_records[6]) + 1, device[1])
                 print("last_bev_record")
-                print(recipes[0])
+                for key, recip in recipes:
+                    print(key)
+                    print(recip)
     return create_record
 
 
