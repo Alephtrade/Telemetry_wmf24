@@ -111,6 +111,7 @@ def Take_Create_Beverage_Statistics(last_send, device):
                                 print("В базе найдено")
                                 print(len(pours_detected_in_base))
                                 print(pours_detected_in_base)
+                                count_in_base = len(pours_detected_in_base)
                                 if len(pours_detected_in_base) < 1 or pours_detected_in_base is None or pours_detected_in_base == 0:
                                     print("Поиск мидла")
                                     middle_recipe = db_conn.get_pours_with_recipeId_and_cup_size(device[1], recipe_number, "M", time_now, prev_hour)
@@ -131,9 +132,9 @@ def Take_Create_Beverage_Statistics(last_send, device):
                                             middle_recipe[0][6] = recipe_callback[10]
                                             middle_recipe[0][7] = recipe_callback[12]
                                             middle_recipe[0][8] = recipe_callback[14]
-                                            while count_of_real_pours > pours_detected_in_base :
+                                            while count_of_real_pours > count_in_base :
                                                 db_conn.initPours(device[1], recipe_number, middle_recipe[0][3], recipe_size, middle_recipe[0][4], middle_recipe[0][5], middle_recipe[0][6], middle_recipe[0][7], middle_recipe[0][8])
-                                                pours_detected_in_base += 1
+                                                count_in_base += 1
                                             print("Должен был создаться мидл")
                                             created["aleph_id"] = device[1]
                                             created["recipe_id"] = recipe_number
