@@ -133,8 +133,10 @@ def Take_Create_Beverage_Statistics(last_send, device):
                                     if middle_recipe[0][12] == 0:
                                         recipe_callback = db_conn.getRecipe(device[1], recipe_number)
                                         print(recipe_number)
+                                        print("РЕЦЕПТ")
                                         print(recipe_callback)
                                         if recipe_callback is not None:
+                                            print("[0][3]")
                                             print(recipe_callback[0][3])
                                             middle_recipe = {}
                                             middle_recipe[0] = {}
@@ -159,6 +161,7 @@ def Take_Create_Beverage_Statistics(last_send, device):
                                             created["foam"] = middle_recipe[0][8]
                                             created["date_formed"] = time_to_form
                                         else:
+                                            print("НЕИЗВЕСТНЫЙ НАПИТОК")
                                             while count_of_real_pours > count_in_base:
                                                 db_conn.initPours(device[1], recipe_number, "НЕИЗВЕСТНЫЙ НАПИТОК",
                                                                   "", "", "",
