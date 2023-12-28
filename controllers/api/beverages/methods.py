@@ -129,6 +129,7 @@ def Take_Create_Beverage_Statistics(last_send, device):
                                         updateDrinks(device[1], device[2])
                                     middle_recipe = db_conn.get_pours_with_recipeId_and_cup_size(device[1], recipe_number, "M", time_now, prev_hour)
                                     print("MIDDLE")
+                                    print(middle_recipe[0][12])
                                     print(middle_recipe)
                                     if middle_recipe[0][12] == 0:
                                         recipe_callback = db_conn.getRecipe(device[1], recipe_number)
