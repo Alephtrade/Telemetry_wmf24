@@ -119,7 +119,8 @@ def Take_Create_Beverage_Statistics(last_send, device):
                                     if middle_recipe is None or middle_recipe == []:
                                         from controllers.api.beverages.Drinks import updateDrinks
                                         updateDrinks(device[1], device[2])
-                                    if middle_recipe is None or len(middle_recipe[0]) < 1:
+                                    middle_recipe = db_conn.get_pours_with_recipeId_and_cup_size(device[1], recipe_number, "M", time_now, prev_hour)
+                                    if middle_recipe is None:
                                         recipe_callback = db_conn.getRecipe(device[1], recipe_number)
                                         print(recipe_number)
                                         print(recipe_callback)
