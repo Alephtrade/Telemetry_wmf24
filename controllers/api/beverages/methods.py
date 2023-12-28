@@ -78,9 +78,9 @@ def Take_Create_Beverage_Statistics(last_send, device):
             if last_bev_records is not None:
                 last_bev_record = db_conn.get_last_beverages_log_by_id(device[1], last_bev_records[6])
                 print("last_bev_record")
-                print(ast.literal_eval(last_bev_record[5])[0])
+                prepend_info = ast.literal_eval(last_bev_record[5])
                 last_info = {}
-                for item in last_bev_record[5]:
+                for item in prepend_info:
                     for rec, it in item.items():
                         last_info[rec] = it
                 print(last_info)
