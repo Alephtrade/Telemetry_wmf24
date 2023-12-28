@@ -5,6 +5,7 @@ import ast
 from datetime import datetime, timedelta
 import sys
 import requests
+import re
 sys.path.append("../../")
 from controllers.db.models import WMFSQLDriver
 from controllers.core.utils import initialize_logger, get_beverages_send_time
@@ -80,8 +81,12 @@ def Take_Create_Beverage_Statistics(last_send, device):
                 for key in recipes:
                     print(key)
                     for k, elem in key.items():
-                        print(k)
-                        print(elem)
+                        recipe_str = k.strip("TotalCountRcp")
+                        recipe_size = re.findall(r'[a-zA-Z]+', recipe_str)
+                        recipe_number = re.findall(r'\d+', recipe_str)
+                        print(recipe_size)
+                        print(recipe_number)
+
     return create_record
 
 
