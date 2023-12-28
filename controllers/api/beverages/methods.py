@@ -119,6 +119,7 @@ def Take_Create_Beverage_Statistics(last_send, device):
                                         updateDrinks(device[1], device[2])
                                     if middle_recipe is None or len(middle_recipe) < 1:
                                         recipe_callback = db_conn.getRecipe(device[1], recipe_number)
+                                        print(recipe_callback)
                                         middle_recipe = {}
                                         middle_recipe[0][3] = recipe_callback[3]
                                         middle_recipe[0][4] = recipe_callback[8]
