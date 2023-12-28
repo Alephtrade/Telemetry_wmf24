@@ -97,13 +97,16 @@ def Take_Create_Beverage_Statistics(last_send, device):
                         if last_info[k] == elem:
                             print("GOOD")
                         else:
+                            print("DIFFERENCE")
                             time_now = datetime.fromtimestamp(int(datetime.now().timestamp() // (60 * 60) * 60 * 60 - 1))
                             prev_hour = time_now - timedelta(hours=1)
-                            print("Должно быть")
-                            print(int(elem) - int(last_info[k]))
-                            print("В базе найдено")
-                            print(len(db_conn.get_pours_with_recipeId_and_cup_size(device[1], recipe_number, recipe_size, time_now, prev_hour)))
-                            print("DIFFERENCE")
+                            count_of_real_pours = int(elem) - int(last_info[k])
+                            pours_detected_in_base = len(db_conn.get_pours_with_recipeId_and_cup_size(device[1], recipe_number, recipe_size, time_now, prev_hour))
+                            if count_of_real_pours != pours_detected_in_base:
+                                print("Должно быть")
+                                print(count_of_real_pours)
+                                print("В базе найдено")
+                                print(pours_detected_in_base)
 
     return True
     #return create_record
