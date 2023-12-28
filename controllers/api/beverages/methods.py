@@ -111,7 +111,7 @@ def Take_Create_Beverage_Statistics(last_send, device):
                                 print("В базе найдено")
                                 print(len(pours_detected_in_base))
                                 print(pours_detected_in_base)
-                                count_in_base = pours_detected_in_base[12]
+                                count_in_base = pours_detected_in_base[0][12]
                                 if pours_detected_in_base is None or count_in_base == 0:
                                     print("Поиск мидла")
                                     middle_recipe = db_conn.get_pours_with_recipeId_and_cup_size(device[1], recipe_number, "M", time_now, prev_hour)
