@@ -72,7 +72,7 @@ def Take_Create_Beverage_Statistics(last_send, device):
             create_record = None
             Take_Create_Beverage_Statistics(last_send, device[1])
         else:
-            create_record = db_conn.create_beverages_log(device[1], str(summ), str(date_to_send), str(date_formed), json.dumps(recipes))
+            #create_record = db_conn.create_beverages_log(device[1], str(summ), str(date_to_send), str(date_formed), json.dumps(recipes))
             #logging.info(f"result {create_record}")
             last_bev_records = db_conn.get_last_beverages_log(device[1])
             print("last_bev_records")
@@ -97,16 +97,20 @@ def Take_Create_Beverage_Statistics(last_send, device):
                         print(count_bev_recipe)
                         print(recipe_number)
                         if last_info[k] == elem:
-                            print({"GOOD", "recipe", recipe_number, "Size", recipe_size})
+                            print("GOOD")
                         else:
                             created = {}
-                            print()
+                            print("DIFFERENCE")
                             time_now = datetime.fromtimestamp(int(datetime.now().timestamp() // (60 * 60) * 60 * 60 - 1))
                             prev_hour = time_now - timedelta(hours=1)
                             count_of_real_pours = int(elem) - int(last_info[k])
                             pours_detected_in_base = db_conn.get_pours_with_recipeId_and_cup_size(device[1], recipe_number, recipe_size, time_now, prev_hour)
                             if count_of_real_pours != pours_detected_in_base:
-                                print({"DIFFERENCE", "recipe", recipe_number, "Должно быть", count_of_real_pours, "В базе найдено", len(pours_detected_in_base)})
+
+                                print("Должно быть")
+                                print(count_of_real_pours)
+                                print("В базе найдено")
+                                print(len(pours_detected_in_base))
                                 if len(pours_detected_in_base) == 0 or pours_detected_in_base is None:
                                     print("Поиск мидла")
                                     middle_recipe = db_conn.get_pours_with_recipeId_and_cup_size(device[1], recipe_number, "M", time_now, prev_hour)
@@ -128,7 +132,6 @@ def Take_Create_Beverage_Statistics(last_send, device):
                                         created["foam"] = middle_recipe[0][8]
                                         created["date_formed"] = time_now
                                 else:
-                                    print(pours_detected_in_base)
                                     db_conn.initPours(device[1], recipe_number, pours_detected_in_base[0][3], recipe_size, pours_detected_in_base[0][4], pours_detected_in_base[0][5], pours_detected_in_base[0][6], pours_detected_in_base[0][7], pours_detected_in_base[0][8])
                                     print("Должен был создаться с нужным кап сайзом")
                                     created["aleph_id"] = device[1]
@@ -147,8 +150,10 @@ def Take_Create_Beverage_Statistics(last_send, device):
                             print(response)
                             db_conn.create_error_record(device[1], 'AT91')
                             db_conn.close_error_code(device[1], 'AT91')
-        return True
-        return create_record
+
+
+    return True
+    #return create_record
 
 
 def Send_Statistics(data_info, id_record):
