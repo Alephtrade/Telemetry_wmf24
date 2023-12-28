@@ -18,7 +18,7 @@ WMF_URL = settings.WMF_DATA_URL
 db_conn = WMFSQLDriver()
 devices = db_conn.get_devices()
 
-def updateDrinks(decice_ip):
+def updateDrinks(device_aleph_id, decice_ip):
         try:
             ws = websocket.create_connection(f'ws://{decice_ip}:25000/', timeout=5)
             status = 1
@@ -143,5 +143,5 @@ def updateDrinks(decice_ip):
 
 
 for device in devices:
-    print(device[1])
-    updateDrinks(device[2])
+    print(device[1], device[2])
+    updateDrinks(device[1], device[2])
