@@ -63,7 +63,7 @@ class WMFSQLDriver:
 
     def get_pours_with_recipeId_and_cup_size(self, aleph_id, recipe_id, cupsize, time_now, prev_hour):
         cur = self.connection.cursor()
-        stmt = f'''SELECT id, aleph_id, recipe_id, recipe_name, cup_size, water, coffee, milk, powder, foam, date_formed, is_sent 
+        stmt = f'''SELECT id, aleph_id, recipe_id, recipe_name, cup_size, water, coffee, milk, powder, foam, date_formed, is_sent, COUNT(id)
          FROM pours 
          WHERE aleph_id = "{aleph_id}" AND recipe_id = "{recipe_id}" AND cup_size = "{cupsize}" AND date_formed > "{prev_hour}" AND date_formed < "{time_now}"'''
         cur.execute(stmt)
