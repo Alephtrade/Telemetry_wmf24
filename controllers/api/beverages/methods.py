@@ -72,7 +72,7 @@ def Take_Create_Beverage_Statistics(last_send, device):
             create_record = None
             Take_Create_Beverage_Statistics(last_send, device[1])
         else:
-            #create_record = db_conn.create_beverages_log(device[1], str(summ), str(date_to_send), str(date_formed), json.dumps(recipes))
+            create_record = db_conn.create_beverages_log(device[1], str(summ), str(date_to_send), str(date_formed), json.dumps(recipes))
             #logging.info(f"result {create_record}")
             last_bev_records = db_conn.get_last_beverages_log(device[1])
             print("last_bev_records")
@@ -132,7 +132,7 @@ def Take_Create_Beverage_Statistics(last_send, device):
                                             middle_recipe[0][6] = recipe_callback[10]
                                             middle_recipe[0][7] = recipe_callback[12]
                                             middle_recipe[0][8] = recipe_callback[14]
-                                            while count_of_real_pours > count_in_base :
+                                            while count_of_real_pours > count_in_base:
                                                 db_conn.initPours(device[1], recipe_number, middle_recipe[0][3], recipe_size, middle_recipe[0][4], middle_recipe[0][5], middle_recipe[0][6], middle_recipe[0][7], middle_recipe[0][8])
                                                 count_in_base += 1
                                             print("Должен был создаться мидл")
@@ -166,8 +166,8 @@ def Take_Create_Beverage_Statistics(last_send, device):
                             db_conn.close_error_code(device[1], 'AT91')
 
 
-    return True
-    #return create_record
+    #return True
+    return create_record
 
 
 def Send_Statistics(data_info, id_record):
