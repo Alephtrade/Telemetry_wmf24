@@ -101,7 +101,7 @@ def Take_Create_Beverage_Statistics(last_send, device):
                         else:
                             created = {}
                             print("DIFFERENCE")
-                            time_now = datetime.fromtimestamp(int(datetime.now().timestamp() // (60 * 60) * 60 * 60 - 1))
+                            time_now = date_formed
                             prev_hour = time_now - timedelta(hours=24)
                             count_of_real_pours = int(elem) - int(last_info[k])
                             print("REQUEST")
