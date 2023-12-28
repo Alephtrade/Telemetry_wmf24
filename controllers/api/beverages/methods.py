@@ -72,7 +72,7 @@ def Take_Create_Beverage_Statistics(last_send, device):
             create_record = None
             Take_Create_Beverage_Statistics(last_send, device[1])
         else:
-            #create_record = db_conn.create_beverages_log(device[1], str(summ), str(date_to_send), str(date_formed), json.dumps(recipes))
+            create_record = db_conn.create_beverages_log(device[1], str(summ), str(date_to_send), str(date_formed), json.dumps(recipes))
             #logging.info(f"result {create_record}")
             last_bev_records = db_conn.get_last_beverages_log(device[1])
             print("last_bev_records")
@@ -132,6 +132,7 @@ def Take_Create_Beverage_Statistics(last_send, device):
                                         created["foam"] = middle_recipe[0][8]
                                         created["date_formed"] = time_now
                                 else:
+                                    print(pours_detected_in_base)
                                     db_conn.initPours(device[1], recipe_number, pours_detected_in_base[0][3], recipe_size, pours_detected_in_base[0][4], pours_detected_in_base[0][5], pours_detected_in_base[0][6], pours_detected_in_base[0][7], pours_detected_in_base[0][8])
                                     print("Должен был создаться с нужным кап сайзом")
                                     created["aleph_id"] = device[1]
@@ -150,7 +151,8 @@ def Take_Create_Beverage_Statistics(last_send, device):
                             print(response)
                             db_conn.create_error_record(device[1], 'AT91')
                             db_conn.close_error_code(device[1], 'AT91')
-    return create_record
+
+        return create_record
 
 
 def Send_Statistics(data_info, id_record):

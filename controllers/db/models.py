@@ -48,6 +48,7 @@ class WMFSQLDriver:
         cur.execute(stmt, (aleph_id, recipe_id, recipe_name, cup_size, water_weight, coffee, milk, powder, foam, datetime.fromtimestamp(int((datetime.now()).timestamp())), 0))
         self.connection.commit()
         cur.close()
+
     def updatePours(self, aleph_id, recipe_id, recipe_name, cup_size, water_weight, coffee, milk, powder, foam):
         cur = self.connection.cursor()
         stmt = ''' 
