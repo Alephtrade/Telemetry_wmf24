@@ -107,14 +107,14 @@ def Take_Create_Beverage_Statistics(last_send, device):
                             print("REQUEST")
                             print({device[1], recipe_number, recipe_size, time_now, prev_hour})
                             pours_detected_in_base = db_conn.get_pours_with_recipeId_and_cup_size(device[1], recipe_number, recipe_size, time_now, prev_hour)
+                            print("Должно быть")
+                            print(count_of_real_pours)
+                            print("В базе найдено")
+                            print(len(pours_detected_in_base[0]))
+                            print(pours_detected_in_base)
+                            print("POURS")
+                            print(pours_detected_in_base[0][12])
                             if count_of_real_pours != pours_detected_in_base[0][12]:
-                                print("Должно быть")
-                                print(count_of_real_pours)
-                                print("В базе найдено")
-                                print(len(pours_detected_in_base[0]))
-                                print(pours_detected_in_base)
-                                print("POURS")
-                                print(pours_detected_in_base[0][12])
                                 count_in_base = pours_detected_in_base[0][12]
                                 if pours_detected_in_base is None or count_in_base == 0:
                                     print("Поиск мидла")
@@ -171,7 +171,7 @@ def Take_Create_Beverage_Statistics(last_send, device):
                                             created["powder"] = ""
                                             created["foam"] = ""
                                             created["date_formed"] = date_formed
-#
+                                #
                                 else:
                                     while count_of_real_pours > count_in_base:
                                         db_conn.initPours(device[1], recipe_number, pours_detected_in_base[0][3], recipe_size, pours_detected_in_base[0][4], pours_detected_in_base[0][5], pours_detected_in_base[0][6], pours_detected_in_base[0][7], pours_detected_in_base[0][8])
