@@ -93,6 +93,7 @@ def Send_Statistics(data_info, id_record):
     json_res = response.json()
     now = datetime.fromtimestamp(int((datetime.now()).timestamp()))
     if(json_res["id"]):
+        print("UPDATE TIME_FACT_SEND")
         update_record = db_conn.update_beverages_log(id_record, now)
         logging.info(f"update {update_record}")
     else:

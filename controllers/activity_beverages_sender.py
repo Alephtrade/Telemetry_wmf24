@@ -38,6 +38,7 @@ def beverages_send_worker(aleph_id, ip):
             next_time = datetime.strptime(time_to_send, '%Y-%m-%d %H:%M:%S')
             if datetime.fromtimestamp(int(datetime.now().timestamp())) > next_time:
                 print(json.dumps(k))
+                print("PROCCESS TIME_FACT_SEND")
                 methods.Send_Statistics(json.dumps(k), record_id)
                 logging.info(f'Send_Statistics db id - {record_id}')
             else:
@@ -162,7 +163,7 @@ print(devices)
 result = []
 for device in devices:
     if device[2] is not None:
-        send_ip_address(device[1], device[2])
-        print(check_machine_status(device[1], device[2]))
+        #send_ip_address(device[1], device[2])
+        #print(check_machine_status(device[1], device[2]))
         beverages_send_worker(device[1], device[2])
-        controller_data_statistics_sender(device[1], device[2])
+        #controller_data_statistics_sender(device[1], device[2])
