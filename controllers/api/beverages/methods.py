@@ -58,15 +58,15 @@ def Take_Create_Beverage_Statistics(last_send, device):
             ws.close()
     if fake_data:
         create_record = None
-        #last_record = db_conn.get_last_beverages_log()
-        #if last_record is None:
-        #    create_record = db_conn.create_beverages_log(part_number, "0", "1970-01-01 00:00:00", "1970-01-01 00:00:00", "[{'TotalCountRcp': 0}]")
-        #else:
-           # create_record = db_conn.create_beverages_log(str(last_record[0]), str(last_record[1]), str(last_record[2]), str(date_formed), str(last_record[5]))
+        last_record = db_conn.get_last_beverages_log(device[1])
+        if last_record is None:
+            create_record = db_conn.create_beverages_log(device[1], "0", "1970-01-01 00:00:00", "1970-01-01 00:00:00", "[{'TotalCountRcp': 0}]")
+        else:
+            create_record = db_conn.create_beverages_log(str(last_record[0]), str(last_record[1]), str(last_record[2]), str(date_formed), str(last_record[5]))
     else:
         if recipes == []:
             create_record = None
-            #Take_Create_Beverage_Statistics(last_send)
+            Take_Create_Beverage_Statistics(last_send)
         else:
             create_record = db_conn.create_beverages_log(device[1], str(summ), str(date_to_send), str(date_formed), json.dumps(recipes))
             logging.info(f"result {create_record}")
