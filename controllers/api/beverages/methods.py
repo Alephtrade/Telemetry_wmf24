@@ -79,12 +79,14 @@ def Take_Create_Beverage_Statistics(last_send, device):
                 last_bev_record = db_conn.get_last_beverages_log_by_id(int(last_bev_records[6]) + 1, device[1])
                 print("last_bev_record")
                 for key in recipes:
-                    print(key)
+                    #print(key)
                     for k, elem in key.items():
                         recipe_str = k.strip("TotalCountRcp")
+                        count_bev_recipe = elem
                         recipe_size = re.findall(r'[a-zA-Z]+', recipe_str)
                         recipe_number = re.findall(r'\d+', recipe_str)
                         print(recipe_size)
+                        print(count_bev_recipe)
                         print(recipe_number)
 
     return create_record
