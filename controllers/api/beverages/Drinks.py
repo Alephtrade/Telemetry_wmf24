@@ -84,6 +84,7 @@ def updateDrinks(decice_ip):
                 data_to_send["foam_count"] = columns["foam"]["count"]
                 data_to_send["foam_weight"] = columns["foam"]["weight"]
                 print("SENDEREEERERERERERERERER")
+                print(drink["Name"])
                 url = "https://backend.wmf24.ru/api/new_recipe"
 
                 headers = {
