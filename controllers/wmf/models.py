@@ -116,24 +116,24 @@ class WMFMachineErrorConnector:
                     print(self.aleph_id)
                     print("self.aleph_id")
                     db_conn.initPours(self.aleph_id, recipe_number, available_recipe[3], cup_size, water, coffee, milk, powder, foam)
-                    data_to_send = {}
-                    data_to_send["aleph_id"] = self.aleph_id
-                    data_to_send["recipe_id"] = recipe_number
-                    data_to_send["recipe_name"] = available_recipe[3]
-                    data_to_send["cup_size"] = cup_size
-                    data_to_send["water"] = water
-                    data_to_send["coffee"] = coffee
-                    data_to_send["milk"] = milk
-                    data_to_send["powder"] = powder
-                    data_to_send["foam"] = foam
-                    url = "https://backend.wmf24.ru/api/new_pour"
-
-                    headers = {
-                        'Content-Type': 'application/json',
-                        'Serverkey': db_conn.get_encrpt_key()[0]
-                    }
-                    response = requests.request("POST", url, headers=headers, data=json.dumps(data_to_send))
-                    logging.error(f"WMFMachineConnector handle_error: pour={response}, stacktrace: {print_exception()}")
+                    #data_to_send = {}
+                    #data_to_send["aleph_id"] = self.aleph_id
+                    #data_to_send["recipe_id"] = recipe_number
+                    #data_to_send["recipe_name"] = available_recipe[3]
+                    #data_to_send["cup_size"] = cup_size
+                    #data_to_send["water"] = water
+                    #data_to_send["coffee"] = coffee
+                    #data_to_send["milk"] = milk
+                    #data_to_send["powder"] = powder
+                    #data_to_send["foam"] = foam
+                    #url = "https://backend.wmf24.ru/api/new_pour"
+#
+                    #headers = {
+                    #    'Content-Type': 'application/json',
+                    #    'Serverkey': db_conn.get_encrpt_key()[0]
+                    #}
+                    #response = requests.request("POST", url, headers=headers, data=json.dumps(data_to_send))
+                    #logging.error(f"WMFMachineConnector handle_error: pour={response}, stacktrace: {print_exception()}")
 
             # self.d    b_driver.save_last_record('current_errors', json.dumps(list(self.current_errors)))
         except Exception as ex:

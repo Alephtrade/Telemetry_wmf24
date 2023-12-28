@@ -15,6 +15,7 @@ from controllers.wmf.models import WMFMachineStatConnector
 WS_URL = settings.WS_URL
 DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
 db_conn = WMFSQLDriver()
+WMF_URL = settings.WMF_DATA_URL
 
 
 def Take_Create_Beverage_Statistics(last_send, device):
@@ -97,16 +98,53 @@ def Take_Create_Beverage_Statistics(last_send, device):
                         if last_info[k] == elem:
                             print("GOOD")
                         else:
+                            created = {}
                             print("DIFFERENCE")
                             time_now = datetime.fromtimestamp(int(datetime.now().timestamp() // (60 * 60) * 60 * 60 - 1))
                             prev_hour = time_now - timedelta(hours=1)
                             count_of_real_pours = int(elem) - int(last_info[k])
-                            pours_detected_in_base = len(db_conn.get_pours_with_recipeId_and_cup_size(device[1], recipe_number, recipe_size, time_now, prev_hour))
+                            pours_detected_in_base = db_conn.get_pours_with_recipeId_and_cup_size(device[1], recipe_number, recipe_size, time_now, prev_hour)
                             if count_of_real_pours != pours_detected_in_base:
+
                                 print("Должно быть")
                                 print(count_of_real_pours)
                                 print("В базе найдено")
-                                print(pours_detected_in_base)
+                                print(len(pours_detected_in_base))
+                                if len(pours_detected_in_base) == 0 or pours_detected_in_base is None:
+                                    print("Поиск мидла")
+                                    middle_recipe = db_conn.get_pours_with_recipeId_and_cup_size(device[1], recipe_number, "M", time_now, prev_hour)
+                                    db_conn.initPours(device[1], recipe_number, middle_recipe[0][3], recipe_size, middle_recipe[0][4], middle_recipe[0][5], middle_recipe[0][6], middle_recipe[0][7], middle_recipe[0][8])
+                                    print("Должен был создаться мидл")
+                                    created["aleph_id"] = device[1]
+                                    created["recipe_id"] = recipe_number
+                                    created["recipe_name"] = middle_recipe[0][3]
+                                    created["cup_size"] = recipe_size
+                                    created["water"] = middle_recipe[0][4]
+                                    created["coffee"] = middle_recipe[0][5]
+                                    created["milk"] = middle_recipe[0][6]
+                                    created["powder"] = middle_recipe[0][7]
+                                    created["foam"] = middle_recipe[0][8]
+                                    created["date_formed"] = time_now
+                                else:
+                                    db_conn.initPours(device[1], recipe_number, pours_detected_in_base[0][3], recipe_size, pours_detected_in_base[0][4], pours_detected_in_base[0][5], pours_detected_in_base[0][6], pours_detected_in_base[0][7], pours_detected_in_base[0][8])
+                                    print("Должен был создаться с нужным кап сайзом")
+                                    created["aleph_id"] = device[1]
+                                    created["recipe_id"] = recipe_number
+                                    created["recipe_name"] = pours_detected_in_base[0][3]
+                                    created["cup_size"] = recipe_size
+                                    created["water"] = pours_detected_in_base[0][4]
+                                    created["coffee"] = pours_detected_in_base[0][5]
+                                    created["milk"] = pours_detected_in_base[0][6]
+                                    created["powder"] = pours_detected_in_base[0][7]
+                                    created["foam"] = pours_detected_in_base[0][8]
+                                    created["date_formed"] = time_now
+                            print("Должен был создаться с нужным кап сайзом")
+                            request = f'{WMF_URL}?device={device[1]}&error_id=AT11&date_start={time_now}&date_end={time_now}&duration=0&status=1'
+                            response = requests.post(request)
+                            print(response)
+                            db_conn.create_error_record(device[1], 'AT91')
+                            db_conn.close_error_code(device[1], 'AT91')
+
 
     return True
     #return create_record
