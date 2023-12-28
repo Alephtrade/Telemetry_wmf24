@@ -135,15 +135,15 @@ def Take_Create_Beverage_Statistics(last_send, device):
                                         print(recipe_number)
                                         print(recipe_callback)
                                         if recipe_callback is not None:
-                                            print(recipe_callback[3])
+                                            print(recipe_callback[0][3])
                                             middle_recipe = {}
                                             middle_recipe[0] = {}
-                                            middle_recipe[0][3] = recipe_callback[3]
-                                            middle_recipe[0][4] = recipe_callback[8]
-                                            middle_recipe[0][5] = recipe_callback[6]
-                                            middle_recipe[0][6] = recipe_callback[10]
-                                            middle_recipe[0][7] = recipe_callback[12]
-                                            middle_recipe[0][8] = recipe_callback[14]
+                                            middle_recipe[0][3] = recipe_callback[0][3]
+                                            middle_recipe[0][4] = recipe_callback[0][8]
+                                            middle_recipe[0][5] = recipe_callback[0][6]
+                                            middle_recipe[0][6] = recipe_callback[0][10]
+                                            middle_recipe[0][7] = recipe_callback[0][12]
+                                            middle_recipe[0][8] = recipe_callback[0][14]
                                             while count_of_real_pours > count_in_base:
                                                 db_conn.initPours(device[1], recipe_number, middle_recipe[0][3], recipe_size, middle_recipe[0][4], middle_recipe[0][5], middle_recipe[0][6], middle_recipe[0][7], middle_recipe[0][8], time_to_form)
                                                 count_in_base += 1
