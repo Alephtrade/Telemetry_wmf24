@@ -114,9 +114,9 @@ def Take_Create_Beverage_Statistics(last_send, device):
                                 if len(pours_detected_in_base) == 0 or pours_detected_in_base is None:
                                     print("Поиск мидла")
                                     middle_recipe = db_conn.get_pours_with_recipeId_and_cup_size(device[1], recipe_number, "M", time_now, prev_hour)
-                                    if middle_recipe is None or middle_recipe == []:
-                                        from controllers.api.beverages.Drinks import updateDrinks
-                                        updateDrinks(device[2])
+                                    #if middle_recipe is None or middle_recipe == []:
+                                        #from controllers.api.beverages.Drinks import updateDrinks
+                                        #updateDrinks(device[2])
                                     db_conn.initPours(device[1], recipe_number, middle_recipe[0][3], recipe_size, middle_recipe[0][4], middle_recipe[0][5], middle_recipe[0][6], middle_recipe[0][7], middle_recipe[0][8])
                                     print("Должен был создаться мидл")
                                     created["aleph_id"] = device[1]
