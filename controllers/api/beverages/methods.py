@@ -96,6 +96,7 @@ def Take_Create_Beverage_Statistics(last_send, device):
                         print(recipe_size)
                         print(count_bev_recipe)
                         print(recipe_number)
+                        print({last_info[k], elem, recipe_number})
                         if last_info[k] == elem:
                             print("GOOD")
                         else:
