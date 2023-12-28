@@ -148,7 +148,7 @@ def Take_Create_Beverage_Statistics(last_send, device):
                                             middle_recipe[0][6] = recipe_callback[10]
                                             middle_recipe[0][7] = recipe_callback[12]
                                             middle_recipe[0][8] = recipe_callback[14]
-                                            while count_of_real_pours > count_in_base:
+                                            while count_of_real_pours != count_in_base:
                                                 db_conn.initPours(device[1], recipe_number, middle_recipe[0][3], recipe_size, middle_recipe[0][4], middle_recipe[0][5], middle_recipe[0][6], middle_recipe[0][7], middle_recipe[0][8], time_to_form)
                                                 count_in_base += 1
                                             print("Должен был создаться мидл")
@@ -164,7 +164,7 @@ def Take_Create_Beverage_Statistics(last_send, device):
                                             created["date_formed"] = time_to_form
                                         else:
                                             print("НЕИЗВЕСТНЫЙ НАПИТОК")
-                                            while count_of_real_pours > count_in_base:
+                                            while count_of_real_pours != count_in_base:
                                                 db_conn.initPours(device[1], recipe_number, "НЕИЗВЕСТНЫЙ НАПИТОК",
                                                                   "", "", "",
                                                                   "", "",
@@ -182,7 +182,7 @@ def Take_Create_Beverage_Statistics(last_send, device):
                                             created["foam"] = ""
                                             created["date_formed"] = time_to_form
                                 else:
-                                    while count_of_real_pours > count_in_base:
+                                    while count_of_real_pours != count_in_base:
                                         db_conn.initPours(device[1], recipe_number, pours_detected_in_base[0][3], recipe_size, pours_detected_in_base[0][4], pours_detected_in_base[0][5], pours_detected_in_base[0][6], pours_detected_in_base[0][7], pours_detected_in_base[0][8], time_to_form)
                                         count_in_base += 1
                                     print("Должен был создаться с нужным кап сайзом")
