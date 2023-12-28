@@ -103,6 +103,7 @@ def Take_Create_Beverage_Statistics(last_send, device):
                             print("DIFFERENCE")
                             time_now = date_formed
                             prev_hour = time_now - timedelta(hours=24)
+                            time_to_form = prev_hour + timedelta(minutes=30)
                             count_of_real_pours = int(elem) - int(last_info[k])
                             print("REQUEST")
                             print(device[1])
@@ -155,7 +156,7 @@ def Take_Create_Beverage_Statistics(last_send, device):
                                             created["milk"] = middle_recipe[0][6]
                                             created["powder"] = middle_recipe[0][7]
                                             created["foam"] = middle_recipe[0][8]
-                                            created["date_formed"] = date_formed
+                                            created["date_formed"] = time_to_form
                                         else:
                                             while count_of_real_pours > count_in_base:
                                                 db_conn.initPours(device[1], recipe_number, middle_recipe[0][3],
@@ -173,7 +174,7 @@ def Take_Create_Beverage_Statistics(last_send, device):
                                             created["milk"] = ""
                                             created["powder"] = ""
                                             created["foam"] = ""
-                                            created["date_formed"] = date_formed
+                                            created["date_formed"] = time_to_form
                                 #
                                 else:
                                     while count_of_real_pours > count_in_base:
@@ -189,7 +190,7 @@ def Take_Create_Beverage_Statistics(last_send, device):
                                     created["milk"] = pours_detected_in_base[0][6]
                                     created["powder"] = pours_detected_in_base[0][7]
                                     created["foam"] = pours_detected_in_base[0][8]
-                                    created["date_formed"] = date_formed
+                                    created["date_formed"] = time_to_form
                             request = f'{WMF_URL}?device={device[1]}&error_id=AT11&date_start={time_now}&date_end={time_now}&duration=0&status=1'
                             response = requests.post(request)
                             print(response)
