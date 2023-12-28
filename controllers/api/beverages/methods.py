@@ -180,6 +180,25 @@ def Take_Create_Beverage_Statistics(last_send, device):
                                             created["powder"] = ""
                                             created["foam"] = ""
                                             created["date_formed"] = time_to_form
+                                    else:
+                                        print("НЕИЗВЕСТНЫЙ НАПИТОК")
+                                        while count_of_real_pours > count_in_base:
+                                            db_conn.initPours(device[1], recipe_number, "НЕИЗВЕСТНЫЙ НАПИТОК",
+                                                              "", "", "",
+                                                              "", "",
+                                                              "", time_to_form)
+                                            count_in_base += 1
+                                        print("Неизвестный рецепт")
+                                        created["aleph_id"] = device[1]
+                                        created["recipe_id"] = recipe_number
+                                        created["recipe_name"] = "НЕИЗВЕСТНЫЙ НАПИТОК"
+                                        created["cup_size"] = ""
+                                        created["water"] = ""
+                                        created["coffee"] = ""
+                                        created["milk"] = ""
+                                        created["powder"] = ""
+                                        created["foam"] = ""
+                                        created["date_formed"] = time_to_form
                                 else:
                                     while count_of_real_pours > count_in_base:
                                         db_conn.initPours(device[1], recipe_number, pours_detected_in_base[0][3], recipe_size, pours_detected_in_base[0][4], pours_detected_in_base[0][5], pours_detected_in_base[0][6], pours_detected_in_base[0][7], pours_detected_in_base[0][8], time_to_form)
