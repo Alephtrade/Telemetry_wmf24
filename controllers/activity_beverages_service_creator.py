@@ -176,13 +176,13 @@ def are_need_to_create(device):
         get = methods.Take_Create_Beverage_Statistics(last_send[3], device)
         logging.info(f"beveragestatistics: Sending {get}")
         logging.info(f"{get}")
-    print(get)
+    #print(get)
     return get
 
 
 devices = db_conn.get_devices()
 for device in devices:
-    print(device[2])
+    #print(device[2])
     print(are_need_to_create(device))
-    print(get_service_statistics(device))
-    print(get_main_clean_stat(device))
+    #print(get_service_statistics(device))
+    #print(get_main_clean_stat(device))
