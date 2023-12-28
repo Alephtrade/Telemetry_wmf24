@@ -85,7 +85,7 @@ def Take_Create_Beverage_Statistics(last_send, device):
                         count_bev_recipe = elem
                         recipe_size = re.findall(r'[a-zA-Z]+', recipe_str)
                         recipe_number = re.findall(r'\d+', recipe_str)
-                        print(recipe_size)
+                        print(recipe_size[0])
                         print(count_bev_recipe)
                         print(recipe_number)
 
