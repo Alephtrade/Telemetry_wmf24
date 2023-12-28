@@ -91,13 +91,17 @@ def Take_Create_Beverage_Statistics(last_send, device):
                         count_bev_recipe = elem
                         recipe_size = re.findall(r'[a-zA-Z]+', recipe_str)[0]
                         recipe_number = re.findall(r'\d+', recipe_str)[0]
-                        if last_info[k] == elem:
-                            print("GOOD")
-                        else:
-                            print("DIFFERENCE")
                         print(recipe_size)
                         print(count_bev_recipe)
                         print(recipe_number)
+                        if last_info[k] == elem:
+                            print("GOOD")
+                        else:
+                            time_now = datetime.fromtimestamp(int(datetime.now().timestamp() // (60 * 60) * 60 * 60 - 1))
+                            prev_hour = time_now - timedelta(hours=1)
+                            print(db_conn.get_pours_with_recipeId_and_cup_size(device[1], recipe_number, recipe_size, time_now, prev_hour))
+                            print("DIFFERENCE")
+
     return True
     #return create_record
 
