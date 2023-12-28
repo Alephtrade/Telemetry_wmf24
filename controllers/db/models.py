@@ -66,7 +66,7 @@ class WMFSQLDriver:
          FROM pours 
          WHERE aleph_id = "{aleph_id}" AND recipe_id = "{recipe_id}" AND cup_size = "{cupsize}" AND date_formed > "{prev_hour}" AND date_formed < "{time_now}"'''
         cur.execute(stmt)
-        res = cur.fetchone()
+        res = cur.fetchall()
         cur.close()
         return res
 
