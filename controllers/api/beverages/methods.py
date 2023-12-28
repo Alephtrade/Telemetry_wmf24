@@ -91,6 +91,10 @@ def Take_Create_Beverage_Statistics(last_send, device):
                         count_bev_recipe = elem
                         recipe_size = re.findall(r'[a-zA-Z]+', recipe_str)[0]
                         recipe_number = re.findall(r'\d+', recipe_str)[0]
+                        if last_info[k] == elem:
+                            print("GOOD")
+                        else:
+                            print("DIFFERENCE")
                         print(recipe_size)
                         print(count_bev_recipe)
                         print(recipe_number)
