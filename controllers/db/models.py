@@ -824,13 +824,28 @@ class WMFSQLDriver:
     def get_last_beverages_log(self, aleph_id):
         cur = self.connection.cursor()
         stmt = ''' 
-            SELECT aleph_id, summ, time_to_send, time_fact_send, date_formed, recipes
+            SELECT aleph_id, summ, time_to_send, time_fact_send, date_formed, recipes, id
             FROM beverages_log
             WHERE time_fact_send NOT NULL AND aleph_id = ?
             ORDER BY id DESC 
             LIMIT 1
         '''
         cur.execute(stmt, (aleph_id,))
+        res = cur.fetchone()
+        logging.info(f'WMFSQLDriver get_last_beverages_log: {res}')
+        cur.close()
+        return res
+
+    def get_last_beverages_log_by_id(self, aleph_id, record_id):
+        cur = self.connection.cursor()
+        stmt = ''' 
+            SELECT aleph_id, summ, time_to_send, time_fact_send, date_formed, recipes, id
+            FROM beverages_log
+            WHERE id = ? AND aleph_id = ?
+            ORDER BY id DESC 
+            LIMIT 1
+        '''
+        cur.execute(stmt, (record_id, aleph_id,))
         res = cur.fetchone()
         logging.info(f'WMFSQLDriver get_last_beverages_log: {res}')
         cur.close()

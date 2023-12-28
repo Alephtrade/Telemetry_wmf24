@@ -71,6 +71,10 @@ def Take_Create_Beverage_Statistics(last_send, device):
         else:
             create_record = db_conn.create_beverages_log(device[1], str(summ), str(date_to_send), str(date_formed), json.dumps(recipes))
             logging.info(f"result {create_record}")
+            last_bev_records = db_conn.get_last_beverages_log(device[1])
+            if last_bev_records is not None:
+                last_bev_record = db_conn.get_last_beverages_log_by_id(int(last_bev_records[6]) + 1, device[1])
+                print(last_bev_record)
     return create_record
 
 
