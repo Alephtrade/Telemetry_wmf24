@@ -120,6 +120,8 @@ def Take_Create_Beverage_Statistics(last_send, device):
                                         from controllers.api.beverages.Drinks import updateDrinks
                                         updateDrinks(device[1], device[2])
                                     middle_recipe = db_conn.get_pours_with_recipeId_and_cup_size(device[1], recipe_number, "M", time_now, prev_hour)
+                                    print("MIDDLE")
+                                    print(middle_recipe)
                                     if middle_recipe is None:
                                         recipe_callback = db_conn.getRecipe(device[1], recipe_number)
                                         print(recipe_number)
@@ -148,25 +150,25 @@ def Take_Create_Beverage_Statistics(last_send, device):
                                             created["powder"] = middle_recipe[0][7]
                                             created["foam"] = middle_recipe[0][8]
                                             created["date_formed"] = time_now
-                                    else:
-                                        while count_of_real_pours > count_in_base:
-                                            db_conn.initPours(device[1], recipe_number, middle_recipe[0][3],
-                                                              recipe_size, middle_recipe[0][4], middle_recipe[0][5],
-                                                              middle_recipe[0][6], middle_recipe[0][7],
-                                                              middle_recipe[0][8])
-                                            count_in_base += 1
-                                        print("Должен был создаться мидл")
-                                        created["aleph_id"] = device[1]
-                                        created["recipe_id"] = recipe_number
-                                        created["recipe_name"] = middle_recipe[0][3]
-                                        created["cup_size"] = recipe_size
-                                        created["water"] = middle_recipe[0][4]
-                                        created["coffee"] = middle_recipe[0][5]
-                                        created["milk"] = middle_recipe[0][6]
-                                        created["powder"] = middle_recipe[0][7]
-                                        created["foam"] = middle_recipe[0][8]
-                                        created["date_formed"] = time_now
-
+                                    #else:
+                                    #    while count_of_real_pours > count_in_base:
+                                    #        db_conn.initPours(device[1], recipe_number, middle_recipe[0][3],
+                                    #                          recipe_size, middle_recipe[0][4], middle_recipe[0][5],
+                                    #                          middle_recipe[0][6], middle_recipe[0][7],
+                                    #                          middle_recipe[0][8])
+                                    #        count_in_base += 1
+                                    #    print("Должен был создаться мидл")
+                                    #    created["aleph_id"] = device[1]
+                                    #    created["recipe_id"] = recipe_number
+                                    #    created["recipe_name"] = middle_recipe[0][3]
+                                    #    created["cup_size"] = recipe_size
+                                    #    created["water"] = middle_recipe[0][4]
+                                    #    created["coffee"] = middle_recipe[0][5]
+                                    #    created["milk"] = middle_recipe[0][6]
+                                    #    created["powder"] = middle_recipe[0][7]
+                                    #    created["foam"] = middle_recipe[0][8]
+                                    #    created["date_formed"] = time_now
+#
                                 else:
                                     while count_of_real_pours > count_in_base:
                                         db_conn.initPours(device[1], recipe_number, pours_detected_in_base[0][3], recipe_size, pours_detected_in_base[0][4], pours_detected_in_base[0][5], pours_detected_in_base[0][6], pours_detected_in_base[0][7], pours_detected_in_base[0][8])
