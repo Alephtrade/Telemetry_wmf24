@@ -30,6 +30,7 @@ def Take_Create_Beverage_Statistics(last_send, device):
     try:
         WS_IP = f'ws://{device[2]}:25000/'
         ws = websocket.create_connection(WS_IP, timeout=5)
+        fake_data = False
     except Exception:
         ws = None
         fake_data = True
@@ -66,7 +67,7 @@ def Take_Create_Beverage_Statistics(last_send, device):
     else:
         if recipes == []:
             create_record = None
-            Take_Create_Beverage_Statistics(last_send)
+            Take_Create_Beverage_Statistics(last_send, device[1])
         else:
             create_record = db_conn.create_beverages_log(device[1], str(summ), str(date_to_send), str(date_formed), json.dumps(recipes))
             logging.info(f"result {create_record}")
