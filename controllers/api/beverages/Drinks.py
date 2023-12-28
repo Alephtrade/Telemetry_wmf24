@@ -127,6 +127,7 @@ def updateDrinks(decice_ip):
                         print("SENDEREEERERERERERERERER")
                         print(drink["Name"])
                         print(edited)
+                        return print(edited)
                         url = "https://backend.wmf24.ru/api/recipe_edited"
                         headers = {
                             'Content-Type': 'application/json',
