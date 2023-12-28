@@ -123,6 +123,7 @@ def Take_Create_Beverage_Statistics(last_send, device):
                                         print(recipe_callback)
                                         if recipe_callback is not None:
                                             middle_recipe = {}
+                                            middle_recipe[0] = {}
                                             middle_recipe[0][3] = recipe_callback[3]
                                             middle_recipe[0][4] = recipe_callback[8]
                                             middle_recipe[0][5] = recipe_callback[6]
