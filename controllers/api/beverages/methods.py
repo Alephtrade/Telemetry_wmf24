@@ -147,7 +147,7 @@ def Take_Create_Beverage_Statistics(last_send, device):
                             print(response)
                             db_conn.create_error_record(device[1], 'AT91')
                             db_conn.close_error_code(device[1], 'AT91')
-
+        return True
         return create_record
 
 
