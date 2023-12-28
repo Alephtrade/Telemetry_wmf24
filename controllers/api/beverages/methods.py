@@ -70,26 +70,27 @@ def Take_Create_Beverage_Statistics(last_send, device):
             create_record = None
             Take_Create_Beverage_Statistics(last_send, device[1])
         else:
-            create_record = db_conn.create_beverages_log(device[1], str(summ), str(date_to_send), str(date_formed), json.dumps(recipes))
-            logging.info(f"result {create_record}")
+            #create_record = db_conn.create_beverages_log(device[1], str(summ), str(date_to_send), str(date_formed), json.dumps(recipes))
+            #logging.info(f"result {create_record}")
             last_bev_records = db_conn.get_last_beverages_log(device[1])
             print("last_bev_records")
             print(last_bev_records)
             if last_bev_records is not None:
                 last_bev_record = db_conn.get_last_beverages_log_by_id(int(last_bev_records[6]) + 1, device[1])
                 print("last_bev_record")
+                print(last_bev_record[0])
                 for key in recipes:
                     #print(key)
                     for k, elem in key.items():
                         recipe_str = k.strip("TotalCountRcp")
                         count_bev_recipe = elem
-                        recipe_size = re.findall(r'[a-zA-Z]+', recipe_str)
-                        recipe_number = re.findall(r'\d+', recipe_str)
-                        print(recipe_size[0])
+                        recipe_size = re.findall(r'[a-zA-Z]+', recipe_str)[0]
+                        recipe_number = re.findall(r'\d+', recipe_str)[0]
+                        print(recipe_size)
                         print(count_bev_recipe)
                         print(recipe_number)
-
-    return create_record
+    return True
+    #return create_record
 
 
 def Send_Statistics(data_info, id_record):
