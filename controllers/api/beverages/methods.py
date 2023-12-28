@@ -118,7 +118,14 @@ def Take_Create_Beverage_Statistics(last_send, device):
                                         from controllers.api.beverages.Drinks import updateDrinks
                                         updateDrinks(device[1], device[2])
                                     if middle_recipe is None or len(middle_recipe) < 1:
-                                        middle_recipe = db_conn.getRecipe(device[1], recipe_number)
+                                        recipe_callback = db_conn.getRecipe(device[1], recipe_number)
+                                        middle_recipe = {}
+                                        middle_recipe[0][3] = recipe_callback[3]
+                                        middle_recipe[0][4] = recipe_callback[8]
+                                        middle_recipe[0][5] = recipe_callback[6]
+                                        middle_recipe[0][6] = recipe_callback[10]
+                                        middle_recipe[0][7] = recipe_callback[12]
+                                        middle_recipe[0][8] = recipe_callback[14]
                                     if middle_recipe is not None and len(middle_recipe) > 1:
                                         db_conn.initPours(device[1], recipe_number, middle_recipe[0][3], recipe_size, middle_recipe[0][4], middle_recipe[0][5], middle_recipe[0][6], middle_recipe[0][7], middle_recipe[0][8])
                                         print("Должен был создаться мидл")
