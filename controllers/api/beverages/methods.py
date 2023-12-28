@@ -79,6 +79,11 @@ def Take_Create_Beverage_Statistics(last_send, device):
                 last_bev_record = db_conn.get_last_beverages_log_by_id(device[1], last_bev_records[6])
                 print("last_bev_record")
                 print(ast.literal_eval(last_bev_record[5])[0])
+                last_info = {}
+                for item in last_bev_record[5]:
+                    for rec, it in item.items():
+                        last_info[rec] = it
+                print(last_info)
                 for key in recipes:
                     #print(key)
                     for k, elem in key.items():
