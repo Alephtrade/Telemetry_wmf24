@@ -94,7 +94,7 @@ def get_main_clean_stat(device):
     if total_disconnect_time > 3600:
         total_disconnect_time = 3600
 
-    print({"time_worked", wmf_work_time, "wmf_error_count", wmf_error_count, "wmf_error_time", wmf_error_time, "stoppage_count", stoppage_count, "stoppage_time", stoppage_time})
+    #print({"time_worked", wmf_work_time, "wmf_error_count", wmf_error_count, "wmf_error_time", wmf_error_time, "stoppage_count", stoppage_count, "stoppage_time", stoppage_time})
     db_conn.save_data_statistics(str(device[1]), "time_worked", wmf_work_time)
     db_conn.save_data_statistics(str(device[1]), "wmf_error_count", wmf_error_count)
     db_conn.save_data_statistics(str(device[1]), "wmf_error_time", wmf_error_time)
