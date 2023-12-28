@@ -94,7 +94,7 @@ def get_main_clean_stat(device):
     if total_disconnect_time > 3600:
         total_disconnect_time = 3600
 
-    #print({"time_worked", time_count_default, "wmf_error_count", wmf_error_count, "wmf_error_time", wmf_error_time, "stoppage_count", stoppage_count, "stoppage_time", stoppage_time})
+    print({"time_worked", wmf_work_time, "wmf_error_count", wmf_error_count, "wmf_error_time", wmf_error_time, "stoppage_count", stoppage_count, "stoppage_time", stoppage_time})
     db_conn.save_data_statistics(str(device[1]), "time_worked", wmf_work_time)
     db_conn.save_data_statistics(str(device[1]), "wmf_error_count", wmf_error_count)
     db_conn.save_data_statistics(str(device[1]), "wmf_error_time", wmf_error_time)
@@ -176,7 +176,7 @@ def are_need_to_create(device):
         get = methods.Take_Create_Beverage_Statistics(last_send[3], device)
         logging.info(f"beveragestatistics: Sending {get}")
         logging.info(f"{get}")
-    #print(get)
+    print(get)
     return get
 
 
