@@ -85,7 +85,7 @@ class WMFSQLDriver:
         cur = self.connection.cursor()
         stmt = f'''SELECT id, aleph_id, recipe_id, recipe_name, cup_size, water, coffee, milk, powder, foam, date_formed, is_sent, COUNT(id)
          FROM pours 
-         WHERE aleph_id = "{aleph_id}" AND recipe_id = "{recipe_id}" AND cup_size = "{cupsize}" AND date_formed > "{prev_hour}" AND date_formed < "{time_now}"'''
+         WHERE aleph_id = "{aleph_id}" AND recipe_id = "{recipe_id}" AND cup_size = "{cupsize}" AND date_formed > "{prev_hour}" AND date_formed < "{time_now}" AND is_sent = 0'''
         cur.execute(stmt)
         res = cur.fetchall()
         cur.close()
