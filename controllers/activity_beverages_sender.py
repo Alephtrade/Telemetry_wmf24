@@ -16,8 +16,6 @@ from controllers.wmf.models import WMFMachineStatConnector
 
 
 def beverages_send_worker(aleph_id, ip):
-    print(db_conn.get_all_pours_not_sended(device[1]))
-
     initialize_logger('beverages_send_worker.py.log')
     k = []
     time_to_send = None
@@ -47,6 +45,13 @@ def beverages_send_worker(aleph_id, ip):
                 logging.info(f'Send_Statistics db id - {record_id}')
             else:
                 logging.info(f'wrong time to_sent - {next_time}')
+    sorter = {}
+    not_sort_pours = db_conn.get_all_pours_not_sended(device[1])
+    for key in not_sort_pours:
+        for k, elem in key.items():
+            sorter[10] = elem
+    print(sorter)
+
     return True
 
 
