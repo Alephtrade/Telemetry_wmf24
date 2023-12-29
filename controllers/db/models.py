@@ -553,7 +553,8 @@ class WMFSQLDriver:
         return res
 
     def save_data_statistics(self, aleph_id, operator, value_column):
-        time_now = datetime.fromtimestamp(int((datetime.now()).timestamp() // (60 * 60) * 60 * 60))
+        #time_now = datetime.fromtimestamp(int((datetime.now()).timestamp() // (60 * 60) * 60 * 60))
+        time_now = datetime.fromtimestamp(int(datetime.now()).timestamp())
         cur = self.connection.cursor()
         record_time = get_curr_time_str()
         stmt = f''' 
