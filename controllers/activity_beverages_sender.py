@@ -64,7 +64,7 @@ def beverages_send_worker(aleph_id, ip):
         for pour in sorter:
             print(pour)
             print(pour["id"])
-            db_conn.id_pours_sended(pour["aleph_id"], pour["id"])
+            db_conn.id_pours_sended(pour["id"])
 
     return True
 
