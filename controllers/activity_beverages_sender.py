@@ -60,8 +60,11 @@ def beverages_send_worker(aleph_id, ip):
     response = requests.request("POST", url, headers=headers, data=json.dumps(sorter))
     print(response.status_code)
     if response.status_code == 200:
+        print(sorter)
         for pour in sorter:
-            db_conn.id_pours_sended(sorter[1], sorter[0])
+            print(pour)
+            print(pour[0])
+            db_conn.id_pours_sended(pour[1], pour[0])
 
     return True
 
