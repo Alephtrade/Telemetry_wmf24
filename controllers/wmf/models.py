@@ -90,32 +90,32 @@ class WMFMachineErrorConnector:
                     cup_size = "L"
                 #print("Recipe")
                 #print(recipe_number)
-                available_recipe = db_conn.getRecipe(self.aleph_id, recipe_number)
-                if available_recipe is None or available_recipe:
+                self.available_recipe = db_conn.getRecipe(self.aleph_id, recipe_number)
+                if self.available_recipe is None or self.available_recipe:
                     print("UPDATER")
                     print(self.ip)
                     #self.drink_list = DrinksManager.updateDrinks(self.ip)
-                if available_recipe is not None and available_recipe:
+                if self.available_recipe is not None and self.available_recipe:
                     water = 0
                     coffee = 0
                     milk = 0
                     powder = 0
                     foam = 0
                     if cup_size == "S" or cup_size == "L":
-                        water = int(available_recipe[7]) * int(data.get("QtyWater"))
-                        coffee = int(available_recipe[5]) * (int(data.get("QtyGrinder1")) + int(data.get("QtyGrinder2")) + int(data.get("QtyGrinder3")) + int(data.get("QtyGrinder4")))
-                        milk = int(available_recipe[9]) * (int(data.get("QtyMilk1")) + int(data.get("QtyMilk2")))
-                        powder = int(available_recipe[11]) * (int(data.get("QtyPowder1")) + int(data.get("QtyPowder2")))
-                        foam = int(available_recipe[13]) * (int(data.get("QtyFoam1")) + int(data.get("QtyFoam2")))
+                        water = int(self.available_recipe[7]) * int(data.get("QtyWater"))
+                        coffee = int(self.available_recipe[5]) * (int(data.get("QtyGrinder1")) + int(data.get("QtyGrinder2")) + int(data.get("QtyGrinder3")) + int(data.get("QtyGrinder4")))
+                        milk = int(self.available_recipe[9]) * (int(data.get("QtyMilk1")) + int(data.get("QtyMilk2")))
+                        powder = int(self.available_recipe[11]) * (int(data.get("QtyPowder1")) + int(data.get("QtyPowder2")))
+                        foam = int(self.available_recipe[13]) * (int(data.get("QtyFoam1")) + int(data.get("QtyFoam2")))
                     elif cup_size == "M":
-                        water = available_recipe[8]
-                        coffee = available_recipe[6]
-                        milk = available_recipe[10]
-                        powder = available_recipe[12]
-                        foam = available_recipe[14]
+                        water = self.available_recipe[8]
+                        coffee = self.available_recipe[6]
+                        milk = self.available_recipe[10]
+                        powder = self.available_recipe[12]
+                        foam = self.available_recipe[14]
                     print(self.aleph_id)
                     print("self.aleph_id")
-                    db_conn.initPours(self.aleph_id, recipe_number, available_recipe[3], cup_size, water, coffee, milk, powder, foam)
+                    db_conn.initPours(self.aleph_id, recipe_number, self.available_recipe[3], cup_size, water, coffee, milk, powder, foam)
                     #data_to_send = {}
                     #data_to_send["aleph_id"] = self.aleph_id
                     #data_to_send["recipe_id"] = recipe_number
@@ -172,6 +172,7 @@ class WMFMachineErrorConnector:
             self.ip = ip
             self.index_active_error = 0
             self.last_error_code_in_index = 0
+            self.available_recipe = ""
             self.db_driver = WMFSQLDriver()
             self.WS_URL = f'ws://{ip}:{settings.WS_PORT}/'
             self.ws = websocket.WebSocketApp(self.WS_URL,
