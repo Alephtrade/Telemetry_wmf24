@@ -51,7 +51,7 @@ def beverages_send_worker(aleph_id, ip):
         time_check = datetime.fromtimestamp((datetime.strptime(key[10], '%Y-%m-%d %H:%M:%S')).timestamp() // (60 * 60) * 60 * 60)
         if datetime.fromtimestamp(int(datetime.now().timestamp())) > time_check:
             sorter.append({"aleph_id": key[1], "recipe_id":key[2], "recipe_name":key[3], "cup_size":key[4], "water":key[5], "coffee":key[6], "milk":key[7], "powder":key[8], "foam":key[9], "date_formed": time_check.strftime('%Y-%m-%d %H:%M:%S')})
-    print(sorter)
+    print(len(sorter[0]))
 
     return True
 
