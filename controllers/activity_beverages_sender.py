@@ -49,8 +49,7 @@ def beverages_send_worker(aleph_id, ip):
     not_sort_pours = db_conn.get_all_pours_not_sended(device[1])
     for key in not_sort_pours:
         for k, elem in key.items():
-            sorter[10] = elem
-    print(sorter)
+            print({k, elem})
 
     return True
 
