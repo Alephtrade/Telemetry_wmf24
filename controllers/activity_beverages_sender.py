@@ -50,7 +50,7 @@ def beverages_send_worker(aleph_id, ip):
     for key in not_sort_pours:
         time_check = datetime.fromtimestamp((datetime.strptime(key[10], '%Y-%m-%d %H:%M:%S')).timestamp() // (60 * 60) * 60 * 60)
         if datetime.fromtimestamp(int(datetime.now().timestamp())) > time_check:
-            sorter.append({"aleph_id": key[1], "recipe_id":key[2], "recipe_name":key[3], "cup_size":key[4], "water":key[5], "coffee":key[6], "milk":key[7], "powder":key[8], "foam":key[9], "date_formed": time_check.strftime('%Y-%m-%d %H:%M:%S')})
+            sorter.append({"id": key[0], "aleph_id": key[1], "recipe_id":key[2], "recipe_name":key[3], "cup_size":key[4], "water":key[5], "coffee":key[6], "milk":key[7], "powder":key[8], "foam":key[9], "date_formed": time_check.strftime('%Y-%m-%d %H:%M:%S')})
     print(sorter)
     url = "https://backend.wmf24.ru/api/new_pour"
     headers = {
@@ -58,7 +58,9 @@ def beverages_send_worker(aleph_id, ip):
         'Serverkey': db_conn.get_encrpt_key()[0]
     }
     response = requests.request("POST", url, headers=headers, data=json.dumps(sorter))
-    print(response.text)
+    if response.status_code == 200:
+        for pour in sorter:
+            db_conn.id_pours_sended(sorter[1], sorter[0])
 
     return True
 

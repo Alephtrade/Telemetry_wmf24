@@ -52,6 +52,16 @@ class WMFSQLDriver:
         cur.close()
         return res
 
+    def id_pours_sended(self, aleph_id, pour_id):
+        cur = self.connection.cursor()
+        stmt = f'''UPDATE pours
+            SET is_sent = 1 
+            WHERE aleph_id = "{aleph_id}" AND id = "{pour_id}"'''
+        cur.execute(stmt)
+        res = cur.fetchall()
+        cur.close()
+        return res
+
     def initPours(self, aleph_id, recipe_id, recipe_name, cup_size, water_weight, coffee, milk, powder, foam, date_formed = datetime.fromtimestamp(int((datetime.now()).timestamp()))):
         cur = self.connection.cursor()
         stmt = 'INSERT INTO pours (aleph_id, recipe_id, recipe_name, cup_size, water, coffee, milk, powder, foam, date_formed, is_sent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
