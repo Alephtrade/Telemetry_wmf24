@@ -45,12 +45,13 @@ def beverages_send_worker(aleph_id, ip):
                 logging.info(f'Send_Statistics db id - {record_id}')
             else:
                 logging.info(f'wrong time to_sent - {next_time}')
-    sorter = {}
+    sorter = []
     not_sort_pours = db_conn.get_all_pours_not_sended(device[1])
     for key in not_sort_pours:
         time_now = datetime.fromtimestamp(int(datetime.now().timestamp() // (60 * 60) * 60 * 60))
-
-        print(datetime.fromtimestamp((datetime.strptime(key[10], '%Y-%m-%d %H:%M:%S')).timestamp() // (60 * 60) * 60 * 60))
+        if datetime.fromtimestamp(int(datetime.now().timestamp())) > datetime.fromtimestamp((datetime.strptime(key[10], '%Y-%m-%d %H:%M:%S')).timestamp() // (60 * 60) * 60 * 60):
+            sorter.append(key)
+    print(sorter)
 
     return True
 
