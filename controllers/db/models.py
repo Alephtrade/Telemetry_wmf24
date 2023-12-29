@@ -46,7 +46,7 @@ class WMFSQLDriver:
         cur = self.connection.cursor()
         stmt = f'''SELECT id, aleph_id, recipe_id, recipe_name, cup_size, water, coffee, milk, powder, foam, date_formed, is_sent
          FROM pours 
-         WHERE aleph_id = "{aleph_id}" AND is_sent = 0'''
+         WHERE aleph_id = "{aleph_id}" AND is_sent = 0 AND recipe_name != "НЕИЗВЕСТНЫЙ НАПИТОК"'''
         cur.execute(stmt)
         res = cur.fetchall()
         cur.close()
