@@ -48,7 +48,9 @@ def beverages_send_worker(aleph_id, ip):
     sorter = {}
     not_sort_pours = db_conn.get_all_pours_not_sended(device[1])
     for key in not_sort_pours:
-            print((datetime.strptime(key[10], '%Y-%m-%d %H:%M:%S')).timestamp() // (60 * 60) * 60 * 60)
+        time_now = datetime.fromtimestamp(int(datetime.now().timestamp() // (60 * 60) * 60 * 60))
+
+        print(datetime.fromtimestamp((datetime.strptime(key[10], '%Y-%m-%d %H:%M:%S')).timestamp() // (60 * 60) * 60 * 60))
 
     return True
 
