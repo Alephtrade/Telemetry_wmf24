@@ -216,9 +216,8 @@ def Send_Statistics(data_info, id_record):
         'Serverkey': db_conn.get_encrpt_key()[0]
     }
     response = requests.request("POST", url, headers=headers, data=data_info)
-    json_res = response.json()
     now = datetime.fromtimestamp(int((datetime.now()).timestamp()))
-    if(json_res["id"]):
+    if(response.status_code == 200):
         print("UPDATE TIME_FACT_SEND")
         update_record = db_conn.update_beverages_log(id_record, now)
         logging.info(f"update {update_record}")
