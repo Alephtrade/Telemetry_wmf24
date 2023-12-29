@@ -45,7 +45,7 @@ def beverages_send_worker(aleph_id, ip):
                 logging.info(f'Send_Statistics db id - {record_id}')
             else:
                 logging.info(f'wrong time to_sent - {next_time}')
-            print(db_conn.get_all_pours_not_sended(device[1]))
+    print(db_conn.get_all_pours_not_sended(device[1]))
     return True
 
 
