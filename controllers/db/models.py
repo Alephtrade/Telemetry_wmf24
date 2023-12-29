@@ -46,9 +46,9 @@ class WMFSQLDriver:
         cur = self.connection.cursor()
         stmt = f'''SELECT id, aleph_id, recipe_id, recipe_name, cup_size, water, coffee, milk, powder, foam, date_formed, is_sent
          FROM pours 
-         WHERE aleph_id = "{aleph_id}" AND is_sent = 0 LIMIT 1'''
+         WHERE aleph_id = "{aleph_id}" AND is_sent = 0 LIMIT 1 GROUP BY date_formed'''
         cur.execute(stmt)
-        res = cur.fetchone()
+        res = cur.fetchall()
         cur.close()
         return res
 
