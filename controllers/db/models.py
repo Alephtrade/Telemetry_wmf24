@@ -42,6 +42,16 @@ class WMFSQLDriver:
         cur.close()
         return res
 
+    def get_all_pours_not_sended(self, aleph_id):
+        cur = self.connection.cursor()
+        stmt = f'''SELECT id, aleph_id, recipe_id, recipe_name, cup_size, water, coffee, milk, powder, foam, date_formed, is_sent
+         FROM pours 
+         WHERE aleph_id = "{aleph_id}" AND is_sent = 0 LIMIT 1'''
+        cur.execute(stmt)
+        res = cur.fetchone()
+        cur.close()
+        return res
+
     def initPours(self, aleph_id, recipe_id, recipe_name, cup_size, water_weight, coffee, milk, powder, foam, date_formed = datetime.fromtimestamp(int((datetime.now()).timestamp()))):
         cur = self.connection.cursor()
         stmt = 'INSERT INTO pours (aleph_id, recipe_id, recipe_name, cup_size, water, coffee, milk, powder, foam, date_formed, is_sent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'

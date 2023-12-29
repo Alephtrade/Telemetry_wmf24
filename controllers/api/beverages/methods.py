@@ -100,7 +100,6 @@ def Take_Create_Beverage_Statistics(last_send, device):
                         if last_info[k] == elem:
                             print("GOOD")
                         else:
-                            created = {}
                             print("DIFFERENCE")
                             time_now = date_formed
                             prev_hour = time_now - timedelta(hours=24)
@@ -152,16 +151,6 @@ def Take_Create_Beverage_Statistics(last_send, device):
                                                 db_conn.initPours(device[1], recipe_number, middle_recipe[0][3], recipe_size, middle_recipe[0][4], middle_recipe[0][5], middle_recipe[0][6], middle_recipe[0][7], middle_recipe[0][8], time_to_form)
                                                 count_in_base += 1
                                             print("Должен был создаться мидл")
-                                            created["aleph_id"] = device[1]
-                                            created["recipe_id"] = recipe_number
-                                            created["recipe_name"] = middle_recipe[0][3]
-                                            created["cup_size"] = recipe_size
-                                            created["water"] = middle_recipe[0][4]
-                                            created["coffee"] = middle_recipe[0][5]
-                                            created["milk"] = middle_recipe[0][6]
-                                            created["powder"] = middle_recipe[0][7]
-                                            created["foam"] = middle_recipe[0][8]
-                                            created["date_formed"] = time_to_form
                                         else:
                                             print("НЕИЗВЕСТНЫЙ НАПИТОК")
                                             while count_of_real_pours != count_in_base:
@@ -171,38 +160,16 @@ def Take_Create_Beverage_Statistics(last_send, device):
                                                                   "", time_to_form)
                                                 count_in_base += 1
                                             print("Неизвестный рецепт")
-                                            created["aleph_id"] = device[1]
-                                            created["recipe_id"] = recipe_number
-                                            created["recipe_name"] = "НЕИЗВЕСТНЫЙ НАПИТОК"
-                                            created["cup_size"] = ""
-                                            created["water"] = ""
-                                            created["coffee"] = ""
-                                            created["milk"] = ""
-                                            created["powder"] = ""
-                                            created["foam"] = ""
-                                            created["date_formed"] = time_to_form
                                 else:
                                     while count_of_real_pours != count_in_base:
                                         db_conn.initPours(device[1], recipe_number, pours_detected_in_base[0][3], recipe_size, pours_detected_in_base[0][4], pours_detected_in_base[0][5], pours_detected_in_base[0][6], pours_detected_in_base[0][7], pours_detected_in_base[0][8], time_to_form)
                                         count_in_base += 1
                                     print("Должен был создаться с нужным кап сайзом")
-                                    created["aleph_id"] = device[1]
-                                    created["recipe_id"] = recipe_number
-                                    created["recipe_name"] = pours_detected_in_base[0][3]
-                                    created["cup_size"] = recipe_size
-                                    created["water"] = pours_detected_in_base[0][4]
-                                    created["coffee"] = pours_detected_in_base[0][5]
-                                    created["milk"] = pours_detected_in_base[0][6]
-                                    created["powder"] = pours_detected_in_base[0][7]
-                                    created["foam"] = pours_detected_in_base[0][8]
-                                    created["date_formed"] = time_to_form
                             request = f'{WMF_URL}?device={device[1]}&error_id=AT11&date_start={time_now}&date_end={time_now}&duration=0&status=1'
                             response = requests.post(request)
                             print(response)
                             db_conn.create_error_record(device[1], 'AT91')
                             db_conn.close_error_code(device[1], 'AT91')
-
-
     #return True
     return create_record
 
