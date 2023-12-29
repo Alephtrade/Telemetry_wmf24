@@ -57,7 +57,7 @@ def beverages_send_worker(aleph_id, ip):
         'Content-Type': 'application/json',
         'Serverkey': db_conn.get_encrpt_key()[0]
     }
-    response = requests.request("POST", url, headers=headers, data=sorter)
+    response = requests.request("POST", url, headers=headers, data=sorter[0])
     print(response.text)
 
     return True
