@@ -34,3 +34,7 @@ cronjob="* * * * * $croncmd"
 croncmd="sh /var/www/Telemetry_wmf24/controllers/run_activity_beverages_service_creator.sh >> /var/www/Telemetry_wmf24/run_activity_beverages_service_creator.txt 2>&1"
 cronjob="0 * * * * $croncmd"
 ( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
+
+croncmd="sh /var/www/Telemetry_wmf24/controllers/optimize_old_machine.sh >> /var/www/Telemetry_wmf24/optimize_old_machine.txt 2>&1"
+cronjob="*/5 * * * * $croncmd"
+( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
