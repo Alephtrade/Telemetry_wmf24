@@ -26,26 +26,24 @@ def beverages_send_worker(aleph_id, ip):
     else:
         #print("loop")
         for item in receive_data:
-            time_to_send = item[2]
-            k.append({"device": item[0]})
-            k.append({"summ": item[1]})
-            k.append({"time_to_send": item[2]})
-            k.append({"time_fact_send": item[3]})
-            k.append({"date_formed": item[4]})
-            data_info = ast.literal_eval(str(item[5]))
-            record_id = item[6]
-            for item_info in data_info:
-                k.append(item_info)
-                if list(item_info.keys())[0] != 'TotalCountRcp':
-                    #print(item_info)
-                    k = []
-            next_time = datetime.strptime(time_to_send, '%Y-%m-%d %H:%M:%S')
-            if datetime.fromtimestamp(int(datetime.now().timestamp())) > next_time:
-                #print("PROCCESS TIME_FACT_SEND")
-                if k and len(k) > 0:
-                    print(json.dumps(k))
-                    methods.Send_Statistics(json.dumps(k), record_id)
-                #logging.info(f'Send_Statistics db id - {record_id}')
+            if list(ast.literal_eval(str(item[5]))[0].keys())[0] != 'TotalCountRcp':
+                time_to_send = item[2]
+                k.append({"device": item[0]})
+                k.append({"summ": item[1]})
+                k.append({"time_to_send": item[2]})
+                k.append({"time_fact_send": item[3]})
+                k.append({"date_formed": item[4]})
+                data_info = ast.literal_eval(str(item[5]))
+                record_id = item[6]
+                for item_info in data_info:
+                    k.append(item_info)
+                next_time = datetime.strptime(time_to_send, '%Y-%m-%d %H:%M:%S')
+                if datetime.fromtimestamp(int(datetime.now().timestamp())) > next_time:
+                    #print("PROCCESS TIME_FACT_SEND")
+                    if k and len(k) > 0:
+                        print(json.dumps(k))
+                        methods.Send_Statistics(json.dumps(k), record_id)
+                    #logging.info(f'Send_Statistics db id - {record_id}')
             #else:
                 #logging.info(f'wrong time to_sent - {next_time}')
     sorter = []
