@@ -65,7 +65,6 @@ def require_info(ip):
     except Exception:
         return False
     request = json.dumps({'function': 'getMachineInfo'})
-    print()
     print(request)
     print("------------------------------")
     #logging.info(f"WMFMachineStatConnector: Sending {request}")

@@ -188,8 +188,5 @@ def Send_Statistics(data_info, id_record):
         print("UPDATE TIME_FACT_SEND")
         update_record = db_conn.update_beverages_log(id_record, now)
         #logging.info(f"update {update_record}")
-    else:
-        print("")
-        #logging.info(f"error unknown id record")
     return response.json()
 
