@@ -27,7 +27,8 @@ def beverages_send_worker(aleph_id, ip):
         #print("loop")
         print(receive_data)
         for item in receive_data:
-            #logging.info(f'loop')
+            if ast.literal_eval(str(item[5]) != 'TotalCountRcp'):
+                print(receive_data)
             time_to_send = item[2]
             k.append({"device": item[0]})
             k.append({"summ": item[1]})
