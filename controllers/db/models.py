@@ -63,6 +63,7 @@ class WMFSQLDriver:
         return stmt
 
     def initPours(self, aleph_id, recipe_id, recipe_name, cup_size, water_weight, coffee, milk, powder, foam, date_formed = datetime.fromtimestamp(int((datetime.now()).timestamp()))):
+        date_formed = datetime.fromtimestamp(int((datetime.now()).timestamp()))
         cur = self.connection.cursor()
         stmt = 'INSERT INTO pours (aleph_id, recipe_id, recipe_name, cup_size, water, coffee, milk, powder, foam, date_formed, is_sent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
         cur.execute(stmt, (aleph_id, recipe_id, recipe_name, cup_size, water_weight, coffee, milk, powder, foam, date_formed, 0))
