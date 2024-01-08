@@ -69,11 +69,6 @@ def worker(ip):
                             content = response.content.decode('utf-8')
                             db_conn.set_report_sent(record[0])
                             #logging.info(f'error_collector send_errors: <= {response} {content}')
-                    else:
-                        request = f'{WMF_URL}?device={device_item[1]}&error_id=0&status={wmf_conn.get_status()}'
-                        print("79")
-                        print(request)
-                        response = requests.post(request)
                         #logging.info(f'error_collector send_errors: nothing to send')
             except Exception as ex:
                 print(ex)
