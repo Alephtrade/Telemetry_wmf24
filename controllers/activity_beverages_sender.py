@@ -25,7 +25,7 @@ def beverages_send_worker(aleph_id, ip):
         #logging.info(f'NO DATA')
     else:
         #print("loop")
-        #print(receive_data)
+        print(receive_data)
         for item in receive_data:
             #logging.info(f'loop')
             time_to_send = item[2]
@@ -40,7 +40,7 @@ def beverages_send_worker(aleph_id, ip):
                 k.append(item_info)
             next_time = datetime.strptime(time_to_send, '%Y-%m-%d %H:%M:%S')
             if datetime.fromtimestamp(int(datetime.now().timestamp())) > next_time:
-                print(json.dumps(k))
+                #print(json.dumps(k))
                 #print("PROCCESS TIME_FACT_SEND")
                 methods.Send_Statistics(json.dumps(k), record_id)
                 #logging.info(f'Send_Statistics db id - {record_id}')
