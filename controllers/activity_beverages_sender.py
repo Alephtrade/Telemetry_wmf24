@@ -25,7 +25,6 @@ def beverages_send_worker(aleph_id, ip):
         #logging.info(f'NO DATA')
     else:
         #print("loop")
-        print(receive_data)
         for item in receive_data:
             time_to_send = item[2]
             k.append({"device": item[0]})
