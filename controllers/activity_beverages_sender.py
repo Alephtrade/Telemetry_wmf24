@@ -158,6 +158,7 @@ def check_machine_status(aleph_id, ip):
 def render_errors_closing(aleph_id, ip, last_id, end_time, status):
     WS_URL = f'ws://{ip}:25000/'
     db_driver = WMFSQLDriver()
+    print({aleph_id, status})
     if status == 0 and (end_time is None):
         if_offed = db_driver.get_error_last_stat_record("-1", aleph_id)
         if if_offed is None or if_offed[1] is None:
