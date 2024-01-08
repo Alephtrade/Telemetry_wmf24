@@ -27,8 +27,6 @@ def beverages_send_worker(aleph_id, ip):
         #print("loop")
         print(receive_data)
         for item in receive_data:
-            if ast.literal_eval(str(item[5])[0] != 'TotalCountRcp'):
-                print(receive_data)
             time_to_send = item[2]
             k.append({"device": item[0]})
             k.append({"summ": item[1]})
@@ -39,6 +37,8 @@ def beverages_send_worker(aleph_id, ip):
             record_id = item[6]
             for item_info in data_info:
                 k.append(item_info)
+                if item_info != 'TotalCountRcp':
+                    print(receive_data)
             next_time = datetime.strptime(time_to_send, '%Y-%m-%d %H:%M:%S')
             if datetime.fromtimestamp(int(datetime.now().timestamp())) > next_time:
                 #print(json.dumps(k))
