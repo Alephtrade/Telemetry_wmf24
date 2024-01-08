@@ -36,9 +36,8 @@ def beverages_send_worker(aleph_id, ip):
             record_id = item[6]
             for item_info in data_info:
                 k.append(item_info)
-                for ka,v in item_info:
-                    if ka != 'TotalCountRcp':
-                        print(item_info)
+                if item_info.key() != 'TotalCountRcp':
+                    print(item_info)
             next_time = datetime.strptime(time_to_send, '%Y-%m-%d %H:%M:%S')
             if datetime.fromtimestamp(int(datetime.now().timestamp())) > next_time:
                 #print(json.dumps(k))
