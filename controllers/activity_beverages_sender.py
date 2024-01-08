@@ -170,6 +170,7 @@ def render_errors_closing(aleph_id, ip, last_id, end_time, status):
         #logging.info(f'status is 0 and end_time is none, downtime is active')
     elif status == 0 and (end_time is not None):
         if_offed = db_driver.get_error_last_stat_record("-1", aleph_id)
+        print("if2")
         print(if_offed)
         if if_offed is None or if_offed[1] is None:
             print("created2")
