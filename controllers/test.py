@@ -28,6 +28,6 @@ for device in devices:
             status = 1
     except Exception:
         status = 0
-    logging.info(f'status is: {status}')
+    #logging.info(f'status is: {status}')
     print(status)
     #print(formatted)

@@ -18,7 +18,7 @@ DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
 db_conn = WMFSQLDriver()
 
 def get_main_clean_stat(device):
-    initialize_logger('controller_cleaning_statistic_creator.py.log')
+    #initialize_logger('controller_cleaning_statistic_creator.py.log')
     time_now = datetime.fromtimestamp(int(datetime.now().timestamp() // (60 * 60) * 60 * 60 - 1))
     prev_hour = time_now - timedelta(hours=1)
     #get_last_data_statistics = db_conn.get_last_data_statistics()
@@ -101,7 +101,7 @@ def get_main_clean_stat(device):
     db_conn.save_data_statistics(str(device[1]), "stoppage_count", disconnect_count)
     db_conn.save_data_statistics(str(device[1]), "stoppage_time", total_disconnect_time)
 
-    logging.info(f'time_worked {wmf_work_time}, wmf_error_count {wmf_error_count}, wmf_error_time {wmf_error_time}, stoppage_count {disconnect_count}, stoppage_time: {total_disconnect_time}')
+    #logging.info(f'time_worked {wmf_work_time}, wmf_error_count {wmf_error_count}, wmf_error_time {wmf_error_time}, stoppage_count {disconnect_count}, stoppage_time: {total_disconnect_time}')
     print(
         {
             "wmf_work_time": wmf_work_time,
@@ -114,9 +114,9 @@ def get_main_clean_stat(device):
 
 
 def get_service_statistics(device):
-    initialize_logger('getServiceStatistics.log')
+    #initialize_logger('getServiceStatistics.log')
     date_today = date.today()
-    logging.info(f"COFFEE_MACHINE: today date in service_stat {date_today}")
+    #logging.info(f"COFFEE_MACHINE: today date in service_stat {date_today}")
 
     #print(date_today)
     try:
@@ -124,22 +124,22 @@ def get_service_statistics(device):
         ws = websocket.create_connection(WS_IP, timeout=5)
     except Exception:
         ws = None
-        logging.info(f"error {ws}")
+        #logging.info(f"error {ws}")
         return False
     actual = db_conn.get_last_service_statistics(device[1], date_today)
-    logging.info(f"COFFEE_MACHINE: last service_stat record {actual}")
+    #logging.info(f"COFFEE_MACHINE: last service_stat record {actual}")
     if actual is None:
         # print("create")
         record = db_conn.create_service_record(device[1], date_today)
-        logging.info(f"COFFEE_MACHINE: created record service_stat {record}")
+        #logging.info(f"COFFEE_MACHINE: created record service_stat {record}")
     else:
         if actual[2] == "0":
             # print("form")
             request = json.dumps({'function': 'getServiceStatistics'})
-            logging.info(f"COFFEE_MACHINE: Sending {request}")
+            #logging.info(f"COFFEE_MACHINE: Sending {request}")
             ws.send(request)
             received_data = ws.recv()
-            logging.info(f"servicestatistics: Received {received_data}")
+            #logging.info(f"servicestatistics: Received {received_data}")
             text_file = open("response.txt", "a")
             text_file.write(received_data)
             ts = time.time()
@@ -154,7 +154,7 @@ def get_service_statistics(device):
                     }
             print(received_data)
             response = requests.request("POST", url, headers=headers, data=received_data)
-            logging.info(f"servicestatistics: GET response: {response.text}")
+            #logging.info(f"servicestatistics: GET response: {response.text}")
             db_conn.save_status_service_statistics(actual[0], "date_fact_send", str(datetime.fromtimestamp(int((datetime.now()).timestamp()))))
             db_conn.save_status_service_statistics(actual[0], "is_sent", "1")
             ws.close()
@@ -162,20 +162,20 @@ def get_service_statistics(device):
             return response
 
 def are_need_to_create(device):
-    initialize_logger('beveragestatistics.log')
-    logging.info(f"beveragestatistics: Received Create start")
+    #initialize_logger('beveragestatistics.log')
+    #logging.info(f"beveragestatistics: Received Create start")
     last_send = db_conn.get_last_beverages_log(device[1])
-    logging.info(f"{last_send}")
+    #logging.info(f"{last_send}")
     if last_send is None:
         now = datetime.fromtimestamp(int((datetime.now()).timestamp()))
         get = methods.Take_Create_Beverage_Statistics(now, device)
-        logging.info(f"beveragestatistics: Sending {get}")
-        logging.info(f" last_send unknown")
-        logging.info(f"{get}")
+        #logging.info(f"beveragestatistics: Sending {get}")
+        #logging.info(f" last_send unknown")
+        #logging.info(f"{get}")
     else:
         get = methods.Take_Create_Beverage_Statistics(last_send[3], device)
-        logging.info(f"beveragestatistics: Sending {get}")
-        logging.info(f"{get}")
+        #logging.info(f"beveragestatistics: Sending {get}")
+        #logging.info(f"{get}")
     print(get)
     return get
 

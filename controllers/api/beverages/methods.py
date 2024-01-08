@@ -20,7 +20,7 @@ WMF_URL = settings.WMF_DATA_URL
 
 def Take_Create_Beverage_Statistics(last_send, device):
     print(device)
-    initialize_logger('beveragestatistics.log')
+    #initialize_logger('beveragestatistics.log')
     wm_conn = WMFMachineStatConnector(device[1], device[2])
     fake_data = False
     summ = 0
@@ -37,19 +37,19 @@ def Take_Create_Beverage_Statistics(last_send, device):
     except Exception:
         ws = None
         fake_data = True
-        logging.info(f"error {wm_conn.ws}")
+        #logging.info(f"error {wm_conn.ws}")
     if not wm_conn.ws:
-        logging.info(f"error {wm_conn.ws}")
+        #logging.info(f"error {wm_conn.ws}")
         fake_data = True
     else:
         request = json.dumps({'function': 'getBeverageStatistics'})
         ws.send(request)
         received_data = ws.recv()
-        logging.info(f"{received_data}")
+        #logging.info(f"{received_data}")
         if received_data is not None or received_data != []:
             received_data = received_data.replace(']', '', 1)
             received_data = received_data + ', {"device" : ' + '"' + device[1] + '"' + '}]'
-            logging.info(f"beveragestatistics: Received {received_data}")
+            #logging.info(f"beveragestatistics: Received {received_data}")
             received = ast.literal_eval(received_data)
             for item in received:
                 for k, item2 in item.items():
@@ -175,8 +175,8 @@ def Take_Create_Beverage_Statistics(last_send, device):
 
 
 def Send_Statistics(data_info, id_record):
-    initialize_logger('beverages_send_worker.py.log')
-    logging.info(f"beveragestatistics: GET request: {data_info}")
+    #initialize_logger('beverages_send_worker.py.log')
+    #logging.info(f"beveragestatistics: GET request: {data_info}")
     url = "https://backend.wmf24.ru/api/beveragestatistics"
     headers = {
         'Content-Type': 'application/json',
@@ -187,8 +187,9 @@ def Send_Statistics(data_info, id_record):
     if(response.status_code == 200):
         print("UPDATE TIME_FACT_SEND")
         update_record = db_conn.update_beverages_log(id_record, now)
-        logging.info(f"update {update_record}")
+        #logging.info(f"update {update_record}")
     else:
-        logging.info(f"error unknown id record")
+        print("")
+        #logging.info(f"error unknown id record")
     return response.json()
 

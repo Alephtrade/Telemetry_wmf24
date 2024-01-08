@@ -16,17 +16,18 @@ from controllers.wmf.models import WMFMachineStatConnector
 
 
 def beverages_send_worker(aleph_id, ip):
-    initialize_logger('beverages_send_worker.py.log')
+    #initialize_logger('beverages_send_worker.py.log')
     k = []
     time_to_send = None
     receive_data = db_conn.get_not_sended_beverages_log(aleph_id)
     if(receive_data == []):
-        logging.info(f'NO DATA')
+        print("")
+        #logging.info(f'NO DATA')
     else:
         print("loop")
         print(receive_data)
         for item in receive_data:
-            logging.info(f'loop')
+            #logging.info(f'loop')
             time_to_send = item[2]
             k.append({"device": item[0]})
             k.append({"summ": item[1]})
@@ -42,9 +43,9 @@ def beverages_send_worker(aleph_id, ip):
                 print(json.dumps(k))
                 print("PROCCESS TIME_FACT_SEND")
                 methods.Send_Statistics(json.dumps(k), record_id)
-                logging.info(f'Send_Statistics db id - {record_id}')
-            else:
-                logging.info(f'wrong time to_sent - {next_time}')
+                #logging.info(f'Send_Statistics db id - {record_id}')
+            #else:
+                #logging.info(f'wrong time to_sent - {next_time}')
     sorter = []
     not_sort_pours = db_conn.get_all_pours_not_sended(device[1])
     for key in not_sort_pours:
@@ -70,7 +71,7 @@ def beverages_send_worker(aleph_id, ip):
 
 
 def controller_data_statistics_sender(aleph_id, ip):
-    initialize_logger('controller_data_statistics_sender.py.log')
+    #initialize_logger('controller_data_statistics_sender.py.log')
     now_of_hour = str(datetime.fromtimestamp(int(datetime.now().timestamp())))
     data_for_request = []
     data_main_stat = db_conn.get_data_statistics_to_send(aleph_id)
@@ -100,13 +101,13 @@ def controller_data_statistics_sender(aleph_id, ip):
                 print(json.dumps(data_for_request))
                 response = requests.request("POST", url, headers=headers, data=json.dumps(data_for_request))
                 print(response.text)
-                logging.info(f"WMFMachineStatConnector: GET response: {response.text}")
+                #logging.info(f"WMFMachineStatConnector: GET response: {response.text}")
                 print(item[9])
                 db_conn.save_status_data_statistics(item[9], "is_sent", "1")
                 db_conn.save_status_data_statistics(item[9], "time_fact_send", now_of_hour)
-                logging.info(f'{datetime.now()} {response.text}')
-            logging.info(f'Done')
-    logging.info(f'nothing to send')
+                #logging.info(f'{datetime.now()} {response.text}')
+            #logging.info(f'Done')
+    #logging.info(f'nothing to send')
     return True
 
 def send_ip_address(aleph_id, ip):
@@ -128,7 +129,7 @@ def send_ip_address(aleph_id, ip):
         return False
 
 def check_machine_status(aleph_id, ip):
-    initialize_logger('check_machine_status.log')
+    #initialize_logger('check_machine_status.log')
     db_driver = WMFSQLDriver()
     WS_URL = f'ws://{ip}:25000/'
 
@@ -141,7 +142,7 @@ def check_machine_status(aleph_id, ip):
             db_driver.update_device_ping_time(aleph_id, status, datetime.fromtimestamp(int(datetime.now().timestamp())))
     except Exception:
         status = 0
-    logging.info(f'status is: {status}')
+    #logging.info(f'status is: {status}')
     last_id, end_time = None, None
     r = db_driver.get_error_last_stat_record('-1', aleph_id)
     if r is not None:
@@ -158,21 +159,22 @@ def render_errors_closing(aleph_id, ip, last_id, end_time, status):
     WS_URL = f'ws://{ip}:25000/'
     db_driver = WMFSQLDriver()
     if status == 0 and (end_time is None):
-        logging.info(f'status is 0 and end_time is none, downtime is active')
-    elif status == 0 and (end_time is not None):
-        logging.info(f'status is 0 and end_time is {end_time}, calling create_error_record(-1)')
+        print(1)
+        #logging.info(f'status is 0 and end_time is none, downtime is active')
+    #elif status == 0 and (end_time is not None):
+        #logging.info(f'status is 0 and end_time is {end_time}, calling create_error_record(-1)')
         print(status)
         print(end_time)
         db_driver.create_error_record(aleph_id, '-1')
     elif status == 1:
-        logging.info(f'status is 1 and last_id is {last_id}, calling close_error_code_by_id({last_id})')
+        #logging.info(f'status is 1 and last_id is {last_id}, calling close_error_code_by_id({last_id})')
         if last_id != 0 and (end_time is None):
             db_driver.close_error_code_by_id(aleph_id, last_id)
         unclosed = db_driver.get_error_empty_record(aleph_id)
         for item in unclosed:  # 0 - id 1 - end_time 2 - code
             ws = websocket.create_connection(WS_URL)
             request = json.dumps({'function': 'isErrorActive', 'a_iErrorCode': item[2]})
-            logging.info(f"COFFEE_MACHINE: Sending {request}")
+            #logging.info(f"COFFEE_MACHINE: Sending {request}")
             ws.send(request)
             received_data = ws.recv()
             if (WMFMachineStatConnector.normalize_json(received_data).get('returnvalue')) == 0:

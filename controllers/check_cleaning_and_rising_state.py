@@ -10,7 +10,7 @@ from controllers.wmf.models import WMFMachineStatConnector
 from controllers.settings import prod as settings
 from controllers.core.utils import initialize_logger
 
-initialize_logger('check_cleaning_and_rising_state.log')
+#initialize_logger('check_cleaning_and_rising_state.log')
 WMF_URL = settings.WMF_DATA_URL
 WS_URL = settings.WS_URL
 DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
@@ -25,24 +25,24 @@ def controller_manager(device, operator, alias):
                 prev_cleaning_duration = "0"
             else:
                 prev_cleaning_duration = prev_cleaning[1]
-            logging.info(f'aleph_id: {device[1]}, prev_cleaning_duration: {prev_cleaning_duration}')
-            logging.info(f'prev {prev_cleaning_duration} - {alias}')
-            logging.info(f'durationInSeconds {operator["durationInSeconds"]}')
+            #logging.info(f'aleph_id: {device[1]}, prev_cleaning_duration: {prev_cleaning_duration}')
+            #logging.info(f'prev {prev_cleaning_duration} - {alias}')
+            #logging.info(f'durationInSeconds {operator["durationInSeconds"]}')
             if str(prev_cleaning_duration) != str(operator['durationInSeconds']):
                 print("!=")
                 db_conn.save_clean_or_rins(device[1], alias, "type_cleaning_duration", operator['durationInSeconds'])
-                logging.info(f'save new duration {alias}')
-                logging.info(f'new time {datetime.now()}')
+                #logging.info(f'save new duration {alias}')
+                #logging.info(f'new time {datetime.now()}')
                 type_last_cleaning_datetime = datetime.fromtimestamp(int(datetime.now().timestamp() - operator['durationInSeconds']))
                 db_conn.create_cleaning_error_record(device[1], "AT01", type_last_cleaning_datetime)
                 db_conn.close_error_code(device[1], "AT01")
                 return db_conn.create_clean_or_rins(device[1], alias, type_last_cleaning_datetime, operator['durationInSeconds'], datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-            else:
-                logging.info(f'{prev_cleaning_duration} = {operator["durationInSeconds"]}')
-        else:
-            logging.info(f'{operator["durationInSeconds"]} is None or {int(operator["durationInSeconds"]) != -1}')
-    else:
-        logging.info(f'{operator} is none')
+            #else:
+                #logging.info(f'{prev_cleaning_duration} = {operator["durationInSeconds"]}')
+        #else:
+            #logging.info(f'{operator["durationInSeconds"]} is None or {int(operator["durationInSeconds"]) != -1}')
+    #else:
+        #logging.info(f'{operator} is none')
 
 
 

@@ -24,7 +24,7 @@ tl_ident = Timeloop()
 
 def worker(ip):
     print(ip)
-    initialize_logger('error_collector.log')
+    #initialize_logger('error_collector.log')
     #return tl_ident.is_alive()
 
     def on_exit():
@@ -32,15 +32,16 @@ def worker(ip):
             wmf_conn.close()
             tl_ident.stop()
         except Exception as ex:
-            logging.error(f'error_collector on_exit: ERROR={ex}')
-            logging.error(print_exception())
+            print(ex)
+            #logging.error(f'error_collector on_exit: ERROR={ex}')
+            #logging.error(print_exception())
 
     @tl_ident.job(interval=timedelta(seconds=settings.ERROR_COLLECTOR_INTERVAL_SECONDS))
     def send_errors():
         devices_list = db_conn.get_devices()
         for device_item in devices_list:
             try:
-                logging.info("error_collector send_errors: CALL")
+                #logging.info("error_collector send_errors: CALL")
                 errors, request = '', ''
                 unset_errors = db_conn.get_unsent_records(device_item[1])
                 print(unset_errors)
@@ -56,7 +57,7 @@ def worker(ip):
                             db_conn.set_report_sent(record[0])
                         else:
                             db_conn.set_report_pre_sent(record[0])
-                        logging.info(f'error_collector send_errors: <= {response} {content}')
+                        #logging.info(f'error_collector send_errors: <= {response} {content}')
                 else:
                     unset_errors = db_conn.get_unsent_records_with_end_time(device_item[1])
                     if unset_errors:
@@ -67,18 +68,19 @@ def worker(ip):
                             response = requests.post(request)
                             content = response.content.decode('utf-8')
                             db_conn.set_report_sent(record[0])
-                            logging.info(f'error_collector send_errors: <= {response} {content}')
+                            #logging.info(f'error_collector send_errors: <= {response} {content}')
                     else:
                         request = f'{WMF_URL}?device={device_item[1]}&error_id=0&status={wmf_conn.get_status()}'
                         print("79")
                         print(request)
                         response = requests.post(request)
-                        logging.info(f'error_collector send_errors: nothing to send')
+                        #logging.info(f'error_collector send_errors: nothing to send')
             except Exception as ex:
-                logging.error(f'error_collector send_errors: ERROR={ex}, stacktrace: {print_exception()}')
+                print(ex)
+                #logging.error(f'error_collector send_errors: ERROR={ex}, stacktrace: {print_exception()}')
 
     tl_ident.start()
-    logging.info('error_collector.py started and running...')
+    #logging.info('error_collector.py started and running...')
     atexit.register(on_exit)
 
 
