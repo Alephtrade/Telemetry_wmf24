@@ -24,8 +24,8 @@ def beverages_send_worker(aleph_id, ip):
         print("")
         #logging.info(f'NO DATA')
     else:
-        print("loop")
-        print(receive_data)
+        #print("loop")
+        #print(receive_data)
         for item in receive_data:
             #logging.info(f'loop')
             time_to_send = item[2]
@@ -40,8 +40,8 @@ def beverages_send_worker(aleph_id, ip):
                 k.append(item_info)
             next_time = datetime.strptime(time_to_send, '%Y-%m-%d %H:%M:%S')
             if datetime.fromtimestamp(int(datetime.now().timestamp())) > next_time:
-                print(json.dumps(k))
-                print("PROCCESS TIME_FACT_SEND")
+                #print(json.dumps(k))
+                #print("PROCCESS TIME_FACT_SEND")
                 methods.Send_Statistics(json.dumps(k), record_id)
                 #logging.info(f'Send_Statistics db id - {record_id}')
             #else:
@@ -52,19 +52,19 @@ def beverages_send_worker(aleph_id, ip):
         time_check = datetime.fromtimestamp((datetime.strptime(key[10], '%Y-%m-%d %H:%M:%S')).timestamp() // (60 * 60) * 60 * 60)
         if datetime.fromtimestamp(int(datetime.now().timestamp())) > time_check:
             sorter.append({"id": key[0], "aleph_id": key[1], "recipe_id": key[2], "recipe_name": key[3], "cup_size": key[4], "water": key[5], "coffee": key[6], "milk": key[7], "powder": key[8], "foam": key[9], "date_formed": time_check.strftime('%Y-%m-%d %H:%M:%S')})
-    print(sorter)
+    #print(sorter)
     url = "https://backend.wmf24.ru/api/new_pour"
     headers = {
         'Content-Type': 'application/json',
         'Serverkey': db_conn.get_encrpt_key()[0]
     }
     response = requests.request("POST", url, headers=headers, data=json.dumps(sorter))
-    print(response.status_code)
+    #print(response.status_code)
     if response.status_code == 200:
-        print(sorter)
+        #print(sorter)
         for pour in sorter:
-            print(pour)
-            print(pour["id"])
+            #print(pour)
+            #print(pour["id"])
             db_conn.id_pours_sended(pour["id"])
 
     return True
@@ -76,13 +76,13 @@ def controller_data_statistics_sender(aleph_id, ip):
     data_for_request = []
     data_main_stat = db_conn.get_data_statistics_to_send(aleph_id)
     if data_main_stat is not None:
-        print(data_main_stat)
+        #print(data_main_stat)
         for item in data_main_stat:
-            print(item)
-            print(datetime.strptime(item[6], '%Y-%m-%d %H:%M:%S'))
-            print(datetime.fromtimestamp(int(datetime.now().timestamp())))
+            #print(item)
+            #print(datetime.strptime(item[6], '%Y-%m-%d %H:%M:%S'))
+            #print(datetime.fromtimestamp(int(datetime.now().timestamp())))
             if datetime.strptime(item[6], '%Y-%m-%d %H:%M:%S') < datetime.fromtimestamp(int(datetime.now().timestamp())):
-                print("YES")
+                #print("YES")
                 data_for_request.append({"time_worked": item[0]})
                 data_for_request.append({"wmf_error_count": item[1]})
                 data_for_request.append({"wmf_error_time": item[2]})
@@ -98,11 +98,11 @@ def controller_data_statistics_sender(aleph_id, ip):
                     'Content-Type': 'application/json',
                     'Serverkey': db_conn.get_encrpt_key()[0]
                 }
-                print(json.dumps(data_for_request))
+                #print(json.dumps(data_for_request))
                 response = requests.request("POST", url, headers=headers, data=json.dumps(data_for_request))
-                print(response.text)
+                #print(response.text)
                 #logging.info(f"WMFMachineStatConnector: GET response: {response.text}")
-                print(item[9])
+                #print(item[9])
                 db_conn.save_status_data_statistics(item[9], "is_sent", "1")
                 db_conn.save_status_data_statistics(item[9], "time_fact_send", now_of_hour)
                 #logging.info(f'{datetime.now()} {response.text}')
@@ -113,8 +113,8 @@ def controller_data_statistics_sender(aleph_id, ip):
 def send_ip_address(aleph_id, ip):
     data = {}
     if ip is None:
-        print(ip)
-        print(aleph_id)
+        #print(ip)
+        #print(aleph_id)
         data['aleph_id'] = aleph_id
         data["ip"] = ip
         url = "https://backend.wmf24.ru/api/machine_ip_address"
@@ -123,7 +123,7 @@ def send_ip_address(aleph_id, ip):
             'Serverkey': db_conn.get_encrpt_key()[0]
         }
         requests.request("POST", url, headers=headers, json=data)
-        print(ip)
+        #print(ip)
         return data
     else:
         return False
@@ -190,7 +190,7 @@ print(devices)
 result = []
 for device in devices:
     if device[2] is not None:
-        send_ip_address(device[1], device[2])
+        #send_ip_address(device[1], device[2])
         print(check_machine_status(device[1], device[2]))
-        beverages_send_worker(device[1], device[2])
-        controller_data_statistics_sender(device[1], device[2])
+        #beverages_send_worker(device[1], device[2])
+        #controller_data_statistics_sender(device[1], device[2])
