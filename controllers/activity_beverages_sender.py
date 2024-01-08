@@ -20,10 +20,8 @@ def beverages_send_worker(aleph_id, ip):
     k = []
     time_to_send = None
     receive_data = db_conn.get_not_sended_beverages_log(aleph_id)
-    if(receive_data == []):
-        print("")
-        #logging.info(f'NO DATA')
-    else:
+    #logging.info(f'NO DATA')
+    if receive_data != []:
         #print("loop")
         #print(receive_data)
         for item in receive_data:
@@ -46,7 +44,8 @@ def beverages_send_worker(aleph_id, ip):
                 #logging.info(f'Send_Statistics db id - {record_id}')
             #else:
                 #logging.info(f'wrong time to_sent - {next_time}')
-    sorter = []
+    else:
+        sorter = []
     not_sort_pours = db_conn.get_all_pours_not_sended(device[1])
     for key in not_sort_pours:
         time_check = datetime.fromtimestamp((datetime.strptime(key[10], '%Y-%m-%d %H:%M:%S')).timestamp() // (60 * 60) * 60 * 60)
