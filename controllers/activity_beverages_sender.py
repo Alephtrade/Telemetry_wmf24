@@ -163,7 +163,7 @@ def render_errors_closing(aleph_id, ip, last_id, end_time, status):
         if_offed = db_driver.get_error_last_stat_record("-1", aleph_id)
         print(if_offed)
         if if_offed is None or if_offed[1] is None:
-            print("created2")
+            print("created")
             print(aleph_id)
             db_driver.create_error_record(aleph_id, '-1')
         #print(1)
