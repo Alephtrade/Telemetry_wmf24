@@ -162,7 +162,7 @@ def render_errors_closing(aleph_id, ip, last_id, end_time, status):
     if status == 0 and (end_time is None):
         if_offed = db_driver.get_error_last_stat_record("-1", aleph_id)
         print(if_offed)
-        if if_offed is None or if_offed[1] is None:
+        if if_offed is None or if_offed[1] is not None:
             print("created")
             print(aleph_id)
             db_driver.create_error_record(aleph_id, '-1')
@@ -172,7 +172,7 @@ def render_errors_closing(aleph_id, ip, last_id, end_time, status):
         if_offed = db_driver.get_error_last_stat_record("-1", aleph_id)
         print("if2")
         print(if_offed)
-        if if_offed is None or if_offed[1] is None:
+        if if_offed is None or if_offed[1] is not None:
             print("created2")
             print(aleph_id)
             db_driver.create_error_record(aleph_id, '-1')
