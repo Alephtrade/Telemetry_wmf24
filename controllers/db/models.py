@@ -219,7 +219,7 @@ class WMFSQLDriver:
         '''
         cur.execute(stmt)
         res = cur.fetchall()
-        logging.info(f'WMFSQLDriver get_devices: {res}')
+        #logging.info(f'WMFSQLDriver get_devices: {res}')
         cur.close()
         return res
 
@@ -231,7 +231,7 @@ class WMFSQLDriver:
         '''
         cur.execute(stmt, id)
         res = cur.fetchall()
-        logging.info(f'WMFSQLDriver get_devices: {res}')
+        #logging.info(f'WMFSQLDriver get_devices: {res}')
         cur.close()
         return res
 
@@ -254,7 +254,7 @@ class WMFSQLDriver:
         '''
         cur.execute(stmt)
         res = cur.fetchall()
-        logging.info(f'WMFSQLDriver get_devices: {res}')
+        #logging.info(f'WMFSQLDriver get_devices: {res}')
         cur.close()
         return res
 
@@ -498,7 +498,7 @@ class WMFSQLDriver:
         cur.execute(stmt)
         res = cur.fetchone()
         cur.close()
-        logging.info(f'WMFSQLDriver get_last_record: {res}')
+        #logging.info(f'WMFSQLDriver get_last_record: {res}')
         return res
 
     def save_clean_or_rins(self, aleph_id, alias, operator, value_column):
@@ -509,7 +509,7 @@ class WMFSQLDriver:
             SET {operator} = "{value_column}"
             WHERE aleph_id = "{aleph_id}" AND date_formed = "{time_now}" AND cleaning_alias = "{alias}" AND is_sent = 0
         '''
-        logging.info(f'WMFSQLDriver save_last_record: key = {operator}, value = {value_column}')
+        #logging.info(f'WMFSQLDriver save_last_record: key = {operator}, value = {value_column}')
         cur.execute(stmt)
         self.connection.commit()
         cur.close()
@@ -522,7 +522,7 @@ class WMFSQLDriver:
             SET {operator} = "{value_status}"
             WHERE id = "{id_record}"
         '''
-        logging.info(f'WMFSQLDriver save_last_record: key = {operator}, value = {value_status}')
+        #logging.info(f'WMFSQLDriver save_last_record: key = {operator}, value = {value_status}')
         cur.execute(stmt)
         self.connection.commit()
         cur.close()
@@ -541,7 +541,7 @@ class WMFSQLDriver:
         '''
         cur.execute(stmt, (aleph_id,))
         res = cur.fetchall()
-        logging.info(f'WMFSQLDriver get_data_statistics_to_send: {res}')
+        #logging.info(f'WMFSQLDriver get_data_statistics_to_send: {res}')
         cur.close()
         return res
 
@@ -556,7 +556,7 @@ class WMFSQLDriver:
         '''
         cur.execute(stmt)
         res = cur.fetchall()
-        logging.info(f'WMFSQLDriver get_data_statistics_to_send: {res}')
+        #logging.info(f'WMFSQLDriver get_data_statistics_to_send: {res}')
         cur.close()
         return res
 
@@ -583,7 +583,7 @@ class WMFSQLDriver:
             SET {operator} = "{value_column}"
             WHERE date_formed = "{time_now}" AND aleph_id = "{aleph_id}"
         '''
-        logging.info(f'WMFSQLDriver save_last_record: key = {operator}, value = {value_column}')
+        #logging.info(f'WMFSQLDriver save_last_record: key = {operator}, value = {value_column}')
         cur.execute(stmt)
         self.connection.commit()
         cur.close()
@@ -595,7 +595,7 @@ class WMFSQLDriver:
             SET "{operator}" = "{value_status}"
             WHERE id = "{id_record}"
         '''
-        logging.info(f'WMFSQLDriver save_last_record: key = {operator}, value = {value_status}')
+        #logging.info(f'WMFSQLDriver save_last_record: key = {operator}, value = {value_status}')
         cur.execute(stmt)
         self.connection.commit()
         cur.close()
@@ -618,7 +618,7 @@ class WMFSQLDriver:
         '''
         cur.execute(stmt, (aleph_id,))
         res = cur.fetchone()
-        logging.info(f'WMFSQLDriver get_last_data_statistics: {res}')
+        #logging.info(f'WMFSQLDriver get_last_data_statistics: {res}')
         cur.close()
         return res
 
@@ -642,7 +642,7 @@ class WMFSQLDriver:
         '''
         cur.execute(stmt)
         res = cur.fetchall()
-        logging.info(f'WMFSQLDriver get_data_statistics_to_send: {res}')
+        #logging.info(f'WMFSQLDriver get_data_statistics_to_send: {res}')
         cur.close()
         return res
 
@@ -657,7 +657,7 @@ class WMFSQLDriver:
         '''
         cur.execute(stmt)
         res = cur.fetchone()
-        logging.info(f'WMFSQLDriver get_last_data_statistics: {res}')
+        #logging.info(f'WMFSQLDriver get_last_data_statistics: {res}')
         cur.close()
         return res
 
@@ -668,7 +668,7 @@ class WMFSQLDriver:
             SET "{operator}" = "{value_status}"
             WHERE id = "{id_record}"
         '''
-        logging.info(f'WMFSQLDriver save_last_record: key = {operator}, value = {value_status}')
+        #logging.info(f'WMFSQLDriver save_last_record: key = {operator}, value = {value_status}')
         cur.execute(stmt)
         self.connection.commit()
         cur.close()
@@ -856,7 +856,7 @@ class WMFSQLDriver:
         '''
         cur.execute(stmt, (aleph_id,))
         res = cur.fetchone()
-        logging.info(f'WMFSQLDriver get_last_beverages_log: {res}')
+        #logging.info(f'WMFSQLDriver get_last_beverages_log: {res}')
         cur.close()
         return res
 
@@ -871,7 +871,7 @@ class WMFSQLDriver:
         '''
         cur.execute(stmt, (record_id, aleph_id,))
         res = cur.fetchone()
-        logging.info(f'WMFSQLDriver get_last_beverages_log: {res}')
+        #logging.info(f'WMFSQLDriver get_last_beverages_log: {res}')
         cur.close()
         return res
 
@@ -884,7 +884,7 @@ class WMFSQLDriver:
         '''
         cur.execute(stmt, (aleph_id,))
         res = cur.fetchall()
-        logging.info(f'WMFSQLDriver get_last_beverages_log: {res}')
+        #logging.info(f'WMFSQLDriver get_last_beverages_log: {res}')
         cur.close()
         return res
 

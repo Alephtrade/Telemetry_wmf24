@@ -84,5 +84,5 @@ def get_beverages_send_time(last_send_time):
     a = int(next_time.timestamp() // (60 * 60) * 60 * 60) + 1 * 60 * 60 + int(minutes_to_go[0]) * 60
     if a < int(datetime.now().timestamp()):
         a = int(int(datetime.now().timestamp()) // (60 * 60) * 60 * 60) + 1 * 60 * 60 + int(minutes_to_go[0]) * 60
-    logging.info(f"created next time is:{a}")
+    #logging.info(f"created next time is:{a}")
     return datetime.fromtimestamp(a)

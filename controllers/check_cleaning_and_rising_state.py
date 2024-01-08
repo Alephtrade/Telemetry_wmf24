@@ -62,10 +62,11 @@ def sender_report(device):
                 'Serverkey': db_conn.get_encrpt_key()[0]
             }
             response = requests.request("POST", url, headers=headers, data=json.dumps(date_formatted))
-            logging.info(f"WMFMachineStatConnector: GET response: {response.text}")
+            #logging.info(f"WMFMachineStatConnector: GET response: {response.text}")
             db_conn.save_status_clean_or_rins(item[0], "is_sent", "2")
     else:
-        logging.info(f'{data} is none')
+        print(None)
+        #logging.info(f'{data} is none')
 
 
 devices = db_conn.get_devices()

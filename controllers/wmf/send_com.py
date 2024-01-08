@@ -19,10 +19,10 @@ def send_wmf_request(wmf_command):
     request = wmf_command
     print(request)
     print("------------------------------")
-    logging.info(f"WMFMachineStatConnector: Sending {request}")
+    #logging.info(f"WMFMachineStatConnector: Sending {request}")
     ws.send(request)
     received_data = ws.recv()
-    logging.info(f"WMFMachineStatConnector: Received {received_data}")
+    #logging.info(f"WMFMachineStatConnector: Received {received_data}")
     return (received_data)
 
 

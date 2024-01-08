@@ -68,10 +68,10 @@ def require_info(ip):
     print()
     print(request)
     print("------------------------------")
-    logging.info(f"WMFMachineStatConnector: Sending {request}")
+    #logging.info(f"WMFMachineStatConnector: Sending {request}")
     ws.send(request)
     received_data = ws.recv()
-    logging.info(f"WMFMachineStatConnector: Received {received_data}")
+    #logging.info(f"WMFMachineStatConnector: Received {received_data}")
     received_data2 = deque(json.loads(received_data))
     formatted = {}
     for var in list(received_data2):

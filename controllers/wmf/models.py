@@ -44,7 +44,7 @@ class WMFMachineErrorConnector:
         print(ws)
         print(self.aleph_id)
         try:
-            logging.info(f"WMFMachineConnector: message={json.loads(message.encode('utf-8'))}")
+            #logging.info(f"WMFMachineConnector: message={json.loads(message.encode('utf-8'))}")
             data = WMFMachineStatConnector.normalize_json(message)
             print(data.get("function"))
             if data.get("function") == 'getErrorActive':
@@ -140,11 +140,12 @@ class WMFMachineErrorConnector:
             logging.error(f"WMFMachineConnector handle_error: error={ex}, stacktrace: {print_exception()}")
 
     def on_error(self, ws, error):
-        logging.info(f"WMFMachineConnector on_error: {error}")
+        print(error)
+        #logging.info(f"WMFMachineConnector on_error: {error}")
 
     def on_close(self, ws, close_status_code, close_msg):
         requests.post(f'{self.WMF_URL}?device={self.aleph_id}&error_id=0&status=0')
-        logging.info(f"WMFMachineConnector on_close: close_status_code = {close_status_code}, close_msg = {close_msg} ")
+        #logging.info(f"WMFMachineConnector on_close: close_status_code = {close_status_code}, close_msg = {close_msg} ")
         ws.send(json.dumps({"function": "stopPushErrors"}))
         ws.send(json.dumps({"function": "stopPushDispensingFinished"}))
 
@@ -198,9 +199,9 @@ class WMFMachineStatConnector:
 
     def get_wmf_machine_info(self):
         url = f'{self.WMF_BASE_URL}/api/get-coffee-machine-info/{self.aleph_id}'
-        logging.info(f"WMFMachineStatConnector: GET {url}")
+        #logging.info(f"WMFMachineStatConnector: GET {url}")
         r = requests.get(url)
-        logging.info(f"WMFMachineStatConnector: GET response: {r.content.decode('utf-8')}")
+        #logging.info(f"WMFMachineStatConnector: GET response: {r.content.decode('utf-8')}")
         data = r.json()
         with open('/root/wmf_1100_1500_5000_router/machine_info.txt', 'w') as f:
             f.write('Компания {company}, Филиал {filial}'.format(**data))
@@ -281,7 +282,7 @@ class WMFMachineStatConnector:
     def get_error_active(self):
         if self.ws:
             request = json.dumps({"function":"getErrorActive","a_iIndex":0})
-            logging.info(f"COFFEE_MACHINE: Sending {request}")
+            #logging.info(f"COFFEE_MACHINE: Sending {request}")
             self.ws.send(request)
             received_data = self.ws.recv()
             return received_data
@@ -322,8 +323,8 @@ class WMFMachineStatConnector:
 
     def send_wmf_request(self, wmf_command):
         request = json.dumps({'function': wmf_command})
-        logging.info(f"WMFMachineStatConnector: Sending {request}")
+        #logging.info(f"WMFMachineStatConnector: Sending {request}")
         self.ws.send(request)
         received_data = self.ws.recv()
-        logging.info(f"WMFMachineStatConnector: Received {received_data}")
+        #logging.info(f"WMFMachineStatConnector: Received {received_data}")
         return self.normalize_json(received_data)
