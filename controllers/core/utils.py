@@ -70,7 +70,7 @@ def get_next_date_formed(interval_minutes):
 def get_beverages_send_time(last_send_time):
     from controllers.db.models import WMFSQLDriver
     db_conn = WMFSQLDriver()
-    initialize_logger('get_beverages_send_time.log')
+    #initialize_logger('get_beverages_send_time.log')
     minutes_to_go = db_conn.get_exchange()
     next_time = datetime.strptime(str(last_send_time), '%Y-%m-%d %H:%M:%S')
     print(minutes_to_go)
