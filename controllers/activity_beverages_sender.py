@@ -159,13 +159,15 @@ def render_errors_closing(aleph_id, ip, last_id, end_time, status):
     WS_URL = f'ws://{ip}:25000/'
     db_driver = WMFSQLDriver()
     if status == 0 and (end_time is None):
-        print(1)
+        if_offed = db_driver.get_error_last_stat_record("-1", aleph_id)
+        if if_offed is None or if_offed[1] is None:
+            db_driver.create_error_record(aleph_id, '-1')
+        #print(1)
         #logging.info(f'status is 0 and end_time is none, downtime is active')
     #elif status == 0 and (end_time is not None):
         #logging.info(f'status is 0 and end_time is {end_time}, calling create_error_record(-1)')
-        print(status)
-        print(end_time)
-        db_driver.create_error_record(aleph_id, '-1')
+        #print(status)
+        #print(end_time)
     elif status == 1:
         #logging.info(f'status is 1 and last_id is {last_id}, calling close_error_code_by_id({last_id})')
         if last_id != 0 and (end_time is None):
