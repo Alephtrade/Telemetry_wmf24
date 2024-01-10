@@ -42,9 +42,9 @@ def get_main_clean_stat(device):
     disconnect_count = 0
     for rec_id, error_code, start_time, end_time in unsent_records:
         print({"Ошибки": unsent_records})
-        if (type(start_time) is not datetime):
+        if type(start_time) is not datetime and start_time is not None:
             start_time = datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
-        if (type(end_time) is not datetime):
+        if type(end_time) is not datetime and end_time is not None:
             end_time = datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S')
         if end_time is None or end_time > time_now:
             end_time = time_now
