@@ -18,6 +18,7 @@ DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
 db_conn = WMFSQLDriver()
 
 def get_main_clean_stat(device):
+    print(device)
     #initialize_logger('controller_cleaning_statistic_creator.py.log')
     time_now = datetime.fromtimestamp(int(datetime.now().timestamp() // (60 * 60) * 60 * 60 - 1))
     prev_hour = time_now - timedelta(hours=1)
@@ -27,11 +28,11 @@ def get_main_clean_stat(device):
     #else:
     #date_to_send = get_beverages_send_time(time_now)
     date_to_send = get_beverages_send_time(time_now)
-    print(date_to_send)
+    #print(date_to_send)
     db_conn.create_data_statistics(device[1], time_now, date_to_send)
     unsent_records = db_conn.get_error_records(prev_hour, time_now, device[1])
     unsent_disconnect_records = db_conn.get_all_error_records_by_code(device[1], prev_hour, time_now, "-1")
-    print(unsent_disconnect_records)
+    print({"Ошибки -1": unsent_disconnect_records})
     date_end_prev_error = prev_hour
     wmf_error_time = 0
     per_error_time = timedelta()
@@ -40,7 +41,7 @@ def get_main_clean_stat(device):
     wmf_error_count = 0
     disconnect_count = 0
     for rec_id, error_code, start_time, end_time in unsent_records:
-        print(unsent_records)
+        print({"Ошибки": unsent_records})
         if (type(start_time) is not datetime):
             start_time = datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
         if (type(end_time) is not datetime):
@@ -94,7 +95,6 @@ def get_main_clean_stat(device):
         wmf_work_time = 0
     if total_disconnect_time > 3600:
         total_disconnect_time = 3600
-    print(device)
     print("result 1")
     print({"time_worked": int(wmf_work_time),
            "wmf_error_count": int(wmf_error_count),
