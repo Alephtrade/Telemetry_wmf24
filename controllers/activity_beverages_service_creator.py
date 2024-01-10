@@ -18,6 +18,7 @@ DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
 db_conn = WMFSQLDriver()
 
 def get_main_clean_stat(device):
+    global start_time, end_time
     print(device)
     #initialize_logger('controller_cleaning_statistic_creator.py.log')
     time_now = datetime.fromtimestamp(int(datetime.now().timestamp() // (60 * 60) * 60 * 60 - 1))
