@@ -32,10 +32,10 @@ def get_main_clean_stat(device):
     #print(date_to_send)
     db_conn.create_data_statistics(device[1], time_now, date_to_send)
     unsent_records = db_conn.get_error_records(prev_hour, time_now, device[1])
-    print({"Ошибки": unsent_records})
-    print({prev_hour, time_now, device[1]})
+    #print({"Ошибки": unsent_records})
+    #print({prev_hour, time_now, device[1]})
     unsent_disconnect_records = db_conn.get_all_error_records_by_code(device[1], prev_hour, time_now, "-1")
-    print({"Ошибки -1": unsent_disconnect_records})
+    #print({"Ошибки -1": unsent_disconnect_records})
     date_end_prev_error = prev_hour
     wmf_error_time = 0
     per_error_time = timedelta()
@@ -44,7 +44,7 @@ def get_main_clean_stat(device):
     wmf_error_count = 0
     disconnect_count = 0
     for rec_id, error_code, start_time, end_time in unsent_records:
-        print({"Ошибки3": unsent_records})
+        #print({"Ошибки3": unsent_records})
         if type(start_time) is not datetime and start_time is not None:
             start_time = datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
         if type(end_time) is not datetime and end_time is not None:
@@ -56,7 +56,7 @@ def get_main_clean_stat(device):
         if end_time < date_end_prev_error:
             end_time = date_end_prev_error
     for disconnect_rec_id, disconnect_error_code, disconnect_start_time, disconnect_end_time in unsent_disconnect_records:
-        print("unsent_disconnect_records loop")
+        #print("unsent_disconnect_records loop")
         if type(disconnect_start_time) is not datetime:
             disconnect_start_time = datetime.strptime(disconnect_start_time, '%Y-%m-%d %H:%M:%S')
         if type(disconnect_end_time) is not datetime and disconnect_end_time is not None:
@@ -98,12 +98,12 @@ def get_main_clean_stat(device):
         wmf_work_time = 0
     if total_disconnect_time > 3600:
         total_disconnect_time = 3600
-    print("result 1")
-    print({"time_worked": int(wmf_work_time),
-           "wmf_error_count": int(wmf_error_count),
-           "wmf_error_time": int(wmf_error_time),
-           "stoppage_count": int(disconnect_count),
-           "stoppage_time": int(total_disconnect_time)})
+    #print("result 1")
+    #print({"time_worked": int(wmf_work_time),
+    #       "wmf_error_count": int(wmf_error_count),
+    #       "wmf_error_time": int(wmf_error_time),
+    #       "stoppage_count": int(disconnect_count),
+    #       "stoppage_time": int(total_disconnect_time)})
     db_conn.save_data_statistics(str(device[1]), "time_worked", wmf_work_time)
     db_conn.save_data_statistics(str(device[1]), "wmf_error_count", wmf_error_count)
     db_conn.save_data_statistics(str(device[1]), "wmf_error_time", wmf_error_time)
@@ -111,15 +111,15 @@ def get_main_clean_stat(device):
     db_conn.save_data_statistics(str(device[1]), "stoppage_time", total_disconnect_time)
 
     #logging.info(f'time_worked {wmf_work_time}, wmf_error_count {wmf_error_count}, wmf_error_time {wmf_error_time}, stoppage_count {disconnect_count}, stoppage_time: {total_disconnect_time}')
-    print("result 2")
-    print(
-        {
-            "wmf_work_time": wmf_work_time,
-            "wmf_error_count": wmf_error_count,
-            "wmf_error_time": wmf_error_time,
-            "disconnect_count": disconnect_count,
-            "disconnect_time": total_disconnect_time
-        })
+    #print("result 2")
+    #print(
+    #    {
+    #        "wmf_work_time": wmf_work_time,
+    #        "wmf_error_count": wmf_error_count,
+    #        "wmf_error_time": wmf_error_time,
+    #        "disconnect_count": disconnect_count,
+    #        "disconnect_time": total_disconnect_time
+    #    })
     return True
 
 
@@ -193,6 +193,6 @@ def are_need_to_create(device):
 devices = db_conn.get_devices()
 for device in devices:
 #    print(device[2])
-    #are_need_to_create(device)
-    #get_service_statistics(device)
-    print(get_main_clean_stat(device))
+    are_need_to_create(device)
+    get_service_statistics(device)
+    get_main_clean_stat(device)
