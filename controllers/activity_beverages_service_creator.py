@@ -151,19 +151,19 @@ def get_service_statistics(device):
             int_ts = int(ts)
             received_data = received_data.replace(']', '', 1)
             received_data = received_data + ', {"device" : "' + str(device[1]) + '"}, {"timestamp_create" : ' + str(int_ts) + '}]'
-            print(received_data)
+            #print(received_data)
             url = "https://backend.wmf24.ru/api/servicestatistics"
             headers = {
                 'Content-Type': 'application/json',
                 'Serverkey': db_conn.get_encrpt_key()[0]
                     }
-            print(received_data)
+            #print(received_data)
             response = requests.request("POST", url, headers=headers, data=received_data)
             #logging.info(f"servicestatistics: GET response: {response.text}")
             db_conn.save_status_service_statistics(actual[0], "date_fact_send", str(datetime.fromtimestamp(int((datetime.now()).timestamp()))))
             db_conn.save_status_service_statistics(actual[0], "is_sent", "1")
             ws.close()
-            print(response.text)
+            #print(response.text)
             return response
 
 def are_need_to_create(device):
@@ -181,13 +181,13 @@ def are_need_to_create(device):
         get = methods.Take_Create_Beverage_Statistics(last_send[3], device)
         #logging.info(f"beveragestatistics: Sending {get}")
         #logging.info(f"{get}")
-    print(get)
+    #print(get)
     return get
 
 
 devices = db_conn.get_devices()
 for device in devices:
     print(device[2])
-    print(are_need_to_create(device))
-    print(get_service_statistics(device))
+    are_need_to_create(device)
+    get_service_statistics(device)
     print(get_main_clean_stat(device))
