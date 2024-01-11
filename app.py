@@ -13,7 +13,16 @@ db_conn = WMFSQLDriver()
 @app.route('/')
 def hello_world():  # put application's code here
     password = request.args.get('action')
-    return jsonify(password), 203
+    aleph_id = request.args.get("aleph_id")
+    machine = db_conn.find_device_by_aleph_id(aleph_id)
+    if machine:
+        ip = db_conn.get_device_field_by_aleph_id(aleph_id, "address")
+        if ip:
+            return jsonify(ip), 203
+        else:
+            return 521
+    else:
+        return 521
 
 
 @app.route('/migration_database')
