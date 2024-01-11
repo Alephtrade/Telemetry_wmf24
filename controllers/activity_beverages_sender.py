@@ -197,6 +197,7 @@ def render_errors_closing(aleph_id, ip, last_id, end_time, status):
                 request = f'{WMF_URL}?device={aleph_id}&error_id=62&date_start={last_sixtwo[2]}&date_end={datetime.fromtimestamp(int(datetime.now().timestamp()))}&duration={last_sixtwo[3]}&status={status}'
             else:
                 minus_one_unclosed = db_driver.get_unsent_record_by_code("-1", aleph_id)
+                print(minus_one_unclosed)
                 request = f'{WMF_URL}?device={aleph_id}&error_id={minus_one_unclosed[1]}&date_start={minus_one_unclosed[2]}&date_end={minus_one_unclosed[3]}&duration={minus_one_unclosed[4]}&status=0'
             response = requests.post(request)
             content = response.content.decode('utf-8')
