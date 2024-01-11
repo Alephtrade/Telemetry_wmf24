@@ -13,7 +13,7 @@ db_conn = WMFSQLDriver()
 
 @app.route('/')
 def hello_world():  # put application's code here
-    return jsonify("1"), 203
+    #return jsonify("1"), 203
     action = request.args.get('action')
     aleph_id = request.args.get("aleph_id")
     machine = db_conn.find_device_by_aleph_id(aleph_id)
