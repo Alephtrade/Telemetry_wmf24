@@ -159,6 +159,7 @@ def check_machine_status(aleph_id, ip):
 
 def render_errors_closing(aleph_id, ip, last_id, end_time, status):
     WS_URL = f'ws://{ip}:25000/'
+    WMF_URL = settings.WMF_DATA_URL
     db_driver = WMFSQLDriver()
     print({aleph_id, status})
     if status == 0 and (end_time is None):
@@ -168,6 +169,9 @@ def render_errors_closing(aleph_id, ip, last_id, end_time, status):
             print("created")
             print(aleph_id)
             db_driver.create_error_record(aleph_id, '-1')
+            db_driver.close_error_code(aleph_id, "62")
+            last_sixtwo = db_driver.get_error_last_stat_record("62", aleph_id)
+            request = f'{WMF_URL}?device={aleph_id}&error_id=62&date_start={last_sixtwo[2]}&date_end={datetime.fromtimestamp(int(datetime.now().timestamp()))}&duration={last_sixtwo[3]}&status={status}'
         #print(1)
         #logging.info(f'status is 0 and end_time is none, downtime is active')
     elif status == 0 and (end_time is not None):
@@ -178,6 +182,9 @@ def render_errors_closing(aleph_id, ip, last_id, end_time, status):
             print("created2")
             print(aleph_id)
             db_driver.create_error_record(aleph_id, '-1')
+            db_driver.close_error_code(aleph_id, "62")
+            last_sixtwo = db_driver.get_error_last_stat_record("62", aleph_id)
+            request = f'{WMF_URL}?device={aleph_id}&error_id=62&date_start={last_sixtwo[2]}&date_end={datetime.fromtimestamp(int(datetime.now().timestamp()))}&duration={last_sixtwo[3]}&status={status}'
         #logging.info(f'status is 0 and end_time is {end_time}, calling create_error_record(-1)')
         #print(status)
         #print(end_time)

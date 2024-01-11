@@ -427,7 +427,7 @@ class WMFSQLDriver:
     def get_error_last_stat_record(self, error_code, aleph_id):
         cur = self.connection.cursor()
         stmt = '''
-            SELECT id, end_time FROM error_code_stats
+            SELECT id, end_time, start_time, duration_time FROM error_code_stats
             WHERE error_code = ? AND aleph_id = ?
             ORDER BY id DESC 
             LIMIT 1
