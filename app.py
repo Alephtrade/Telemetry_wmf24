@@ -2,7 +2,6 @@ import json
 import uuid
 
 from flask import Flask, request
-from controllers.test import worker
 from flask import jsonify
 from controllers.db.models import WMFSQLDriver
 import sys
