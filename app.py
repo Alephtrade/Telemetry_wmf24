@@ -26,7 +26,7 @@ def hello_world():  # put application's code here
             request_to_machine = json.dumps({'function': "'"+action+"'"})
             ws.send(request_to_machine)
             received_data = ws.recv()
-            return jsonify(received_data), 203
+            return jsonify([received_data, request_to_machine]), 203
         else:
             return jsonify("ip null"), 521
     else:
