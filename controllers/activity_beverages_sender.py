@@ -142,6 +142,8 @@ def check_machine_status(aleph_id, ip):
             db_driver.update_device_ping_time(aleph_id, status, datetime.fromtimestamp(int(datetime.now().timestamp())))
     except Exception:
         status = 0
+        db_driver.update_device_ping_time(aleph_id, status, datetime.fromtimestamp(int(datetime.now().timestamp())))
+        db_driver.reset_ips(aleph_id)
     #logging.info(f'status is: {status}')
     last_id, end_time = None, None
     r = db_driver.get_error_last_stat_record('-1', aleph_id)
