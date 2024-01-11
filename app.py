@@ -18,14 +18,15 @@ def hello_world():  # put application's code here
     if machine:
         ip = db_conn.get_device_field_by_aleph_id(aleph_id, "address")
         if ip:
-            WS_URL = f'ws://{ip}:25000/'
+            WS_URL = f'ws://{ip[0]}:25000/'
             try:
                 ws = websocket.create_connection(WS_URL, timeout=5)
             except Exception:
                 return jsonify("false connection"), 521
             request_to_machine = json.dumps({'function': "'"+action+"'"})
             ws.send(request_to_machine)
-            return jsonify(ip[0]), 203
+            received_data = ws.recv()
+            return jsonify(received_data), 203
         else:
             return jsonify("ip null"), 521
     else:
