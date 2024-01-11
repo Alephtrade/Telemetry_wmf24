@@ -5,14 +5,14 @@ from flask import Flask, request
 from flask import jsonify
 from controllers.db.models import WMFSQLDriver
 import sys
-from controllers.machine_installation import test
+#from controllers.machine_installation import test
 
 app = Flask(__name__)
 db_conn = WMFSQLDriver()
 
 @app.route('/')
 def hello_world():  # put application's code here
-    return jsonify(test()), 200
+    return jsonify("123")
 
 @app.route('/test')
 def terra():  # put application's code here
