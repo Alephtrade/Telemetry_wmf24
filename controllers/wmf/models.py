@@ -3,6 +3,7 @@ import requests
 import websocket
 import json
 import logging
+from datetime import timedelta, datetime, time
 from controllers.core.utils import print_exception
 from controllers.db.models import WMFSQLDriver
 from controllers.settings import prod as settings
@@ -72,6 +73,12 @@ class WMFMachineErrorConnector:
                     #if last_error_id != [] and last_error_id is not None:
                     #    if last_error_id[0] != "62" and last_error_id[0] != "-1" or last_error_id[1] is not None:
                     self.db_driver.create_error_record(self.aleph_id, error_code)
+                    if(error_code == "62"):
+                        self.db_driver.create_error_record(self.aleph_id, '-1')
+                        self.db_driver.close_error_code(self.aleph_id, "62")
+                        last_sixtwo = self.db_driver.get_error_last_stat_record("62", self.aleph_id)
+                        request = f'{self.WMF_URL}?device={self.aleph_id}&error_id=62&date_start={last_sixtwo[2]}&date_end={datetime.fromtimestamp(int(datetime.now().timestamp()))}&duration={last_sixtwo[3]}&status=0'
+
                     #else:
                 elif info == "gone Error":
                     self.db_driver.close_error_code(self.aleph_id, error_code)
