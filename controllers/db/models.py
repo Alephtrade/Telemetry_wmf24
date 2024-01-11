@@ -710,6 +710,20 @@ class WMFSQLDriver:
         cur.close()
         return res
 
+    def get_unsent_record_by_code(self, error_code, aleph_id):
+        cur = self.connection.cursor()
+        stmt = ''' 
+            SELECT id, error_code, start_time, end_time, duration_time 
+            FROM error_code_stats 
+            WHERE report_sent = 0 AND error_code = ? AND aleph_id = ?
+            ORDER BY id DESC
+            LIMIT 2
+        '''
+        cur.execute(stmt, (error_code, aleph_id,))
+        res = cur.fetchall()
+        cur.close()
+        return res
+
     def get_unsent_records_with_end_time(self, aleph_id):
         cur = self.connection.cursor()
         stmt = ''' 

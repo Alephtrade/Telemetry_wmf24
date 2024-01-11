@@ -172,8 +172,11 @@ def render_errors_closing(aleph_id, ip, last_id, end_time, status):
             sxt = db_driver.get_unclosed_error_by_code("62", aleph_id)
             if sxt is not None:
                 db_driver.close_error_code(aleph_id, "62")
-            last_sixtwo = db_driver.get_error_last_stat_record("62", aleph_id)
-            request = f'{WMF_URL}?device={aleph_id}&error_id=62&date_start={last_sixtwo[2]}&date_end={datetime.fromtimestamp(int(datetime.now().timestamp()))}&duration={last_sixtwo[3]}&status={status}'
+                last_sixtwo = db_driver.get_error_last_stat_record("62", aleph_id)
+                request = f'{WMF_URL}?device={aleph_id}&error_id=62&date_start={last_sixtwo[2]}&date_end={datetime.fromtimestamp(int(datetime.now().timestamp()))}&duration={last_sixtwo[3]}&status={status}'
+            else:
+                minus_one_unclosed = db_driver.get_unsent_record_by_code("-1", aleph_id)
+                request = f'{WMF_URL}?device={aleph_id}&error_id={minus_one_unclosed[1]}&date_start={minus_one_unclosed[2]}&date_end={minus_one_unclosed[3]}&duration={minus_one_unclosed[4]}&status=0'
             response = requests.post(request)
             content = response.content.decode('utf-8')
             print(content)
@@ -190,8 +193,11 @@ def render_errors_closing(aleph_id, ip, last_id, end_time, status):
             sxt = db_driver.get_unclosed_error_by_code("62", aleph_id)
             if sxt is not None:
                 db_driver.close_error_code(aleph_id, "62")
-            last_sixtwo = db_driver.get_error_last_stat_record("62", aleph_id)
-            request = f'{WMF_URL}?device={aleph_id}&error_id=62&date_start={last_sixtwo[2]}&date_end={datetime.fromtimestamp(int(datetime.now().timestamp()))}&duration={last_sixtwo[3]}&status={status}'
+                last_sixtwo = db_driver.get_error_last_stat_record("62", aleph_id)
+                request = f'{WMF_URL}?device={aleph_id}&error_id=62&date_start={last_sixtwo[2]}&date_end={datetime.fromtimestamp(int(datetime.now().timestamp()))}&duration={last_sixtwo[3]}&status={status}'
+            else:
+                minus_one_unclosed = db_driver.get_unsent_record_by_code("-1", aleph_id)
+                request = f'{WMF_URL}?device={aleph_id}&error_id={minus_one_unclosed[1]}&date_start={minus_one_unclosed[2]}&date_end={minus_one_unclosed[3]}&duration={minus_one_unclosed[4]}&status=0'
             response = requests.post(request)
             content = response.content.decode('utf-8')
             print(content)
