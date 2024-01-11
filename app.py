@@ -18,7 +18,7 @@ def hello_world():  # put application's code here
     if machine:
         ip = db_conn.get_device_field_by_aleph_id(aleph_id, "address")
         if ip:
-            return jsonify(ip), 203
+            return jsonify(ip[0]), 203
         else:
             return jsonify("ip null"), 521
     else:
