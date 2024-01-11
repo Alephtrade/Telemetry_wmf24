@@ -23,7 +23,7 @@ def hello_world():  # put application's code here
                 ws = websocket.create_connection(WS_URL, timeout=5)
             except Exception:
                 return jsonify("false connection"), 521
-            request_to_machine = json.dumps({'function': "'"+action+"'"})
+            request_to_machine = json.dumps({'function': action})
             ws.send(request_to_machine)
             received_data = ws.recv()
             return jsonify([received_data, request_to_machine]), 203
