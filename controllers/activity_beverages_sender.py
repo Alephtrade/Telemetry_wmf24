@@ -169,7 +169,7 @@ def render_errors_closing(aleph_id, ip, last_id, end_time, status):
             print("created")
             print(aleph_id)
             db_driver.create_error_record(aleph_id, '-1')
-            sxt = db_driver.get_unclosed_error_by_code
+            sxt = db_driver.get_unclosed_error_by_code("62", aleph_id)
             if sxt is not None:
                 db_driver.close_error_code(aleph_id, "62")
             last_sixtwo = db_driver.get_error_last_stat_record("62", aleph_id)
@@ -187,7 +187,7 @@ def render_errors_closing(aleph_id, ip, last_id, end_time, status):
             print("created2")
             print(aleph_id)
             db_driver.create_error_record(aleph_id, '-1')
-            sxt = db_driver.get_unclosed_error_by_code
+            sxt = db_driver.get_unclosed_error_by_code("62", aleph_id)
             if sxt is not None:
                 db_driver.close_error_code(aleph_id, "62")
             last_sixtwo = db_driver.get_error_last_stat_record("62", aleph_id)
