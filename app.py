@@ -13,7 +13,7 @@ db_conn = WMFSQLDriver()
 @app.route('/')
 def hello_world():  # put application's code here
     password = request.args.get('action')
-    return jsonify(password, 203)
+    return jsonify(password), 203
 
 
 @app.route('/migration_database')
