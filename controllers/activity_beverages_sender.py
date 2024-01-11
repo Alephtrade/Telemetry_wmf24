@@ -148,7 +148,7 @@ def check_machine_status(aleph_id, ip):
     last_id, end_time = None, None
     r = db_driver.get_error_last_stat_record('-1', aleph_id)
     if r is not None:
-        last_id, end_time = r
+        last_id, end_time, start_time, duration_time = r
     else:
         end_time = time()
         last_id = 0
