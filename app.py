@@ -3,6 +3,7 @@ import uuid
 import websocket
 from flask import Flask, request
 from flask import jsonify
+from collections import deque
 from controllers.db.models import WMFSQLDriver
 import sys
 #from controllers.machine_installation import test
@@ -26,7 +27,16 @@ def hello_world():  # put application's code here
             request_to_machine = json.dumps({'function': action})
             ws.send(request_to_machine)
             received_data = ws.recv()
-            return jsonify([received_data, request_to_machine]), 203
+            # return print(received_drinks)
+            received_answer = deque(json.loads(received_data))
+            formatted_answer = {}
+            for var_drinks in list(received_answer):
+                for i_drinks in var_drinks:
+                    formatted_answer[i_drinks] = var_drinks[i_drinks]
+                    if formatted_answer["returnvalue"] is not None and formatted_answer["returnvalue"] == 0:
+                        return jsonify([received_data, request_to_machine]), 203
+                    else:
+                        return jsonify("wrong machine answer"), 521
         else:
             return jsonify("ip null"), 521
     else:
