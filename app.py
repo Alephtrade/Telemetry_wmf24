@@ -20,9 +20,9 @@ def hello_world():  # put application's code here
         if ip:
             return jsonify(ip), 203
         else:
-            return 521
+            return jsonify("ip null"), 521
     else:
-        return 521
+        return jsonify("machine null"), 521
 
 
 @app.route('/migration_database')
