@@ -169,7 +169,9 @@ def render_errors_closing(aleph_id, ip, last_id, end_time, status):
             print("created")
             print(aleph_id)
             db_driver.create_error_record(aleph_id, '-1')
-            db_driver.close_error_code(aleph_id, "62")
+            sxt = db_driver.get_unclosed_error_by_code
+            if sxt is not None:
+                db_driver.close_error_code(aleph_id, "62")
             last_sixtwo = db_driver.get_error_last_stat_record("62", aleph_id)
             request = f'{WMF_URL}?device={aleph_id}&error_id=62&date_start={last_sixtwo[2]}&date_end={datetime.fromtimestamp(int(datetime.now().timestamp()))}&duration={last_sixtwo[3]}&status={status}'
             response = requests.post(request)
@@ -185,7 +187,9 @@ def render_errors_closing(aleph_id, ip, last_id, end_time, status):
             print("created2")
             print(aleph_id)
             db_driver.create_error_record(aleph_id, '-1')
-            db_driver.close_error_code(aleph_id, "62")
+            sxt = db_driver.get_unclosed_error_by_code
+            if sxt is not None:
+                db_driver.close_error_code(aleph_id, "62")
             last_sixtwo = db_driver.get_error_last_stat_record("62", aleph_id)
             request = f'{WMF_URL}?device={aleph_id}&error_id=62&date_start={last_sixtwo[2]}&date_end={datetime.fromtimestamp(int(datetime.now().timestamp()))}&duration={last_sixtwo[3]}&status={status}'
             response = requests.post(request)
