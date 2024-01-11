@@ -12,12 +12,8 @@ db_conn = WMFSQLDriver()
 
 @app.route('/')
 def hello_world():  # put application's code here
-    return jsonify("123")
-
-@app.route('/test')
-def terra():  # put application's code here
-    return jsonify("123")
-    #return jsonify(send_wmf_request('{"function": "restart"}'), 200)
+    password = request.args.get('action')
+    return jsonify(password, 203)
 
 
 @app.route('/migration_database')
