@@ -1,6 +1,6 @@
 import json
 import uuid
-
+import websocket
 from flask import Flask, request
 from flask import jsonify
 from controllers.db.models import WMFSQLDriver
@@ -12,12 +12,19 @@ db_conn = WMFSQLDriver()
 
 @app.route('/')
 def hello_world():  # put application's code here
-    password = request.args.get('action')
+    action = request.args.get('action')
     aleph_id = request.args.get("aleph_id")
     machine = db_conn.find_device_by_aleph_id(aleph_id)
     if machine:
         ip = db_conn.get_device_field_by_aleph_id(aleph_id, "address")
         if ip:
+            WS_URL = f'ws://{ip}:25000/'
+            try:
+                ws = websocket.create_connection(WS_URL, timeout=5)
+            except Exception:
+                return jsonify("false connection"), 521
+            request_to_machine = json.dumps({'function': "'"+action+"'"})
+            ws.send(request_to_machine)
             return jsonify(ip[0]), 203
         else:
             return jsonify("ip null"), 521
