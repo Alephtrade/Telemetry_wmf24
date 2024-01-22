@@ -11,7 +11,13 @@ import sys
 app = Flask(__name__)
 db_conn = WMFSQLDriver()
 
+
 @app.route('/')
+def imported():  # put application's code here
+        return 403
+
+
+@app.route('/remote_action')
 def hello_world():  # put application's code here
     #return jsonify("1"), 203
     action = request.args.get('action')
@@ -43,15 +49,6 @@ def hello_world():  # put application's code here
     else:
         return jsonify("machine null"), 521
 
-
-@app.route('/migration_database')
-def imported():  # put application's code here
-    password = request.args.get('access')
-    if password == '123':
-        import controllers.apply_migration
-        return jsonify("welcome", 200)
-    else:
-        return 403
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=80)
