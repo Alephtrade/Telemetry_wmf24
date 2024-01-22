@@ -144,7 +144,8 @@ class WMFMachineErrorConnector:
 
             # self.d    b_driver.save_last_record('current_errors', json.dumps(list(self.current_errors)))
         except Exception as ex:
-            logging.error(f"WMFMachineConnector handle_error: error={ex}, stacktrace: {print_exception()}")
+            print("error")
+            #logging.error(f"WMFMachineConnector handle_error: error={ex}, stacktrace: {print_exception()}")
 
     def on_error(self, ws, error):
         print(error)
@@ -189,7 +190,8 @@ class WMFMachineErrorConnector:
                                              on_error=self.on_error,
                                              on_close=self.on_close)
         except Exception as ex:
-            logging.error(f"WMFMachineConnector init: error={ex}, stacktrace: {print_exception()}")
+            print("error")
+            #logging.error(f"WMFMachineConnector init: error={ex}, stacktrace: {print_exception()}")
 
     def run_websocket(self):
         websocket.enableTrace(False)
