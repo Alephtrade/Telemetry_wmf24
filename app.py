@@ -2,7 +2,7 @@ import json
 import uuid
 import websocket
 from flask import Flask, request
-from flask import jsonify
+from flask import jsonify, abort
 from collections import deque
 from controllers.db.models import WMFSQLDriver
 import sys
@@ -14,7 +14,7 @@ db_conn = WMFSQLDriver()
 
 @app.route('/')
 def imported():  # put application's code here
-        return 403
+    abort(401)
 
 
 @app.route('/remote_action')
