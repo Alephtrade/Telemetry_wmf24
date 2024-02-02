@@ -62,11 +62,11 @@ class WMFSQLDriver:
         cur.close()
         return stmt
 
-    def if_pours_created(self, aleph_id, recipe_id, recipe_name, cup_size, date_created):
+    def if_pours_created(self, aleph_id, date_created):
         cur = self.connection.cursor()
-        stmt = f'''SELECT aleph_id, recipe_id, recipe_name, cup_size, water, coffee, milk, powder, foam, date_formed
+        stmt = f'''SELECT aleph_id, date_formed
          FROM pours 
-         WHERE aleph_id = "{aleph_id}" AND recipe_id = "{recipe_id}" AND recipe_name = "{recipe_name}" AND cup_size = "{cup_size}" AND date_formed = "{date_created}"'''
+         WHERE aleph_id = "{aleph_id}" AND date_formed = "{date_created}"'''
         cur.execute(stmt)
         res = cur.fetchall()
         cur.close()
