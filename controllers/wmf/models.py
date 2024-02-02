@@ -122,7 +122,11 @@ class WMFMachineErrorConnector:
                         foam = self.available_recipe[14]
                     print(self.aleph_id)
                     print("self.aleph_id")
-                    db_conn.initPours(self.aleph_id, recipe_number, self.available_recipe[3], cup_size, water, coffee, milk, powder, foam)
+                    date_formed = datetime.fromtimestamp(int((datetime.now()).timestamp()))
+                    booler = db_conn.if_pours_created(self.aleph_id, recipe_number, self.available_recipe[3], cup_size, date_formed)
+                    print({"booler", booler})
+                    if booler is None:
+                        db_conn.initPours(self.aleph_id, recipe_number, self.available_recipe[3], cup_size, water, coffee, milk, powder, foam, date_formed)
                     #data_to_send = {}
                     #data_to_send["aleph_id"] = self.aleph_id
                     #data_to_send["recipe_id"] = recipe_number

@@ -62,8 +62,18 @@ class WMFSQLDriver:
         cur.close()
         return stmt
 
-    def initPours(self, aleph_id, recipe_id, recipe_name, cup_size, water_weight, coffee, milk, powder, foam, date_formed = datetime.fromtimestamp(int((datetime.now()).timestamp()))):
-        date_formed = datetime.fromtimestamp(int((datetime.now()).timestamp()))
+    def if_pours_created(self, aleph_id, recipe_id, recipe_name, cup_size, date_created):
+        cur = self.connection.cursor()
+        stmt = f'''SELECT aleph_id, recipe_id, recipe_name, cup_size, water, coffee, milk, powder, foam, date_formed
+         FROM pours 
+         WHERE aleph_id = "{aleph_id}" AND recipe_id = "{recipe_id}" AND recipe_name = "{recipe_name}" AND cup_size = "{cup_size}" AND date_formed = "{date_created}"'''
+        cur.execute(stmt)
+        res = cur.fetchall()
+        cur.close()
+        return res
+
+    def initPours(self, aleph_id, recipe_id, recipe_name, cup_size, water_weight, coffee, milk, powder, foam, date_formed):
+        #date_formed = datetime.fromtimestamp(int((datetime.now()).timestamp()))
         cur = self.connection.cursor()
         stmt = 'INSERT INTO pours (aleph_id, recipe_id, recipe_name, cup_size, water, coffee, milk, powder, foam, date_formed, is_sent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
         cur.execute(stmt, (aleph_id, recipe_id, recipe_name, cup_size, water_weight, coffee, milk, powder, foam, date_formed, 0))
