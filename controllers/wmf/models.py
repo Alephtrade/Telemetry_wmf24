@@ -123,8 +123,8 @@ class WMFMachineErrorConnector:
                     print(self.aleph_id)
                     print("self.aleph_id")
                     date_formed = datetime.fromtimestamp(int((datetime.now()).timestamp()))
-                    booler = db_conn.if_pours_created(self.aleph_id, recipe_number, self.available_recipe[3], cup_size, date_formed)
-                    print({self.aleph_id, recipe_number, self.available_recipe[3], cup_size, date_formed})
+                    booler = db_conn.if_pours_created(self.aleph_id, date_formed)
+                    print({self.aleph_id, date_formed})
                     print(booler)
                     if booler is None:
                         db_conn.initPours(self.aleph_id, recipe_number, self.available_recipe[3], cup_size, water, coffee, milk, powder, foam, date_formed)

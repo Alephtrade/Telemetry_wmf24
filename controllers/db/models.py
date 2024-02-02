@@ -68,7 +68,7 @@ class WMFSQLDriver:
          FROM pours 
          WHERE aleph_id = "{aleph_id}" AND date_formed = "{date_created}"'''
         cur.execute(stmt)
-        res = cur.fetchall()
+        res = cur.fetchone()
         cur.close()
         return res
 
