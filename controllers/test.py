@@ -23,7 +23,8 @@ for device in devices:
         s.connect((device[2], 25000))
         s.send('{"function": "startPushDispensingFinished"}'.encode())
         s.send('{"function": "getMachineInfo"}'.encode())
-        data = s.recv(1024)
+        if s is not None:
+            data = s.recv(1024)
 
     print(f"Received {data!r}")
 
