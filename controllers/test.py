@@ -18,7 +18,7 @@ for device in devices:
     db_driver = WMFSQLDriver()
     WS_URL = f'ws://{device[2]}:25000/'
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    server.bind((device[2], "25000"))
+    server.bind((device[2], 25000))
     server.listen(15)
     print(f'Server{device[2]} 25000 start.')
 
