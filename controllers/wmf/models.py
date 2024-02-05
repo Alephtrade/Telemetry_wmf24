@@ -52,7 +52,7 @@ class WMFMachineErrorConnector:
                 status = db_conn.get_machine_block_status(self.aleph_id)[0][0]
                 print(status)
                 if status == "1":
-                    message = ws.send(json.dumps({"function": "shutdown"}))
+                    message = ws.send(json.dumps({"function": "reboot"}))
                     print(message)
             if data.get("function") == 'getErrorActive':
                 print('getErrorActive')
