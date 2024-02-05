@@ -31,7 +31,7 @@ def get_main_clean_stat(device):
     date_to_send = get_beverages_send_time(time_now)
     #print(date_to_send)
     db_conn.create_data_statistics(device[1], time_now, date_to_send)
-    last_bev_rec_id = db_conn.get_last_data_statistics_id(device[1])
+    last_bev_rec_id = db_conn.get_last_data_statistics_id(device[1])[0]
     print("last id")
     print(last_bev_rec_id)
     unsent_records = db_conn.get_error_records(prev_hour, time_now, device[1])
