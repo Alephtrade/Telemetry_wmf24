@@ -20,11 +20,12 @@ for device in devices:
     WS_URL = f'ws://{device[2]}:25000/'
     wmf_conn = WMFMachineErrorConnector(device[1], device[2])
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        s.connect((device[2], 25000))
-        s.send('{"function": "startPushDispensingFinished"}'.encode())
-        s.send('{"function": "getMachineInfo"}'.encode())
-        if s is not None:
-            data = s.recv(1024)
+        if(device[2] is not None):
+            s.connect((device[2], 25000))
+            s.send('{"function": "startPushDispensingFinished"}'.encode())
+            s.send('{"function": "getMachineInfo"}'.encode())
+            if s is not None:
+                data = s.recv(1024)
 
     print(f"Received {data!r}")
 
