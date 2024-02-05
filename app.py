@@ -34,10 +34,12 @@ def hello_world():  # put application's code here
             if action == "block":
                 machine_status = db_conn.get_machine_block_status(aleph_id)
                 if request.args.get("block") == "1":
-                    db_conn.set_machine_block_status(aleph_id, "1")
+                    status = db_conn.set_machine_block_status(aleph_id, "1")
+                    return jsonify(status), 200
                     #  БЛОКИРОВАТЬ
                 else:
-                    db_conn.set_machine_block_status(aleph_id, "0")
+                    status = db_conn.set_machine_block_status(aleph_id, "0")
+                    return jsonify(status), 200
                     #  РАЗБЛОКИРОВАТЬ
             else:
                 request_to_machine = json.dumps({'function': action})
