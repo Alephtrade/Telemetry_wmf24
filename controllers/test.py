@@ -21,8 +21,8 @@ for device in devices:
     wmf_conn = WMFMachineErrorConnector(device[1], device[2])
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         s.connect((device[2], 25000))
-        s.sendall('{"function": "startPushDispensingFinished"}')
-        s.sendall('{"function": "getMachineInfo"}')
+        s.sendall({"function": "startPushDispensingFinished"})
+        s.sendall({"function": "getMachineInfo"})
         data = s.recv(1024)
 
     print(f"Received {data!r}")
