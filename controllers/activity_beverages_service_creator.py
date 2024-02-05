@@ -32,6 +32,8 @@ def get_main_clean_stat(device):
     #print(date_to_send)
     db_conn.create_data_statistics(device[1], time_now, date_to_send)
     unsent_records = db_conn.get_error_records(prev_hour, time_now, device[1])
+    start_time = prev_hour
+    end_time = time_now
     #print({"Ошибки": unsent_records})
     #print({prev_hour, time_now, device[1]})
     unsent_disconnect_records = db_conn.get_all_error_records_by_code(device[1], prev_hour, time_now, "-1")
@@ -43,10 +45,6 @@ def get_main_clean_stat(device):
     disconnect_time = timedelta()
     wmf_error_count = 0
     disconnect_count = 0
-    rec_id = None
-    error_code = None
-    start_time = None
-    end_time = None
     for rec_id, error_code, start_time, end_time in unsent_records:
         #print({"Ошибки3": unsent_records})
         if type(start_time) is not datetime and start_time is not None:
