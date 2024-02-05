@@ -789,6 +789,17 @@ class WMFSQLDriver:
         cur.close()
         return res
 
+    def set_machine_block_status(self, aleph_id, status):
+        cur = self.connection.cursor()
+        stmt = f''' 
+            UPDATE devices 
+            SET block_status = "{status}"
+            WHERE aleph_id = "{aleph_id}"
+        '''
+        cur.execute(stmt)
+        self.connection.commit()
+        cur.close()
+
     def get_all_error_records_by_code(self, aleph_id, prev_hour, now_hour, code):
         cur = self.connection.cursor()
         stmt = f''' 
