@@ -4,6 +4,7 @@ import requests
 import threading
 import socket
 import sys
+import json
 sys.path.append('./')
 sys.path.append('/var/www/Telemetry_wmf24/')
 from controllers.db.models import WMFSQLDriver
@@ -17,18 +18,16 @@ db_conn = WMFSQLDriver()
 devices = db_conn.get_devices()
 for device in devices:
     db_driver = WMFSQLDriver()
-    WS_URL = f'ws://{device[2]}:25000/'
+    WS_URL = f'ws://10.8.0.6:25000/'
     wmf_conn = WMFMachineErrorConnector(device[1], device[2])
-    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-        print(device[2])
-        if device[2] is not None:
-            s.connect((device[2], 25000))
-            s.send('{"function": "startPushDispensingFinished"}'.encode())
-            s.send('{"function": "getMachineInfo"}'.encode())
-            if s is not None:
-                data = s.recv(1024)
+    ws = websocket.create_connection(WS_URL, timeout=5)
+    status = db_conn.get_machine_block_status(device[1])[0][0]
+    print(status)
+    if status == 1:
+        ws.send(json.dumps({"function": "shutdown"}))
+    else:
+        print("not 1")
 
-    print(f"Received {data!r}")
 
 
 
