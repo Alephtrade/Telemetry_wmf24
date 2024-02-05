@@ -23,6 +23,7 @@ def test():
         if host != "10.8.0.1":
             data_for_request = {}
             machine_response = require_info(host)
+            print(machine_response)
             data_for_request["full_serial"] = machine_response["MachineName"]
             data_for_request["serial_number"] = machine_response["MachineName"]
             data_for_request["model"] = machine_response["ProductName"]
