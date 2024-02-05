@@ -48,6 +48,10 @@ class WMFMachineErrorConnector:
             #logging.info(f"WMFMachineConnector: message={json.loads(message.encode('utf-8'))}")
             data = WMFMachineStatConnector.normalize_json(message)
             print(data.get("function"))
+            if data.get("function") == 'startPushDispensingStarted':
+                status = db_conn.get_machine_block_status(self.aleph_id)
+                if status == 1:
+                    ws.send(json.dumps({"function": "shutdown"}))
             if data.get("function") == 'getErrorActive':
                 print('getErrorActive')
                 print("ulErrorCode")
@@ -169,6 +173,8 @@ class WMFMachineErrorConnector:
         ws.send(json.dumps({"function": "getErrorActive", "a_iIndex": self.index_active_error}))
         ws.send(json.dumps({"function": "startPushErrors"}))
         ws.send(json.dumps({"function": "startPushDispensingFinished"}))
+        ws.send(json.dumps({"function": "startPushDispensingStarted"}))
+
 
     def on_exit(self, ws):
         ws.close()
