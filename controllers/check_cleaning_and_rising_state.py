@@ -74,31 +74,31 @@ for device in devices:
     wm_conn = WMFMachineStatConnector(device[1], device[2])
     get_system_cleaning_state_data = wm_conn.get_system_cleaning_state()
     if get_system_cleaning_state_data is not None:
-        controller_manager(device, wm_conn.get_system_cleaning_state(), "general")
+        controller_manager(device, wm_conn.get_system_cleaning_state(), "Очистка системы")
 
     get_milk_cleaning_state_data = wm_conn.get_milk_cleaning_state()
     if get_milk_cleaning_state_data is not None:
-        controller_manager(device, wm_conn.get_milk_cleaning_state(), "general_milk")
+        controller_manager(device, wm_conn.get_milk_cleaning_state(), "Очистка молочной системы")
 
     get_foamer_rinsing_state_data = wm_conn.get_foamer_rinsing_state()
     if get_foamer_rinsing_state_data is not None:
-        controller_manager(device, wm_conn.get_foamer_rinsing_state(), "foamer")
+        controller_manager(device, wm_conn.get_foamer_rinsing_state(), "Промывка вспенивателя")
 
     get_milk_replacement_state_data = wm_conn.get_milk_replacement_state()
     if get_milk_replacement_state_data is not None:
-        controller_manager(device, wm_conn.get_milk_replacement_state(), "milk_replacement")
+        controller_manager(device, wm_conn.get_milk_replacement_state(), "Замена молока")
 
     get_mixer_rinsing_state_data = wm_conn.get_mixer_rinsing_state()
     if get_mixer_rinsing_state_data is not None:
-        controller_manager(device, wm_conn.get_mixer_rinsing_state(), "general_mixer")
+        controller_manager(device, wm_conn.get_mixer_rinsing_state(), "Очистка миксера")
 
     get_milk_mixer_warm_rinsing_state_data = wm_conn.get_milk_mixer_warm_rinsing_state()
     if get_milk_mixer_warm_rinsing_state_data is not None:
-        controller_manager(device, wm_conn.get_milk_mixer_warm_rinsing_state(), "milk_mixer_warm")
+        controller_manager(device, wm_conn.get_milk_mixer_warm_rinsing_state(), "Теплая промывка миксера")
 
     get_ffc_filter_replacement_state_data = wm_conn.get_ffc_filter_replacement_state()
     if get_ffc_filter_replacement_state_data is not None:
-        controller_manager(device, wm_conn.get_ffc_filter_replacement_state(), "ffc_filter")
+        controller_manager(device, wm_conn.get_ffc_filter_replacement_state(), "Промывка фильтра американо")
 
     wm_conn.close()
     sender_report(device)
