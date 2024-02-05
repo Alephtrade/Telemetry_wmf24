@@ -622,7 +622,22 @@ class WMFSQLDriver:
         stmt = ''' 
             SELECT time_fact_send
             FROM data_statistics
-            WHERE time_fact_send NOT NULL
+            WHERE time_fact_send NOT NULL AND aleph_id = ?
+            ORDER BY id DESC 
+            LIMIT 1
+        '''
+        cur.execute(stmt, (aleph_id,))
+        res = cur.fetchone()
+        #logging.info(f'WMFSQLDriver get_last_data_statistics: {res}')
+        cur.close()
+        return res
+
+    def get_last_data_statistics_id(self, aleph_id):
+        cur = self.connection.cursor()
+        stmt = ''' 
+            SELECT id
+            FROM data_statistics
+            WHERE time_fact_send NOT NULL AND aleph_id = ?
             ORDER BY id DESC 
             LIMIT 1
         '''
