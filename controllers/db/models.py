@@ -777,6 +777,18 @@ class WMFSQLDriver:
         cur.close()
         return res
 
+    def get_machine_block_status(self, aleph_id):
+        cur = self.connection.cursor()
+        stmt = f''' 
+            SELECT block_status 
+            FROM devices 
+            WHERE aleph_id = "{aleph_id}"
+        '''
+        cur.execute(stmt)
+        res = cur.fetchall()
+        cur.close()
+        return res
+
     def get_all_error_records_by_code(self, aleph_id, prev_hour, now_hour, code):
         cur = self.connection.cursor()
         stmt = f''' 
