@@ -23,7 +23,7 @@ for device in devices:
     ws = websocket.create_connection(WS_URL, timeout=5)
     status = db_conn.get_machine_block_status(device[1])[0][0]
     print(status)
-    if status == 1:
+    if status == "1":
         ws.send(json.dumps({"function": "shutdown"}))
     else:
         print("not 1")
