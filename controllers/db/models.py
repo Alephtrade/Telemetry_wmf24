@@ -637,7 +637,7 @@ class WMFSQLDriver:
         stmt = ''' 
             SELECT id
             FROM data_statistics
-            WHERE time_fact_send NOT NULL AND aleph_id = ?
+            WHERE  aleph_id = ?
             ORDER BY id DESC 
             LIMIT 1
         '''
