@@ -33,6 +33,7 @@ def hello_world():  # put application's code here
                 return jsonify("false connection"), 521
             if action == "block":
                 machine_status = db_conn.get_machine_block_status(aleph_id)
+                return jsonify(machine_status)
             else:
                 request_to_machine = json.dumps({'function': action})
                 ws.send(request_to_machine)
