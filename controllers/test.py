@@ -1,10 +1,7 @@
 import websocket
 import logging
 import requests
-import json
-import ast
 import socket
-from datetime import timedelta, datetime, time
 import sys
 sys.path.append('./')
 sys.path.append('/var/www/Telemetry_wmf24/')
@@ -14,6 +11,15 @@ from controllers.core.utils import timedelta_int, get_beverages_send_time, initi
 from controllers.api.beverages import methods
 from controllers.wmf.models import WMFMachineStatConnector
 db_conn = WMFSQLDriver()
+
+
+def handle_client(client_socket):
+    # Получение данных от клиента
+    data = client_socket.recv(1024)
+    if data:
+        # Вывод сообщения
+        print(data.decode())
+
 
 devices = db_conn.get_devices()
 for device in devices:
@@ -26,8 +32,19 @@ for device in devices:
         if ws.connected:
             ws.close()
             status = 1
+            sockets = []
+            for i in range(3):
+                sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                sock.bind((device[2], 25000 + i))
+                sock.listen(1)
+                sockets.append(sock)
+                while True:
+                    for sock in sockets:
+                        client_socket, addr = sock.accept()
+                        handle_client(client_socket)
+
     except Exception:
-        status = 0
-    #logging.info(f'status is: {status}')
-    print(status)
-    #print(formatted)
+        status = 0,
+        print("status: 0")
+
+
