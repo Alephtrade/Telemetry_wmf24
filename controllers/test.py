@@ -1,6 +1,7 @@
 import websocket
 import logging
 import requests
+import threading
 import socket
 import sys
 sys.path.append('./')
@@ -12,39 +13,43 @@ from controllers.api.beverages import methods
 from controllers.wmf.models import WMFMachineStatConnector
 db_conn = WMFSQLDriver()
 
-
-def handle_client(client_socket):
-    # Получение данных от клиента
-    data = client_socket.recv(1024)
-    if data:
-        # Вывод сообщения
-        print(data.decode())
-
-
 devices = db_conn.get_devices()
 for device in devices:
     db_driver = WMFSQLDriver()
     WS_URL = f'ws://{device[2]}:25000/'
+    server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    server.bind((device[2], "25000"))
+    server.listen(15)
+    print(f'Server{device[2]} 25000 start.')
 
-    status = None
-    try:
-        ws = websocket.create_connection(WS_URL, timeout=settings.WEBSOCKET_CONNECT_TIMEOUT)
-        if ws.connected:
-            ws.close()
-            status = 1
-            sockets = []
-            for i in range(3):
-                sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-                sock.bind((device[2], 25000 + i))
-                sock.listen(1)
-                sockets.append(sock)
-                while True:
-                    for sock in sockets:
-                        client_socket, addr = sock.accept()
-                        handle_client(client_socket)
+users = []  # To store their name
+sort = []  # To store their socket
 
-    except Exception:
-        status = 0,
-        print("status: 0")
+
+def listen_user(user):
+    print('Listening user')
+    sort.append(user)  # Store their socket in sort[]
+    user.send('Name'.encode('utf-8'))  # send 'Name' to clients
+    name = user.recv(1024).decode('utf-8')  # Receive their name
+    users.append(name)  # Store their name in user[]
+
+    while True:
+        data = user.recv(1024).decode('utf-8')
+        print(f'{name} sent {data}')
+
+        for i in sort:  # Send received messages to clients
+            if (i != server and i != user):  # Filter server and message sender. Send message except them.
+                i.sendall(f'{name} > {data}'.encode('utf-8'))
+
+
+def start_server():
+    while True:
+        user_socket, addr = server.accept()
+        potok_info = threading.Thread(target=listen_user, args=(user_socket,))
+        potok_info.start()
+
+
+if __name__ == '__main__':
+    start_server()
 
 
