@@ -51,7 +51,7 @@ class WMFMachineErrorConnector:
             if data.get("function") == 'startPushDispensingStarted':
                 status = db_conn.get_machine_block_status(self.aleph_id)[0][0]
                 print(status)
-                if status == 1:
+                if status == "1":
                     message = ws.send(json.dumps({"function": "shutdown"}))
                     print(message)
             if data.get("function") == 'getErrorActive':
