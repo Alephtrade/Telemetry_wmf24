@@ -583,7 +583,7 @@ class WMFSQLDriver:
         cur.close()
         return res
 
-    def save_data_statistics(self, aleph_id, operator, value_column):
+    def save_data_statistics(self, aleph_id, operator, value_column, last_bev_rec_id):
         time_now = datetime.fromtimestamp(int((datetime.now()).timestamp() // (60 * 60) * 60 * 60) - 1)
         #time_now = datetime.now()
         cur = self.connection.cursor()
@@ -591,7 +591,7 @@ class WMFSQLDriver:
         stmt = f''' 
             UPDATE data_statistics 
             SET {operator} = "{value_column}"
-            WHERE date_formed = "{time_now}" AND aleph_id = "{aleph_id}"
+            WHERE date_formed = "{time_now}" AND aleph_id = "{aleph_id}" AND id = "{last_bev_rec_id}"
         '''
         #logging.info(f'WMFSQLDriver save_last_record: key = {operator}, value = {value_column}')
         cur.execute(stmt)

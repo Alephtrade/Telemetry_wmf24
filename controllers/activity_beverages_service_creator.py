@@ -107,11 +107,11 @@ def get_main_clean_stat(device):
     #       "wmf_error_time": int(wmf_error_time),
     #       "stoppage_count": int(disconnect_count),
     #       "stoppage_time": int(total_disconnect_time)})
-    db_conn.save_data_statistics(str(device[1]), "time_worked", wmf_work_time)
-    db_conn.save_data_statistics(str(device[1]), "wmf_error_count", wmf_error_count)
-    db_conn.save_data_statistics(str(device[1]), "wmf_error_time", wmf_error_time)
-    db_conn.save_data_statistics(str(device[1]), "stoppage_count", disconnect_count)
-    db_conn.save_data_statistics(str(device[1]), "stoppage_time", total_disconnect_time)
+    db_conn.save_data_statistics(str(device[1]), "time_worked", wmf_work_time, last_bev_rec_id)
+    db_conn.save_data_statistics(str(device[1]), "wmf_error_count", wmf_error_count, last_bev_rec_id)
+    db_conn.save_data_statistics(str(device[1]), "wmf_error_time", wmf_error_time, last_bev_rec_id)
+    db_conn.save_data_statistics(str(device[1]), "stoppage_count", disconnect_count, last_bev_rec_id)
+    db_conn.save_data_statistics(str(device[1]), "stoppage_time", total_disconnect_time, last_bev_rec_id)
 
     #logging.info(f'time_worked {wmf_work_time}, wmf_error_count {wmf_error_count}, wmf_error_time {wmf_error_time}, stoppage_count {disconnect_count}, stoppage_time: {total_disconnect_time}')
     #print("result 2")
