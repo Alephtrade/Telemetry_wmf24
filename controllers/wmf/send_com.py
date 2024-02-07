@@ -5,8 +5,8 @@ import logging
 #rom controllers.core.utils import print_exception, get_env_mode
 #from controllers.db.models import WMFSQLDriver
 
-WS_IP = '192.168.8.101'
-WS_PORT = 25000
+WS_IP = '127.0.0.1'
+WS_PORT = 30330
 WMF_BASE_URL = 'https://backend.wmf24.ru'
 WMF_DATA_URL = "https://backend.wmf24.ru/api/test2"
 WS_URL = f'ws://{WS_IP}:{WS_PORT}/'

@@ -225,6 +225,7 @@ class WMFSQLDriver:
         stmt = ''' 
             SELECT id, aleph_id, address, utc, last_connection
             FROM devices
+            WHERE block_status = "1"
             ORDER BY id ASC 
         '''
         cur.execute(stmt)
