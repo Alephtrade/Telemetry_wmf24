@@ -9,5 +9,5 @@ db_conn = WMFSQLDriver()
 
 devices = db_conn.get_devices()
 time_low_limit = datetime.fromtimestamp(int(datetime.now().timestamp() - 604800)).strftime("%Y-%m-%d %H:%M:%S")
-db_conn.clean_data_tables(time_low_limit)
+print(db_conn.clean_data_tables(time_low_limit))
 
