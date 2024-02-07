@@ -220,6 +220,18 @@ class WMFSQLDriver:
         self.connection.commit()
         cur.close()
 
+    def clean_data_tables(self, time_now):
+        cur = self.connection.cursor()
+        stmt = ''' 
+            DELETE FROM beverages_log
+            WHERE date_formed < ?
+        '''
+        cur.execute(stmt, time_now)
+        res = cur.fetchall()
+        #logging.info(f'WMFSQLDriver get_devices: {res}')
+        cur.close()
+        return res
+
     def get_devices(self):
         cur = self.connection.cursor()
         stmt = ''' 

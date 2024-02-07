@@ -38,3 +38,7 @@ cronjob="0 * * * * $croncmd"
 croncmd="sh /var/www/Telemetry_wmf24/controllers/optimize_old_machine.sh 2>&1"
 cronjob="*/5 * * * * $croncmd"
 ( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
+
+croncmd="sh /var/www/Telemetry_wmf24/controllers/delete_old_data.sh 2>&1"
+cronjob="*/5 * * * * $croncmd"
+( crontab -l | grep -v -F "$croncmd" ; echo "$cronjob" ) | crontab -
