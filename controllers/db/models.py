@@ -228,6 +228,41 @@ class WMFSQLDriver:
         '''
         cur.execute(stmt)
         self.connection.commit()
+
+        stmt = f''' 
+            DELETE FROM data_statistics
+            WHERE date_formed < "{time_now}"
+        '''
+        cur.execute(stmt)
+        self.connection.commit()
+
+        stmt = f''' 
+            DELETE FROM cleaning_statistic
+            WHERE date_formed < "{time_now}"
+        '''
+        cur.execute(stmt)
+        self.connection.commit()
+
+        stmt = f''' 
+            DELETE FROM service_statistic
+            WHERE date_formed < "{time_now}"
+        '''
+        cur.execute(stmt)
+        self.connection.commit()
+
+        stmt = f''' 
+            DELETE FROM pours
+            WHERE date_formed < "{time_now}"
+        '''
+        cur.execute(stmt)
+        self.connection.commit()
+
+        stmt = f''' 
+            DELETE FROM error_code_stats
+            WHERE start_time < "{time_now}"
+        '''
+        cur.execute(stmt)
+        self.connection.commit()
         cur.close()
         return stmt
 
