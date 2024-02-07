@@ -222,11 +222,11 @@ class WMFSQLDriver:
 
     def clean_data_tables(self, time_now):
         cur = self.connection.cursor()
-        stmt = ''' 
+        stmt = f''' 
             DELETE FROM beverages_log
-            WHERE date_formed < ?
+            WHERE date_formed < "{time_now}"
         '''
-        cur.execute(stmt, time_now)
+        cur.execute(stmt)
         res = cur.fetchall()
         #logging.info(f'WMFSQLDriver get_devices: {res}')
         cur.close()
