@@ -161,13 +161,13 @@ def render_errors_closing(aleph_id, ip, last_id, end_time, status):
     WS_URL = f'ws://{ip}:25000/'
     WMF_URL = settings.WMF_DATA_URL
     db_driver = WMFSQLDriver()
-    print({aleph_id, status})
+    #print({aleph_id, status})
     if status == 0 and (end_time is None):
         if_offed = db_driver.get_error_last_stat_record("-1", aleph_id)
-        print(if_offed)
+        #print(if_offed)
         if if_offed is None or if_offed[1] is not None:
-            print("created")
-            print(aleph_id)
+            #print("created")
+            #print(aleph_id)
             db_driver.create_error_record(aleph_id, '-1')
             sxt = db_driver.get_unclosed_error_by_code("62", aleph_id)
             if sxt is not None:
@@ -181,16 +181,16 @@ def render_errors_closing(aleph_id, ip, last_id, end_time, status):
                 db_conn.set_report_pre_sent(minus_one_unclosed[0])
             response = requests.post(request)
             content = response.content.decode('utf-8')
-            print(content)
+            #print(content)
         #print(1)
         #logging.info(f'status is 0 and end_time is none, downtime is active')
     elif status == 0 and (end_time is not None):
         if_offed = db_driver.get_error_last_stat_record("-1", aleph_id)
-        print("if2")
-        print(if_offed)
+        #print("if2")
+        #print(if_offed)
         if if_offed is None or if_offed[1] is not None:
-            print("created2")
-            print(aleph_id)
+            #print("created2")
+            #print(aleph_id)
             db_driver.create_error_record(aleph_id, '-1')
             sxt = db_driver.get_unclosed_error_by_code("62", aleph_id)
             if sxt is not None:
@@ -200,12 +200,12 @@ def render_errors_closing(aleph_id, ip, last_id, end_time, status):
                 db_conn.set_report_sent(last_sixtwo[0])
             else:
                 minus_one_unclosed = db_driver.get_unsent_record_by_code("-1", aleph_id)[0]
-                print(minus_one_unclosed)
+                #print(minus_one_unclosed)
                 request = f'{WMF_URL}?device={aleph_id}&error_id={minus_one_unclosed[1]}&date_start={minus_one_unclosed[2]}&date_end={minus_one_unclosed[3]}&duration={minus_one_unclosed[4]}&status=0'
                 db_conn.set_report_pre_sent(minus_one_unclosed[0])
             response = requests.post(request)
             content = response.content.decode('utf-8')
-            print(content)
+            #print(content)
         #logging.info(f'status is 0 and end_time is {end_time}, calling create_error_record(-1)')
         #print(status)
         #print(end_time)
@@ -226,12 +226,12 @@ def render_errors_closing(aleph_id, ip, last_id, end_time, status):
 
 db_conn = WMFSQLDriver()
 devices = db_conn.get_devices()
-print(devices)
+#print(devices)
 
 result = []
 for device in devices:
     if device[2] is not None:
         send_ip_address(device[1], device[2])
-        print(check_machine_status(device[1], device[2]))
-        beverages_send_worker(device[1], device[2])
+        check_machine_status(device[1], device[2])
+        print(beverages_send_worker(device[1], device[2]))
         controller_data_statistics_sender(device[1], device[2])
