@@ -85,7 +85,7 @@ def Take_Create_Beverage_Statistics(last_send, device):
                 for item in prepend_info:
                     for rec, it in item.items():
                         last_info[rec] = it
-                #print(last_info)
+                print(recipes)
                 for key in recipes:
                     #print(key)
                     for k, elem in key.items():
