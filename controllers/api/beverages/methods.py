@@ -94,6 +94,7 @@ def Take_Create_Beverage_Statistics(last_send, device):
                             prev_hour = time_now - timedelta(hours=24)
                             time_to_form = date_formed - timedelta(minutes=30)
                             count_of_real_pours = int(elem) - int(last_info[k])
+                            print({device[1], recipe_number, recipe_size, time_now, prev_hour})
                             pours_detected_in_base = db_conn.get_pours_with_recipe_id_and_cup_size(device[1], recipe_number, recipe_size, time_now, prev_hour)
                             print("Должно быть")
                             print(count_of_real_pours)
