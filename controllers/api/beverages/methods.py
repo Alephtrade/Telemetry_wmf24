@@ -97,9 +97,7 @@ def Take_Create_Beverage_Statistics(last_send, device):
                         #print(count_bev_recipe)
                         #print(recipe_number)
                         #print({last_info[k], elem, recipe_number})
-                        if last_info[k] == elem:
-                            #print("GOOD")
-                        else:
+                        if last_info[k] != elem:
                             #print("DIFFERENCE")
                             time_now = date_formed
                             prev_hour = time_now - timedelta(hours=24)
