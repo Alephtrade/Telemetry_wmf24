@@ -73,13 +73,9 @@ def Take_Create_Beverage_Statistics(last_send, device):
             Take_Create_Beverage_Statistics(last_send, device[1])
         else:
             create_record = db_conn.create_beverages_log(device[1], str(summ), str(date_to_send), str(date_formed), json.dumps(recipes))
-            #logging.info(f"result {create_record}")
             last_bev_records = db_conn.get_last_beverages_log(device[1])
-            #print("last_bev_records")
-            #print(last_bev_records)
             if last_bev_records is not None:
                 last_bev_record = db_conn.get_last_beverages_log_by_id(device[1], last_bev_records[6])
-                #print("last_bev_record")
                 prepend_info = ast.literal_eval(last_bev_record[5])
                 last_info = {}
                 for item in prepend_info:
@@ -88,56 +84,34 @@ def Take_Create_Beverage_Statistics(last_send, device):
                 print("recipes")
                 print(recipes)
                 for key in recipes:
-                    #print(key)
                     for k, elem in key.items():
                         recipe_str = k.strip("TotalCountRcp")
                         count_bev_recipe = elem
                         recipe_size = re.findall(r'[a-zA-Z]+', recipe_str)[0]
                         recipe_number = re.findall(r'\d+', recipe_str)[0]
-                        #print(recipe_size)
-                        #print(count_bev_recipe)
-                        #print(recipe_number)
-                        #print({last_info[k], elem, recipe_number})
                         if last_info[k] != elem:
-                            #print("DIFFERENCE")
                             time_now = date_formed
                             prev_hour = time_now - timedelta(hours=24)
                             time_to_form = date_formed - timedelta(minutes=30)
                             count_of_real_pours = int(elem) - int(last_info[k])
-                            #print("REQUEST")
-                            #print(device[1])
-                            #print(recipe_number)
-                            #print(recipe_size)
-                            #print(time_now)
-                            #print(prev_hour)
-                            #print(time_to_form)
                             pours_detected_in_base = db_conn.get_pours_with_recipeId_and_cup_size(device[1], recipe_number, recipe_size, time_now, prev_hour)
-                            #print("Должно быть")
-                            #print(count_of_real_pours)
-                            #print("В базе найдено")
-                            #print(pours_detected_in_base[0][12])
-                            #print("POURS")
-                            #print(pours_detected_in_base)
+                            print("Должно быть")
+                            print(count_of_real_pours)
+                            print("В базе найдено")
+                            print(pours_detected_in_base[0][12])
+                            print("POURS")
+                            print(pours_detected_in_base)
                             if count_of_real_pours != pours_detected_in_base[0][12]:
                                 count_in_base = pours_detected_in_base[0][12]
                                 if pours_detected_in_base is None or count_in_base == 0:
-                                    #print("Поиск мидла")
                                     middle_recipe = db_conn.get_pours_with_recipeId_and_cup_size(device[1], recipe_number, "M", time_now, prev_hour)
                                     if middle_recipe is None or middle_recipe == []:
                                         from controllers.api.beverages.Drinks import updateDrinks
                                         updateDrinks(device[1], device[2])
                                     middle_recipe = db_conn.get_pours_with_recipeId_and_cup_size(device[1], recipe_number, "M", time_now, prev_hour)
-                                    #print("MIDDLE")
-                                    #print(middle_recipe[0][12])
-                                    #print(middle_recipe)
                                     if middle_recipe is not None:
                                         recipe_callback = db_conn.getRecipe(device[1], recipe_number)
-                                        #print(recipe_number)
-                                        #print("РЕЦЕПТ")
-                                        #print(recipe_callback)
                                         if recipe_callback is not None:
-                                            #print("[0][3]")
-                                            #print(recipe_callback[3])
                                             middle_recipe = {}
                                             middle_recipe[0] = {}
                                             middle_recipe[0][3] = recipe_callback[3]
