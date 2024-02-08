@@ -159,6 +159,7 @@ def Send_Statistics(data_info, id_record):
         'Serverkey': db_conn.get_encrpt_key()[0]
     }
     response = requests.request("POST", url, headers=headers, data=data_info)
+    print(data_info)
     now = datetime.fromtimestamp(int((datetime.now()).timestamp()))
     if(response.status_code == 200):
         print("UPDATE TIME_FACT_SEND")
