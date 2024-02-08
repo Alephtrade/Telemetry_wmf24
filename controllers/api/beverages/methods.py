@@ -19,7 +19,7 @@ WMF_URL = settings.WMF_DATA_URL
 
 
 def Take_Create_Beverage_Statistics(last_send, device):
-    print(device)
+    #print(device)
     #initialize_logger('beveragestatistics.log')
     wm_conn = WMFMachineStatConnector(device[1], device[2])
     fake_data = False
@@ -68,7 +68,7 @@ def Take_Create_Beverage_Statistics(last_send, device):
         else:
             create_record = db_conn.create_beverages_log(str(last_record[0]), str(last_record[1]), str(last_record[2]), str(date_formed), str(last_record[5]))
     else:
-        if recipes == []:
+        if not recipes:
             create_record = None
             Take_Create_Beverage_Statistics(last_send, device[1])
         else:
@@ -98,7 +98,7 @@ def Take_Create_Beverage_Statistics(last_send, device):
                         #print(recipe_number)
                         #print({last_info[k], elem, recipe_number})
                         if last_info[k] == elem:
-                            print("GOOD")
+                            #print("GOOD")
                         else:
                             #print("DIFFERENCE")
                             time_now = date_formed
@@ -168,7 +168,7 @@ def Take_Create_Beverage_Statistics(last_send, device):
                                     print("Должен был создаться с нужным кап сайзом")
                             request = f'{WMF_URL}?device={device[1]}&error_id=AT91&date_start={time_now}&date_end={time_now}&duration=0&status=1'
                             response = requests.post(request)
-                            print(response)
+                            #print(response)
                             db_conn.create_error_record(device[1], 'AT91')
                             db_conn.close_error_code(device[1], 'AT91')
     #return True
