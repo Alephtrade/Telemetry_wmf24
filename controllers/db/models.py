@@ -92,7 +92,7 @@ class WMFSQLDriver:
         cur.close()
         return stmt
 
-    def get_pours_with_recipeId_and_cup_size(self, aleph_id, recipe_id, cupsize, time_now, prev_hour):
+    def get_pours_with_recipe_id_and_cup_size(self, aleph_id, recipe_id, cupsize, time_now, prev_hour):
         cur = self.connection.cursor()
         stmt = f'''SELECT id, aleph_id, recipe_id, recipe_name, cup_size, water, coffee, milk, powder, foam, date_formed, is_sent, COUNT(id)
          FROM pours 

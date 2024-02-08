@@ -94,7 +94,7 @@ def Take_Create_Beverage_Statistics(last_send, device):
                             prev_hour = time_now - timedelta(hours=24)
                             time_to_form = date_formed - timedelta(minutes=30)
                             count_of_real_pours = int(elem) - int(last_info[k])
-                            pours_detected_in_base = db_conn.get_pours_with_recipeId_and_cup_size(device[1], recipe_number, recipe_size, time_now, prev_hour)
+                            pours_detected_in_base = db_conn.get_pours_with_recipe_id_and_cup_size(device[1], recipe_number, recipe_size, time_now, prev_hour)
                             print("Должно быть")
                             print(count_of_real_pours)
                             print("В базе найдено")
@@ -104,11 +104,11 @@ def Take_Create_Beverage_Statistics(last_send, device):
                             if count_of_real_pours != pours_detected_in_base[0][12]:
                                 count_in_base = pours_detected_in_base[0][12]
                                 if pours_detected_in_base is None or count_in_base == 0:
-                                    middle_recipe = db_conn.get_pours_with_recipeId_and_cup_size(device[1], recipe_number, "M", time_now, prev_hour)
+                                    middle_recipe = db_conn.get_pours_with_recipe_id_and_cup_size(device[1], recipe_number, "M", time_now, prev_hour)
                                     if middle_recipe is None or middle_recipe == []:
                                         from controllers.api.beverages.Drinks import updateDrinks
                                         updateDrinks(device[1], device[2])
-                                    middle_recipe = db_conn.get_pours_with_recipeId_and_cup_size(device[1], recipe_number, "M", time_now, prev_hour)
+                                    middle_recipe = db_conn.get_pours_with_recipe_id_and_cup_size(device[1], recipe_number, "M", time_now, prev_hour)
                                     if middle_recipe is not None:
                                         recipe_callback = db_conn.getRecipe(device[1], recipe_number)
                                         if recipe_callback is not None:
