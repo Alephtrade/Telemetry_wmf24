@@ -144,8 +144,8 @@ def Take_Create_Beverage_Statistics(last_send, device):
                             request = f'{WMF_URL}?device={device[1]}&error_id=AT91&date_start={time_now}&date_end={time_now}&duration=0&status=1'
                             response = requests.post(request)
                             #print(response)
-                            db_conn.create_error_record(device[1], 'AT91')
-                            db_conn.close_error_code(device[1], 'AT91')
+                            #db_conn.create_error_record(device[1], 'AT91')
+                            #db_conn.close_error_code(device[1], 'AT91')
     #return True
     return create_record
 
