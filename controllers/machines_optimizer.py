@@ -63,7 +63,7 @@ for device in devices:
     last_record = db_conn.get_error_last_stat_record("-1", device[1])
     print(last_record)
     if last_record is None or last_record != [] and last_record[1] and last_record[1] is not None:
-        print(last_record[1])
+        #print(last_record[1])
         db_conn.create_error_record(device[1], '-1')
         last = db_conn.get_error_last_stat_record('-1', device[1])
         request = f'{WMF_URL}?device={device[1]}&error_id=-1&date_start={last[2]}&date_end={last[1]}&duration={last[3]}&status={status}'
