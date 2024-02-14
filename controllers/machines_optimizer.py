@@ -22,30 +22,6 @@ def status_send_anyway(status_machine, device_aleph_id):
     response = requests.request("POST", url, headers=headers, json=data)
 
 
-devices = db_conn.get_devices()
-for device in devices:
-    WS_URL = f'ws://{device[2]}:25000/'
-    try:
-        ws = websocket.create_connection(WS_URL, timeout=5)
-        status = 1
-    except Exception:
-        ws = False
-        status = 0
-    last_record = db_conn.get_error_last_stat_record("-1", device[1])
-    print(last_record)
-    if last_record[1] and last_record[1] is not None:
-        print(last_record[1])
-        db_conn.create_error_record(device[1], '-1')
-    status_send_anyway(status, device[1])
-    if ws == False:
-        db_conn.reset_ips(device[1])
-    if int(datetime.strptime(device[4], '%Y-%m-%d %H:%M:%S').timestamp()) + 2419200 < int(
-            datetime.now().timestamp()):
-        db_conn.delete_device(device[0])
-    if int(datetime.strptime(device[4], '%Y-%m-%d %H:%M:%S').timestamp()) + 43200 < int(datetime.now().timestamp()):
-        db_conn.reset_ips(device[0])
-
-
 def send_errors():
     devices_list = db_conn.get_devices()
     for device_item in devices_list:
@@ -82,3 +58,31 @@ def send_errors():
         except Exception as ex:
             print(ex)
             #logging.error(f'error_collector send_errors: ERROR={ex}, stacktrace: {print_exception()}')
+
+
+
+devices = db_conn.get_devices()
+for device in devices:
+    WS_URL = f'ws://{device[2]}:25000/'
+    try:
+        ws = websocket.create_connection(WS_URL, timeout=5)
+        status = 1
+    except Exception:
+        ws = False
+        status = 0
+    last_record = db_conn.get_error_last_stat_record("-1", device[1])
+    print(last_record)
+    if last_record[1] and last_record[1] is not None:
+        print(last_record[1])
+        db_conn.create_error_record(device[1], '-1')
+    status_send_anyway(status, device[1])
+    send_errors()
+    if ws == False:
+        db_conn.reset_ips(device[1])
+    if int(datetime.strptime(device[4], '%Y-%m-%d %H:%M:%S').timestamp()) + 2419200 < int(
+            datetime.now().timestamp()):
+        db_conn.delete_device(device[0])
+    if int(datetime.strptime(device[4], '%Y-%m-%d %H:%M:%S').timestamp()) + 43200 < int(datetime.now().timestamp()):
+        db_conn.reset_ips(device[0])
+
+
