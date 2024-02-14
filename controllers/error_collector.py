@@ -81,7 +81,7 @@ def worker(ip):
 
 for device in devices:
     try:
-        #ws = websocket.create_connection(f'ws://{device[2]}:25000/', timeout=5)
+        ws = websocket.create_connection(f'ws://{device[2]}:25000/', timeout=5)
         status = 1
     except Exception:
         status = 0
@@ -95,9 +95,10 @@ for device in devices:
     }
     response = requests.request("POST", url, headers=headers, json=data)
     print(response.json())
-    wmf_conn = WMFMachineErrorConnector(device[1], device[2])
-    threading.Thread(target=wmf_conn.run_websocket, name=device[1]).start()
-    worker(device[2])
+    if status == 1:
+        wmf_conn = WMFMachineErrorConnector(device[1], device[2])
+        threading.Thread(target=wmf_conn.run_websocket, name=device[1]).start()
+        worker(device[2])
     #print(threading.active_count())
     #print(threading.enumerate())
 
