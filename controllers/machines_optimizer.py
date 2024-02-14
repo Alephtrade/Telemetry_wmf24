@@ -29,6 +29,8 @@ for device in devices:
         ws = False
         status = 0
     last_record = db_conn.get_error_last_stat_record("-1", device[1])
+    print(last_record)
+    print(last_record[1])
     if last_record[1] is not None:
         db_conn.create_error_record(device[1], '-1')
     status_send_anyway(status, device[1])
