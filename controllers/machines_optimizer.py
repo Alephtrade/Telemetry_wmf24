@@ -30,8 +30,8 @@ for device in devices:
         status = 0
     last_record = db_conn.get_error_last_stat_record("-1", device[1])
     print(last_record)
-    print(last_record[1])
-    if last_record[1] is not None:
+    if last_record[1] and last_record[1] is not None:
+        print(last_record[1])
         db_conn.create_error_record(device[1], '-1')
     status_send_anyway(status, device[1])
     if ws == False:
