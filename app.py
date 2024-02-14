@@ -33,6 +33,7 @@ def hello_world():  # put application's code here
                 return jsonify("false connection"), 521
             if action == "drop_machine":
                 machine = db_conn.find_device_by_aleph_id(request.args.get("aleph_id"))
+                return jsonify(machine), 200
                 db_conn.delete_device(machine["id"])
             elif action == "block":
                 machine_status = db_conn.get_machine_block_status(aleph_id)
