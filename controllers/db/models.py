@@ -280,13 +280,13 @@ class WMFSQLDriver:
         cur.close()
         return res
 
-    def delete_device(self, id):
+    def delete_device(self, db_id):
         cur = self.connection.cursor()
         stmt = ''' 
             DELETE FROM devices
             WHERE id = ?
         '''
-        cur.execute(stmt, id)
+        cur.execute(stmt, db_id)
         res = cur.fetchall()
         #logging.info(f'WMFSQLDriver get_devices: {res}')
         cur.close()
