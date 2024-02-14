@@ -23,25 +23,27 @@ def test():
         if host != "10.8.0.1":
             data_for_request = {}
             machine_response = require_info(host)
-            print(machine_response)
+            #print(machine_response)
             if machine_response:
                 data_for_request["full_serial"] = machine_response["MachineName"]
                 data_for_request["serial_number"] = machine_response["MachineName"]
                 data_for_request["model"] = machine_response["ProductName"]
                 data_for_request["ip"] = machine_response["ip"]
-                print(machine_response)
+                #print(machine_response)
                 if machine_response and machine_response["ip"] is not None:
                     finder = db_conn.find_device_by_full_part_number(data_for_request["full_serial"])
                     #db_conn.reset_all_ips()
                     if not finder:
                         print("NOT finder")
-                        print(machine_response["ip"])
+                        #print(machine_response["ip"])
                         url = "https://backend.wmf24.ru/api/machine_check"
                         headers = {
                             'Content-Type': 'application/json',
                             'Serverkey': db_conn.get_encrpt_key()[0]
                         }
                         response = requests.request("POST", url, headers=headers, data=json.dumps(data_for_request))
+                        print(response["aleph_id"])
+                        print(response)
                         if response.status_code == 200:
                             response = response.json()
                             aleph_id = response["aleph_id"]
