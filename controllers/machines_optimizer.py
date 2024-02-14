@@ -28,7 +28,10 @@ for device in devices:
     except Exception:
         ws = False
         status = 0
-    status_send_anyway(status, device[2])
+    last_record = db_conn.get_error_last_stat_record("-1", device[1])
+    if last_record[1] is None:
+        db_conn.create_error_record(device[1], '-1')
+    status_send_anyway(status, device[1])
     if ws == False:
         db_conn.reset_ips(device[1])
     if int(datetime.strptime(device[4], '%Y-%m-%d %H:%M:%S').timestamp()) + 2419200 < int(
