@@ -132,10 +132,10 @@ class WMFSQLDriver:
         else:
             return False
 
-    def create_device(self, device_aleph_id, device_utc, device_ip, device_model, device_status, full_serial):
+    def create_device(self, device_aleph_id, device_utc, device_ip, device_model, device_status, full_serial, block_status):
         cur = self.connection.cursor()
-        stmt = 'INSERT INTO devices (aleph_id, utc, address, type, status, serial_code) VALUES (?, ?, ?, ?, ?, ?)'
-        cur.execute(stmt, (device_aleph_id, device_utc, device_ip, device_model, device_status, full_serial,))
+        stmt = 'INSERT INTO devices (aleph_id, utc, address, type, status, serial_code, block_status) VALUES (?, ?, ?, ?, ?, ?, ?)'
+        cur.execute(stmt, (device_aleph_id, device_utc, device_ip, device_model, device_status, full_serial, block_status,))
         self.connection.commit()
         cur.close()
 

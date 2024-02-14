@@ -47,8 +47,9 @@ def test():
                             aleph_id = response["aleph_id"]
                             latitude = response["latitude"]
                             longitude = response["longitude"]
+                            block_status = response["is_blocked"]
                         #db_conn.connection.cursor().close()
-                            db_conn.create_device(str(aleph_id), str(utc_calc(latitude, longitude)), str(machine_response["ip"]), str(machine_response["ProductName"]), str(1), str(data_for_request["full_serial"]))
+                            db_conn.create_device(str(aleph_id), str(utc_calc(latitude, longitude)), str(machine_response["ip"]), str(machine_response["ProductName"]), str(1), str(data_for_request["full_serial"], str(block_status)))
                             db_conn.connection.cursor().close()
                     else:
                         print("finder")
