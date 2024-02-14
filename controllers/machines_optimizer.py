@@ -30,7 +30,7 @@ def send_errors():
             wmf_conn = WMFMachineErrorConnector(device[1], device[2])
             #logging.info("error_collector send_errors: CALL")
             errors, request = '', ''
-            unset_errors = db_conn.get_unsent_records(device_item[1])
+            unset_errors = db_conn.get_error_records_to_sent(device_item[1])
             print(unset_errors)
             if unset_errors:
                 for record in unset_errors:
@@ -44,15 +44,7 @@ def send_errors():
                         db_conn.set_report_sent(record[0])
                     else:
                         db_conn.set_report_pre_sent(record[0])
-            unset_errors = db_conn.get_unsent_records_with_end_time(device_item[1])
-            if unset_errors:
-                for record in unset_errors:
-                    request = f'{WMF_URL}?device={device_item[1]}&error_id={record[1]}&date_start={record[2]}&date_end={record[3]}&duration={record[4]}&status={wmf_conn.get_status()}'
-                    print("72")
-                    print(request)
-                    response = requests.post(request)
-                    content = response.content.decode('utf-8')
-                    db_conn.set_report_sent(record[0])
+
         except Exception as ex:
             print(ex)
             #logging.error(f'error_collector send_errors: ERROR={ex}, stacktrace: {print_exception()}')
@@ -73,8 +65,10 @@ for device in devices:
     if last_record[1] and last_record[1] is not None:
         print(last_record[1])
         db_conn.create_error_record(device[1], '-1')
+        last = db_conn.get_error_last_stat_record('-1', device[1])
+        request = f'{WMF_URL}?device={device[1]}&error_id=-1&date_start={last[2]}&date_end={last[1]}&duration={last[3]}&status={status}'
     status_send_anyway(status, device[1])
-    send_errors()
+    #send_errors()
     if ws == False:
         db_conn.reset_ips(device[1])
     if int(datetime.strptime(device[4], '%Y-%m-%d %H:%M:%S').timestamp()) + 2419200 < int(

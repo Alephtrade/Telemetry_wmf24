@@ -83,7 +83,7 @@ class WMFMachineErrorConnector:
                         self.db_driver.create_error_record(self.aleph_id, '-1')
                         self.db_driver.close_error_code(self.aleph_id, "62")
                         last_sixtwo = self.db_driver.get_error_last_stat_record("62", self.aleph_id)
-                        request = f'{self.WMF_URL}?device={self.aleph_id}&error_id=62&date_start={last_sixtwo[2]}&date_end={datetime.fromtimestamp(int(datetime.now().timestamp()))}&duration={last_sixtwo[3]}&status=0'
+                        request = f'{self.WMF_URL}?device={self.aleph_id}&error_id=62&date_start={last_sixtwo[2]}&date_end={datetime.fromtimestamp(int(datetime.now().timestamp()))}&duration={last_sixtwo[3]}&status={self.get_status()}'
 
                     #else:
                 elif info == "gone Error":
