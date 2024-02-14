@@ -282,15 +282,12 @@ class WMFSQLDriver:
 
     def delete_device(self, db_id):
         cur = self.connection.cursor()
-        stmt = ''' 
+        stmt = f''' 
             DELETE FROM devices
-            WHERE id = ?
+            WHERE id = "{db_id}"
         '''
-        cur.execute(stmt, db_id)
-        res = cur.fetchall()
-        #logging.info(f'WMFSQLDriver get_devices: {res}')
-        cur.close()
-        return res
+        cur.execute(stmt)
+        self.connection.commit()
 
     def update_exchange_time(self, minutes):
         cur = self.connection.cursor()
