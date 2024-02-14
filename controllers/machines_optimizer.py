@@ -62,7 +62,7 @@ for device in devices:
         status = 0
     last_record = db_conn.get_error_last_stat_record("-1", device[1])
     print(last_record)
-    if last_record is not None and last_record != [] and last_record[1] and last_record[1] is not None:
+    if last_record is None or last_record != [] and last_record[1] and last_record[1] is not None:
         print(last_record[1])
         db_conn.create_error_record(device[1], '-1')
         last = db_conn.get_error_last_stat_record('-1', device[1])
