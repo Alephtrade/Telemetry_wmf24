@@ -34,7 +34,7 @@ def hello_world():  # put application's code here
             if action == "drop_machine":
                 machine = db_conn.get_device_field_by_aleph_id(request.args.get("aleph_id"), "id")
                 #return jsonify(machine), 200
-                db_conn.delete_device(machine[0])
+                db_conn.delete_device(str(machine[0]))
             elif action == "block":
                 machine_status = db_conn.get_machine_block_status(aleph_id)
                 if request.args.get("block") == "1":
