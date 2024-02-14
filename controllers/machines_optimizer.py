@@ -67,6 +67,7 @@ for device in devices:
         db_conn.create_error_record(device[1], '-1')
         last = db_conn.get_error_last_stat_record('-1', device[1])
         request = f'{WMF_URL}?device={device[1]}&error_id=-1&date_start={last[2]}&date_end={last[1]}&duration={last[3]}&status={status}'
+        print(request)
         response = requests.post(request)
 
     status_send_anyway(status, device[1])
