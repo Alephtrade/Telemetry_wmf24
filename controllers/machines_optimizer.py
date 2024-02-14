@@ -6,6 +6,7 @@ sys.path.append('/var/www/Telemetry_wmf24/')
 from datetime import datetime, timezone
 from controllers.db.models import WMFSQLDriver
 from controllers.settings import prod as settings
+from controllers.wmf.models import WMFMachineErrorConnector
 
 db_conn = WMFSQLDriver()
 WMF_URL = settings.WMF_DATA_URL
@@ -26,6 +27,7 @@ def send_errors():
     devices_list = db_conn.get_devices()
     for device_item in devices_list:
         try:
+            wmf_conn = WMFMachineErrorConnector(device[1], device[2])
             #logging.info("error_collector send_errors: CALL")
             errors, request = '', ''
             unset_errors = db_conn.get_unsent_records(device_item[1])
@@ -42,19 +44,15 @@ def send_errors():
                         db_conn.set_report_sent(record[0])
                     else:
                         db_conn.set_report_pre_sent(record[0])
-                    #logging.info(f'error_collector send_errors: <= {response} {content}')
-            else:
-                unset_errors = db_conn.get_unsent_records_with_end_time(device_item[1])
-                if unset_errors:
-                    for record in unset_errors:
-                        request = f'{WMF_URL}?device={device_item[1]}&error_id={record[1]}&date_start={record[2]}&date_end={record[3]}&duration={record[4]}&status={wmf_conn.get_status()}'
-                        print("72")
-                        print(request)
-                        response = requests.post(request)
-                        content = response.content.decode('utf-8')
-                        db_conn.set_report_sent(record[0])
-                        #logging.info(f'error_collector send_errors: <= {response} {content}')
-                    #logging.info(f'error_collector send_errors: nothing to send')
+            unset_errors = db_conn.get_unsent_records_with_end_time(device_item[1])
+            if unset_errors:
+                for record in unset_errors:
+                    request = f'{WMF_URL}?device={device_item[1]}&error_id={record[1]}&date_start={record[2]}&date_end={record[3]}&duration={record[4]}&status={wmf_conn.get_status()}'
+                    print("72")
+                    print(request)
+                    response = requests.post(request)
+                    content = response.content.decode('utf-8')
+                    db_conn.set_report_sent(record[0])
         except Exception as ex:
             print(ex)
             #logging.error(f'error_collector send_errors: ERROR={ex}, stacktrace: {print_exception()}')
