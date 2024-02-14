@@ -31,7 +31,10 @@ def hello_world():  # put application's code here
                 ws = websocket.create_connection(WS_URL, timeout=5)
             except Exception:
                 return jsonify("false connection"), 521
-            if action == "block":
+            if action == "drop_machine":
+                machine = db_conn.find_device_by_aleph_id(aleph_id)
+                db_conn.delete_device(machine["id"])
+            elif action == "block":
                 machine_status = db_conn.get_machine_block_status(aleph_id)
                 if request.args.get("block") == "1":
                     status = db_conn.set_machine_block_status(aleph_id, "1")
