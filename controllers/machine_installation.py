@@ -42,7 +42,7 @@ def test():
                             'Serverkey': db_conn.get_encrpt_key()[0]
                         }
                         response = requests.request("POST", url, headers=headers, data=json.dumps(data_for_request))
-                        print(response["aleph_id"])
+                        #print(response["aleph_id"])
                         print(response)
                         if response.status_code == 200:
                             response = response.json()

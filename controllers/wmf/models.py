@@ -95,11 +95,11 @@ class WMFMachineErrorConnector:
                 print(data.get("RecipeNumber"))
                 recipe_number = data.get("RecipeNumber")
                 cup_size = data.get("CupSize")
-                if cup_size == "CUP_SIZE_Regular":
+                if cup_size == "CUP_SIZE_Regular" or cup_size == "Regular":
                     cup_size = "M"
-                if cup_size == "CUP_SIZE_Small":
+                if cup_size == "CUP_SIZE_Small" or cup_size == "Small":
                     cup_size = "S"
-                if cup_size == "CUP_SIZE_Large":
+                if cup_size == "CUP_SIZE_Large" or cup_size == "Large":
                     cup_size = "L"
                 #print("Recipe")
                 #print(recipe_number)
