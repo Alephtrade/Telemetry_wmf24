@@ -147,14 +147,15 @@ class WMFMachineErrorConnector:
                                    "cup_size": key[4], "water": key[5], "coffee": key[6], "milk": key[7],
                                    "powder": key[8], "foam": key[9],
                                    "date_formed": (time_check + timedelta(seconds=int(device_utc))).strftime('%Y-%m-%d %H:%M:%S')})
-            # print(sorter)
+            print("sorter")
+            print(sorter)
             url = "https://backend.wmf24.ru/api/new_pour"
             headers = {
                 'Content-Type': 'application/json',
                 'Serverkey': db_conn.get_encrpt_key()[0]
             }
             response = requests.request("POST", url, headers=headers, data=json.dumps(sorter))
-            print(response.status_code)
+            print(response)
             if response.status_code == 200:
                 # print(sorter)
                 for pour in sorter:
