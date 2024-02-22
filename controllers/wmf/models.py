@@ -136,6 +136,8 @@ class WMFMachineErrorConnector:
                         db_conn.initPours(self.aleph_id, recipe_number, self.available_recipe[3], cup_size, water, coffee, milk, powder, foam, date_formed)
             sorter = []
             not_sort_pours = db_conn.get_all_pours_not_sended(self.aleph_id)
+            print("not_sort_pours")
+            print(not_sort_pours)
             for key in not_sort_pours:
                 time_check = datetime.fromtimestamp(
                     (datetime.strptime(key[10], '%Y-%m-%d %H:%M:%S')).timestamp() // (60 * 60) * 60 * 60)
