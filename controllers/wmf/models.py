@@ -152,12 +152,12 @@ class WMFMachineErrorConnector:
                 'Serverkey': db_conn.get_encrpt_key()[0]
             }
             response = requests.request("POST", url, headers=headers, data=json.dumps(sorter))
-            # print(response.status_code)
+            print(response.status_code)
             if response.status_code == 200:
                 # print(sorter)
                 for pour in sorter:
                     # print(pour)
-                    # print(pour["id"])
+                    print(pour["id"])
                     db_conn.id_pours_sended(pour["id"])
                     #data_to_send = {}
                     #data_to_send["aleph_id"] = self.aleph_id
