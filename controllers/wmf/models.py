@@ -139,8 +139,7 @@ class WMFMachineErrorConnector:
             print("not_sort_pours")
             print(not_sort_pours)
             for key in not_sort_pours:
-                time_check = datetime.fromtimestamp(
-                    (datetime.strptime(key[10], '%Y-%m-%d %H:%M:%S')).timestamp() // (60 * 60) * 60 * 60)
+                time_check = datetime.fromtimestamp(datetime.strptime(key[10], '%Y-%m-%d %H:%M:%S').timestamp() // (60 * 60) * 60 * 60)
                 if datetime.fromtimestamp(int(datetime.now().timestamp())) > time_check:
                     device_utc = db_conn.get_device_field_by_aleph_id(key[1], "utc")
                     sorter.append({"id": key[0], "aleph_id": key[1], "recipe_id": key[2], "recipe_name": key[3],
