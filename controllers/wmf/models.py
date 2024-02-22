@@ -143,13 +143,13 @@ class WMFMachineErrorConnector:
                 time_check = datetime.fromtimestamp(datetime.strptime(key[10], '%Y-%m-%d %H:%M:%S').timestamp() // (60 * 60) * 60 * 60)
                 print(datetime.fromtimestamp(int(datetime.now().timestamp())))
                 print(time_check)
-                if datetime.fromtimestamp(int(datetime.now().timestamp())) > time_check:
-                    print("time now")
-                    device_utc = db_conn.get_device_field_by_aleph_id(key[1], "utc")
-                    sorter.append({"id": key[0], "aleph_id": key[1], "recipe_id": key[2], "recipe_name": key[3],
-                                   "cup_size": key[4], "water": key[5], "coffee": key[6], "milk": key[7],
-                                   "powder": key[8], "foam": key[9],
-                                   "date_formed": (time_check + timedelta(seconds=int(device_utc))).strftime('%Y-%m-%d %H:%M:%S')})
+                #if datetime.fromtimestamp(int(datetime.now().timestamp())) > time_check:
+                #print("time now")
+                device_utc = db_conn.get_device_field_by_aleph_id(key[1], "utc")
+                sorter.append({"id": key[0], "aleph_id": key[1], "recipe_id": key[2], "recipe_name": key[3],
+                               "cup_size": key[4], "water": key[5], "coffee": key[6], "milk": key[7],
+                               "powder": key[8], "foam": key[9],
+                               "date_formed": (time_check + timedelta(seconds=int(device_utc))).strftime('%Y-%m-%d %H:%M:%S')})
             print("sorter")
             print(sorter)
             url = "https://backend.wmf24.ru/api/new_pour"
