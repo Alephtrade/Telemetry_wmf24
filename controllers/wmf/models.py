@@ -146,6 +146,7 @@ class WMFMachineErrorConnector:
                 #if datetime.fromtimestamp(int(datetime.now().timestamp())) > time_check:
                 #print("time now")
                 device_utc = db_conn.get_device_field_by_aleph_id(key[1], "utc")
+                print(device_utc)
                 sorter.append({"id": key[0], "aleph_id": key[1], "recipe_id": key[2], "recipe_name": key[3],
                                "cup_size": key[4], "water": key[5], "coffee": key[6], "milk": key[7],
                                "powder": key[8], "foam": key[9],
