@@ -146,19 +146,19 @@ class WMFMachineErrorConnector:
                                    "powder": key[8], "foam": key[9],
                                    "date_formed": (time_check + timedelta(seconds=int(device_utc))).strftime('%Y-%m-%d %H:%M:%S')})
             # print(sorter)
-            url = "https://backend.wmf24.ru/api/new_pour"
-            headers = {
-                'Content-Type': 'application/json',
-                'Serverkey': db_conn.get_encrpt_key()[0]
-            }
-            response = requests.request("POST", url, headers=headers, data=json.dumps(sorter))
-            # print(response.status_code)
-            if response.status_code == 200:
-                # print(sorter)
-                for pour in sorter:
-                    # print(pour)
-                    # print(pour["id"])
-                    db_conn.id_pours_sended(pour["id"])
+                    url = "https://backend.wmf24.ru/api/new_pour"
+                    headers = {
+                        'Content-Type': 'application/json',
+                        'Serverkey': db_conn.get_encrpt_key()[0]
+                    }
+                    response = requests.request("POST", url, headers=headers, data=json.dumps(sorter))
+                    # print(response.status_code)
+                    if response.status_code == 200:
+                        # print(sorter)
+                        for pour in sorter:
+                            # print(pour)
+                            # print(pour["id"])
+                            db_conn.id_pours_sended(pour["id"])
                     #data_to_send = {}
                     #data_to_send["aleph_id"] = self.aleph_id
                     #data_to_send["recipe_id"] = recipe_number
