@@ -61,11 +61,11 @@ def get_main_clean_stat(device):
             end_time = date_end_prev_error
     for disconnect_rec_id, disconnect_error_code, disconnect_start_time, disconnect_end_time in unsent_disconnect_records:
         #print("unsent_disconnect_records loop")
-        if start_time is not None:
+        if type(start_time) is not datetime and start_time is not None:
             start_time = time_now
-        if end_time is not None:
+        if type(end_time) is not datetime and end_time is not None:
             end_time = prev_hour
-        if type(disconnect_start_time) is not datetime:
+        if type(disconnect_start_time) is not datetime and disconnect_start_time is not None:
             disconnect_start_time = datetime.strptime(disconnect_start_time, '%Y-%m-%d %H:%M:%S')
         if type(disconnect_end_time) is not datetime and disconnect_end_time is not None:
             disconnect_end_time = datetime.strptime(disconnect_end_time, '%Y-%m-%d %H:%M:%S')
