@@ -61,9 +61,9 @@ def get_main_clean_stat(device):
             end_time = date_end_prev_error
     for disconnect_rec_id, disconnect_error_code, disconnect_start_time, disconnect_end_time in unsent_disconnect_records:
         #print("unsent_disconnect_records loop")
-        if type(start_time) is not datetime and start_time is not None:
+        if type(start_time) is not datetime or start_time is None:
             start_time = time_now
-        if type(end_time) is not datetime and end_time is not None:
+        if type(end_time) is not datetime or end_time is None:
             end_time = prev_hour
         if type(disconnect_start_time) is not datetime and disconnect_start_time is not None:
             disconnect_start_time = datetime.strptime(disconnect_start_time, '%Y-%m-%d %H:%M:%S')
@@ -94,8 +94,8 @@ def get_main_clean_stat(device):
         per_error_time = timedelta_int(per_error_time)
         if per_error_time < 0:
             per_error_time = 0
-        wmf_error_time += per_error_time
-        wmf_error_count += 1
+        #wmf_error_time += per_error_time
+        #wmf_error_count += 1
         date_end_prev_error = end_time
 
     wmf_work_time = 3600 - wmf_error_time - total_disconnect_time
