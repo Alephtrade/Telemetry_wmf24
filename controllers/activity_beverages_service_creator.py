@@ -51,7 +51,7 @@ def get_main_clean_stat(device):
                     error_end_time = int(datetime.strptime(error_end_time, '%Y-%m-%d %H:%M:%S').timestamp())
                 else:
                     error_end_time = int(time_now.timestamp())
-            if disconnect_start_time is not type(int):
+            if disconnect_start_time is not int:
                 if disconnect_start_time is not None:
                     disconnect_start_time = int((datetime.strptime(str(disconnect_start_time), '%Y-%m-%d %H:%M:%S')).timestamp())
                 else:
