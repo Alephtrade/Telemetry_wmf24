@@ -40,12 +40,12 @@ def get_main_clean_stat(device):
 
     print(unsent_disconnect_records, unsent_records)
     for i, value in enumerate(unsent_disconnect_records):
-        print(i)
-        print(value)
+        print({"i", i})
+        print({"value", value})
 
         for k, value2 in enumerate(unsent_records):
-            print(k)
-            print(value2)
+            print({"k", k})
+            print({"value2", value2})
 
             if type(error_start_time) != int:
                 if error_start_time is not None:
