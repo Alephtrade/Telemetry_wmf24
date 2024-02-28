@@ -85,7 +85,7 @@ def get_main_clean_stat(device):
         if disconnect_end_time is None or disconnect_end_time > time_now:
             disconnect_end_time = time_now
         print({disconnect_end_time, disconnect_start_time})
-        disconnect_time = disconnect_end_time - disconnect_start_time
+        disconnect_time = int(disconnect_end_time.timestamp()) - int(disconnect_start_time.timestamp())
         #disconnect_time = timedelta_int(disconnect_time)
         total_disconnect_time += disconnect_time
         print({"db_id", disconnect_rec_id})
