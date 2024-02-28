@@ -88,7 +88,7 @@ def get_main_clean_stat(device):
                     per_error_time = 0
                 #wmf_error_time += per_error_time
                 #wmf_error_count += 1
-            date_end_prev_error = end_time
+                date_end_prev_error = end_time
 
     wmf_work_time = 3600 - wmf_error_time - total_disconnect_time
 
