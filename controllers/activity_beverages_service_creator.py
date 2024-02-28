@@ -80,8 +80,8 @@ def get_main_clean_stat(device):
                 start_time = disconnect_end_time
             if disconnect_start_time < end_time < disconnect_end_time:  # 3.4.3.2
                 end_time = disconnect_start_time
-        if disconnect_start_time < time_now:
-            disconnect_start_time = prev_hour
+        #if disconnect_start_time < time_now:
+        #    disconnect_start_time = prev_hour
         if disconnect_end_time is None or disconnect_end_time > time_now:
             disconnect_end_time = time_now
         print({disconnect_end_time, disconnect_start_time})
