@@ -59,6 +59,10 @@ def get_main_clean_stat(device):
             start_time = date_end_prev_error
         if end_time < date_end_prev_error:
             end_time = date_end_prev_error
+        if start_time is None:
+            start_time = prev_hour
+        if end_time is None:
+            end_time = time_now
         per_error_time = end_time - start_time
         per_error_time = timedelta_int(per_error_time)
         if per_error_time < 0:
