@@ -50,13 +50,13 @@ def get_main_clean_stat(device):
             else:
                 error_end_time = time_now_to_db_save
             if disconnect_start_time is not None:
-                disconnect_start_time = datetime.strptime(disconnect_start_time, '%Y-%m-%d %H:%M:%S')
+                disconnect_start_time = datetime.strptime(str(disconnect_start_time), '%Y-%m-%d %H:%M:%S')
             else:
                 disconnect_start_time = prev_hour
-            if disconnect_start_time is not None:
-                disconnect_start_time = datetime.strptime(disconnect_start_time, '%Y-%m-%d %H:%M:%S')
+            if disconnect_end_time is not None:
+                disconnect_end_time = datetime.strptime(str(disconnect_end_time), '%Y-%m-%d %H:%M:%S')
             else:
-                disconnect_start_time = prev_hour
+                disconnect_end_time = time_now
 
             if error_start_time > disconnect_start_time and error_end_time > disconnect_end_time:
                 wmf_error_count += 1
