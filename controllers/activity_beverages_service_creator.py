@@ -88,9 +88,10 @@ def get_main_clean_stat(device):
         disconnect_time = timedelta_int(disconnect_time)
         if disconnect_time < 0:
             disconnect_time = 0
+        total_disconnect_time += disconnect_time
         print({"db_id", disconnect_rec_id})
         print({"time", disconnect_time})
-        total_disconnect_time += disconnect_time
+        print(total_disconnect_time)
         disconnect_count += 1
         per_error_time = end_time - start_time
         per_error_time = timedelta_int(per_error_time)
