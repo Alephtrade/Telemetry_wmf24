@@ -38,10 +38,11 @@ def get_main_clean_stat(device):
     wmf_error_count = 0
     disconnect_count = 0
 
-    print(unsent_disconnect_records)
     print("unsent_disconnect_records")
-    print(unsent_records)
+    print(unsent_disconnect_records)
+    print("----------------------------")
     print("unsent_records")
+    print(unsent_records)
     for disconnect_rec_id, disconnect_error_code, disconnect_start_time, disconnect_end_time in unsent_disconnect_records:
         for rec_id, error_code, error_start_time, error_end_time in unsent_records:
             if type(error_start_time) != int:
