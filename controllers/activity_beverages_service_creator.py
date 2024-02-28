@@ -42,19 +42,19 @@ def get_main_clean_stat(device):
     for disconnect_rec_id, disconnect_error_code, disconnect_start_time, disconnect_end_time in unsent_disconnect_records:
         for rec_id, error_code, error_start_time, error_end_time in unsent_records:
             if error_start_time is not None:
-                error_start_time = datetime.strptime(error_start_time, '%Y-%m-%d %H:%M:%S')
+                error_start_time = datetime.strptime(error_start_time, '%Y-%m-%d %H:%M:%S').timestamp()
             else:
                 error_start_time = prev_hour
             if error_end_time is not None:
-                error_end_time = datetime.strptime(error_end_time, '%Y-%m-%d %H:%M:%S')
+                error_end_time = datetime.strptime(error_end_time, '%Y-%m-%d %H:%M:%S').timestamp()
             else:
                 error_end_time = time_now_to_db_save
             if disconnect_start_time is not None:
-                disconnect_start_time = datetime.strptime(str(disconnect_start_time), '%Y-%m-%d %H:%M:%S')
+                disconnect_start_time = datetime.strptime(str(disconnect_start_time), '%Y-%m-%d %H:%M:%S').timestamp()
             else:
                 disconnect_start_time = prev_hour
             if disconnect_end_time is not None:
-                disconnect_end_time = datetime.strptime(str(disconnect_end_time), '%Y-%m-%d %H:%M:%S')
+                disconnect_end_time = datetime.strptime(str(disconnect_end_time), '%Y-%m-%d %H:%M:%S').timestamp()
             else:
                 disconnect_end_time = time_now
 
