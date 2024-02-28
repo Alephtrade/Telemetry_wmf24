@@ -37,7 +37,10 @@ def get_main_clean_stat(device):
     disconnect_time = timedelta()
     wmf_error_count = 0
     disconnect_count = 0
-
+    for k, value2 in enumerate(unsent_records):
+        print({"k": k})
+        print({"value2": value2.start_time})
+    return 11
     print(unsent_disconnect_records, unsent_records)
     for i, value in enumerate(unsent_disconnect_records):
         print({"i": i})
@@ -45,7 +48,7 @@ def get_main_clean_stat(device):
 
         for k, value2 in enumerate(unsent_records):
             print({"k": k})
-            print({"value2": value2})
+            print({"value2": value2.start_time})
 
             if type(error_start_time) != int:
                 if error_start_time is not None:
