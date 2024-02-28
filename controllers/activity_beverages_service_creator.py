@@ -19,7 +19,7 @@ db_conn = WMFSQLDriver()
 
 def get_main_clean_stat(device):
 
-    print(device)
+    #print(device)
     time_now = datetime.fromtimestamp(int(datetime.now().timestamp() // (60 * 60) * 60 * 60))
     time_now_to_db_save = datetime.fromtimestamp(int(datetime.now().timestamp() // (60 * 60) * 60 * 60 - 1))
     prev_hour = time_now - timedelta(hours=1)
@@ -61,7 +61,7 @@ def get_main_clean_stat(device):
                     disconnect_end_time = int(datetime.strptime(str(disconnect_end_time), '%Y-%m-%d %H:%M:%S').timestamp())
                 else:
                     disconnect_end_time = int(time_now.timestamp())
-            print(type(disconnect_start_time))
+            #print(type(disconnect_start_time))
             if error_start_time > disconnect_start_time and error_end_time > disconnect_end_time:
                 wmf_error_count += 1
                 wmf_error_time += error_end_time - disconnect_end_time
@@ -190,5 +190,5 @@ devices = db_conn.get_devices()
 for device in devices:
 #    print(device[2])
     are_need_to_create(device)
-    get_service_statistics(device)
+    #get_service_statistics(device)
     get_main_clean_stat(device)
