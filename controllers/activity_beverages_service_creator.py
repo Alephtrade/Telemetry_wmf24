@@ -65,6 +65,9 @@ def get_main_clean_stat(device):
             end_time = time_now
         per_error_time = end_time - start_time
         per_error_time = timedelta_int(per_error_time)
+        print({"db_id", rec_id})
+        print({"time", per_error_time})
+        print(wmf_error_time)
         if per_error_time < 0:
             per_error_time = 0
         wmf_error_time += per_error_time
