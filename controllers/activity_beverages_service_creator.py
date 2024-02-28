@@ -42,21 +42,21 @@ def get_main_clean_stat(device):
     for disconnect_rec_id, disconnect_error_code, disconnect_start_time, disconnect_end_time in unsent_disconnect_records:
         for rec_id, error_code, error_start_time, error_end_time in unsent_records:
             if error_start_time is not None:
-                error_start_time = (datetime.strptime(error_start_time, '%Y-%m-%d %H:%M:%S')).timestamp()
+                error_start_time = int(datetime.strptime(error_start_time, '%Y-%m-%d %H:%M:%S').timestamp())
             else:
-                error_start_time = prev_hour.timestamp()
+                error_start_time = int(prev_hour.timestamp())
             if error_end_time is not None:
-                error_end_time = (datetime.strptime(error_end_time, '%Y-%m-%d %H:%M:%S')).timestamp()
+                error_end_time = int(datetime.strptime(error_end_time, '%Y-%m-%d %H:%M:%S').timestamp())
             else:
-                error_end_time = time_now.timestamp()
+                error_end_time = int(time_now.timestamp())
             if disconnect_start_time is not None:
-                disconnect_start_time = (datetime.strptime(str(disconnect_start_time), '%Y-%m-%d %H:%M:%S')).timestamp()
+                disconnect_start_time = int((datetime.strptime(str(disconnect_start_time), '%Y-%m-%d %H:%M:%S')).timestamp())
             else:
-                disconnect_start_time = prev_hour.timestamp()
+                disconnect_start_time = int(prev_hour.timestamp())
             if disconnect_end_time is not None:
-                disconnect_end_time = (datetime.strptime(str(disconnect_end_time), '%Y-%m-%d %H:%M:%S')).timestamp()
+                disconnect_end_time = int(datetime.strptime(str(disconnect_end_time), '%Y-%m-%d %H:%M:%S').timestamp())
             else:
-                disconnect_end_time = time_now.timestamp()
+                disconnect_end_time = int(time_now.timestamp())
 
             if error_start_time > disconnect_start_time and error_end_time > disconnect_end_time:
                 wmf_error_count += 1
