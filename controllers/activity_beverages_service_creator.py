@@ -37,58 +37,56 @@ def get_main_clean_stat(device):
     disconnect_time = timedelta()
     wmf_error_count = 0
     disconnect_count = 0
-
-    print("unsent_disconnect_records")
-    print(unsent_disconnect_records)
-    print("----------------------------")
-    print("unsent_records")
-    print(unsent_records)
+    for rec_id, error_code, start_time, end_time in unsent_records:
+        #print({"Ошибки3": unsent_records})
+        if type(start_time) is not datetime and start_time is not None:
+            start_time = datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
+        if type(end_time) is not datetime and end_time is not None:
+            end_time = datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S')
+        if end_time is None or end_time > time_now:
+            end_time = time_now
+        if start_time < date_end_prev_error:
+            start_time = date_end_prev_error
+        if end_time < date_end_prev_error:
+            end_time = date_end_prev_error
     for disconnect_rec_id, disconnect_error_code, disconnect_start_time, disconnect_end_time in unsent_disconnect_records:
-        for rec_id, error_code, error_start_time, error_end_time in unsent_records:
-            if type(error_start_time) != int:
-                if error_start_time is not None:
-                    error_start_time = int(datetime.strptime(error_start_time, '%Y-%m-%d %H:%M:%S').timestamp())
-                else:
-                    error_start_time = int(prev_hour.timestamp())
-            if type(error_end_time) != int:
-                if error_end_time is not None:
-                    error_end_time = int(datetime.strptime(error_end_time, '%Y-%m-%d %H:%M:%S').timestamp())
-                else:
-                    error_end_time = int(time_now.timestamp())
-            if type(disconnect_start_time) != int:
-                if disconnect_start_time is not None:
-                    disconnect_start_time = int((datetime.strptime(str(disconnect_start_time), '%Y-%m-%d %H:%M:%S')).timestamp())
-                else:
-                    disconnect_start_time = int(prev_hour.timestamp())
-            if type(disconnect_end_time) != int:
-                if disconnect_end_time is not None:
-                    disconnect_end_time = int(datetime.strptime(str(disconnect_end_time), '%Y-%m-%d %H:%M:%S').timestamp())
-                else:
-                    disconnect_end_time = int(time_now.timestamp())
-            #print(type(disconnect_start_time))
-            if error_start_time > disconnect_start_time and error_end_time > disconnect_end_time:
-                wmf_error_count += 1
-                wmf_error_time += error_end_time - disconnect_end_time
-                disconnect_count += 0
-                total_disconnect_time += 0
-            if error_start_time > disconnect_start_time and error_end_time < disconnect_end_time:
-                wmf_error_count += 0
-                wmf_error_time += 0
-                disconnect_count += 1
-                total_disconnect_time += disconnect_end_time - error_start_time
-            if error_start_time < disconnect_start_time and error_end_time > disconnect_end_time:
-                wmf_error_count += 1
-                wmf_error_time += (disconnect_start_time - error_start_time) + (disconnect_end_time - error_end_time)
-                disconnect_count += 0
-                total_disconnect_time += 0
-            if error_start_time < disconnect_start_time and error_end_time < disconnect_end_time:
-                wmf_error_count += 1
-                wmf_error_time += disconnect_start_time - error_start_time
-                disconnect_count += 0
-                total_disconnect_time += 0
-
-    #print({wmf_error_count, wmf_error_time, disconnect_count, total_disconnect_time})
-
+        #print("unsent_disconnect_records loop")
+        if type(start_time) is not datetime or start_time is None:
+            start_time = time_now
+        if type(end_time) is not datetime or end_time is None:
+            end_time = prev_hour
+        if type(disconnect_start_time) is not datetime and disconnect_start_time is not None:
+            disconnect_start_time = datetime.strptime(disconnect_start_time, '%Y-%m-%d %H:%M:%S')
+        if type(disconnect_end_time) is not datetime and disconnect_end_time is not None:
+            disconnect_end_time = datetime.strptime(disconnect_end_time, '%Y-%m-%d %H:%M:%S')
+        if disconnect_start_time < start_time:  # 3.4.1
+            disconnect_start_time = prev_hour
+        if disconnect_end_time is None or disconnect_end_time > time_now:  # 3.4.2
+            disconnect_end_time = time_now
+        if start_time < disconnect_start_time and end_time > disconnect_end_time:  # 3.4.3
+            start_time = disconnect_end_time - (disconnect_start_time - start_time)
+        else:
+            if disconnect_start_time <= start_time < disconnect_end_time:  # 3.4.3.1
+                start_time = disconnect_end_time
+            if disconnect_start_time < end_time < disconnect_end_time:  # 3.4.3.2
+                end_time = disconnect_start_time
+        if disconnect_start_time < time_now:
+            disconnect_start_time = prev_hour
+        if disconnect_end_time is None or disconnect_end_time > time_now:
+            disconnect_end_time = time_now
+        disconnect_time = disconnect_end_time - disconnect_start_time
+        disconnect_time = timedelta_int(disconnect_time)
+        if disconnect_time < 0:
+            disconnect_time = 0
+        total_disconnect_time += disconnect_time
+        disconnect_count += 1
+        per_error_time = end_time - start_time
+        per_error_time = timedelta_int(per_error_time)
+        if per_error_time < 0:
+            per_error_time = 0
+        #wmf_error_time += per_error_time
+        #wmf_error_count += 1
+        date_end_prev_error = end_time
 
     wmf_work_time = 3600 - wmf_error_time - total_disconnect_time
 
