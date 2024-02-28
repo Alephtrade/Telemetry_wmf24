@@ -39,8 +39,10 @@ def get_main_clean_stat(device):
     disconnect_count = 0
 
     print(unsent_disconnect_records, unsent_records)
-    for disconnect_rec_id, disconnect_error_code, disconnect_start_time, disconnect_end_time in unsent_disconnect_records:
-        for rec_id, error_code, error_start_time, error_end_time in unsent_records:
+    for i, disconnect_rec_id, disconnect_error_code, disconnect_start_time, disconnect_end_time in enumerate(unsent_disconnect_records):
+        print(i)
+        for k, rec_id, error_code, error_start_time, error_end_time in enumerate(unsent_records):
+            print(k)
             if type(error_start_time) != int:
                 if error_start_time is not None:
                     error_start_time = int(datetime.strptime(error_start_time, '%Y-%m-%d %H:%M:%S').timestamp())
