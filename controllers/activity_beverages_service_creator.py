@@ -48,7 +48,7 @@ def get_main_clean_stat(device):
     wmf_error_count = 0
     disconnect_count = 0
     for rec_id, error_code, start_time, end_time in unsent_records:
-        #print({"Ошибки3": unsent_records})
+        print({"Ошибки": unsent_records})
         if type(start_time) is not datetime and start_time is not None:
             start_time = datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S')
         if type(end_time) is not datetime and end_time is not None:
@@ -60,7 +60,7 @@ def get_main_clean_stat(device):
         if end_time < date_end_prev_error:
             end_time = date_end_prev_error
     for disconnect_rec_id, disconnect_error_code, disconnect_start_time, disconnect_end_time in unsent_disconnect_records:
-        #print("unsent_disconnect_records loop")
+        print({"Остановки": unsent_disconnect_records})
         if type(start_time) is not datetime or start_time is None:
             start_time = time_now
         if type(end_time) is not datetime or end_time is None:
