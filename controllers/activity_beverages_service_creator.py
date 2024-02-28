@@ -69,41 +69,39 @@ def get_main_clean_stat(device):
             per_error_time = 0
         wmf_error_time += per_error_time
         wmf_error_count += 1
-    for disconnect_rec_id, disconnect_error_code, disconnect_start_time, disconnect_end_time in unsent_disconnect_records:
-        if start_time is None:
-            start_time = prev_hour
-        if end_time is None:
-            end_time = time_now
-        print({"Остановки": unsent_disconnect_records})
-        if type(disconnect_start_time) is not datetime and disconnect_start_time is not None:
-            disconnect_start_time = datetime.strptime(disconnect_start_time, '%Y-%m-%d %H:%M:%S')
-        if type(disconnect_end_time) is not datetime and disconnect_end_time is not None:
-            disconnect_end_time = datetime.strptime(disconnect_end_time, '%Y-%m-%d %H:%M:%S')
-        if disconnect_start_time < start_time:  # 3.4.1
-            disconnect_start_time = prev_hour
-        if disconnect_end_time is None or disconnect_end_time > time_now:  # 3.4.2
-            disconnect_end_time = time_now
-        if start_time < disconnect_start_time and end_time > disconnect_end_time:  # 3.4.3
-            start_time = disconnect_end_time - (disconnect_start_time - start_time)
-        else:
-            if disconnect_start_time <= start_time < disconnect_end_time:  # 3.4.3.1
-                start_time = disconnect_end_time
-            if disconnect_start_time < end_time < disconnect_end_time:  # 3.4.3.2
-                end_time = disconnect_start_time
-        #if disconnect_start_time < time_now:
-        #    disconnect_start_time = prev_hour
-        if disconnect_end_time is None or disconnect_end_time > time_now:
-            disconnect_end_time = time_now
-        print({disconnect_end_time, disconnect_start_time})
-        disconnect_time = int(disconnect_end_time.timestamp()) - int(disconnect_start_time.timestamp())
-        #disconnect_time = timedelta_int(disconnect_time)
-        total_disconnect_time += disconnect_time
-        print({"db_id", disconnect_rec_id})
-        print({"time", disconnect_time})
-        print(total_disconnect_time)
-        disconnect_count += 1
-
-
+        for disconnect_rec_id, disconnect_error_code, disconnect_start_time, disconnect_end_time in unsent_disconnect_records:
+            if start_time is None:
+                start_time = prev_hour
+            if end_time is None:
+                end_time = time_now
+            print({"Остановки": unsent_disconnect_records})
+            if type(disconnect_start_time) is not datetime and disconnect_start_time is not None:
+                disconnect_start_time = datetime.strptime(disconnect_start_time, '%Y-%m-%d %H:%M:%S')
+            if type(disconnect_end_time) is not datetime and disconnect_end_time is not None:
+                disconnect_end_time = datetime.strptime(disconnect_end_time, '%Y-%m-%d %H:%M:%S')
+            if disconnect_start_time < start_time:  # 3.4.1
+                disconnect_start_time = prev_hour
+            if disconnect_end_time is None or disconnect_end_time > time_now:  # 3.4.2
+                disconnect_end_time = time_now
+            if start_time < disconnect_start_time and end_time > disconnect_end_time:  # 3.4.3
+                start_time = disconnect_end_time - (disconnect_start_time - start_time)
+            else:
+                if disconnect_start_time <= start_time < disconnect_end_time:  # 3.4.3.1
+                    start_time = disconnect_end_time
+                if disconnect_start_time < end_time < disconnect_end_time:  # 3.4.3.2
+                    end_time = disconnect_start_time
+            #if disconnect_start_time < time_now:
+            #    disconnect_start_time = prev_hour
+            if disconnect_end_time is None or disconnect_end_time > time_now:
+                disconnect_end_time = time_now
+            print({disconnect_end_time, disconnect_start_time})
+            disconnect_time = int(disconnect_end_time.timestamp()) - int(disconnect_start_time.timestamp())
+            #disconnect_time = timedelta_int(disconnect_time)
+            total_disconnect_time += disconnect_time
+            print({"db_id", disconnect_rec_id})
+            print({"time", disconnect_time})
+            print(total_disconnect_time)
+            disconnect_count += 1
         date_end_prev_error = end_time
 
     wmf_work_time = 3600 - wmf_error_time - total_disconnect_time
