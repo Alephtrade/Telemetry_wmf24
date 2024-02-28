@@ -41,22 +41,22 @@ def get_main_clean_stat(device):
     print(unsent_disconnect_records, unsent_records)
     for disconnect_rec_id, disconnect_error_code, disconnect_start_time, disconnect_end_time in unsent_disconnect_records:
         for rec_id, error_code, error_start_time, error_end_time in unsent_records:
-            if error_start_time is not type(int):
+            if type(error_start_time) != int:
                 if error_start_time is not None:
                     error_start_time = int(datetime.strptime(error_start_time, '%Y-%m-%d %H:%M:%S').timestamp())
                 else:
                     error_start_time = int(prev_hour.timestamp())
-            if error_end_time is not type(int):
+            if type(error_end_time) != int:
                 if error_end_time is not None:
                     error_end_time = int(datetime.strptime(error_end_time, '%Y-%m-%d %H:%M:%S').timestamp())
                 else:
                     error_end_time = int(time_now.timestamp())
-            if disconnect_start_time is not int:
+            if type(disconnect_start_time) != int:
                 if disconnect_start_time is not None:
                     disconnect_start_time = int((datetime.strptime(str(disconnect_start_time), '%Y-%m-%d %H:%M:%S')).timestamp())
                 else:
                     disconnect_start_time = int(prev_hour.timestamp())
-            if disconnect_end_time is not type(int):
+            if type(disconnect_end_time) != int:
                 if disconnect_end_time is not None:
                     disconnect_end_time = int(datetime.strptime(str(disconnect_end_time), '%Y-%m-%d %H:%M:%S').timestamp())
                 else:
