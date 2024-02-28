@@ -68,6 +68,7 @@ def get_main_clean_stat(device):
             per_error_time = 0
         wmf_error_time += per_error_time
         wmf_error_count += 1
+        date_end_prev_error = end_time
     for disconnect_rec_id, disconnect_error_code, disconnect_start_time, disconnect_end_time in unsent_disconnect_records:
         if start_time is None:
             start_time = prev_hour
