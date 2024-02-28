@@ -19,7 +19,7 @@ db_conn = WMFSQLDriver()
 
 def get_main_clean_stat(device):
 
-    print(device)
+    #print(device)
     time_now = datetime.fromtimestamp(int(datetime.now().timestamp() // (60 * 60) * 60 * 60))
     time_now_to_db_save = datetime.fromtimestamp(int(datetime.now().timestamp() // (60 * 60) * 60 * 60 - 1))
     prev_hour = time_now - timedelta(hours=1)
@@ -193,6 +193,6 @@ def are_need_to_create(device):
 devices = db_conn.get_devices()
 for device in devices:
 #    print(device[2])
-    are_need_to_create(device)
-    get_service_statistics(device)
+    #are_need_to_create(device)
+    #get_service_statistics(device)
     get_main_clean_stat(device)
