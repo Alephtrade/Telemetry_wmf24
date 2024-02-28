@@ -37,6 +37,11 @@ def get_main_clean_stat(device):
     disconnect_time = timedelta()
     wmf_error_count = 0
     disconnect_count = 0
+
+    print("unsent_records")
+    print(unsent_records)
+    print("unsent_disconnect_records")
+    print(unsent_disconnect_records)
     for rec_id, error_code, start_time, end_time in unsent_records:
         #print({"Ошибки3": unsent_records})
         if type(start_time) is not datetime and start_time is not None:
