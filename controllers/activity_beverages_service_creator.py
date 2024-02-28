@@ -57,7 +57,7 @@ def get_main_clean_stat(device):
                 disconnect_end_time = int(datetime.strptime(str(disconnect_end_time), '%Y-%m-%d %H:%M:%S').timestamp())
             else:
                 disconnect_end_time = int(time_now.timestamp())
-
+            print(type(disconnect_start_time))
             if error_start_time > disconnect_start_time and error_end_time > disconnect_end_time:
                 wmf_error_count += 1
                 wmf_error_time += error_end_time - disconnect_end_time
