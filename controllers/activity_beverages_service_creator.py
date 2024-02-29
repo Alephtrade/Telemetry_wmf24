@@ -37,7 +37,6 @@ def get_main_clean_stat(device):
     #print(last_bev_rec_id)
     unsent_records = db_conn.get_error_records(prev_hour, time_now, device[1])
     #print({"Ошибки": unsent_records})
-    #print({prev_hour, time_now, device[1]})
     unsent_disconnect_records = db_conn.get_all_error_records_by_code(device[1], prev_hour, time_now, "-1")
     #print({"Ошибки -1": unsent_disconnect_records})
     date_end_prev_error = prev_hour
