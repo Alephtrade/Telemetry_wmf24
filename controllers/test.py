@@ -1,33 +1,75 @@
-import websocket
-import logging
-import requests
-import threading
-import socket
-import sys
-import json
-sys.path.append('./')
-sys.path.append('/var/www/Telemetry_wmf24/')
-from controllers.db.models import WMFSQLDriver
-from controllers.settings import prod as settings
-from controllers.core.utils import timedelta_int, get_beverages_send_time, initialize_logger
-from controllers.api.beverages import methods
-from controllers.wmf.models import WMFMachineStatConnector, WMFMachineErrorConnector
-
-db_conn = WMFSQLDriver()
-
-devices = db_conn.get_devices()
-for device in devices:
-    db_driver = WMFSQLDriver()
-    WS_URL = f'ws://10.8.0.6:25000/'
-    wmf_conn = WMFMachineErrorConnector(device[1], device[2])
-    ws = websocket.create_connection(WS_URL, timeout=5)
-    status = db_conn.get_machine_block_status(device[1])[0][0]
-    print(status)
-    if status == "1":
-        ws.send(json.dumps({"function": "shutdown"}))
-    else:
-        print("not 1")
+from datetime import datetime, timedelta
 
 
+def timedelta_int(delta):
+    result = delta.days * 1 + delta.seconds
+    return result
 
+
+time_now = int(datetime.strptime("2024-02-28 21:00:00", '%Y-%m-%d %H:%M:%S').timestamp())
+prev_hour = time_now - 3600
+date_end_prev_error = prev_hour
+
+wmf_error_time = 0
+per_error_time = timedelta()
+total_disconnect_time = 0
+disconnect_time = timedelta()
+wmf_error_count = 0
+disconnect_count = 0
+
+unsent_disconnect_records = [(127, '-1', '2024-02-28 20:25:11', '2024-02-28 20:28:11'), (127, '-1', '2024-02-28 20:30:11', None)]
+unsent_records = [(125, '184', '2024-02-28 20:27:11', '2024-02-28 20:29:11')]
+
+if len(unsent_disconnect_records) > 0:
+    for disconnect_rec_id, disconnect_error_code, disconnect_start_time, disconnect_end_time in unsent_disconnect_records:
+        if type(disconnect_start_time) is not datetime and disconnect_start_time is not None:
+            disconnect_start_time = int(datetime.strptime(disconnect_start_time, '%Y-%m-%d %H:%M:%S').timestamp())
+        if type(disconnect_end_time) is not datetime and disconnect_end_time is not None:
+            disconnect_end_time = int(datetime.strptime(disconnect_end_time, '%Y-%m-%d %H:%M:%S').timestamp())
+        if disconnect_end_time is None or disconnect_end_time > time_now:  # 3.4.2
+            disconnect_end_time = time_now
+        if len(unsent_records) > 0:
+            for rec_id, error_code, start_time, end_time in unsent_records:
+                if type(start_time) is not datetime and start_time is not None:
+                    start_time = int(datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S').timestamp())
+                if type(end_time) is not datetime and end_time is not None:
+                    end_time = int(datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S').timestamp())
+                if end_time is None or end_time > time_now:
+                    end_time = time_now
+                print(start_time)
+                print(disconnect_start_time)
+                print(disconnect_end_time)
+                print(end_time)
+                if start_time < disconnect_start_time and end_time > disconnect_end_time:  # 3.4.3
+                    total_disconnect_time += abs(disconnect_end_time - disconnect_start_time)
+                    disconnect_count += 1
+                    wmf_error_time += abs((disconnect_end_time - end_time) + (disconnect_start_time - start_time))
+                    wmf_error_count += 1
+                elif disconnect_start_time < start_time < disconnect_end_time < end_time:
+                    total_disconnect_time += abs(disconnect_end_time - disconnect_start_time)
+                    disconnect_count += 1
+                    wmf_error_time += abs(disconnect_end_time - end_time)
+                    wmf_error_count += 1
+                elif start_time > disconnect_start_time and end_time < disconnect_end_time:
+                    total_disconnect_time += abs(disconnect_end_time - disconnect_start_time)
+                    disconnect_count += 1
+                elif start_time > disconnect_end_time and end_time > disconnect_end_time:
+                    total_disconnect_time += abs(disconnect_end_time - disconnect_start_time)
+                    disconnect_count += 1
+                    wmf_error_time += abs(end_time - start_time)
+                    wmf_error_count += 1
+                elif start_time < disconnect_start_time and end_time < disconnect_end_time:
+                    total_disconnect_time += abs(disconnect_end_time - disconnect_start_time)
+                    disconnect_count += 1
+                    wmf_error_time += abs(end_time - start_time)
+                    wmf_error_count += 1
+
+
+wmf_work_time = abs(3600 - wmf_error_time - total_disconnect_time)
+
+print({"time_worked": int(wmf_work_time),
+       "wmf_error_count": int(wmf_error_count),
+       "wmf_error_time": int(wmf_error_time),
+       "stoppage_count": int(disconnect_count),
+       "stoppage_time": int(total_disconnect_time)})
 
