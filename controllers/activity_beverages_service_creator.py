@@ -36,9 +36,13 @@ def get_main_clean_stat(device):
     wmf_error_time = 0
     total_disconnect_time = 0
     wmf_error_count = 0
-    disconnect_count = 0
-    time_now = int(datetime.strptime("2024-02-28 21:00:00", '%Y-%m-%d %H:%M:%S').timestamp())
-    prev_hour = time_now - 3600
+    wmf_error_count = len(unsent_records)
+    disconnect_count = len(unsent_disconnect_records)
+    prev_disc_id = 0
+    prev_error_id = 0
+    if len(unsent_disconnect_records) == 0:
+        disconnect_start_time = 0
+        disconnect_end_time = 0
     if len(unsent_disconnect_records) > 0:
         for disconnect_rec_id, disconnect_error_code, disconnect_start_time, disconnect_end_time in unsent_disconnect_records:
             if type(disconnect_start_time) is not datetime and disconnect_start_time is not None:
@@ -47,7 +51,9 @@ def get_main_clean_stat(device):
                 disconnect_end_time = int(datetime.strptime(disconnect_end_time, '%Y-%m-%d %H:%M:%S').timestamp())
             if disconnect_end_time is None or disconnect_end_time > time_now:  # 3.4.2
                 disconnect_end_time = time_now
-            if len(unsent_records) > 0:
+            if disconnect_start_time is None or disconnect_start_time < prev_hour:  # 3.4.2
+                disconnect_start_time = prev_hour
+            if len(unsent_records) >= 0:
                 for rec_id, error_code, start_time, end_time in unsent_records:
                     if type(start_time) is not datetime and start_time is not None:
                         start_time = int(datetime.strptime(start_time, '%Y-%m-%d %H:%M:%S').timestamp())
@@ -55,33 +61,44 @@ def get_main_clean_stat(device):
                         end_time = int(datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S').timestamp())
                     if end_time is None or end_time > time_now:
                         end_time = time_now
-                    print(start_time)
+                    # print(start_time)
                     print(disconnect_start_time)
                     print(disconnect_end_time)
-                    print(end_time)
-                    if start_time < disconnect_start_time and end_time > disconnect_end_time:  # 3.4.3
-                        total_disconnect_time += abs(disconnect_end_time - disconnect_start_time)
-                        disconnect_count += 1
-                        wmf_error_time += abs((disconnect_end_time - end_time) + (disconnect_start_time - start_time))
-                        wmf_error_count += 1
-                    elif disconnect_start_time < start_time < disconnect_end_time < end_time:
-                        total_disconnect_time += abs(disconnect_end_time - disconnect_start_time)
-                        disconnect_count += 1
-                        wmf_error_time += abs(disconnect_end_time - end_time)
-                        wmf_error_count += 1
-                    elif start_time > disconnect_start_time and end_time < disconnect_end_time:
-                        total_disconnect_time += abs(disconnect_end_time - disconnect_start_time)
-                        disconnect_count += 1
-                    elif start_time > disconnect_end_time and end_time > disconnect_end_time:
-                        total_disconnect_time += abs(disconnect_end_time - disconnect_start_time)
-                        disconnect_count += 1
-                        wmf_error_time += abs(end_time - start_time)
-                        wmf_error_count += 1
-                    elif start_time < disconnect_start_time and end_time < disconnect_end_time:
-                        total_disconnect_time += abs(disconnect_end_time - disconnect_start_time)
-                        disconnect_count += 1
-                        wmf_error_time += abs(end_time - start_time)
-                        wmf_error_count += 1
+                    # print(end_time)
+                    if prev_disc_id != disconnect_rec_id and prev_error_id != rec_id:
+                        if start_time <= disconnect_start_time and end_time >= disconnect_end_time:  # 3.4.3
+                            total_disconnect_time += abs(disconnect_end_time - disconnect_start_time)
+                            if total_disconnect_time < 3600 and wmf_error_time < 3600:
+                                # disconnect_count += 1
+                                wmf_error_time += abs(
+                                    (disconnect_end_time - end_time) + (disconnect_start_time - start_time))
+                            # wmf_error_count += 1
+                        elif disconnect_start_time < start_time < disconnect_end_time <= end_time:
+                            total_disconnect_time += abs(disconnect_end_time - disconnect_start_time)
+                            # disconnect_count += 1
+                            wmf_error_time += abs(disconnect_end_time - end_time)
+                        # wmf_error_count += 1
+                        elif start_time > disconnect_start_time and end_time < disconnect_end_time:
+                            total_disconnect_time += abs(disconnect_end_time - disconnect_start_time)
+                            # disconnect_count += 1
+                        elif start_time > disconnect_end_time and end_time > disconnect_end_time:
+                            total_disconnect_time += abs(disconnect_end_time - disconnect_start_time)
+                            # disconnect_count += 1
+                            wmf_error_time += abs(end_time - start_time)
+                            # wmf_error_count += 1
+                        elif start_time < disconnect_start_time and end_time < disconnect_end_time:
+                            total_disconnect_time += abs(disconnect_end_time - disconnect_start_time)
+                            # disconnect_count += 1
+                            wmf_error_time += abs(end_time - start_time)
+                            # wmf_error_count += 1
+                        if total_disconnect_time >= 3600:
+                            wmf_error_time = 0
+                            total_disconnect_time = 3600
+                        else:
+                            if wmf_error_time > 3600:
+                                wmf_error_time = 3600 - total_disconnect_time
+                    prev_error_id = rec_id
+                    prev_disc_id = disconnect_rec_id
 
     wmf_work_time = abs(3600 - wmf_error_time - total_disconnect_time)
     #print("result 1")
