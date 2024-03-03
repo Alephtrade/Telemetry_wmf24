@@ -38,10 +38,13 @@ def get_main_clean_stat(device):
     wmf_error_count = 0
     wmf_error_count = len(unsent_records)
     disconnect_count = len(unsent_disconnect_records)
-    prev_disc_id = 0
-    prev_error_id = 0
+    prev_disc_id = -1
+    prev_error_id = -1
     time_now = int(time_now.timestamp())
     prev_hour = time_now - 3600
+    if len(unsent_disconnect_records) == 0:
+        disconnect_start_time = 0
+        disconnect_end_time = 0
     if len(unsent_disconnect_records) == 0:
         disconnect_start_time = 0
         disconnect_end_time = 0
@@ -55,6 +58,8 @@ def get_main_clean_stat(device):
                 disconnect_end_time = time_now
             if disconnect_start_time is None or disconnect_start_time < prev_hour:  # 3.4.2
                 disconnect_start_time = prev_hour
+            if len(unsent_records) == 0:
+                unsent_records = [(0, '0', None, None)]
             if len(unsent_records) >= 0:
                 for rec_id, error_code, start_time, end_time in unsent_records:
                     if type(start_time) is not datetime and start_time is not None:
@@ -63,10 +68,12 @@ def get_main_clean_stat(device):
                         end_time = int(datetime.strptime(end_time, '%Y-%m-%d %H:%M:%S').timestamp())
                     if end_time is None or end_time > time_now:
                         end_time = time_now
-                    # print(start_time)
+                    if start_time is None or start_time > prev_hour:
+                        start_time = prev_hour
+                    print(start_time)
+                    print(end_time)
                     print(disconnect_start_time)
                     print(disconnect_end_time)
-                    # print(end_time)
                     if prev_disc_id != disconnect_rec_id and prev_error_id != rec_id:
                         if start_time <= disconnect_start_time and end_time >= disconnect_end_time:  # 3.4.3
                             total_disconnect_time += abs(disconnect_end_time - disconnect_start_time)
