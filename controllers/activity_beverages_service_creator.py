@@ -22,33 +22,23 @@ def get_main_clean_stat(device):
     end_time = None
     print(device)
     #initialize_logger('controller_cleaning_statistic_creator.py.log')
-    #time_now = datetime.fromtimestamp(int(datetime.now().timestamp() // (60 * 60) * 60 * 60 - 1))
-    #prev_hour = time_now - timedelta(hours=1)
-
-    time_now = int(datetime.fromtimestamp(int(datetime.now().timestamp() // (60 * 60) * 60 * 60 - 1)).timestamp())
-    prev_hour = time_now - 3600
-    #get_last_data_statistics = db_conn.get_last_data_statistics()
-    #if get_last_data_statistics is not None and len(get_last_data_statistics) > 0:
-    #    date_to_send = get_beverages_send_time(get_last_data_statistics[0])
-    #else:
-    #date_to_send = get_beverages_send_time(time_now)
+    time_now = datetime.fromtimestamp(int(datetime.now().timestamp() // (60 * 60) * 60 * 60 - 1))
+    prev_hour = time_now - timedelta(hours=1)
     date_to_send = get_beverages_send_time(time_now)
-    #print(date_to_send)
+
     db_conn.create_data_statistics(device[1], time_now, date_to_send)
     last_bev_rec_id = db_conn.get_last_data_statistics_id(device[1])[0]
-    #print("last id")
-    #print(last_bev_rec_id)
+
     unsent_records = db_conn.get_error_records(prev_hour, time_now, device[1])
     print({"Ошибки": unsent_records})
     unsent_disconnect_records = db_conn.get_all_error_records_by_code(device[1], prev_hour, time_now, "-1")
     print({"Ошибки -1": unsent_disconnect_records})
-    date_end_prev_error = prev_hour
     wmf_error_time = 0
-    per_error_time = timedelta()
     total_disconnect_time = 0
-    disconnect_time = timedelta()
     wmf_error_count = 0
     disconnect_count = 0
+    time_now = int(datetime.strptime("2024-02-28 21:00:00", '%Y-%m-%d %H:%M:%S').timestamp())
+    prev_hour = time_now - 3600
     if len(unsent_disconnect_records) > 0:
         for disconnect_rec_id, disconnect_error_code, disconnect_start_time, disconnect_end_time in unsent_disconnect_records:
             if type(disconnect_start_time) is not datetime and disconnect_start_time is not None:
