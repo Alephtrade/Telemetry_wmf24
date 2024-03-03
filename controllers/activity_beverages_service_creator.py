@@ -40,6 +40,8 @@ def get_main_clean_stat(device):
     disconnect_count = len(unsent_disconnect_records)
     prev_disc_id = 0
     prev_error_id = 0
+    time_now = int(time_now.timestamp())
+    prev_hour = time_now - 3600
     if len(unsent_disconnect_records) == 0:
         disconnect_start_time = 0
         disconnect_end_time = 0
