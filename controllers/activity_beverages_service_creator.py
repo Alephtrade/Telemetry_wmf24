@@ -22,8 +22,11 @@ def get_main_clean_stat(device):
     end_time = None
     print(device)
     #initialize_logger('controller_cleaning_statistic_creator.py.log')
-    time_now = datetime.fromtimestamp(int(datetime.now().timestamp() // (60 * 60) * 60 * 60 - 1))
-    prev_hour = time_now - timedelta(hours=1)
+    #time_now = datetime.fromtimestamp(int(datetime.now().timestamp() // (60 * 60) * 60 * 60 - 1))
+    #prev_hour = time_now - timedelta(hours=1)
+
+    time_now = int(datetime.fromtimestamp(int(datetime.now().timestamp() // (60 * 60) * 60 * 60 - 1)).timestamp())
+    prev_hour = time_now - 3600
     #get_last_data_statistics = db_conn.get_last_data_statistics()
     #if get_last_data_statistics is not None and len(get_last_data_statistics) > 0:
     #    date_to_send = get_beverages_send_time(get_last_data_statistics[0])
