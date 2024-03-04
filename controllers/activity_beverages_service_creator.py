@@ -193,6 +193,6 @@ def are_need_to_create(device):
 devices = db_conn.get_devices()
 for device in devices:
 #    print(device[2])
-    #are_need_to_create(device)
-    #get_service_statistics(device)
+    are_need_to_create(device)
+    get_service_statistics(device)
     get_main_clean_stat(device)
