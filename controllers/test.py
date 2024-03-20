@@ -10,13 +10,13 @@ db_conn = WMFSQLDriver()
 
 def walk(aleph_id, host, oid):
     a = {}
-    a["modelName"] = ""
-    a["serialNum"] = ""
-    a["version"] = ""
-    a["simCcid"] = ""
-    a["signalPower"] = ""
-    a["status"] = ""
-    a["connectType"] = ""
+    a[0] = "modelName"
+    a[1] = "serialNum"
+    a[2] = "version"
+    a[3] = "simCcid"
+    a[4] = "signalPower"
+    a[5] = "status"
+    a[6] = "connectType"
     for (errorIndication, errorStatus, errorIndex, varBinds) in nextCmd(SnmpEngine(),
                                                                         CommunityData('public'),
                                                                         UdpTransportTarget((host, 161)), ContextData(),
@@ -32,8 +32,8 @@ def walk(aleph_id, host, oid):
             break
         else:
             i = 0
-            for key in a.keys():
-                a[key] = varBinds[0][1].prettyPrint()
+            for varBind in varBinds:
+                a[a[i]] = varBinds[0][1].prettyPrint()
                 i = i + 1
     a["aleph_id"] = aleph_id
     url = "https://backend.wmf24.ru/api/sim_informer"
