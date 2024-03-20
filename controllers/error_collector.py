@@ -23,7 +23,7 @@ tl_ident = Timeloop()
 
 
 def worker(ip):
-    print(ip)
+    #print(ip)
     #initialize_logger('error_collector.log')
     #return tl_ident.is_alive()
 

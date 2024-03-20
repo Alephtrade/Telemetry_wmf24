@@ -94,14 +94,14 @@ def Take_Create_Beverage_Statistics(last_send, device):
                             prev_hour = time_now - timedelta(hours=1)
                             time_to_form = date_formed - timedelta(seconds=1)
                             count_of_real_pours = int(elem) - int(last_info[k])
-                            print({datetime.fromtimestamp(int(datetime.now().timestamp())), prev_hour})
+                            #print({datetime.fromtimestamp(int(datetime.now().timestamp())), prev_hour})
                             pours_detected_in_base = db_conn.get_pours_with_recipe_id_and_cup_size(device[1], recipe_number, recipe_size, datetime.fromtimestamp(int(datetime.now().timestamp())), prev_hour)
-                            print("Должно быть")
-                            print(count_of_real_pours)
-                            print("В базе найдено")
-                            print(pours_detected_in_base[0][12])
-                            print("POURS")
-                            print(pours_detected_in_base)
+                            #print("Должно быть")
+                            #print(count_of_real_pours)
+                            #print("В базе найдено")
+                            #print(pours_detected_in_base[0][12])
+                            #print("POURS")
+                            #print(pours_detected_in_base)
                             if count_of_real_pours != pours_detected_in_base[0][12]:
                                 count_in_base = pours_detected_in_base[0][12]
                                 if pours_detected_in_base is None or count_in_base == 0:

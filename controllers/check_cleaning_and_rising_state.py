@@ -29,7 +29,7 @@ def controller_manager(device, operator, alias):
             #logging.info(f'prev {prev_cleaning_duration} - {alias}')
             #logging.info(f'durationInSeconds {operator["durationInSeconds"]}')
             if str(prev_cleaning_duration) != str(operator['durationInSeconds']):
-                print("!=")
+                #print("!=")
                 db_conn.save_clean_or_rins(device[1], alias, "type_cleaning_duration", operator['durationInSeconds'])
                 #logging.info(f'save new duration {alias}')
                 #logging.info(f'new time {datetime.now()}')
