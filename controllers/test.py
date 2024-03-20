@@ -4,7 +4,7 @@ from pysnmp.hlapi import *
 
 
 def walk(host, oid):
-    a = {}
+    a = []
     for (errorIndication, errorStatus, errorIndex, varBinds) in nextCmd(SnmpEngine(),
                                                                         CommunityData('public'),
                                                                         UdpTransportTarget((host, 161)), ContextData(),
@@ -20,7 +20,7 @@ def walk(host, oid):
             break
         else:
             for varBind in varBinds:
-                a[varBinds[0][0].prettyPrint()] = varBinds[0][1].prettyPrint()
+                a.append(varBinds[0][1].prettyPrint())
     return a
 
 
