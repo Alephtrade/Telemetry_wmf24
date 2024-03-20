@@ -44,12 +44,12 @@ def worker(ip):
                 #logging.info("error_collector send_errors: CALL")
                 errors, request = '', ''
                 unset_errors = db_conn.get_unsent_records(device_item[1])
-                print(unset_errors)
+                #print(unset_errors)
                 if unset_errors:
                     for record in unset_errors:
-                        print(record)
+                        #print(record)
                         request = f'{WMF_URL}?device={device_item[1]}&error_id={record[1]}&date_start={record[2]}&date_end={record[3]}&duration={record[4]}&status={wmf_conn.get_status()}'
-                        print("errorrrrrrrrrrrrrrrrrrrrr")
+                        #print("errorrrrrrrrrrrrrrrrrrrrr")
                         print(request)
                         response = requests.post(request)
                         content = response.content.decode('utf-8')
@@ -63,7 +63,7 @@ def worker(ip):
                     if unset_errors:
                         for record in unset_errors:
                             request = f'{WMF_URL}?device={device_item[1]}&error_id={record[1]}&date_start={record[2]}&date_end={record[3]}&duration={record[4]}&status={wmf_conn.get_status()}'
-                            print("72")
+                            #print("72")
                             print(request)
                             response = requests.post(request)
                             content = response.content.decode('utf-8')
@@ -95,7 +95,7 @@ for device in devices:
         'Serverkey': db_conn.get_encrpt_key()[0]
     }
     response = requests.request("POST", url, headers=headers, json=data)
-    print(response.json())
+    #print(response.json())
     if status == 1:
         wmf_conn = WMFMachineErrorConnector(device[1], device[2])
         threading.Thread(target=wmf_conn.run_websocket, name=device[1]).start()

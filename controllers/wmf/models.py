@@ -41,23 +41,23 @@ class WMFMachineErrorConnector:
 
 
     def on_message(self, ws, message):
-        print(message)
-        print(ws)
-        print(self.aleph_id)
+        #print(message)
+        #print(ws)
+        #print(self.aleph_id)
         try:
             #logging.info(f"WMFMachineConnector: message={json.loads(message.encode('utf-8'))}")
             data = WMFMachineStatConnector.normalize_json(message)
-            print(data.get("function"))
+            #print(data.get("function"))
             if data.get("function") == 'startPushDispensingStarted':
                 status = db_conn.get_machine_block_status(self.aleph_id)[0][0]
-                print(status)
+                #print(status)
                 if status == "1":
                     message = ws.send(json.dumps({"function": "reboot"}))
                     print(message)
             if data.get("function") == 'getErrorActive':
-                print('getErrorActive')
-                print("ulErrorCode")
-                print(data.get("ulErrorCode"))
+                #print('getErrorActive')
+                #print("ulErrorCode")
+                #print(data.get("ulErrorCode"))
                 if data.get("ulErrorCode") != 0:
                     actual_finder = db_conn.get_unclosed_error_by_code(data.get("ulErrorCode"), self.aleph_id)
                     print(actual_finder)
@@ -65,10 +65,10 @@ class WMFMachineErrorConnector:
                         db_conn.create_error_record(self.aleph_id, data.get("ulErrorCode"))
                         self.index_active_error += 1
                         ws.send(json.dumps({"function": "getErrorActive", "a_iIndex": self.index_active_error}))
-                        print("+1")
+                        #print("+1")
                 else:
                     self.last_error_code_in_index = -1
-                    print("-1")
+                    #print("-1")
             if data.get("function") == 'startPushErrors':
                 info = data.get("Info")
                 error_code = data.get("ErrorCode")
@@ -91,8 +91,8 @@ class WMFMachineErrorConnector:
                     if error_code in self.current_errors:
                         self.current_errors.remove(error_code)
             if data.get("function") == 'startPushDispensingFinished' or data.get("function") == 'getRecipeComposition':
-                print(data)
-                print(data.get("RecipeNumber"))
+                #print(data)
+                #print(data.get("RecipeNumber"))
                 recipe_number = data.get("RecipeNumber")
                 cup_size = data.get("CupSize")
                 if cup_size == "CUP_SIZE_Regular" or cup_size == "Regular":
@@ -105,7 +105,7 @@ class WMFMachineErrorConnector:
                 #print(recipe_number)
                 self.available_recipe = db_conn.getRecipe(self.aleph_id, recipe_number)
                 if self.available_recipe is None or self.available_recipe:
-                    print("UPDATER")
+                    #print("UPDATER")
                     print(self.ip)
                     #self.drink_list = DrinksManager.updateDrinks(self.ip)
                 if self.available_recipe is not None and self.available_recipe:
@@ -126,8 +126,8 @@ class WMFMachineErrorConnector:
                         milk = self.available_recipe[10]
                         powder = self.available_recipe[12]
                         foam = self.available_recipe[14]
-                    print(self.aleph_id)
-                    print("self.aleph_id")
+                    #print(self.aleph_id)
+                    #print("self.aleph_id")
                     date_formed = datetime.fromtimestamp(int((datetime.now()).timestamp()))
                     booler = db_conn.if_pours_created(self.aleph_id, date_formed)
                     #print({self.aleph_id, date_formed})
@@ -158,12 +158,12 @@ class WMFMachineErrorConnector:
                 'Serverkey': db_conn.get_encrpt_key()[0]
             }
             response = requests.request("POST", url, headers=headers, data=json.dumps(sorter))
-            print(response)
+            #print(response)
             if response.status_code == 200:
                 # print(sorter)
                 for pour in sorter:
                     # print(pour)
-                    print(pour["id"])
+                    #print(pour["id"])
                     db_conn.id_pours_sended(pour["id"])
                     #data_to_send = {}
                     #data_to_send["aleph_id"] = self.aleph_id
@@ -202,7 +202,7 @@ class WMFMachineErrorConnector:
     def on_open(self, ws):
         print("opened")
         print(self.aleph_id)
-        print(self.last_error_code_in_index)
+        #print(self.last_error_code_in_index)
         ws.send(json.dumps({"function": "getErrorActive", "a_iIndex": self.index_active_error}))
         ws.send(json.dumps({"function": "startPushErrors"}))
         ws.send(json.dumps({"function": "startPushDispensingFinished"}))
