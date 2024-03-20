@@ -18,7 +18,6 @@ threads = {}
 db_conn = WMFSQLDriver()
 devices = db_conn.get_devices()
 WMF_URL = settings.WMF_DATA_URL
-tl_ident = Timeloop()
 
 
 def worker():
@@ -34,6 +33,8 @@ def worker():
             print(ex)
             #logging.error(f'error_collector on_exit: ERROR={ex}')
             #logging.error(print_exception())
+
+    tl_ident = Timeloop()
 
     @tl_ident.job(interval=timedelta(seconds=settings.ERROR_COLLECTOR_INTERVAL_SECONDS))
     def send_errors():
