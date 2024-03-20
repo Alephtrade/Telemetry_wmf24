@@ -81,7 +81,7 @@ def worker(ip):
 
 for device in devices:
     try:
-        ws = websocket.create_connection(f'ws://{device[2]}:25000/', timeout=5)
+        ws = websocket.create_connection(f'ws://{device[2]}:25000/', timeout=15)
         status = 1
     except Exception:
         status = 0
