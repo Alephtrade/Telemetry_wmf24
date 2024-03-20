@@ -48,5 +48,5 @@ def walk(aleph_id, host, oid):
 
 devices = db_conn.get_devices()
 for device in devices:
-    print(device[2])
-    print(walk(device[1], device[2], '1.3.6.1.4.1.2021.8.1.101'))
+    if device[2] is not None and device[2] != "":
+        print(walk(device[1], device[2], '1.3.6.1.4.1.2021.8.1.101'))
