@@ -1,26 +1,21 @@
-from pysnmp.hlapi import *
+from pysnmp.hlapi import SnmpEngine, CommunityData, UdpTransportTarget,\
+                         ContextData, ObjectType, ObjectIdentity, getCmd
 
-# Указываем адрес устройства, сообщество и OID
-ip_address = '10.8.0.6'
-community_string = 'public'
-oid = '1.3.6.1.4.1.2021.8'
-
-# Формирование и отправка запроса
-errorIndication, errorStatus, errorIndex, varBinds = next(
-    getCmd(SnmpEngine(),
-           CommunityData(community_string),
-           UdpTransportTarget((ip_address, 161)),
-           ContextData(),
-           ObjectType(ObjectIdentity(oid))
-           )
+iterator = getCmd(
+    SnmpEngine(),
+    CommunityData('public', mpModel=1),
+    UdpTransportTarget(('10.8.0.6', 161)),
+    ContextData(),
+    ObjectType(ObjectIdentity('1.3.6.1.4.1.2021.8.1.101'))
 )
 
-# Обработка ответа
+errorIndication, errorStatus, errorIndex, varBinds = next(iterator)
+
 if errorIndication:
-    print(f'Ошибка: {errorIndication}')
-else:
-    if errorStatus:
-        print(f'Ошибка: {errorStatus}')
-    else:
-        for varBind in varBinds:
-            print(f'{varBind[0]} = {varBind[1]}')
+    print(errorIndication)
+elif errorStatus:
+    print('{} at {}'.format(errorStatus.prettyPrint(),
+                        errorIndex and varBinds[int(errorIndex) - 1][0] or '?'))
+
+for oid, val in varBinds:
+    print(f'{oid.prettyPrint()} = {val.prettyPrint()}')
