@@ -21,7 +21,7 @@ WMF_URL = settings.WMF_DATA_URL
 tl_ident = Timeloop()
 
 
-def worker(ip):
+def worker(ip, t):
     #print(ip)
     #initialize_logger('error_collector.log')
     #return tl_ident.is_alive()
@@ -73,6 +73,7 @@ def worker(ip):
                 print(ex)
                 #logging.error(f'error_collector send_errors: ERROR={ex}, stacktrace: {print_exception()}')
 
+    t.setDeamon(True)
     tl_ident.start()
     #logging.info('error_collector.py started and running...')
     atexit.register(on_exit)
@@ -97,7 +98,8 @@ for device in devices:
     #print(response.json())
     if status == 1:
         wmf_conn = WMFMachineErrorConnector(device[1], device[2])
-        worker(device[2])
+        t = threading.Thread(target=wmf_conn.run_websocket, name=device[1]).start()
+        worker(device[2], t)
     #print(threading.active_count())
     #print(threading.enumerate())
 
