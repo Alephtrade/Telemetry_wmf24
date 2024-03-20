@@ -97,7 +97,8 @@ for device in devices:
     #print(response.json())
     if status == 1:
         wmf_conn = WMFMachineErrorConnector(device[1], device[2])
-        #threading.Thread(target=wmf_conn.run_websocket, name=device[1]).start()
+        t = threading.Thread(target=wmf_conn.run_websocket, name=device[1]).start()
+        t.setDaemon(True)  # first
         worker(device[2])
     #print(threading.active_count())
     #print(threading.enumerate())
