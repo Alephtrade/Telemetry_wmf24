@@ -35,7 +35,7 @@ def walk(aleph_id, host, oid):
         else:
             for varBind in varBinds:
                 #print(a[i])
-                b[f"{a[i]}"] = varBinds[0][1].prettyPrint()
+                b['"'+a[i]+'"'] = varBinds[0][1].prettyPrint()
                 i = i + 1
     b["aleph_id"] = aleph_id
     url = "https://backend.wmf24.ru/api/sim_informer"
@@ -43,7 +43,7 @@ def walk(aleph_id, host, oid):
         'Content-Type': 'application/json',
         'Serverkey': db_conn.get_encrpt_key()[0]
     }
-    #response = requests.request("POST", url, headers=headers, data=json.dumps(a))
+    response = requests.request("POST", url, headers=headers, data=json.dumps(a))
     # print(response["aleph_id"])
     return b
 
