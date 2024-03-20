@@ -83,6 +83,7 @@ for device in devices:
     try:
         ws = websocket.create_connection(f'ws://{device[2]}:25000/', timeout=15)
         status = 1
+        ws.close()
     except Exception:
         status = 0
     data = {}
