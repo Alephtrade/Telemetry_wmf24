@@ -20,8 +20,8 @@ def walk(host, oid):
             break
         else:
             for varBind in varBinds:
-                a.append(varBind)
-                print(type(varBind))
+                a.append({varBinds[0][0].prettyPrint(), varBinds[0][1].prettyPrint()})
+    return a
 
 
-walk('10.8.0.6', '1.3.6.1.4.1.2021.8.1.101')
+print(walk('10.8.0.6', '1.3.6.1.4.1.2021.8.1.101'))
