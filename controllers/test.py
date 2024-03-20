@@ -17,6 +17,7 @@ def walk(aleph_id, host, oid):
     a[4] = "signalPower"
     a[5] = "status"
     a[6] = "connectType"
+    b = {}
     for (errorIndication, errorStatus, errorIndex, varBinds) in nextCmd(SnmpEngine(),
                                                                         CommunityData('public'),
                                                                         UdpTransportTarget((host, 161)), ContextData(),
@@ -33,9 +34,9 @@ def walk(aleph_id, host, oid):
         else:
             i = 0
             for varBind in varBinds:
-                a[a[i]] = varBinds[0][1].prettyPrint()
+                b[a[i]] = varBinds[0][1].prettyPrint()
                 i = i + 1
-    a["aleph_id"] = aleph_id
+    b["aleph_id"] = aleph_id
     url = "https://backend.wmf24.ru/api/sim_informer"
     headers = {
         'Content-Type': 'application/json',
@@ -43,7 +44,7 @@ def walk(aleph_id, host, oid):
     }
     #response = requests.request("POST", url, headers=headers, data=json.dumps(a))
     # print(response["aleph_id"])
-    return a
+    return b
 
 
 devices = db_conn.get_devices()
