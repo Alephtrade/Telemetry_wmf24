@@ -20,7 +20,7 @@ devices = db_conn.get_devices()
 
 def updateDrinks(device_aleph_id, decice_ip):
         try:
-            ws = websocket.create_connection(f'ws://{decice_ip}:25000/', timeout=5)
+            ws = websocket.create_connection(f'ws://{decice_ip}:25000/', timeout=15)
             status = 1
         except Exception:
             return 0
