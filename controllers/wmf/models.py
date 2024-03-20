@@ -9,7 +9,7 @@ from controllers.db.models import WMFSQLDriver
 from controllers.settings import prod as settings
 from controllers.api.beverages import recipes as recipes
 from collections import deque
-from controllers.api.beverages import Drinks as DrinksManager
+#from controllers.api.beverages import Drinks as DrinksManager
 db_conn = WMFSQLDriver()
 
 class WMFMachineErrorConnector:

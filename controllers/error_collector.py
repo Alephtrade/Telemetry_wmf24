@@ -7,7 +7,6 @@ from datetime import timedelta
 from timeloop import Timeloop
 import sys
 import websocket
-
 sys.path.append('./')
 sys.path.append('/var/www/Telemetry_wmf24/')
 from controllers.core.utils import initialize_logger, print_exception
