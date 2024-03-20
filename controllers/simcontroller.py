@@ -43,9 +43,9 @@ def walk(aleph_id, host, oid):
         'Content-Type': 'application/json',
         'Serverkey': db_conn.get_encrpt_key()[0]
     }
-    response = requests.request("POST", url, headers=headers, data=json.dumps(a))
+    response = requests.request("POST", url, headers=headers, data=json.dumps(b))
     # print(response["aleph_id"])
-    return b
+    return json.dumps(b)
 
 
 devices = db_conn.get_devices()
