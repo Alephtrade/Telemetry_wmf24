@@ -12,6 +12,7 @@ from collections import deque
 #from controllers.api.beverages import Drinks as DrinksManager
 db_conn = WMFSQLDriver()
 
+
 class WMFMachineErrorConnector:
     WMF_URL = settings.WMF_DATA_URL
     DEFAULT_WMF_PARAMS = settings.DEFAULT_WMF_PARAMS
@@ -201,12 +202,12 @@ class WMFMachineErrorConnector:
 
     def on_open(self, ws):
         print("opened")
-        print(self.aleph_id)
         #print(self.last_error_code_in_index)
         ws.send(json.dumps({"function": "getErrorActive", "a_iIndex": self.index_active_error}))
         ws.send(json.dumps({"function": "startPushErrors"}))
         ws.send(json.dumps({"function": "startPushDispensingFinished"}))
         ws.send(json.dumps({"function": "startPushDispensingStarted"}))
+        print(self.aleph_id)
 
 
     def on_exit(self, ws):

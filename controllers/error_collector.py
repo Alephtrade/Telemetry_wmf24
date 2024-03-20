@@ -75,7 +75,7 @@ def worker():
                 #logging.error(f'error_collector send_errors: ERROR={ex}, stacktrace: {print_exception()}')
 
     tl_ident.start()
-    #logging.info('error_collector.py started and running...')
+    print('error_collector.py started and running...')
     atexit.register(on_exit)
 
 
