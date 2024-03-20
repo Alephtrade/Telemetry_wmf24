@@ -1,21 +1,27 @@
-from pysnmp.hlapi import SnmpEngine, CommunityData, UdpTransportTarget,\
-                         ContextData, ObjectType, ObjectIdentity, getCmd
+import sys
 
-iterator = getCmd(
-    SnmpEngine(),
-    CommunityData('public', mpModel=1),
-    UdpTransportTarget(('10.8.0.6', 161)),
-    ContextData(),
-    ObjectType(ObjectIdentity('1.3.6.1.4.1.2021.8.1.101'))
-)
+from pysnmp.hlapi import *
 
-errorIndication, errorStatus, errorIndex, varBinds = next(iterator)
 
-if errorIndication:
-    print(errorIndication)
-elif errorStatus:
-    print('{} at {}'.format(errorStatus.prettyPrint(),
-                        errorIndex and varBinds[int(errorIndex) - 1][0] or '?'))
+def walk(host, oid):
+    a = []
+    for (errorIndication, errorStatus, errorIndex, varBinds) in nextCmd(SnmpEngine(),
+                                                                        CommunityData('public'),
+                                                                        UdpTransportTarget((host, 161)), ContextData(),
+                                                                        ObjectType(ObjectIdentity(oid)),
+                                                                        lexicographicMode=False):
+        if errorIndication:
+            print(errorIndication, file=sys.stderr)
+            break
+        elif errorStatus:
+            print('%s at %s' % (errorStatus.prettyPrint(),
+                                errorIndex and varBinds[int(errorIndex) - 1][0] or '?'),
+                  file=sys.stderr)
+            break
+        else:
+            for varBind in varBinds:
+                a.append(varBind)
+    return a
 
-for oid, val in varBinds:
-    print(f'{oid.prettyPrint()} = {val.prettyPrint()}')
+
+print(walk('10.8.0.6', '1.3.6.1.4.1.2021.8.1.101'))
