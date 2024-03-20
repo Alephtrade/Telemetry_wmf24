@@ -34,6 +34,7 @@ def walk(aleph_id, host, oid):
         else:
             i = 0
             for varBind in varBinds:
+                print(a[i])
                 b[f"{a[i]}"] = varBinds[0][1].prettyPrint()
                 i = i + 1
     b["aleph_id"] = aleph_id
