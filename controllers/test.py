@@ -20,7 +20,7 @@ def walk(host, oid):
             break
         else:
             for varBind in varBinds:
-                a.append({varBinds[0][0].prettyPrint(), varBinds[0][1].prettyPrint()})
+                a[varBinds[0][0].prettyPrint()] = varBinds[0][1].prettyPrint()
     return a
 
 
