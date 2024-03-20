@@ -31,8 +31,8 @@ def walk(aleph_id, host, oid):
                   file=sys.stderr)
             break
         else:
-            for varBind in varBinds:
-                for key in a.keys():
+            for key in a.keys():
+                for varBind in varBinds:
                     a[key] = varBind[1].prettyPrint()
     a["aleph_id"] = aleph_id
     url = "https://backend.wmf24.ru/api/sim_informer"
