@@ -26,7 +26,7 @@ def test():
             #print(machine_response)
             if machine_response:
                 data_for_request["full_serial"] = machine_response["MachineName"]
-                data_for_request["serial_number"] = machine_response["MachineName"]
+                data_for_request["serial_number"] = machine_response["PartNumber"]
                 data_for_request["model"] = machine_response["ProductName"]
                 data_for_request["ip"] = machine_response["ip"]
                 #print(machine_response)
