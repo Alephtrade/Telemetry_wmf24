@@ -33,7 +33,7 @@ def walk(aleph_id, host, oid):
             break
         else:
             for varBind in varBinds:
-                for key, val in a:
+                for key in a.keys():
                     a[key] = varBinds[0][1].prettyPrint()
     url = "https://backend.wmf24.ru/api/sim_informer"
     headers = {
