@@ -17,7 +17,6 @@ def walk(aleph_id, host, oid):
     a["signalPower"] = ""
     a["status"] = ""
     a["connectType"] = ""
-    i = 0
     for (errorIndication, errorStatus, errorIndex, varBinds) in nextCmd(SnmpEngine(),
                                                                         CommunityData('public'),
                                                                         UdpTransportTarget((host, 161)), ContextData(),
@@ -32,6 +31,7 @@ def walk(aleph_id, host, oid):
                   file=sys.stderr)
             break
         else:
+            i = 0
             for key in a.keys():
                 a[key] = varBinds[i][1].prettyPrint()
                 i = i + 1
