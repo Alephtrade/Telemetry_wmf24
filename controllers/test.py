@@ -1,4 +1,6 @@
 import sys
+sys.path.append('./')
+sys.path.append('/var/www/Telemetry_wmf24/')
 import requests
 from pysnmp.hlapi import *
 from controllers.db.models import WMFSQLDriver
