@@ -95,6 +95,10 @@ def updateDrinks(device_aleph_id, decice_ip):
                 request = f'{WMF_URL}?device={device_aleph_id}&error_id=AT11&date_start={datetime.fromtimestamp(int((datetime.now()).timestamp()))}&date_end={datetime.fromtimestamp(int((datetime.now()).timestamp()))}&duration=0&status=1'
                 requests.post(request)
             else:
+                print("received_recipes")
+                print(received_recipes)
+                print("available_recipe")
+                print(available_recipe)
                 if received_recipes != available_recipe[4]:
                     if available_recipe[2] == drink["RecipeNumber"] and available_recipe[3] == drink["Name"] and available_recipe[5] == columns["coffee"]["count"] and available_recipe[6] == columns["coffee"]["weight"] and available_recipe[7] == columns["water"]["count"] and available_recipe[8] == columns["water"]["weight"] and available_recipe[9] == columns["milk"]["count"] and available_recipe[10] == columns["milk"]["weight"] and available_recipe[11] == columns["powder"]["count"] and available_recipe[12] == columns["powder"]["weight"] and available_recipe[13] == columns["foam"]["count"] and available_recipe[14] == columns["foam"]["weight"]:
                         db_conn.updateRecipe(device_aleph_id, drink["RecipeNumber"], drink["Name"], received_recipes, columns["coffee"]["count"], columns["coffee"]["weight"],columns["water"]["count"],columns["water"]["weight"],columns["milk"]["count"],columns["milk"]["weight"],columns["powder"]["count"],columns["powder"]["weight"],columns["foam"]["count"],columns["foam"]["weight"])
