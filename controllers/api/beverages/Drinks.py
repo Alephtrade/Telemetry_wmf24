@@ -83,7 +83,7 @@ def updateDrinks(device_aleph_id, decice_ip):
                 data_to_send["powder_weight"] = columns["powder"]["weight"]
                 data_to_send["foam_count"] = columns["foam"]["count"]
                 data_to_send["foam_weight"] = columns["foam"]["weight"]
-                print("SENDEREEERERERERERERERER")
+                print("SENDER")
                 print(drink["Name"])
                 url = "https://backend.wmf24.ru/api/new_recipe"
 
@@ -95,50 +95,50 @@ def updateDrinks(device_aleph_id, decice_ip):
                 request = f'{WMF_URL}?device={device_aleph_id}&error_id=AT11&date_start={datetime.fromtimestamp(int((datetime.now()).timestamp()))}&date_end={datetime.fromtimestamp(int((datetime.now()).timestamp()))}&duration=0&status=1'
                 requests.post(request)
             else:
-                if received_recipes != available_recipe[4]:
-                    if available_recipe[2] == drink["RecipeNumber"] and available_recipe[3] == drink["Name"] and available_recipe[5] == columns["coffee"]["count"] and available_recipe[6] == columns["coffee"]["weight"] and available_recipe[7] == columns["water"]["count"] and available_recipe[8] == columns["water"]["weight"] and available_recipe[9] == columns["milk"]["count"] and available_recipe[10] == columns["milk"]["weight"] and available_recipe[11] == columns["powder"]["count"] and available_recipe[12] == columns["powder"]["weight"] and available_recipe[13] == columns["foam"]["count"] and available_recipe[14] == columns["foam"]["weight"]:
-                        db_conn.updateRecipe(device_aleph_id, drink["RecipeNumber"], drink["Name"], received_recipes, columns["coffee"]["count"], columns["coffee"]["weight"],columns["water"]["count"],columns["water"]["weight"],columns["milk"]["count"],columns["milk"]["weight"],columns["powder"]["count"],columns["powder"]["weight"],columns["foam"]["count"],columns["foam"]["weight"])
-                        return True
-                    else:
-                        edited = {"device": device_aleph_id, "recipe_id": available_recipe[2], "edited_parts": {}}
-                        if str(available_recipe[3]) != str(drink["Name"]):
-                            edited["edited_parts"]["recipe_alias"] = {"been": available_recipe[3], "now": drink["Name"]}
-                        if int(available_recipe[5]) != int(columns["coffee"]["count"]):
-                            edited["edited_parts"]["coffee_count"] = {"been": available_recipe[5], "now": columns["coffee"]["count"]}
-                        if int(available_recipe[6]) != int(columns["coffee"]["weight"]):
-                            edited["edited_parts"]["coffee_weight"] = {"been": available_recipe[6], "now": columns["coffee"]["weight"]}
-                        if int(available_recipe[7]) != int(columns["water"]["count"]):
-                            edited["edited_parts"]["water_count"] = {"been": available_recipe[7], "now": columns["water"]["count"]}
-                        if int(available_recipe[8]) != int(columns["water"]["weight"]):
-                            edited["edited_parts"]["water_weight"] = {"been": available_recipe[8], "now": columns["water"]["weight"]}
-                        if int(available_recipe[9]) != int(columns["milk"]["count"]):
-                            edited["edited_parts"]["milk_count"] = {"been": available_recipe[9], "now": columns["milk"]["count"]}
-                        if int(available_recipe[10]) != int(columns["milk"]["weight"]):
-                            edited["edited_parts"]["milk_weight"] = {"been": available_recipe[10], "now": columns["milk"]["weight"]}
-                        if int(available_recipe[11]) != int(columns["powder"]["count"]):
-                            edited["edited_parts"]["powder_count"] = {"been": available_recipe[11], "now": columns["powder"]["count"]}
-                        if int(available_recipe[12]) != int(columns["powder"]["weight"]):
-                            edited["edited_parts"]["powder_weight"] = {"been": available_recipe[12], "now": columns["powder"]["weight"]}
-                        if int(available_recipe[13]) != int(columns["foam"]["count"]):
-                            edited["edited_parts"]["foam_count"] = {"been": available_recipe[13], "now": columns["foam"]["count"]}
-                        if int(available_recipe[14]) != int(columns["foam"]["weight"]):
-                            edited["edited_parts"]["foam_weight"] = {"been": available_recipe[14], "now": columns["foam"]["weight"]}
-                        db_conn.updateRecipe(device_aleph_id, drink["RecipeNumber"], drink["Name"], received_recipes, columns["coffee"]["count"], columns["coffee"]["weight"],columns["water"]["count"],columns["water"]["weight"],columns["milk"]["count"],columns["milk"]["weight"],columns["powder"]["count"],columns["powder"]["weight"],columns["foam"]["count"],columns["foam"]["weight"])
-                        print("SENDEREEERERERERERERERER")
-                        print(drink["Name"])
-                        print(edited)
-                        #return print(edited)
-                        url = "https://backend.wmf24.ru/api/recipe_edited"
-                        headers = {
-                            'Content-Type': 'application/json',
-                            'Serverkey': db_conn.get_encrpt_key()[0]
-                        }
-                        response = requests.request("POST", url, headers=headers, data=json.dumps(edited))
-                        request = f'{WMF_URL}?device={device_aleph_id}&error_id=AT11&date_start={datetime.fromtimestamp(int((datetime.now()).timestamp()))}&date_end={datetime.fromtimestamp(int((datetime.now()).timestamp()))}&duration=0&status=1'
-                        requests.post(request)
-                        db_conn.create_error_record(device_aleph_id, 'AT11')
-                        db_conn.close_error_code(device_aleph_id, 'AT11')
-                        #print(edited)
+                #if received_recipes != available_recipe[4]:
+                if available_recipe[2] == drink["RecipeNumber"] and available_recipe[3] == drink["Name"] and available_recipe[5] == columns["coffee"]["count"] and available_recipe[6] == columns["coffee"]["weight"] and available_recipe[7] == columns["water"]["count"] and available_recipe[8] == columns["water"]["weight"] and available_recipe[9] == columns["milk"]["count"] and available_recipe[10] == columns["milk"]["weight"] and available_recipe[11] == columns["powder"]["count"] and available_recipe[12] == columns["powder"]["weight"] and available_recipe[13] == columns["foam"]["count"] and available_recipe[14] == columns["foam"]["weight"]:
+                    db_conn.updateRecipe(device_aleph_id, drink["RecipeNumber"], drink["Name"], received_recipes, columns["coffee"]["count"], columns["coffee"]["weight"],columns["water"]["count"],columns["water"]["weight"],columns["milk"]["count"],columns["milk"]["weight"],columns["powder"]["count"],columns["powder"]["weight"],columns["foam"]["count"],columns["foam"]["weight"])
+                    return True
+                else:
+                    edited = {"device": device_aleph_id, "recipe_id": available_recipe[2], "edited_parts": {}}
+                    if str(available_recipe[3]) != str(drink["Name"]):
+                        edited["edited_parts"]["recipe_alias"] = {"been": available_recipe[3], "now": drink["Name"]}
+                    if int(available_recipe[5]) != int(columns["coffee"]["count"]):
+                        edited["edited_parts"]["coffee_count"] = {"been": available_recipe[5], "now": columns["coffee"]["count"]}
+                    if int(available_recipe[6]) != int(columns["coffee"]["weight"]):
+                        edited["edited_parts"]["coffee_weight"] = {"been": available_recipe[6], "now": columns["coffee"]["weight"]}
+                    if int(available_recipe[7]) != int(columns["water"]["count"]):
+                        edited["edited_parts"]["water_count"] = {"been": available_recipe[7], "now": columns["water"]["count"]}
+                    if int(available_recipe[8]) != int(columns["water"]["weight"]):
+                        edited["edited_parts"]["water_weight"] = {"been": available_recipe[8], "now": columns["water"]["weight"]}
+                    if int(available_recipe[9]) != int(columns["milk"]["count"]):
+                        edited["edited_parts"]["milk_count"] = {"been": available_recipe[9], "now": columns["milk"]["count"]}
+                    if int(available_recipe[10]) != int(columns["milk"]["weight"]):
+                        edited["edited_parts"]["milk_weight"] = {"been": available_recipe[10], "now": columns["milk"]["weight"]}
+                    if int(available_recipe[11]) != int(columns["powder"]["count"]):
+                        edited["edited_parts"]["powder_count"] = {"been": available_recipe[11], "now": columns["powder"]["count"]}
+                    if int(available_recipe[12]) != int(columns["powder"]["weight"]):
+                        edited["edited_parts"]["powder_weight"] = {"been": available_recipe[12], "now": columns["powder"]["weight"]}
+                    if int(available_recipe[13]) != int(columns["foam"]["count"]):
+                        edited["edited_parts"]["foam_count"] = {"been": available_recipe[13], "now": columns["foam"]["count"]}
+                    if int(available_recipe[14]) != int(columns["foam"]["weight"]):
+                        edited["edited_parts"]["foam_weight"] = {"been": available_recipe[14], "now": columns["foam"]["weight"]}
+                    db_conn.updateRecipe(device_aleph_id, drink["RecipeNumber"], drink["Name"], received_recipes, columns["coffee"]["count"], columns["coffee"]["weight"],columns["water"]["count"],columns["water"]["weight"],columns["milk"]["count"],columns["milk"]["weight"],columns["powder"]["count"],columns["powder"]["weight"],columns["foam"]["count"],columns["foam"]["weight"])
+                    print("SENDEREEERERERERERERERER")
+                    print(drink["Name"])
+                    print(edited)
+                    #return print(edited)
+                    url = "https://backend.wmf24.ru/api/recipe_edited"
+                    headers = {
+                        'Content-Type': 'application/json',
+                        'Serverkey': db_conn.get_encrpt_key()[0]
+                    }
+                    response = requests.request("POST", url, headers=headers, data=json.dumps(edited))
+                    request = f'{WMF_URL}?device={device_aleph_id}&error_id=AT11&date_start={datetime.fromtimestamp(int((datetime.now()).timestamp()))}&date_end={datetime.fromtimestamp(int((datetime.now()).timestamp()))}&duration=0&status=1'
+                    requests.post(request)
+                    db_conn.create_error_record(device_aleph_id, 'AT11')
+                    db_conn.close_error_code(device_aleph_id, 'AT11')
+                    #print(edited)
         #print(columns)
 
 
