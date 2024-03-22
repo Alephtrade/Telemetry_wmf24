@@ -19,6 +19,7 @@ WMF_URL = settings.WMF_DATA_URL
 
 
 def Take_Create_Beverage_Statistics(last_send, device):
+    redacted = False
     #print(device)
     #initialize_logger('beveragestatistics.log')
     wm_conn = WMFMachineStatConnector(device[1], device[2])
@@ -127,6 +128,7 @@ def Take_Create_Beverage_Statistics(last_send, device):
                                                 db_conn.initPours(device[1], recipe_number, middle_recipe[0][3], recipe_size, middle_recipe[0][4], middle_recipe[0][5], middle_recipe[0][6], middle_recipe[0][7], middle_recipe[0][8], time_to_form)
                                                 count_in_base += 1
                                             print("Должен был создаться мидл")
+                                            redacted = True
                                         else:
                                             print("НЕИЗВЕСТНЫЙ НАПИТОК")
                                             while count_of_real_pours > count_in_base:
@@ -136,17 +138,21 @@ def Take_Create_Beverage_Statistics(last_send, device):
                                                                   "", time_to_form)
                                                 count_in_base += 1
                                             print("Неизвестный рецепт")
+                                            redacted = True
                                 else:
                                     while count_of_real_pours > count_in_base:
                                         db_conn.initPours(device[1], recipe_number, pours_detected_in_base[0][3], recipe_size, pours_detected_in_base[0][4], pours_detected_in_base[0][5], pours_detected_in_base[0][6], pours_detected_in_base[0][7], pours_detected_in_base[0][8], time_to_form)
                                         count_in_base += 1
                                         print("Должен был создаться с нужным кап сайзом")
-                        request = f'{WMF_URL}?device={device[1]}&error_id=AT91&date_start={date_formed}&date_end={date_formed}&duration=0&status=1'
-                        response = requests.post(request)
+                                        redacted = True
+
                             #print(response)
                             #db_conn.create_error_record(device[1], 'AT91')
                             #db_conn.close_error_code(device[1], 'AT91')
     #return True
+    if redacted:
+        request = f'{WMF_URL}?device={device[1]}&error_id=AT91&date_start={date_formed}&date_end={date_formed}&duration=0&status=1'
+        response = requests.post(request)
     return create_record
 
 
