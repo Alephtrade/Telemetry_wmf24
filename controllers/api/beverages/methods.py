@@ -26,6 +26,7 @@ def Take_Create_Beverage_Statistics(last_send, device):
     summ = 0
     device_code = ""
     recipes = []
+    redacted = False
     date_to_send = get_beverages_send_time(last_send)
     next_time = datetime.strptime(str(date_to_send), '%Y-%m-%d %H:%M:%S')
     #date_to_send = datetime.fromtimestamp(int((datetime.now() + timedelta(hours=3)).timestamp() // (60 * 60) * 60 * 60))
@@ -140,13 +141,11 @@ def Take_Create_Beverage_Statistics(last_send, device):
                                     while count_of_real_pours > count_in_base:
                                         db_conn.initPours(device[1], recipe_number, pours_detected_in_base[0][3], recipe_size, pours_detected_in_base[0][4], pours_detected_in_base[0][5], pours_detected_in_base[0][6], pours_detected_in_base[0][7], pours_detected_in_base[0][8], time_to_form)
                                         count_in_base += 1
-                                        print("Должен был создаться с нужным кап сайзом")
-                            request = f'{WMF_URL}?device={device[1]}&error_id=AT91&date_start={time_now}&date_end={time_now}&duration=0&status=1'
-                            response = requests.post(request)
-                            #print(response)
-                            #db_conn.create_error_record(device[1], 'AT91')
-                            #db_conn.close_error_code(device[1], 'AT91')
-    #return True
+                                        redacted = True
+    if redacted:
+        request = f'{WMF_URL}?device={device[1]}&error_id=AT91&date_start={date_formed}&date_end={date_formed}&duration=0&status=1'
+        response = requests.post(request)
+        print("AT91")
     return create_record
 
 
